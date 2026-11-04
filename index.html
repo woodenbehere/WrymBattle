@@ -149,9 +149,16 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .row.ready .atb i{background:var(--gold);animation:glow .7s steps(2) infinite}
 @keyframes glow{50%{background:#fff3c4}}
 .mp{grid-area:mp;color:var(--mp);font-size:.74em;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
-.credits{display:flex;justify-content:center;flex-wrap:wrap;gap:2px 10px;font-family:var(--f-display);font-size:clamp(8px,1.3cqh,11px);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.credits{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:2px 10px;font-family:var(--f-display);font-size:clamp(8px,1.3cqh,11px);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .credits b{font-weight:400;color:var(--gold)}
 .ver{font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--gold);background:transparent;border:0;border-bottom:1px dotted currentColor;padding:4px 6px;margin:-4px -6px;cursor:pointer}
+.credits .sep{color:var(--dim)}
+.credits a{display:inline-flex;align-items:center;gap:.45em;color:var(--muted);text-decoration:none;padding:3px 6px;border:1px solid transparent}
+.credits a:hover{color:var(--text)}
+.credits a:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.credits a.donate{color:var(--gold);border-color:var(--line)}
+.credits a.donate:hover{border-color:var(--gold)}
+.credits svg{width:1.5em;height:1.5em;flex:none;shape-rendering:crispEdges}
 .ver:hover{color:var(--text)} .ver:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
 .ver.armed{color:var(--limit)} .ver:disabled{cursor:wait;opacity:.7}
 
@@ -200,7 +207,9 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v1.5.0</button></span><span>Parden Web Apps 2026</span></footer>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v1.6.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+    <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
+    <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
     <div class="sheet" id="helpOv" role="dialog" aria-modal="true" aria-label="How to play" hidden>
   <div class="card help">
@@ -891,7 +900,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!autoOv.hidden)clos
 $('again').onclick=async()=>{while(S.busy)await sleep(50);newGame();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='1.5.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='1.6.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

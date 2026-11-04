@@ -88,6 +88,14 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .chip em{font-style:normal;font-size:15px}
 .chip[aria-pressed="true"]{color:var(--text);border-color:var(--heal)}
 .chip[aria-pressed="true"]::before{content:"\2713  ";color:var(--heal)}
+.awho{display:grid;gap:6px}
+.hrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:center}
+.hrow .chip{justify-self:start;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hab{font-family:var(--f-body);font-size:18px;line-height:1.1;background:var(--panel-2);color:var(--text);border:2px solid var(--line);border-radius:0;padding:4px 6px;width:100%;min-width:0}
+@media (max-width:520px){.hrow .chip em{display:none}}
+.hab:disabled{color:var(--dim);opacity:.6}
+.hab:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.card.help p.tip{margin:0;font-size:16px;line-height:1.15;color:var(--muted)}
 .arow{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
 .arow .btn{justify-self:auto}
 .btn.ghost{background:transparent;border-color:var(--line);color:var(--muted)}
@@ -189,7 +197,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <b>v1.3.0</b></span><span>Parden Web Apps 2026</span></footer>
+  <footer class="credits"><span>Ember Wyrm <b>v1.4.0</b></span><span>Parden Web Apps 2026</span></footer>
 </main>
     <div class="sheet" id="helpOv" role="dialog" aria-modal="true" aria-label="How to play" hidden>
   <div class="card help">
@@ -207,8 +215,9 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <h2>Auto battle</h2>
     <p class="lab">Strategy</p>
     <div class="strats" id="stratList"></div>
-    <p class="lab">Heroes on auto</p>
-    <div class="chips" id="autoWho"></div>
+    <p class="lab">Heroes on auto &middot; habit</p>
+    <p class="tip">A habit overrides the strategy whenever it can be used. Full limit breaks still fire.</p>
+    <div class="awho" id="autoWho"></div>
     <div class="arow">
       <button class="btn ghost" id="autoOff" type="button">Manual control</button>
       <button class="btn ghost" id="autoCancel" type="button">Cancel</button>
@@ -315,7 +324,7 @@ const SPR={
 function greyOf(hex){const n=parseInt(hex.slice(1),16);const l=Math.round(((n>>16)*.3+((n>>8)&255)*.59+(n&255)*.11)*.5+18);return `rgb(${l},${l-5},${l+6})`;}
 for(const k in SPR){SPR[k].grey={};for(const c in SPR[k].pal)SPR[k].grey[c]=greyOf(SPR[k].pal[c]);}
 function drawSprite(c,spr,x,y,o){
-  const m=spr.map,h=m.length,w=12;const pal=o.white?null:(o.ko?spr.grey:spr.pal);
+  const m=spr.map,h=m.length,w=12;const pal=o.ko?spr.grey:(o.white?null:spr.pal);
   if(o.ko){const ox=Math.round(x-h/2),oy=Math.round(y-w+4);
     for(let j=0;j<h;j++)for(let i=0;i<w;i++){const ch=m[j][i];if(!ch||ch==='.')continue;c.fillStyle=pal[ch]||'#777';c.fillRect(ox+(h-1-j),oy+i,1,1);}return;}
   const ox=Math.round(x-w/2),oy=Math.round(y-h);
@@ -366,7 +375,7 @@ const LB={
 let S=null, kb=false;
 function newGame(){
   const mode=S?S.mode:'wait';
-  const auto=S?S.auto:{on:false,strat:'balanced',who:Object.fromEntries(ORDER.map(k=>[k,true]))};
+  const auto=S?S.auto:{on:false,strat:'balanced',who:Object.fromEntries(ORDER.map(k=>[k,true])),habit:{}};
   S={t:0,clock:0,busy:false,over:false,mode,auto,paused:false,actQ:[],readyQ:[],menu:null,log:['The Ember Wyrm blocks the mountain pass.'],turns:0,stolen:0,noted:{},
     items:{potion:4,ether:2,feather:2,elixir:0},parts:[],fx:[],
     heroes:ORDER.map((k,i)=>({key:k,...CL[k],maxhp:CL[k].hp,maxmp:CL[k].mp,i,atb:k==='thief'?94:rnd(15,65),ready:false,queued:false,ko:false,defend:false,guard:false,protect:0,dx:0,flash:0,cast:null,row:ROW0[k],limit:0,dy:0,x:0,y:58+i*18})),
@@ -577,7 +586,7 @@ async function doHero(h,kind,id,tg){
     case 'rage':{const cost=Math.min(h.hp-1,Math.round(h.maxhp*.1));h.hp-=cost;await stepIn(h,22);slashFx(DX+4,DY,'#ffd34a');await sleep(60);slashFx(DX-2,DY+6,'#ff8a4a');shake();strike(h,2.2);await sleep(200);await stepOut(h,22);break;}
     case 'guard':{h.guard=true;pop(h.x,h.y-12,'Guard','lbl');say(`${h.name} stands ready to shield the party.`);await sleep(300);break;}
     case 'steal':{await stepIn(h,18);await sleep(120);trySteal(h,.72);await sleep(300);await stepOut(h,18);break;}
-    case 'mug':{await stepIn(h,18);slashFx(DX+4,DY,'#ffffff');await sleep(100);strike(h,1);trySteal(h,.45);await sleep(250);await stepOut(h,18);break;}
+    case 'mug':{await stepIn(h,18);slashFx(DX+4,DY,'#ffffff');await sleep(100);strike(h,1);if(S.dragon.steals>0)trySteal(h,.45);await sleep(250);await stepOut(h,18);break;}
     case 'cure':{await castPose(h,'#9df29a');healFx(tg);heal(tg,h.mag*15*rnd(.95,1.05));await sleep(450);break;}
     case 'cureall':{await castPose(h,'#9df29a');for(const a of alive()){healFx(a);heal(a,h.mag*9*rnd(.95,1.05));}await sleep(500);break;}
     case 'protect':{await castPose(h,'#86b4f2');protectFx(tg);tg.protect=30;pop(tg.x,tg.y-12,'Protect','lbl');await sleep(450);break;}
@@ -648,6 +657,24 @@ const STRATS={
  defensive:{name:'Protect Allies',d:'Heal early, keep Protect on everyone, Guard the weak and Defend through Inferno.',heal:.7,group:.65,save:.1},
  conserve:{name:'Save MP',d:'Weapons, steals and items first. Spells only when they really matter.',heal:.4,group:.4,save:.6}
 };
+const HABITS={
+ fighter:{rage:'Always Rage Strike',fight:'Always Fight'},
+ thief:{steal:'Always Steal',mug:'Always Mug'},
+ white:{cure:'Always Cure',cureall:'Always Cure All'},
+ black:{frost:'Always Frost',thunder:'Always Thunder'},
+ summoner:{undine:'Always Undine',sylph:'Always Sylph'}
+};
+function habitAct(h,hb){
+  const low=alive().sort((a,b)=>a.hp/a.maxhp-b.hp/b.maxhp)[0];
+  switch(hb){
+    case 'fight':return{kind:'fight'};
+    case 'rage':return{kind:'skill',id:'rage'};
+    case 'steal':return{kind:'skill',id:S.dragon.steals>0?'steal':'mug'};
+    case 'mug':return{kind:'skill',id:'mug'};
+    case 'cure':return h.mp>=SK.cure.mp&&low?{kind:'skill',id:'cure',tg:low}:null;
+    default:return SK[hb]&&h.mp>=SK[hb].mp?{kind:'skill',id:hb}:null;
+  }
+}
 const isAuto=h=>!!(S.auto.on&&S.auto.who[h.key]);
 function aiChoose(h){
   const k=S.auto.strat,st=STRATS[k],d=S.dragon,I=S.items,al=alive(),ko=S.heroes.filter(x=>x.ko);
@@ -659,8 +686,11 @@ function aiChoose(h){
   const hurt=al.filter(x=>pct(x)<st.group);
   const white=S.heroes.find(x=>x.key==='white');
   const whiteHeals=!white.ko&&white.mp>=10, whiteRevives=!white.ko&&white.mp>=32;
+  const hb=S.auto.habit&&S.auto.habit[h.key];
   // limit breaks
-  if(h.limit>=100&&(h.key!=='white'||ko.length||hurt.length>=2||crit))return{kind:'limit'};
+  if(h.limit>=100&&(hb||h.key!=='white'||ko.length||hurt.length>=2||crit))return{kind:'limit'};
+  // habit
+  if(hb){const c=habitAct(h,hb);if(c)return c;}
   // raise the fallen
   if(ko.length){
     if(can('revive')&&!(k==='conserve'&&I.feather))return{kind:'skill',id:'revive',tg:ko[0]};
@@ -836,19 +866,22 @@ function openSheet(el,f){S.paused=true;el.hidden=false;if(f)f.focus({preventScro
 function closeSheet(el){el.hidden=true;S.paused=!helpOv.hidden||!autoOv.hidden;}
 $('helpBtn').onclick=()=>openSheet(helpOv,$('helpClose'));
 $('helpClose').onclick=()=>closeSheet(helpOv);
-let pickStrat='balanced',pickWho={};
+let pickStrat='balanced',pickWho={},pickHabit={};
 function drawAuto(){
   $('stratList').innerHTML=Object.entries(STRATS).map(([k,v])=>`<button type="button" class="strat" data-s="${k}" aria-pressed="${k===pickStrat}"><b>${esc(v.name)}</b><span>${esc(v.d)}</span></button>`).join('');
-  $('autoWho').innerHTML=S.heroes.map(h=>`<button type="button" class="chip" data-k="${h.key}" aria-pressed="${!!pickWho[h.key]}">${esc(h.name)} <em>${esc(h.cls)}</em></button>`).join('');
+  $('autoWho').innerHTML=S.heroes.map(h=>{const on=!!pickWho[h.key],hv=pickHabit[h.key]||'';
+    const opts=['<option value="">Follow strategy</option>'].concat(Object.entries(HABITS[h.key]).map(([v,l])=>`<option value="${v}"${v===hv?' selected':''}>${esc(l)}</option>`)).join('');
+    return `<div class="hrow"><button type="button" class="chip" data-k="${h.key}" aria-pressed="${on}">${esc(h.name)} <em>${esc(h.cls)}</em></button><select class="hab" id="hab-${h.key}" data-k="${h.key}" aria-label="Habit for ${esc(h.name)}"${on?'':' disabled'}>${opts}</select></div>`;}).join('');
   $('autoOff').hidden=!S.auto.on;
   $('autoGo').textContent=S.auto.on?'Update auto battle':'Start auto battle';
   $('autoGo').disabled=!Object.values(pickWho).some(Boolean);
 }
 function syncAuto(){autoBtn.setAttribute('aria-pressed',String(S.auto.on));autoBtn.textContent=S.auto.on?'Auto ●':'Auto';}
-autoBtn.onclick=()=>{pickStrat=S.auto.strat;pickWho={...S.auto.who};drawAuto();openSheet(autoOv,$('stratList').querySelector('[aria-pressed="true"]'));};
+autoBtn.onclick=()=>{pickStrat=S.auto.strat;pickWho={...S.auto.who};pickHabit={...(S.auto.habit||{})};drawAuto();openSheet(autoOv,$('stratList').querySelector('[aria-pressed="true"]'));};
 $('stratList').onclick=e=>{const b=e.target.closest('.strat');if(!b)return;pickStrat=b.dataset.s;drawAuto();$('stratList').querySelector(`[data-s="${pickStrat}"]`).focus({preventScroll:true});};
+$('autoWho').onchange=e=>{const sel=e.target.closest('select.hab');if(sel)pickHabit[sel.dataset.k]=sel.value;};
 $('autoWho').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;const k=b.dataset.k;pickWho[k]=!pickWho[k];drawAuto();$('autoWho').querySelector(`[data-k="${k}"]`).focus({preventScroll:true});};
-$('autoGo').onclick=()=>{S.auto={on:true,strat:pickStrat,who:{...pickWho}};if(S.menu&&isAuto(S.menu.hero))S.menu=null;closeSheet(autoOv);syncAuto();say(`Auto battle: ${STRATS[pickStrat].name}.`);renderMenu();};
+$('autoGo').onclick=()=>{S.auto={on:true,strat:pickStrat,who:{...pickWho},habit:{...pickHabit}};if(S.menu&&isAuto(S.menu.hero))S.menu=null;closeSheet(autoOv);syncAuto();say(`Auto battle: ${STRATS[pickStrat].name}.`);renderMenu();};
 $('autoOff').onclick=()=>{S.auto.on=false;closeSheet(autoOv);syncAuto();say('Manual control restored.');renderMenu();};
 $('autoCancel').onclick=()=>closeSheet(autoOv);
 addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!autoOv.hidden)closeSheet(autoOv);else if(!helpOv.hidden)closeSheet(helpOv);});

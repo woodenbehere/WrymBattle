@@ -29,7 +29,7 @@ Open the play link on a phone or in Chrome/Edge, then use **Add to Home Screen**
 
 - `index.html`: the whole game (canvas renderer, battle logic, UI)
 - `manifest.webmanifest`: PWA metadata
-- `sw.js`: service worker for offline play. Bump `VERSION` when you change files so installed copies update.
+- `sw.js`: service worker for offline play. Bump `VERSION` (and the version in the footer of `index.html`) when you change files so installed copies update.
 - `icons/`: app icons
 
 To run locally, serve the folder over HTTP (for example `python3 -m http.server`) and open `http://localhost:8000`. Service workers don't run from `file://`.

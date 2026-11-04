@@ -212,7 +212,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v1.7.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v1.8.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -749,7 +749,7 @@ function makeFieldBg(theme){
 }
 
 /* ---------- world map ---------- */
-const WT=96,HT=64,TS=8;
+const WT=96,HT=64,TS=16;
 const T_DEEP=0,T_SHAL=1,T_SAND=2,T_GRASS=3,T_FOREST=4,T_HILLS=5,T_MTN=6,T_DESERT=7,T_ASH=8,T_TOWN=9,T_CASTLE=10,T_PEAK=11;
 const BLOCKED=new Set([T_DEEP,T_SHAL,T_MTN,T_PEAK]);
 function genWorld(seed){
@@ -776,7 +776,7 @@ function genWorld(seed){
   for(let y=-4;y<=4;y++)for(let x=-5;x<=5;x++){const r=(x/5)**2+(y/4)**2;if(r<=1){const t=at(pk.x+x,pk.y+y);if(!BLOCKED.has(t)||t===T_MTN)set(pk.x+x,pk.y+y,T_ASH);}}
   for(let y=-1;y<=0;y++)for(let x=-1;x<=1;x++)set(pk.x+x,pk.y+y,T_PEAK);
   for(let y=1;y<=7;y++){const t=at(pk.x,pk.y+y);if(BLOCKED.has(t))set(pk.x,pk.y+y,y<4?T_ASH:T_GRASS);}
-  const start={x:pk.x,y:pk.y+5};
+  const start={x:pk.x,y:pk.y+3};
   // flood fill from start
   const seen=new Uint8Array(WT*HT),q=[start.y*WT+start.x];seen[q[0]]=1;
   while(q.length){const k=q.pop(),x=k%WT,y=(k/WT)|0;for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const X=x+dx,Y=y+dy;if(X<0||Y<0||X>=WT||Y>=HT)continue;const K=Y*WT+X;if(!seen[K]&&!BLOCKED.has(tiles[K])){seen[K]=1;q.push(K);}}}
@@ -794,70 +794,80 @@ function genWorld(seed){
   return {tiles,at,start:{x:(start.x+.5)*TS,y:(start.y+.5)*TS},lands,reach,counts,town,castle};
 }
 
-const WSEED=16,PAD=320,HZ=34,CAMH=30,FOC=128,CAMD=58,ZMAX=420,PY=Math.round(HZ+CAMH*FOC/CAMD);
-let WORLD=null,tex=null;const LSPR={};
+const WSEED=16,PAD=160,PY=H/2+7;
+let WORLD=null,tex=null,tex2=null;
 const TILE_NAME={[T_SAND]:'Coast',[T_GRASS]:'Grasslands',[T_FOREST]:'Forest',[T_HILLS]:'Hills',[T_DESERT]:'Desert',[T_ASH]:'Ashlands',[T_TOWN]:'Thornwick',[T_CASTLE]:'Castle Valemont'};
 const ENC={[T_GRASS]:['thornhare','thornhare','slime'],[T_FOREST]:['wolf','slime'],[T_DESERT]:['ray'],[T_SAND]:['ray','thornhare'],[T_HILLS]:['imp','thornhare'],[T_ASH]:['imp']};
 const RATE={[T_FOREST]:1.4,[T_DESERT]:1.2,[T_HILLS]:1.2,[T_ASH]:1.1};
 function buildWorld(){
   WORLD=genWorld(WSEED);
-  tex=document.createElement('canvas');tex.width=WT*TS+PAD*2;tex.height=HT*TS+PAD*2;const c=tex.getContext('2d');
+  const P=PAD/TS,TW=WT+P*2,TH=HT+P*2;
+  tex=document.createElement('canvas');tex.width=TW*TS;tex.height=TH*TS;
+  const isWater=t=>t===T_DEEP||t===T_SHAL;
   const hsh=(x,y,k)=>{let n=Math.imul(x+999,73856093)^Math.imul(y+999,19349663)^Math.imul(k,83492791);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967296;};
-  c.fillStyle='#1d3f8f';c.fillRect(0,0,tex.width,tex.height);
-  const P=PAD/TS;
-  for(let ty=-P;ty<HT+P;ty++)for(let tx=-P;tx<WT+P;tx++){
-    const t=WORLD.at(tx,ty),X=tx*TS+PAD,Y=ty*TS+PAD,r=k=>hsh(tx,ty,k);
+  const TREE=["..xxxx..",".xhhxxx.","xhhxxxxx","xhxxxxxx","xxxxxxxd",".xxxxxd.","..dddd.."];
+  function drawTile(c,tx,ty,fr){
+    const t=WORLD.at(tx,ty),X=(tx+P)*TS,Y=(ty+P)*TS,r=k=>hsh(tx,ty,k);
     const f=(col,x,y,w=1,h=1)=>{c.fillStyle=col;c.fillRect(X+x,Y+y,w,h);};
+    const grass=()=>{f('#48a838',0,0,16,16);for(let k=0;k<4;k++){const x=1+((r(k)*12)|0),y=1+((r(k+4)*12)|0);f('#2f7c24',x,y);f('#2f7c24',x+2,y);f('#2f7c24',x+1,y+1);}
+      for(let k=0;k<2;k++)f('#70c850',(r(k+9)*14)|0,(r(k+11)*15)|0,2,1);};
     switch(t){
-      case T_DEEP:if(r(1)<.5)f('#3a64c0',(r(2)*6)|0,(r(3)*7)|0,2,1);break;
-      case T_SHAL:f('#2f6fc0',0,0,8,8);if(r(1)<.7)f('#6aa8e8',(r(2)*6)|0,(r(3)*7)|0,2,1);break;
-      case T_SAND:f('#e2cf8a',0,0,8,8);f('#c8b06a',(r(2)*7)|0,(r(3)*7)|0);f('#f2e2a8',(r(4)*7)|0,(r(5)*7)|0);break;
-      case T_GRASS:case T_TOWN:case T_CASTLE:f('#4f9a3c',0,0,8,8);f('#6fb84c',(r(2)*7)|0,(r(3)*7)|0);f('#3d7f2e',(r(4)*7)|0,(r(5)*7)|0);if(r(6)<.3)f('#8acb5a',(r(7)*7)|0,(r(8)*7)|0);break;
-      case T_FOREST:f('#3d7f2e',0,0,8,8);for(const[a,b]of[[0,0],[4,3],[1,5]]){const ox=a+((r(a+9)*2)|0),oy=b;f('#1f5222',ox,oy,4,3);f('#2f6e2c',ox+1,oy,2,1);f('#3f8a36',ox+1,oy,1,1);}break;
-      case T_HILLS:f('#7a9a4a',0,0,8,8);f('#5a7a3a',1,4,6,1);f('#5a7a3a',2,3,4,1);f('#9aba62',3,2,2,1);break;
-      case T_MTN:case T_PEAK:{const ash=t===T_PEAK;f(ash?'#3a2c28':'#6a8a3e',0,0,8,8);
-        for(let yy=0;yy<8;yy++){const half=Math.min(4,(yy+1)/2+.5);f(ash?'#4a3530':'#6a5a4a',Math.round(4-half),yy,Math.round(half),1);f(ash?'#6a4a40':'#9a8a76',4,yy,Math.round(half),1);}
-        f(ash?'#ff7a2a':'#f2f2f2',3,0,2,1);f(ash?'#d8541c':'#e0e0e8',3,1,2,1);break;}
-      case T_DESERT:f('#d9b46a',0,0,8,8);f('#c49a50',(r(2)*3)|0,(2+r(3)*4)|0,4,1);f('#ecd090',(r(4)*7)|0,(r(5)*7)|0);break;
-      case T_ASH:f('#4a3a36',0,0,8,8);f('#5e4a44',(r(2)*7)|0,(r(3)*7)|0);if(r(4)<.35)f('#d8541c',(r(5)*6)|0,(r(6)*7)|0,2,1);break;
+      case T_DEEP:case T_SHAL:{const deep=t===T_DEEP;f(deep?'#2048b8':'#3068d8',0,0,16,16);
+        for(let k=0;k<3;k++){const x=((r(k)*11)|0)+(fr?2:0),y=2+((r(k+5)*12)|0);f(deep?'#4878e0':'#68a0f0',x,y,4,1);f(deep?'#4878e0':'#68a0f0',x+1,y-1,2,1);}
+        if(r(9)<.3)f('#c8e0ff',((r(10)*14)|0)+(fr?1:0),(r(11)*15)|0);
+        const N=isWater(WORLD.at(tx,ty-1)),Sx=isWater(WORLD.at(tx,ty+1)),Wx=isWater(WORLD.at(tx-1,ty)),E=isWater(WORLD.at(tx+1,ty));
+        const foam=(x,y,w,h,horiz)=>{for(let i=0;i<(horiz?w:h);i++){if(((i+(fr?1:0))>>1)%2)continue;horiz?f('#e8f6ff',x+i,y):f('#e8f6ff',x,y+i);}};
+        if(!N){f('#90c8f8',0,0,16,2);foam(0,0,16,1,true);}if(!Sx){f('#90c8f8',0,14,16,2);foam(0,15,16,1,true);}
+        if(!Wx){f('#90c8f8',0,0,2,16);foam(0,0,1,16,false);}if(!E){f('#90c8f8',14,0,2,16);foam(15,0,1,16,false);}
+        break;}
+      case T_SAND:f('#e8d090',0,0,16,16);for(let k=0;k<5;k++)f(k%2?'#d0b070':'#f8e8b0',(r(k)*15)|0,(r(k+6)*15)|0);break;
+      case T_GRASS:case T_TOWN:case T_CASTLE:grass();break;
+      case T_FOREST:f('#14421a',0,0,16,16);
+        for(const[ox,oy]of[[0,0],[8,0],[-4,8],[4,8],[12,8]])for(let j=0;j<7;j++)for(let i=0;i<8;i++){const ch=TREE[j][i],x=ox+i,y=oy+j+1;if(ch==='.'||x<0||x>15||y>15)continue;f(ch==='h'?'#4aa040':ch==='d'?'#174d1e':'#2a7a2e',x,y);}
+        break;
+      case T_HILLS:grass();for(const[ox,oy,s]of[[1,5,1],[8,8,.85]]){const rows=[2,4,5,6,6,6];for(let yy=0;yy<6;yy++){const half=Math.round(rows[yy]*s);f(yy===5?'#226a26':'#3c9a34',ox+6-half,oy+yy,half*2,1);if(yy<3)f('#68c050',ox+6-half,oy+yy,Math.max(1,half-1),1);}}
+        break;
+      case T_MTN:f('#9a7448',0,0,16,16);
+        for(const[ax,ay,hh]of[[5,1,14],[11,5,10]])for(let yy=0;yy<hh;yy++){const half=Math.round(yy*.55+.5),y=ay+yy;if(y>15)break;
+          f('#c8a070',ax-half,y,half,1);f('#7a5432',ax,y,half+1,1);f('#3e2814',ax-half,y);f('#3e2814',ax+half,y);if(yy===0)f('#3e2814',ax,y);}
+        f('#5a3c20',4,9,1,3);f('#5a3c20',11,11,1,2);break;
+      case T_DESERT:f('#e0bc68',0,0,16,16);for(let k=0;k<2;k++){const y=3+k*7+((r(k)*3)|0);for(let x=0;x<16;x++){const yy=y+Math.round(Math.sin((x+r(k+3)*8)*.5));f('#c49a48',x,yy);if(x%3===0)f('#f0d890',x,yy-1);}}break;
+      case T_ASH:case T_PEAK:f('#5a4640',0,0,16,16);f('#6e5850',(r(1)*14)|0,(r(2)*14)|0,2,1);if(r(3)<.45){const x=(r(4)*12)|0,y=(r(5)*13)|0;f('#d8541c',x,y,3,1);f('#d8541c',x+2,y+1,2,1);f(fr?'#ffb03a':'#ff7a2a',x+1,y);}break;
     }
   }
-  // landmark sprites (billboards)
-  const mk=(w,h,draw)=>{const s=document.createElement('canvas');s.width=w;s.height=h;const g=s.getContext('2d');draw((col,x,y,ww=1,hh=1)=>{g.fillStyle=col;g.fillRect(x,y,ww,hh);});return s;};
-  LSPR.volcano=mk(46,26,f=>{for(let y=0;y<26;y++){const half=Math.min(23,6+y*.75);f('#4a3530',Math.round(23-half),y,Math.round(half));f('#6a4a40',23,y,Math.round(half));}
-    f('#2a1c18',17,0,12,3);f('#ff7a2a',19,0,8,2);f('#ffd34a',21,0,4,1);for(const[x,y]of[[20,4],[22,8],[19,12],[24,6]])f('#d8541c',x,y,1,3);});
-  LSPR.town=mk(26,16,f=>{const house=(x,y,roof)=>{f('#e8d8b0',x,y+4,8,6);f(roof,x-1,y+2,10,2);f(roof,x+1,y,6,2);f('#5a3a24',x+3,y+7,2,3);f('#7ab0e0',x+1,y+5,1,1);f('#7ab0e0',x+6,y+5,1,1);};
-    house(1,6,'#c0402a');house(9,2,'#b8562a');house(17,6,'#c0402a');});
-  LSPR.castle=mk(30,24,f=>{f('#9a9aa8',3,8,24,16);f('#7a7a8a',3,8,24,2);for(let x=3;x<27;x+=4)f('#9a9aa8',x,6,2,2);
-    for(const x of[0,24]){f('#8a8a98',x,4,6,20);f('#3a5ab0',x-1,1,8,3);f('#3a5ab0',x+1,0,4,1);}f('#8a8a98',11,0,8,10);f('#3a5ab0',10,-1,10,2);f('#2a2a34',13,16,4,8);f('#ffd34a',14,4,2,2);});
+  function drawLandmarks(c,fr){
+    const at=(x,y,draw)=>{const f=(col,a,b,w=1,h=1)=>{c.fillStyle=col;c.fillRect(x+a,y+b,w,h);};draw(f);};
+    const pk=WORLD.lands[0],px=Math.round(pk.x/TS-.5),py=Math.round(pk.y/TS-.5);
+    at((px-1+P)*TS,(py-1+P)*TS,f=>{for(let yy=0;yy<32;yy++){const half=Math.min(24,Math.round(7+yy*.56));f('#7a5a48',24-half,yy,half,1);f('#4a3028',24,yy,half,1);f('#24140c',24-half,yy);f('#24140c',23+half,yy);}
+      f('#24140c',16,0,16,3);f('#ff7a2a',18,0,12,2);f(fr?'#fff3c4':'#ffd34a',21,0,6,1);
+      for(const[x,y,h]of[[20,3,9],[26,4,7],[23,6,11]]){f('#d8541c',x,y,1,h);f(fr?'#ffb03a':'#ff7a2a',x,y+((fr?2:5)),1,2);}});
+    if(WORLD.town)at((WORLD.town.x+P)*TS,(WORLD.town.y+P)*TS,f=>{const house=(x,y)=>{f('#3a2418',x-1,y+2,9,6);f('#f0e0b8',x,y+3,7,5);f('#c83c28',x-1,y,9,3);f('#8a2418',x-1,y+2,9,1);f('#5a3a24',x+3,y+5,1,3);f('#7ab0e0',x+1,y+4,1,1);};
+      house(1,1);house(8,6);f('#2a7a2e',10,0,4,3);f('#4aa040',10,0,2,1);f('#5a3a24',11,3,1,2);f('#c8b07a',0,13,16,2);});
+    if(WORLD.castle)at((WORLD.castle.x+P)*TS-8,(WORLD.castle.y+P)*TS-16,f=>{f('#3a3a48',3,9,26,23);f('#a8a8b8',4,10,24,21);f('#8a8a9a',4,10,24,2);
+      for(let x=4;x<28;x+=4)f('#a8a8b8',x,8,2,2);
+      for(const x of[0,24]){f('#3a3a48',x,5,8,27);f('#b8b8c8',x+1,6,6,25);f('#787888',x+5,6,2,25);f('#3858c0',x-1,1,10,5);f('#6888e8',x,1,4,2);f('#24348a',x-1,5,10,1);}
+      f('#3a3a48',11,0,10,14);f('#b8b8c8',12,1,8,12);f('#3858c0',10,-1,12,3);f('#e84040',16,-6,1,5);f('#e84040',17,-6,3,2);
+      f('#2a2a34',13,22,6,10);f('#5a4a3a',14,23,4,9);f('#ffd34a',15,5,2,3);});
+  }
+  const c=tex.getContext('2d');c.fillStyle='#2048b8';c.fillRect(0,0,tex.width,tex.height);
+  for(let ty=-P;ty<HT+P;ty++)for(let tx=-P;tx<WT+P;tx++)drawTile(c,tx,ty,0);
+  drawLandmarks(c,0);
+  tex2=document.createElement('canvas');tex2.width=tex.width;tex2.height=tex.height;const c2=tex2.getContext('2d');c2.drawImage(tex,0,0);
+  for(let ty=-P;ty<HT+P;ty++)for(let tx=-P;tx<WT+P;tx++){const t=WORLD.at(tx,ty);if(isWater(t)||t===T_ASH||t===T_PEAK)drawTile(c2,tx,ty,1);}
+  drawLandmarks(c2,1);
 }
 const tileAt=(x,y)=>WORLD.at(Math.floor(x/TS),Math.floor(y/TS));
 const walkable=(x,y)=>!BLOCKED.has(tileAt(x,y));
 function mapRender(dt){
-  const w=S.world,camX=w.x,camY=w.y+CAMD;
-  let g=ctx.createLinearGradient(0,0,0,HZ);g.addColorStop(0,'#2a58b8');g.addColorStop(1,'#a8d0f0');ctx.fillStyle=g;ctx.fillRect(0,0,W,HZ+1);
-  ctx.fillStyle='rgba(255,255,255,.75)';for(let k=0;k<6;k++){const x=((k*71+S.t*3)%(W+60))-30,y=6+(k*7)%22;ctx.fillRect(x|0,y,18+k%3*6,2);ctx.fillRect((x+5)|0,y-1,8,1);}
-  for(let y=HZ+1;y<H;y++){
-    const z=CAMH*FOC/(y+.5-HZ);if(z>ZMAX){ctx.fillStyle='#a8d0f0';ctx.fillRect(0,y,W,1);continue;}
-    const span=W*z/FOC,sx=camX-span/2+PAD,sy=Math.floor(camY-z+PAD);
-    if(sy<0||sy>=tex.height){ctx.fillStyle='#1d3f8f';ctx.fillRect(0,y,W,1);continue;}
-    const cx0=Math.max(0,sx),cx1=Math.min(tex.width,sx+span);
-    if(cx0>sx||cx1<sx+span){ctx.fillStyle='#1d3f8f';ctx.fillRect(0,y,W,1);}
-    if(cx1>cx0)ctx.drawImage(tex,cx0,sy,cx1-cx0,1,(cx0-sx)/span*W,y,(cx1-cx0)/span*W,1);
-  }
-  g=ctx.createLinearGradient(0,HZ,0,HZ+30);g.addColorStop(0,'rgba(168,208,240,1)');g.addColorStop(1,'rgba(168,208,240,0)');ctx.fillStyle=g;ctx.fillRect(0,HZ,W,30);
-  const list=WORLD.lands.map(l=>({dz:camY-l.y,l}));list.push({dz:CAMD,player:true});list.sort((a,b)=>b.dz-a.dz);
-  for(const it of list){
-    if(it.player){drawWalker();continue;}
-    const dz=it.dz;if(dz<10||dz>ZMAX)continue;const sp=LSPR[it.l.spr],sc=FOC/dz,dw=it.l.size*sc,dh=dw*sp.height/sp.width;
-    const sx=W/2+(it.l.x-camX)*sc,sy=HZ+CAMH*FOC/dz;if(sx+dw/2<0||sx-dw/2>W)continue;
-    ctx.globalAlpha=dz>ZMAX*.7?Math.max(0,1-(dz-ZMAX*.7)/(ZMAX*.3)):1;ctx.drawImage(sp,Math.round(sx-dw/2),Math.round(sy-dh),Math.max(1,Math.round(dw)),Math.max(1,Math.round(dh)));ctx.globalAlpha=1;
-  }
+  const w=S.world,T=Math.floor(S.t*1.6)%2?tex2:tex;
+  ctx.fillStyle='#2048b8';ctx.fillRect(0,0,W,H);
+  ctx.drawImage(T,Math.round(w.x-W/2)+PAD,Math.round(w.y-H/2)+PAD,W,H,0,0,W,H);
+  drawWalker();
 }
 function drawWalker(){
   const w=S.world;if(w.camping)return;const lead=S.heroes.find(h=>!h.ko)||S.heroes[0];
-  const bob=w.moving&&Math.floor(w.walkT*7)%2?1:0;
-  ctx.fillStyle='rgba(0,0,0,.35)';ell(ctx,W/2,PY,6,1.6);
+  const bob=w.moving&&Math.floor(w.walkT*8)%2?1:0;
+  ctx.fillStyle='rgba(0,0,0,.3)';ell(ctx,W/2,PY,5,1.5);
   drawSprite(ctx,SPR[lead.key],W/2,PY-bob,{flip:w.face>0});
 }
 const keys={};let steer=null,steerId=null;
@@ -870,7 +880,7 @@ stage.addEventListener('pointerdown',e=>{if(S.scene!=='map'||e.target.closest('.
 stage.addEventListener('pointermove',e=>{if(e.pointerId===steerId)setSteer(e);});
 const endSteer=e=>{if(e.pointerId===steerId){steer=null;steerId=null;}};
 stage.addEventListener('pointerup',endSteer);stage.addEventListener('pointercancel',endSteer);
-function nearLand(){const w=S.world;for(const l of WORLD.lands)if(Math.hypot(l.x-w.x,l.y-w.y)<34)return l;return null;}
+function nearLand(){const w=S.world;for(const l of WORLD.lands)if(Math.hypot(l.x-w.x,l.y-w.y)<(l.id==='peak'?40:22))return l;return null;}
 function placeName(){const l=nearLand();return l?l.name:(TILE_NAME[tileAt(S.world.x,S.world.y)]||'Wilds');}
 function mapUpdate(dt){
   const w=S.world;if(w.camping||S.paused){w.moving=false;return;}
@@ -878,7 +888,7 @@ function mapUpdate(dt){
   if(keys.arrowleft||keys.a)vx-=1;if(keys.arrowright||keys.d)vx+=1;if(keys.arrowup||keys.w)vy-=1;if(keys.arrowdown||keys.s)vy+=1;
   if(steer){const L=Math.hypot(steer.x,steer.y);if(L>5){vx=steer.x/L;vy=steer.y/L;}}
   const L=Math.hypot(vx,vy);w.moving=L>0;if(!L)return;
-  vx/=L;vy/=L;const sp=46*dt,ox=w.x,oy=w.y;
+  vx/=L;vy/=L;const sp=72*dt,ox=w.x,oy=w.y;
   if(walkable(w.x+vx*sp,w.y))w.x+=vx*sp;if(walkable(w.x,w.y+vy*sp))w.y+=vy*sp;
   if(Math.abs(vx)>.2)w.face=vx>0?1:-1;w.walkT+=dt;
   const moved=Math.hypot(w.x-ox,w.y-oy);if(!moved){w.moving=false;return;}
@@ -901,7 +911,7 @@ async function camp(){
   say('The party pitches camp for the night…');
   await addFx(2600,(c,p)=>{const a=p<.25?p/.25:p>.8?(1-p)/.2:1;
     c.fillStyle=`rgba(8,8,32,${a*.72})`;c.fillRect(0,0,W,H);
-    c.globalAlpha=a;c.fillStyle='#fff8d8';for(let k=0;k<14;k++)c.fillRect((k*37)%W,(k*13)%(HZ-4),1,1);
+    c.globalAlpha=a;c.fillStyle='#fff8d8';for(let k=0;k<14;k++)c.fillRect((k*37)%W,(k*13)%(H-4),1,1);
     const x=W/2,y=PY;c.fillStyle='#c8a46a';c.beginPath();c.moveTo(x-16,y);c.lineTo(x-6,y-14);c.lineTo(x+4,y);c.closePath();c.fill();
     c.fillStyle='#8a6a3a';c.beginPath();c.moveTo(x-6,y-14);c.lineTo(x-1,y);c.lineTo(x+4,y);c.closePath();c.fill();
     c.fillStyle='#3a2a1a';c.fillRect(x-8,y-5,3,5);
@@ -1180,7 +1190,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!autoOv.hidden)clos
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='1.7.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='1.8.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

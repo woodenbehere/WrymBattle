@@ -28,6 +28,8 @@ Five heroes take on a dragon in two phases:
 - **Saving**: progress saves automatically in your browser once the Ember Wyrm falls. Start over from the ? panel.
 - **Group battles**: fights against up to four enemies, each with its own turn gauge and health bar. Pick a target from the menu (a cursor marks it on screen); summons hit every enemy.
 - **Bestiary**: Thornhare, Goblin, Bog Slime, Grave Wolf, Mandrake, Dusk Bat, Sand Ray, Dune Scorpion, Stone Imp, Ash Salamander, the Hill Ogre, and the Vault Sentinel with its Ward Orbs.
+- **Castle grounds**: a stone wall surrounds Castle Valemont and Valemont Village, which sits just south of the castle. Enter through the south gate.
+- **Mini-map**: a map of the world (or the castle, when inside) sits in the top-right corner. Tap it to enlarge.
 - **Castle Valemont**: walk inside to meet King Aldous and Queen Mirelle in the throne room, rest in the guest rooms, loot the armory, and earn the Royal Key by slaying the Hill Ogre. The vault is locked, guarded by Captain Brann, and protected by an ancient sentinel.
 - **Auto battle**: the Auto button hands any heroes you choose to the AI, using one of four strategies (All-Out Attack, Balanced, Protect Allies, Save MP). Each hero can also get a habit, such as Thief: Always Mug, that overrides the strategy whenever it can.
 - **Phase 2**: the Ember Wyrm becomes the Molten Wyrm. Its elemental weaknesses change and it gains row-targeting attacks.

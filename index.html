@@ -62,6 +62,9 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .stage.map{touch-action:none;cursor:pointer}
 .stage.map .boss,.stage.town .boss,.stage.castle .boss{display:none}
 .stage.castle{touch-action:none;cursor:pointer}
+#mini{position:absolute;top:6px;right:6px;width:clamp(64px,22%,230px);height:auto;image-rendering:pixelated;image-rendering:crisp-edges;border:2px solid #e8e8f0;box-shadow:0 0 0 2px #000;background:#000;display:none;cursor:zoom-in;z-index:4}
+#mini.big{width:min(62%,560px);cursor:zoom-out}
+.stage.map #mini,.stage.castle #mini{display:block}
 .boss{gap:2px}.boss span{margin-top:2px}
 .dlg{position:absolute;left:6px;right:6px;bottom:6px;background:linear-gradient(#2c48b8,#121a62);border:2px solid #e8e8f0;box-shadow:0 0 0 2px #000;border-radius:3px;padding:.35em .7em 1em;color:#ffffff;font-size:clamp(14px,3.3cqw,30px);line-height:1.15;z-index:6;cursor:pointer}
 .dlg p{margin:0}.dlg span{position:absolute;right:.6em;bottom:.15em;font-size:.7em;animation:glow .8s steps(2) infinite;color:#ffd34a}
@@ -231,6 +234,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="banner" id="banner" hidden></div>
     <div class="note" id="note" role="status" hidden></div>
     <div id="pops"></div>
+    <canvas id="mini" width="96" height="64" role="img" aria-label="Mini map. Tap to enlarge"></canvas>
     <div class="dlg" id="dlg" hidden><p id="dlgText"></p><span aria-hidden="true">&#9660;</span></div>
     <div class="overlay" id="over" hidden>
       <div class="card"><h2 id="overT"></h2><p id="overP"></p><button class="btn" id="again">Fight again</button></div>
@@ -241,7 +245,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.0.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.1.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -552,7 +556,8 @@ function drawDragon(t){
 
 /* ---------- render ---------- */
 function render(dt){
-  if(S.scene==='battle')battleRender(dt);else if(S.scene==='town')townRender(dt);else if(S.scene==='castle'||S.battleFromCastle)castleRender();else mapRender(dt);
+  if(S.scene==='battle')battleRender(dt);else if(S.scene==='town')townRender(dt);else if(S.scene==='castle')castleRender();else mapRender(dt);
+  if(S.scene==='map'||S.scene==='castle')drawMini();
   const now=performance.now();
   S.fx=S.fx.filter(f=>{const p=Math.min(1,(now-f.t0)/f.dur);f.draw(ctx,p);if(p>=1){f.done();return false;}return true;});
   S.parts=S.parts.filter(p=>{p.life-=dt;if(p.life<=0)return false;p.vy+=p.g*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;ctx.globalAlpha=Math.min(1,p.life/p.max*2);ctx.fillStyle=p.c;ctx.fillRect(Math.round(p.x),Math.round(p.y),p.s,p.s);return true;});
@@ -868,8 +873,8 @@ function makeFieldBg(theme){
 
 /* ---------- world map ---------- */
 const WT=96,HT=64,TS=16;
-const T_DEEP=0,T_SHAL=1,T_SAND=2,T_GRASS=3,T_FOREST=4,T_HILLS=5,T_MTN=6,T_DESERT=7,T_ASH=8,T_TOWN=9,T_CASTLE=10,T_PEAK=11;
-const BLOCKED=new Set([T_DEEP,T_SHAL,T_MTN,T_PEAK]);
+const T_DEEP=0,T_SHAL=1,T_SAND=2,T_GRASS=3,T_FOREST=4,T_HILLS=5,T_MTN=6,T_DESERT=7,T_ASH=8,T_TOWN=9,T_CASTLE=10,T_PEAK=11,T_WALL=12,T_ROAD=13,T_HOUSE=14,T_LAWN=15;
+const BLOCKED=new Set([T_DEEP,T_SHAL,T_MTN,T_PEAK,T_WALL,T_HOUSE]);
 function genWorld(seed){
   const hash=(i,j,s)=>{let n=Math.imul(i,374761393)+Math.imul(j,668265263)+Math.imul(s,1442695041);n=Math.imul(n^(n>>>13),1274126177);n^=n>>>16;return (n>>>0)/4294967296;};
   const sm=t=>t*t*(3-2*t);
@@ -904,7 +909,19 @@ function genWorld(seed){
       const d=Math.hypot(x-pk.x,y-pk.y);if(d<dmin||d>dmax)continue;if(avoid&&Math.hypot(x-avoid.x,y-avoid.y)<18)continue;
       let g=0;for(let yy=-1;yy<=1;yy++)for(let xx=-1;xx<=1;xx++)if(tiles[(y+yy)*WT+x+xx]===T_GRASS)g++;const sc=g*10+hash(x,y,seed+5);if(sc>bs){bs=sc;b={x,y};}}return b;};
   const town=placeAt(14,24,null),castle=placeAt(28,60,town);
-  let village=null;if(castle){let bd2=1e9;for(let y=castle.y-3;y<=castle.y+3;y++)for(let x=castle.x-4;x<=castle.x+4;x++){if(x<1||y<1||x>=WT-1||y>=HT-1)continue;const k=y*WT+x,d=Math.abs(x-castle.x)+Math.abs(y-castle.y);if(d<2||!seen[k]||tiles[k]!==T_GRASS)continue;const sc=d+(x>castle.x?0:.5);if(sc<bd2){bd2=sc;village={x,y};}}}
+  let village=null;
+  if(castle){const cx=castle.x,cy=castle.y,x0=cx-4,x1=cx+4,y0=cy-3,y1=cy+5;
+    if(x0>=1&&x1<WT-1&&y0>=1&&y1<HT-2){
+      for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)tiles[y*WT+x]=(x===x0||x===x1||y===y0||y===y1)?T_WALL:T_LAWN;
+      for(let y=cy+1;y<=y1;y++)tiles[y*WT+cx]=T_ROAD;
+      village={x:cx,y:cy+3};
+      for(const[dx,dy]of[[-1,0],[1,0],[-2,1],[2,-1],[-2,-1]])tiles[(cy+3+dy)*WT+cx+dx]=T_HOUSE;
+      // road from the gate out to open, reachable land
+      const inC=(x,y)=>x>=x0&&x<=x1&&y>=y0&&y<=y1,st=(y1+1)*WT+cx,prev=new Map([[st,-1]]),q=[st];let end=-1;
+      while(q.length){const k=q.shift(),x=k%WT,y=(k/WT)|0;if(seen[k]&&!BLOCKED.has(tiles[k])&&!inC(x,y)){end=k;break;}
+        for(const[dx,dy]of[[0,1],[-1,0],[1,0],[0,-1]]){const X=x+dx,Y=y+dy,K=Y*WT+X;if(X<1||Y<1||X>=WT-1||Y>=HT-1||inC(X,Y)||prev.has(K))continue;prev.set(K,k);q.push(K);}}
+      for(let k=end;k!==-1;k=prev.get(k))tiles[k]=T_ROAD;
+    }}
   if(town)set(town.x,town.y,T_TOWN);if(castle)set(castle.x,castle.y,T_CASTLE);if(village)set(village.x,village.y,T_TOWN);
   const lands=[{id:'peak',name:'Ember Peak',spr:'volcano',size:46,x:(pk.x+.5)*TS,y:(pk.y+.5)*TS,msg:"Ember Peak. The wyrm's lair lies quiet now."}];
   if(town)lands.push({id:'town',name:'Thornwick',spr:'town',size:26,x:(town.x+.5)*TS,y:(town.y+.7)*TS,msg:'Thornwick. Townsfolk wave as the heroes pass.'});
@@ -915,8 +932,18 @@ function genWorld(seed){
 }
 
 const WSEED=16,PAD=160,PY=H/2+7;
-let WORLD=null,tex=null,tex2=null;
-const TILE_NAME={[T_SAND]:'Coast',[T_GRASS]:'Grasslands',[T_FOREST]:'Forest',[T_HILLS]:'Hills',[T_DESERT]:'Desert',[T_ASH]:'Ashlands',[T_TOWN]:'Thornwick',[T_CASTLE]:'Castle Valemont'};
+let WORLD=null,tex=null,tex2=null,worldMini=null,castleMini=null;
+const miniEl=$('mini'),mctx=miniEl.getContext('2d');
+function drawMini(){
+  const castle=S.scene==='castle',base=castle?castleMini:worldMini;if(!base)return;
+  if(miniEl.width!==base.width||miniEl.height!==base.height){miniEl.width=base.width;miniEl.height=base.height;}
+  mctx.imageSmoothingEnabled=false;mctx.drawImage(base,0,0);
+  const on=Math.floor(S.t*4)%2===0,sc=castle?3:1,px=castle?S.cpos.x/CT:S.world.x/TS,py=castle?S.cpos.y/CT:S.world.y/TS;
+  if(castle){mctx.fillStyle='#86b4f2';for(const n of NPCS){if(n.when&&!n.when())continue;mctx.fillRect(n.x*sc+1,n.y*sc+1,1,1);}}
+  else{for(const l of WORLD.lands){mctx.fillStyle=l.id==='peak'?'#ff7a2a':l.id==='castle'?'#ffffff':'#ff6a4a';mctx.fillRect(Math.floor(l.x/TS)-1,Math.floor(l.y/TS)-1,3,3);}}
+  mctx.fillStyle=on?'#ffffff':'#ff3a3a';mctx.fillRect(Math.round(px*sc)-1,Math.round(py*sc)-1,castle?3:2,castle?3:2);
+}
+const TILE_NAME={[T_LAWN]:'Castle Grounds',[T_ROAD]:'Valemont Road',[T_SAND]:'Coast',[T_GRASS]:'Grasslands',[T_FOREST]:'Forest',[T_HILLS]:'Hills',[T_DESERT]:'Desert',[T_ASH]:'Ashlands',[T_TOWN]:'Thornwick',[T_CASTLE]:'Castle Valemont'};
 const ENC={
  [T_GRASS]:[['thornhare'],['thornhare','thornhare'],['goblin','goblin'],['goblin','thornhare','goblin'],['slime'],['goblin']],
  [T_FOREST]:[['wolf'],['wolf','wolf'],['mandrake','slime'],['bat','bat','bat'],['mandrake'],['wolf','mandrake']],
@@ -958,6 +985,12 @@ function buildWorld(){
           f('#c8a070',ax-half,y,half,1);f('#7a5432',ax,y,half+1,1);f('#3e2814',ax-half,y);f('#3e2814',ax+half,y);if(yy===0)f('#3e2814',ax,y);}
         f('#5a3c20',4,9,1,3);f('#5a3c20',11,11,1,2);break;
       case T_DESERT:f('#e0bc68',0,0,16,16);for(let k=0;k<2;k++){const y=3+k*7+((r(k)*3)|0);for(let x=0;x<16;x++){const yy=y+Math.round(Math.sin((x+r(k+3)*8)*.5));f('#c49a48',x,yy);if(x%3===0)f('#f0d890',x,yy-1);}}break;
+      case T_LAWN:grass();break;
+      case T_ROAD:f('#c8a870',0,0,16,16);for(let k=0;k<5;k++)f(k%2?'#a88a58':'#dcc08a',(r(k)*15)|0,(r(k+6)*15)|0,k%3?1:2,1);break;
+      case T_WALL:{f('#7a7a8a',0,0,16,16);for(let row=0;row<4;row++){const y=row*4+3;f('#55556a',0,y,16,1);const off=row%2?4:0;f('#55556a',off+3,y-3,1,3);f('#55556a',off+11,y-3,1,3);}
+        f('#a8a8b8',0,0,16,1);const W2=q=>q===T_WALL;if(!W2(WORLD.at(tx,ty-1))){f('#5a5a6a',0,0,16,3);for(let x=0;x<16;x+=4)f('#b8b8c8',x,0,2,2);}
+        if(!W2(WORLD.at(tx,ty+1)))f('#44444f',0,14,16,2);break;}
+      case T_HOUSE:{grass();const roof=['#c83c28','#3858c0','#7a48b0','#3e8a46'][(r(1)*4)|0];f('#3a2418',2,5,13,10);f('#f0e0b8',3,7,11,7);f(roof,1,2,15,4);f('#00000033',1,5,15,1);f('#5a3a24',7,10,2,4);f('#7ab0e0',4,8,2,2);f('#7ab0e0',11,8,2,2);break;}
       case T_ASH:case T_PEAK:f('#5a4640',0,0,16,16);f('#6e5850',(r(1)*14)|0,(r(2)*14)|0,2,1);if(r(3)<.45){const x=(r(4)*12)|0,y=(r(5)*13)|0;f('#d8541c',x,y,3,1);f('#d8541c',x+2,y+1,2,1);f(fr?'#ffb03a':'#ff7a2a',x+1,y);}break;
     }
   }
@@ -983,6 +1016,9 @@ function buildWorld(){
   tex2=document.createElement('canvas');tex2.width=tex.width;tex2.height=tex.height;const c2=tex2.getContext('2d');c2.drawImage(tex,0,0);
   for(let ty=-P;ty<HT+P;ty++)for(let tx=-P;tx<WT+P;tx++){const t=WORLD.at(tx,ty);if(isWater(t)||t===T_ASH||t===T_PEAK)drawTile(c2,tx,ty,1);}
   drawLandmarks(c2,1);
+  const MC={[T_DEEP]:'#1a3a9a',[T_SHAL]:'#3068d8',[T_SAND]:'#e8d090',[T_GRASS]:'#48a838',[T_FOREST]:'#1d5a24',[T_HILLS]:'#7ab04a',[T_MTN]:'#8a6a48',[T_DESERT]:'#e0bc68',[T_ASH]:'#5a4640',[T_PEAK]:'#ff7a2a',[T_TOWN]:'#ff6a4a',[T_CASTLE]:'#ffffff',[T_WALL]:'#d0d0d8',[T_ROAD]:'#c8a870',[T_HOUSE]:'#c84a2a',[T_LAWN]:'#5ab848'};
+  worldMini=document.createElement('canvas');worldMini.width=WT;worldMini.height=HT;const mc=worldMini.getContext('2d');
+  for(let y=0;y<HT;y++)for(let x=0;x<WT;x++){mc.fillStyle=MC[WORLD.at(x,y)]||'#000';mc.fillRect(x,y,1,1);}
 }
 const tileAt=(x,y)=>WORLD.at(Math.floor(x/TS),Math.floor(y/TS));
 const walkable=(x,y)=>!BLOCKED.has(tileAt(x,y));
@@ -1004,7 +1040,7 @@ addEventListener('keydown',e=>{if((S.scene!=='map'&&S.scene!=='castle')||(e.targ
 addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});
 addEventListener('blur',()=>{for(const k in keys)keys[k]=false;steer=null;});
 function setSteer(e){const r=cv.getBoundingClientRect(),ps=S.scene==='castle'&&S.pScreen?S.pScreen:{x:W/2,y:PY-7};steer={x:(e.clientX-r.left)/r.width*W-ps.x,y:(e.clientY-r.top)/r.height*H-ps.y};}
-stage.addEventListener('pointerdown',e=>{if(S.scene==='town'&&!e.target.closest('.overlay')){const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;const hit=(S.townHits||[]).find(q=>x>=q.x&&x<=q.x+q.w&&y>=q.y&&y<=q.y+q.h);if(hit){if(hit.id==='inn')innRest();else openShop(hit.id);}return;}if((S.scene!=='map'&&S.scene!=='castle')||e.target.closest('.overlay,.dlg'))return;steerId=e.pointerId;try{stage.setPointerCapture(e.pointerId);}catch(_){}setSteer(e);});
+stage.addEventListener('pointerdown',e=>{if(e.target===miniEl){miniEl.classList.toggle('big');return;}if(S.scene==='town'&&!e.target.closest('.overlay')){const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;const hit=(S.townHits||[]).find(q=>x>=q.x&&x<=q.x+q.w&&y>=q.y&&y<=q.y+q.h);if(hit){if(hit.id==='inn')innRest();else openShop(hit.id);}return;}if((S.scene!=='map'&&S.scene!=='castle')||e.target.closest('.overlay,.dlg'))return;steerId=e.pointerId;try{stage.setPointerCapture(e.pointerId);}catch(_){}setSteer(e);});
 stage.addEventListener('pointermove',e=>{if(e.pointerId===steerId)setSteer(e);});
 const endSteer=e=>{if(e.pointerId===steerId){steer=null;steerId=null;}};
 stage.addEventListener('pointerup',endSteer);stage.addEventListener('pointercancel',endSteer);
@@ -1325,7 +1361,7 @@ function loadGame(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY)||'null
   newGame(true);S.wyrmDone=true;S.gil=d.gil|0;Object.assign(S.items,d.items||{});S.bag=d.bag||{};if(d.auto)S.auto=d.auto;if(d.mode)setMode(d.mode);
   for(const sv of d.heroes){const h=S.heroes.find(x=>x.key===sv.key);if(!h)continue;Object.assign(h,{lv:sv.lv,exp:sv.exp,row:sv.row||h.row,limit:sv.limit||0,skills:sv.skills,eq:Object.assign({acc:null,shield:null},sv.eq),ko:!!sv.ko});
     recalc(h);h.hp=Math.min(sv.hp,h.maxhp);h.mp=Math.min(sv.mp,h.maxmp);h.x=homeX(h);}
-  if(d.world&&walkable(d.world.x,d.world.y)){S.world.x=d.world.x;S.world.y=d.world.y;}S.world.enc=d.world?d.world.enc!==false:true;
+  if(d.world){let ok=null;for(let r=0;r<=6*TS&&!ok;r+=TS)for(let a=0;a<8&&!ok;a++){const x=d.world.x+Math.round(Math.cos(a*Math.PI/4))*r,y=d.world.y+Math.round(Math.sin(a*Math.PI/4))*r;if(walkable(x,y))ok={x,y};}if(ok){S.world.x=ok.x;S.world.y=ok.y;}}S.world.enc=d.world?d.world.enc!==false:true;
   S.flags=Object.assign({chests:{}},d.flags||{});buildParty();toMap('Welcome back. Your journey continues.');if(d.town&&TOWNS[d.town])enterTown(d.town);else if(d.castle)enterCastle(d.castle);return true;}catch(e){return false;}}
 
 
@@ -1375,7 +1411,10 @@ function buildCastle(){
   for(const k in CHESTS){const[x,y]=k.split(',').map(Number);at(x,y,CHESTS[k].grand?'C':'c');}
   CASTLE=g;drawCastleTex();
 }
-function drawCastleTex(){
+function drawCastleMini(){castleMini=castleMini||document.createElement('canvas');castleMini.width=CW*3;castleMini.height=CH*3;const c=castleMini.getContext('2d');
+  const col=t=>t==='#'||t==='w'||t==='n'?'#3a3a46':t==='r'||t==='T'?'#a82a2a':t==='D'?'#8a6a3a':t==='L'?'#7a4a24':t==='E'?'#ffd34a':t==='c'||t==='C'?'#d8a840':'.'===t?'#a89e8a':'#6a6a7a';
+  for(let y=0;y<CH;y++)for(let x=0;x<CW;x++){c.fillStyle=col(CASTLE[y][x]);c.fillRect(x*3,y*3,3,3);}}
+function drawCastleTex(){drawCastleMini();
   const c=ctex.getContext('2d'),g=CASTLE,opened=k=>S.flags&&S.flags.chests[k];
   const ch=(x,y)=>(y<0||y>=CH||x<0||x>=CW)?'#':g[y][x];
   for(let ty=0;ty<CH;ty++)for(let tx=0;tx<CW;tx++){
@@ -1752,7 +1791,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.0.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.1.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

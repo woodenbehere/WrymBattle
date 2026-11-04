@@ -23,7 +23,7 @@
 body{margin:0;-webkit-tap-highlight-color:transparent}
 button{touch-action:manipulation}
 [hidden]{display:none!important}
-/* Layout: a pixel battle stage on top, command menu + party roster below (stacks on phones) */
+/* Layout: a full-screen console frame; battle view on top, FF-style command and party windows below, all scaled to the screen */
 :root{
   --bg:#0e0b10; --panel:#16111a; --panel-2:#221a27; --line:#4d3828; --line-hi:#b9824a;
   --text:#efe5d3; --muted:#9b8d80; --dim:#5f554d; --gold:#f2b544;
@@ -31,25 +31,24 @@ button{touch-action:manipulation}
   --f-display:"Silkscreen","Courier New",monospace; --f-body:"VT323","Courier New",monospace;
   color-scheme:dark;
 }
-html,body{background:var(--bg);color:var(--text);height:100%}
+html,body{background:var(--bg);color:var(--text);height:100%;overflow:hidden}
 body{font-family:var(--f-body);font-size:20px;line-height:1.15;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px 8px}
-.game{min-height:100%;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto 1fr auto;gap:8px}
-.view{min-width:0}
-.tools{display:flex;gap:8px;flex-wrap:wrap}
-.fsbtn{font-family:var(--f-display);font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--muted);border:2px solid var(--line);padding:7px 11px;cursor:pointer}
-.fsbtn:hover{color:var(--text)} .fsbtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.credits{display:flex;justify-content:center;flex-wrap:wrap;gap:4px 10px;font-family:var(--f-display);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--panel-2);padding-top:6px}
-.credits b{font-weight:400;color:var(--gold)}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-h1{font-family:var(--f-display);font-weight:700;font-size:clamp(18px,3.6vw,26px);letter-spacing:.06em;margin:0;color:var(--gold);text-transform:uppercase;text-shadow:2px 2px 0 #3a1c0c;text-wrap:balance}
-h1 span{display:block;font-family:var(--f-body);font-weight:400;font-size:18px;letter-spacing:0;text-transform:none;color:var(--muted);text-shadow:none}
-.mode{display:inline-flex;border:2px solid var(--line)}
-.mode button{font-family:var(--f-display);font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--muted);border:0;padding:7px 11px;cursor:pointer}
-.mode button[aria-pressed="true"]{background:var(--line);color:var(--text)}
-.mode button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px 6px}
 
-.stage{position:relative;aspect-ratio:16/9;width:100%;max-width:100%;container-type:inline-size;background:#000;border:2px solid var(--line);box-shadow:0 0 0 2px #000,0 12px 30px rgba(0,0,0,.5);overflow:hidden}
+/* one full-screen frame: title bar / battle view / command + party windows / credits */
+.game{height:100%;container-type:size;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) 38cqh auto;gap:1cqh}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px);letter-spacing:.08em;margin:0;color:var(--gold);text-transform:uppercase;text-shadow:2px 2px 0 #3a1c0c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.tools{display:flex;gap:6px;align-items:center;flex:none}
+.tbtn,.mode button{font-family:var(--f-display);font-size:clamp(9px,1.5cqh,13px);line-height:1;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--muted);border:2px solid var(--line);padding:.55em .8em;cursor:pointer}
+.mode{display:inline-flex}
+.mode button+button{border-left:0}
+.mode button[aria-pressed="true"]{background:var(--line);color:var(--text)}
+.tbtn:hover,.mode button:hover{color:var(--text)}
+.tbtn:focus-visible,.mode button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+
+.view{min-height:0;min-width:0;container-type:size;display:grid;place-items:center}
+.stage{position:relative;aspect-ratio:16/9;width:min(100cqw,calc(100cqh * 16 / 9));max-width:100%;container-type:inline-size;background:#000;border:2px solid var(--line);box-shadow:0 0 0 2px #000,0 12px 30px rgba(0,0,0,.5);overflow:hidden}
 #cv{width:100%;height:100%;display:block;image-rendering:crisp-edges;image-rendering:pixelated}
 .stage.shake{animation:shake .45s linear}
 @keyframes shake{0%,100%{transform:none}20%{transform:translate(-3px,2px)}40%{transform:translate(3px,-2px)}60%{transform:translate(-2px,-1px)}80%{transform:translate(2px,1px)}}
@@ -69,78 +68,86 @@ h1 span{display:block;font-family:var(--f-body);font-weight:400;font-size:18px;l
 .card p{margin:0;color:var(--muted)}
 .btn{font-family:var(--f-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;background:var(--line);color:var(--text);border:2px solid var(--line-hi);padding:8px 14px;cursor:pointer;justify-self:center}
 .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.card{max-height:100%;overflow:auto}
+.card.help{text-align:left;max-width:min(92%,60ch)}
+.card.help p{font-size:clamp(14px,2.6cqw,24px);color:var(--text)}
+.card.help b{color:var(--gold);font-weight:400}
 
-.hud{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:10px;align-content:start}
-.hud .foot{grid-column:1/-1}
-@media (max-width:640px){.hud{grid-template-columns:1fr}}
-/* wide screens: battle fills the left, commands and party stack on the right */
-@media (min-aspect-ratio:5/4) and (min-width:700px){
-  .game{grid-template-columns:minmax(0,1fr) minmax(280px,30%);grid-template-rows:auto minmax(0,1fr) auto;height:100%;min-height:0}
-  .top,.credits{grid-column:1/-1}
-  .view{grid-column:1;grid-row:2;min-height:0;container-type:size;display:grid;place-items:center}
-  .stage{width:min(100cqw,calc(100cqh * 16 / 9))}
-  .hud{grid-column:2;grid-row:2;display:flex;flex-direction:column;gap:10px;overflow-y:auto;min-height:0}
-  .hud>*{flex:none}
-}
-@media (min-aspect-ratio:5/4) and (max-height:620px){.foot,h1 span{display:none}}
-.panel{background:var(--panel);border:2px solid var(--line);box-shadow:inset 0 0 0 2px #0a070b,inset 0 0 0 3px var(--panel-2);padding:10px 12px;min-width:0}
-.cmd{min-height:212px;display:flex;flex-direction:column;gap:2px}
-.cmd-h{display:flex;align-items:baseline;gap:8px;border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:4px}
-.who{font-family:var(--f-display);font-size:13px;color:var(--gold);letter-spacing:.06em}
-.cls{color:var(--muted)}
-.opt{display:flex;align-items:baseline;justify-content:space-between;gap:10px;width:100%;text-align:left;font-family:var(--f-body);font-size:23px;line-height:1.05;color:var(--text);background:transparent;border:0;padding:4px 6px 4px 22px;position:relative;cursor:pointer}
-.opt::before{content:"\25B8";position:absolute;left:5px;color:var(--gold);opacity:0}
+/* command + party windows: all sizes in em of --fs, which follows the screen */
+.hud{--fs:min(3.15cqh,2.2cqw);font-size:var(--fs);display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr);gap:1cqh;min-height:0}
+.panel{background:var(--panel);border:2px solid var(--line);box-shadow:inset 0 0 0 2px #0a070b,inset 0 0 0 3px var(--panel-2);padding:.35em .55em;min-width:0;min-height:0;overflow:auto}
+.cmd{display:flex;flex-direction:column;gap:.05em}
+.cmd-h{display:flex;align-items:baseline;gap:.4em;border-bottom:1px solid var(--line);padding-bottom:.2em;margin-bottom:.1em}
+.who{font-family:var(--f-display);font-size:.62em;color:var(--gold);letter-spacing:.06em}
+.cls{color:var(--muted);font-size:.85em}
+.opt{display:flex;align-items:baseline;justify-content:space-between;gap:.5em;width:100%;text-align:left;font-family:var(--f-body);font-size:1em;line-height:1.05;color:var(--text);background:transparent;border:0;padding:.1em .3em .1em 1em;position:relative;cursor:pointer}
+.opt::before{content:"\25B8";position:absolute;left:.25em;color:var(--gold);opacity:0}
 .opt:hover:not(:disabled)::before,.opt:focus-visible::before{opacity:1}
 .opt:hover:not(:disabled),.opt:focus-visible{background:var(--panel-2);outline:none}
 .opt:disabled{color:var(--dim);cursor:not-allowed}
 .opt .l{min-width:0}
-.opt small{display:block;font-size:16px;color:var(--muted)}
+.opt small{display:block;font-size:.66em;color:var(--muted)}
 .opt:disabled small{color:var(--dim)}
-.opt .r{color:var(--mp);font-size:18px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.opt.back{color:var(--muted);font-size:19px;margin-top:4px}
+.opt .r{color:var(--mp);font-size:.78em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.opt.back{color:var(--muted);font-size:.85em;margin-top:.1em}
 .opt.lim{color:var(--limit)} .opt.lim::before{color:var(--limit);opacity:1}
 .opt.lim small{color:#c99bbd}
 .log{display:grid;gap:2px}
 .log p{margin:0;color:var(--muted)} .log p:last-child{color:var(--text)}
+.log p{font-size:.9em}
 
-.party{display:flex;flex-direction:column;gap:2px;padding:6px}
-.row{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"nm hp" "atb mp";column-gap:14px;row-gap:3px;align-items:center;font-family:var(--f-body);color:var(--text);background:transparent;border:0;border-left:3px solid transparent;text-align:left;padding:5px 8px;cursor:default}
+.party{display:flex;flex-direction:column;justify-content:space-around;padding:.2em .25em}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"nm hp" "atb mp";column-gap:.6em;row-gap:.12em;align-items:center;font-family:var(--f-body);font-size:1em;color:var(--text);background:transparent;border:0;border-left:3px solid transparent;text-align:left;padding:.1em .4em;cursor:default}
 .row.ready{cursor:pointer;border-left-color:var(--gold)}
 .row.active{background:var(--panel-2)}
 .row:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
-.nm{grid-area:nm;font-size:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.nm em{font-style:normal;color:var(--muted);font-size:17px;margin-left:6px}
-.tag{font-family:var(--f-display);font-size:8px;letter-spacing:.08em;border:1px solid currentColor;padding:0 3px;margin-left:6px;vertical-align:3px;color:var(--mp)}
+.nm{grid-area:nm;font-size:1em;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.nm em{font-style:normal;color:var(--muted);font-size:.74em;margin-left:.3em}
+.tag{font-family:var(--f-display);font-size:.36em;letter-spacing:.08em;border:1px solid currentColor;padding:0 .3em;margin-left:.5em;vertical-align:.5em;color:var(--mp)}
 .tag.ko{color:var(--hp-crit)} .tag.def{color:var(--gold)} .tag.lim{color:var(--limit)} .tag.bk{color:var(--muted)}
-@media (max-width:420px){.nm em{display:none}}
-.hp{grid-area:hp;font-size:22px;font-variant-numeric:tabular-nums;text-align:right}
-.hp small{font-size:16px;color:var(--muted)}
+.hp{grid-area:hp;font-size:1em;line-height:1.1;font-variant-numeric:tabular-nums;text-align:right}
+.hp small{font-size:.7em;color:var(--muted)}
 .hp.warn b{color:var(--hp-warn)} .hp.crit b,.row.ko .nm{color:var(--hp-crit)}
 .hp b{font-weight:400}
-.bars{grid-area:atb;display:grid;gap:2px}
-.atb,.lim{height:7px;background:#0a070b;border:1px solid var(--line);position:relative;overflow:hidden}
-.lim{height:4px}
+.bars{grid-area:atb;display:grid;gap:.1em}
+.atb,.lim{height:.32em;min-height:5px;background:#0a070b;border:1px solid var(--line);position:relative;overflow:hidden}
+.lim{height:.18em;min-height:3px}
 .lim i{position:absolute;top:0;bottom:0;left:0;width:0;background:linear-gradient(90deg,#6a2a5e,var(--limit))}
 .row.lb .lim i{background:var(--limit);animation:glowL .5s steps(2) infinite}
 @keyframes glowL{50%{background:#ffd6f4}}
 .atb i{position:absolute;top:0;bottom:0;left:0;width:0;background:linear-gradient(90deg,#7a4e18,var(--gold))}
 .row.ready .atb i{background:var(--gold);animation:glow .7s steps(2) infinite}
 @keyframes glow{50%{background:#fff3c4}}
-.mp{grid-area:mp;color:var(--mp);font-size:17px;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
-.foot{color:var(--muted);font-size:18px;margin:0;max-width:70ch}
+.mp{grid-area:mp;color:var(--mp);font-size:.74em;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.credits{display:flex;justify-content:center;flex-wrap:wrap;gap:2px 10px;font-family:var(--f-display);font-size:clamp(8px,1.3cqh,11px);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.credits b{font-weight:400;color:var(--gold)}
+
+/* portrait: battle full width on top, command window over party window */
+@media (max-aspect-ratio:1/1){
+  .game{grid-template-rows:auto auto minmax(0,1fr) auto}
+  .view{container-type:normal;display:block}
+  .stage{width:100%}
+  .hud{--fs:min(5.2cqw,2.6cqh);grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(0,1.3fr)}
+}
+/* tall but roomy (unfolded phones, tablets): windows side by side */
+@media (max-aspect-ratio:1/1) and (min-width:700px){
+  .hud{--fs:min(3.2cqw,3.4cqh);grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr);grid-template-rows:minmax(0,1fr)}
+}
+@media (max-width:480px){h1{display:none}.top{justify-content:flex-end}}
 @media (prefers-reduced-motion:reduce){.stage.shake{animation:none}.row.ready .atb i,.row.lb .lim i{animation:none}.pop{animation-duration:1.2s}}
 </style>
 </head>
 <body>
 <main class="game">
   <header class="top">
-    <h1>Ember Wyrm<span>Five heroes, one very old dragon</span></h1>
+    <h1>Ember Wyrm</h1>
     <div class="tools">
-    <button class="fsbtn" id="fs" type="button">Full screen</button>
-    <div class="mode" role="group" aria-label="Battle mode">
-      <button id="mWait" aria-pressed="true" title="Gauges pause while you pick a command">Wait</button>
-      <button id="mActive" aria-pressed="false" title="Gauges keep filling while you pick">Active</button>
-    </div>
+      <button class="tbtn" id="helpBtn" type="button" aria-label="How to play">?</button>
+      <button class="tbtn" id="fs" type="button">Full screen</button>
+      <div class="mode" role="group" aria-label="Battle mode">
+        <button id="mWait" aria-pressed="true" title="Gauges pause while you pick a command">Wait</button>
+        <button id="mActive" aria-pressed="false" title="Gauges keep filling while you pick">Active</button>
+      </div>
     </div>
   </header>
 
@@ -153,14 +160,23 @@ h1 span{display:block;font-family:var(--f-body);font-weight:400;font-size:18px;l
     <div class="overlay" id="over" hidden>
       <div class="card"><h2 id="overT"></h2><p id="overP"></p><button class="btn" id="again">Fight again</button></div>
     </div>
+    <div class="overlay" id="helpOv" hidden>
+      <div class="card help">
+        <h2>How to play</h2>
+        <p>When a hero's gold gauge fills, their menu opens. Tap any glowing name to switch who acts. <b>Wait</b> pauses the gauges while you choose; <b>Active</b> doesn't.</p>
+        <p>The <b>back row</b> halves physical damage dealt and taken. Magic ignores rows.</p>
+        <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Limit command appears.</p>
+        <p>Keyboard: arrows to move, Enter to choose, Esc to go back.</p>
+        <button class="btn" id="helpClose">Back to battle</button>
+      </div>
+    </div>
   </div></div>
 
   <section class="hud">
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
-    <p class="foot">When a gauge fills, that hero's menu opens. Tap any glowing name to switch who acts. Back row halves physical damage dealt and taken; magic ignores rows. The pink bar is the limit gauge, which fills as a hero takes damage. Keyboard: arrows to move, Enter to choose, Esc to go back.</p>
   </section>
-  <footer class="credits"><span>Ember Wyrm <b>v1.1.0</b></span><span>Parden Web Apps 2026</span></footer>
+  <footer class="credits"><span>Ember Wyrm <b>v1.2.0</b></span><span>Parden Web Apps 2026</span></footer>
 </main>
 
 <script>
@@ -618,14 +634,14 @@ function showOver(win){
 }
 function update(dt){
   if(S.over)return;
-  const flowing=!S.busy&&!(S.mode==='wait'&&S.menu);
+  const flowing=!S.busy&&!S.helpOpen&&!(S.mode==='wait'&&S.menu);
   if(flowing){
     S.clock+=dt;
     for(const h of S.heroes){if(h.ko)continue;if(h.protect>0)h.protect=Math.max(0,h.protect-dt);
       if(!h.ready&&!h.queued){h.atb+=(h.spd+22)*dt*1.35;if(h.atb>=100){h.atb=100;h.ready=true;h.defend=false;h.guard=false;S.readyQ.push(h);}}}
     const d=S.dragon;if(!d.dead&&!d.queued){d.atb+=36*dt*(d.phase===2?1.2:1)*(d.hp<d.max*.3?1.35:1);if(d.atb>=100){d.atb=100;d.queued=true;S.actQ.push({actor:d,run:dragonAct});}}
   }
-  if(!S.busy&&S.actQ.length){const a=S.actQ.shift();S.busy=true;(async()=>{try{await a.run();}catch(e){console.error(e);}S.busy=false;afterAction();})();}
+  if(!S.busy&&!S.helpOpen&&S.actQ.length){const a=S.actQ.shift();S.busy=true;(async()=>{try{await a.run();}catch(e){console.error(e);}S.busy=false;afterAction();})();}
   if(!S.menu&&S.readyQ.length)openMenu(S.readyQ[0]);
 }
 
@@ -643,7 +659,7 @@ function renderMenu(focus){
   const h=m.hero;let html=`<div class="cmd-h"><span class="who">${esc(h.name)}</span><span class="cls">${esc(h.cls)}${m.view!=='root'?' · '+esc(m.view==='skills'?h.spLabel:m.view==='items'?'Item':'Choose target'):''}</span></div>`;
   if(m.view==='root'){
     if(h.limit>=100)html+=opt('limit','Limit · '+LB[h.key].name,null,LB[h.key].d,false,'lim');
-    html+=opt('fight','Fight',null,h.row==='back'?'Back row: half damage':null)+opt('sp',h.spLabel)+opt('item','Item')+opt('def','Defend',null,'Halve damage until next turn')+opt('row','Row',null,h.row==='front'?'Move to back row':'Move to front row');}
+    html+=opt('fight','Fight',null,h.row==='back'?'Back row: half damage':null)+opt('sp',h.spLabel)+opt('item','Item')+opt('def','Defend')+opt('row','Row',h.row==='front'?'to back':'to front');}
   else if(m.view==='skills'){
     for(const id of h.skills){const sk=SK[id];const noT=(sk.t==='ko'&&!S.heroes.some(x=>x.ko));html+=opt('sk:'+id,sk.name,sk.mp?sk.mp+' MP':null,sk.d,h.mp<sk.mp||noT);}
     html+=opt('back','‹ Back');
@@ -710,6 +726,9 @@ if(!fsReq||matchMedia('(display-mode: fullscreen)').matches)fsBtn.hidden=true;
 fsBtn.onclick=()=>{try{const r=fsEl()?fsExit.call(document):fsReq.call(docEl,{navigationUI:'hide'});if(r&&r.catch)r.catch(()=>{fsBtn.hidden=true;});}catch(e){fsBtn.hidden=true;}};
 const fsSync=()=>{fsBtn.textContent=fsEl()?'Exit full screen':'Full screen';};
 document.addEventListener('fullscreenchange',fsSync);document.addEventListener('webkitfullscreenchange',fsSync);
+const helpOv=$('helpOv');let helpPrev=null;
+$('helpBtn').onclick=()=>{helpPrev=S.mode;if(!S.over)setMode('wait');S.helpOpen=true;helpOv.hidden=false;$('helpClose').focus({preventScroll:true});};
+$('helpClose').onclick=()=>{helpOv.hidden=true;S.helpOpen=false;if(helpPrev)setMode(helpPrev);};
 $('again').onclick=async()=>{while(S.busy)await sleep(50);newGame();};
 
 makeBg();newGame();

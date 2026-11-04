@@ -26,6 +26,9 @@ Five heroes take on a dragon in two phases:
 - **Equipment**: five slots per hero (Weapon, Shield, Head, Body, Accessory) with class restrictions, stat comparisons in the shop, and an Optimize button on the Party screen.
 - **Progression**: monsters give EXP and Gil. Heroes start at Lv 10 and grow with class-specific stats up to Lv 60. The magic shop teaches new spells (Cura, Holy, Fira, Blizzara, Thundara, and the Glacia and Raijin summons).
 - **Saving**: progress saves automatically in your browser once the Ember Wyrm falls. Start over from the ? panel.
+- **Group battles**: fights against up to four enemies, each with its own turn gauge and health bar. Pick a target from the menu (a cursor marks it on screen); summons hit every enemy.
+- **Bestiary**: Thornhare, Goblin, Bog Slime, Grave Wolf, Mandrake, Dusk Bat, Sand Ray, Dune Scorpion, Stone Imp, Ash Salamander, the Hill Ogre, and the Vault Sentinel with its Ward Orbs.
+- **Castle Valemont**: walk inside to meet King Aldous and Queen Mirelle in the throne room, rest in the guest rooms, loot the armory, and earn the Royal Key by slaying the Hill Ogre. The vault is locked, guarded by Captain Brann, and protected by an ancient sentinel.
 - **Auto battle**: the Auto button hands any heroes you choose to the AI, using one of four strategies (All-Out Attack, Balanced, Protect Allies, Save MP). Each hero can also get a habit, such as Thief: Always Mug, that overrides the strategy whenever it can.
 - **Phase 2**: the Ember Wyrm becomes the Molten Wyrm. Its elemental weaknesses change and it gains row-targeting attacks.
 

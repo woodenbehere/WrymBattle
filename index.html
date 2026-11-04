@@ -45,6 +45,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .mode button+button{border-left:0}
 .mode button[aria-pressed="true"]{background:var(--line);color:var(--text)}
 .tbtn:hover,.mode button:hover{color:var(--text)}
+.tbtn[aria-pressed="true"]{background:var(--line);color:var(--gold)}
 .tbtn:focus-visible,.mode button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
 
 .view{min-height:0;min-width:0;container-type:size;display:grid;place-items:center}
@@ -69,8 +70,29 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .btn{font-family:var(--f-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;background:var(--line);color:var(--text);border:2px solid var(--line-hi);padding:8px 14px;cursor:pointer;justify-self:center}
 .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .card{max-height:100%;overflow:auto}
+.sheet{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(8,5,8,.82);
+  padding:max(12px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet .card{width:100%;max-width:min(100%,760px);max-height:100%;overflow:auto;text-align:left;gap:12px}
+.sheet .card h2{font-size:clamp(16px,3vh,26px)}
+.card.help p{font-size:clamp(17px,2.4vh,22px);color:var(--text)}
+.card.help p.lab,.lab{margin:0;font-family:var(--f-display);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.strats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:8px}
+.strat{display:grid;gap:3px;align-content:start;text-align:left;width:100%;background:var(--panel-2);border:2px solid var(--line);color:var(--text);padding:8px 12px;cursor:pointer;font-family:var(--f-body)}
+.card.help .strat b,.strat b{font-family:var(--f-display);font-size:12px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
+.strat span{font-size:17px;line-height:1.1;color:var(--muted)}
+.strat[aria-pressed="true"]{border-color:var(--gold);background:#2b2016}
+.card.help .strat[aria-pressed="true"] b{color:var(--gold)}
+.strat:focus-visible,.chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--f-body);font-size:19px;line-height:1;padding:5px 10px;border:2px solid var(--line);background:transparent;color:var(--dim);cursor:pointer}
+.chip em{font-style:normal;font-size:15px}
+.chip[aria-pressed="true"]{color:var(--text);border-color:var(--heal)}
+.chip[aria-pressed="true"]::before{content:"\2713  ";color:var(--heal)}
+.arow{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.arow .btn{justify-self:auto}
+.btn.ghost{background:transparent;border-color:var(--line);color:var(--muted)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 .card.help{text-align:left;max-width:min(92%,60ch)}
-.card.help p{font-size:clamp(14px,2.6cqw,24px);color:var(--text)}
 .card.help b{color:var(--gold);font-weight:400}
 
 /* command + party windows: all sizes in em of --fs, which follows the screen */
@@ -104,7 +126,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .nm{grid-area:nm;font-size:1em;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .nm em{font-style:normal;color:var(--muted);font-size:.74em;margin-left:.3em}
 .tag{font-family:var(--f-display);font-size:.36em;letter-spacing:.08em;border:1px solid currentColor;padding:0 .3em;margin-left:.5em;vertical-align:.5em;color:var(--mp)}
-.tag.ko{color:var(--hp-crit)} .tag.def{color:var(--gold)} .tag.lim{color:var(--limit)} .tag.bk{color:var(--muted)}
+.tag.au{color:var(--heal)} .tag.ko{color:var(--hp-crit)} .tag.def{color:var(--gold)} .tag.lim{color:var(--limit)} .tag.bk{color:var(--muted)}
 .hp{grid-area:hp;font-size:1em;line-height:1.1;font-variant-numeric:tabular-nums;text-align:right}
 .hp small{font-size:.7em;color:var(--muted)}
 .hp.warn b{color:var(--hp-warn)} .hp.crit b,.row.ko .nm{color:var(--hp-crit)}
@@ -143,6 +165,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <h1>Ember Wyrm</h1>
     <div class="tools">
       <button class="tbtn" id="helpBtn" type="button" aria-label="How to play">?</button>
+      <button class="tbtn" id="autoBtn" type="button" aria-pressed="false" title="Auto battle strategy">Auto</button>
       <button class="tbtn" id="fs" type="button">Full screen</button>
       <div class="mode" role="group" aria-label="Battle mode">
         <button id="mWait" aria-pressed="true" title="Gauges pause while you pick a command">Wait</button>
@@ -160,24 +183,40 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="overlay" id="over" hidden>
       <div class="card"><h2 id="overT"></h2><p id="overP"></p><button class="btn" id="again">Fight again</button></div>
     </div>
-    <div class="overlay" id="helpOv" hidden>
-      <div class="card help">
-        <h2>How to play</h2>
-        <p>When a hero's gold gauge fills, their menu opens. Tap any glowing name to switch who acts. <b>Wait</b> pauses the gauges while you choose; <b>Active</b> doesn't.</p>
-        <p>The <b>back row</b> halves physical damage dealt and taken. Magic ignores rows.</p>
-        <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Limit command appears.</p>
-        <p>Keyboard: arrows to move, Enter to choose, Esc to go back.</p>
-        <button class="btn" id="helpClose">Back to battle</button>
-      </div>
-    </div>
   </div></div>
 
   <section class="hud">
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <b>v1.2.0</b></span><span>Parden Web Apps 2026</span></footer>
+  <footer class="credits"><span>Ember Wyrm <b>v1.3.0</b></span><span>Parden Web Apps 2026</span></footer>
 </main>
+    <div class="sheet" id="helpOv" role="dialog" aria-modal="true" aria-label="How to play" hidden>
+  <div class="card help">
+    <h2>How to play</h2>
+    <p>When a hero's gold gauge fills, their menu opens. Tap any glowing name to switch who acts. <b>Wait</b> pauses the gauges while you choose; <b>Active</b> doesn't.</p>
+    <p>The <b>back row</b> halves physical damage dealt and taken. Magic ignores rows.</p>
+    <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Limit command appears.</p>
+    <p><b>Auto</b> hands chosen heroes to the AI with a strategy you pick.</p>
+    <p>Keyboard: arrows to move, Enter to choose, Esc to go back.</p>
+    <button class="btn" id="helpClose">Back to battle</button>
+  </div>
+</div>
+<div class="sheet" id="autoOv" role="dialog" aria-modal="true" aria-label="Auto battle" hidden>
+  <div class="card help">
+    <h2>Auto battle</h2>
+    <p class="lab">Strategy</p>
+    <div class="strats" id="stratList"></div>
+    <p class="lab">Heroes on auto</p>
+    <div class="chips" id="autoWho"></div>
+    <div class="arow">
+      <button class="btn ghost" id="autoOff" type="button">Manual control</button>
+      <button class="btn ghost" id="autoCancel" type="button">Cancel</button>
+      <button class="btn" id="autoGo" type="button">Start auto battle</button>
+    </div>
+  </div>
+</div>
+
 
 <script>
 (()=>{
@@ -327,7 +366,8 @@ const LB={
 let S=null, kb=false;
 function newGame(){
   const mode=S?S.mode:'wait';
-  S={t:0,clock:0,busy:false,over:false,mode,actQ:[],readyQ:[],menu:null,log:['The Ember Wyrm blocks the mountain pass.'],turns:0,stolen:0,noted:{},
+  const auto=S?S.auto:{on:false,strat:'balanced',who:Object.fromEntries(ORDER.map(k=>[k,true]))};
+  S={t:0,clock:0,busy:false,over:false,mode,auto,paused:false,actQ:[],readyQ:[],menu:null,log:['The Ember Wyrm blocks the mountain pass.'],turns:0,stolen:0,noted:{},
     items:{potion:4,ether:2,feather:2,elixir:0},parts:[],fx:[],
     heroes:ORDER.map((k,i)=>({key:k,...CL[k],maxhp:CL[k].hp,maxmp:CL[k].mp,i,atb:k==='thief'?94:rnd(15,65),ready:false,queued:false,ko:false,defend:false,guard:false,protect:0,dx:0,flash:0,cast:null,row:ROW0[k],limit:0,dy:0,x:0,y:58+i*18})),
     dragon:{phase:1,look:1,hp:16000,max:16000,atb:rnd(0,20),queued:false,dx:0,flash:0,jaw:0,charging:false,lastInferno:-99,turns:0,steals:4,alpha:1,dead:false,gone:false,mouth:{x:150,y:62}}};
@@ -557,7 +597,7 @@ async function doHero(h,kind,id,tg){
   }
 }
 function queueHero(h,kind,id,tg){
-  h.ready=false;h.queued=true;S.readyQ=S.readyQ.filter(x=>x!==h);S.menu=null;
+  h.ready=false;h.queued=true;S.readyQ=S.readyQ.filter(x=>x!==h);if(S.menu&&S.menu.hero===h)S.menu=null;
   S.actQ.push({actor:h,run:async()=>{if(h.ko)return;await doHero(h,kind,id,tg);if(!h.ko){h.atb=0;h.queued=false;}S.turns++;}});
   renderMenu();
 }
@@ -601,6 +641,70 @@ async function magmaRain(){banner('Magma Rain');
   await addFx(900,()=>{for(let k=0;k<3;k++)part(rnd(170,250),-2,{vx:rnd(-30,-10),vy:rnd(120,170),life:.9,c:pick(FIRE),s:2});});
   shake();for(const h of alive()){for(let k=0;k<8;k++)part(h.x,h.y,{vx:rnd(-30,30),vy:rnd(-40,-5),life:.4,c:pick(FIRE)});hurt(h,rnd(430,500),'mag');}await sleep(450);}
 
+/* ---------- auto battle AI ---------- */
+const STRATS={
+ aggressive:{name:'All-Out Attack',d:'Hit hard and spend MP freely. Limits fire the moment they fill. Heals only in emergencies.',heal:.35,group:.35,save:0},
+ balanced:{name:'Balanced',d:'Attack steadily, keep the party above half HP, and brace when Inferno is coming.',heal:.5,group:.5,save:.15},
+ defensive:{name:'Protect Allies',d:'Heal early, keep Protect on everyone, Guard the weak and Defend through Inferno.',heal:.7,group:.65,save:.1},
+ conserve:{name:'Save MP',d:'Weapons, steals and items first. Spells only when they really matter.',heal:.4,group:.4,save:.6}
+};
+const isAuto=h=>!!(S.auto.on&&S.auto.who[h.key]);
+function aiChoose(h){
+  const k=S.auto.strat,st=STRATS[k],d=S.dragon,I=S.items,al=alive(),ko=S.heroes.filter(x=>x.ko);
+  const pct=x=>x.hp/x.maxhp;
+  const can=id=>h.skills.includes(id)&&h.mp>=SK[id].mp;
+  const spare=id=>can(id)&&(h.mp-SK[id].mp)>=h.maxmp*st.save;
+  const low=al.slice().sort((a,b)=>pct(a)-pct(b))[0];
+  const crit=low&&pct(low)<.3;
+  const hurt=al.filter(x=>pct(x)<st.group);
+  const white=S.heroes.find(x=>x.key==='white');
+  const whiteHeals=!white.ko&&white.mp>=10, whiteRevives=!white.ko&&white.mp>=32;
+  // limit breaks
+  if(h.limit>=100&&(h.key!=='white'||ko.length||hurt.length>=2||crit))return{kind:'limit'};
+  // raise the fallen
+  if(ko.length){
+    if(can('revive')&&!(k==='conserve'&&I.feather))return{kind:'skill',id:'revive',tg:ko[0]};
+    if(I.feather&&(h.key==='white'||!whiteRevives))return{kind:'item',id:'feather',tg:ko[0]};
+  }
+  // group healing
+  if(hurt.length>=(k==='aggressive'?3:2)){
+    if(h.key==='white'&&(spare('cureall')||(crit&&can('cureall'))))return{kind:'skill',id:'cureall'};
+    if(h.key==='summoner'&&!whiteHeals&&(spare('sylph')||(crit&&can('sylph'))))return{kind:'skill',id:'sylph'};
+  }
+  // single healing
+  if(low&&pct(low)<st.heal){
+    if(h.key==='white'&&(spare('cure')||(crit&&can('cure'))))return{kind:'skill',id:'cure',tg:low};
+    if(crit&&(!whiteHeals||h.key==='white'||k==='conserve')){
+      if(I.potion)return{kind:'item',id:'potion',tg:low};
+      if(I.elixir&&pct(low)<.2)return{kind:'item',id:'elixir',tg:low};
+    }
+  }
+  // brace for Inferno, keep Protect up
+  const bare=al.filter(x=>x.protect<=0).sort((a,b)=>a.maxhp-b.maxhp);
+  const brace=d.charging&&k!=='aggressive';
+  if(bare.length&&(brace||k==='defensive')){
+    if(h.key==='summoner'&&bare.length>=3&&(spare('golem')||(brace&&can('golem'))))return{kind:'skill',id:'golem'};
+    if(h.key==='white'&&(spare('protect')||(brace&&can('protect'))))return{kind:'skill',id:'protect',tg:bare[0]};
+  }
+  if(brace&&h.protect<=0&&((k==='defensive'&&h.key!=='fighter'&&h.maxhp<1000)||(k==='balanced'&&pct(h)<.6)))return{kind:'defend'};
+  if(h.key==='fighter'&&k==='defensive'&&!h.guard&&al.some(x=>x!==h&&pct(x)<.5))return{kind:'skill',id:'guard'};
+  // MP top-up
+  if(h.maxmp&&h.mp<h.maxmp*.2&&I.ether&&k!=='aggressive')return{kind:'item',id:'ether',tg:h};
+  // rows
+  if(k==='aggressive'&&(h.key==='fighter'||h.key==='thief')&&h.row==='back')return{kind:'row'};
+  if(k==='defensive'&&h.key==='thief'&&h.row==='front'&&pct(h)<.4)return{kind:'row'};
+  // attack, using the wyrm's weaknesses for this phase
+  const p2=d.phase===2,use=id=>k==='aggressive'?can(id):spare(id);
+  switch(h.key){
+    case 'fighter':return((k==='aggressive'&&pct(h)>.4)||(k==='balanced'&&pct(h)>.75))?{kind:'skill',id:'rage'}:{kind:'fight'};
+    case 'thief':return d.steals>0?{kind:'skill',id:k==='aggressive'?'mug':'steal'}:{kind:'fight'};
+    case 'black':for(const id of(p2?['thunder','frost']:['frost','thunder']))if(use(id))return{kind:'skill',id};
+      if(h.mp<10&&I.ether&&k!=='aggressive')return{kind:'item',id:'ether',tg:h};return{kind:'fight'};
+    case 'summoner':if(use('undine')&&(k!=='conserve'||p2))return{kind:'skill',id:'undine'};return{kind:'fight'};
+  }
+  return{kind:'fight'};
+}
+
 /* ---------- flow ---------- */
 function afterAction(){
   renderMenu();
@@ -634,15 +738,16 @@ function showOver(win){
 }
 function update(dt){
   if(S.over)return;
-  const flowing=!S.busy&&!S.helpOpen&&!(S.mode==='wait'&&S.menu);
+  const flowing=!S.busy&&!S.paused&&!(S.mode==='wait'&&S.menu);
   if(flowing){
     S.clock+=dt;
     for(const h of S.heroes){if(h.ko)continue;if(h.protect>0)h.protect=Math.max(0,h.protect-dt);
       if(!h.ready&&!h.queued){h.atb+=(h.spd+22)*dt*1.35;if(h.atb>=100){h.atb=100;h.ready=true;h.defend=false;h.guard=false;S.readyQ.push(h);}}}
     const d=S.dragon;if(!d.dead&&!d.queued){d.atb+=36*dt*(d.phase===2?1.2:1)*(d.hp<d.max*.3?1.35:1);if(d.atb>=100){d.atb=100;d.queued=true;S.actQ.push({actor:d,run:dragonAct});}}
   }
-  if(!S.busy&&!S.helpOpen&&S.actQ.length){const a=S.actQ.shift();S.busy=true;(async()=>{try{await a.run();}catch(e){console.error(e);}S.busy=false;afterAction();})();}
-  if(!S.menu&&S.readyQ.length)openMenu(S.readyQ[0]);
+  if(!S.busy&&!S.paused&&S.actQ.length){const a=S.actQ.shift();S.busy=true;(async()=>{try{await a.run();}catch(e){console.error(e);}S.busy=false;afterAction();})();}
+  if(!S.paused){for(const h of S.readyQ.slice())if(isAuto(h)&&!h.ko){const c=aiChoose(h);queueHero(h,c.kind,c.id,c.tg);}}
+  if(!S.menu&&S.readyQ.length&&!S.paused)openMenu(S.readyQ[0]);
 }
 
 /* ---------- menus ---------- */
@@ -652,7 +757,7 @@ function renderMenu(focus){
   const m=S.menu;
   if(!m){
     const head=S.over?(S.dragon.dead?'Victory':'Defeat'):'Waiting';
-    const sub=S.over?'battle over':'gauges filling';
+    const sub=S.over?'battle over':S.auto.on?'auto · '+STRATS[S.auto.strat].name:'gauges filling';
     cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${head}</span><span class="cls">${sub}</span></div><div class="log">${S.log.slice(-5).map(x=>`<p>${esc(x)}</p>`).join('')}</div>`;
     return;
   }
@@ -707,7 +812,7 @@ partyEl.addEventListener('click',e=>{const r=e.target.closest('.row');if(!r||S.o
 function updateHud(){
   S.heroes.forEach((h,i)=>{const r=rows[i];if(!r)return;
     r.bar.style.width=(h.ko?0:h.atb)+'%';r.lim.style.width=h.limit+'%';
-    const tg=(h.ko?'<span class="tag ko">KO</span>':'')+(h.limit>=100&&!h.ko?'<span class="tag lim">LIMIT</span>':'')+(h.row==='back'?'<span class="tag bk">BACK</span>':'')+(h.defend?'<span class="tag def">DEF</span>':'')+(h.guard?'<span class="tag def">GRD</span>':'')+(h.protect>0&&!h.ko?'<span class="tag">PRT</span>':'');
+    const tg=(h.ko?'<span class="tag ko">KO</span>':'')+(h.limit>=100&&!h.ko?'<span class="tag lim">LIMIT</span>':'')+(h.row==='back'?'<span class="tag bk">BACK</span>':'')+(isAuto(h)&&!h.ko?'<span class="tag au">AUTO</span>':'')+(h.defend?'<span class="tag def">DEF</span>':'')+(h.guard?'<span class="tag def">GRD</span>':'')+(h.protect>0&&!h.ko?'<span class="tag">PRT</span>':'');
     const key=[h.hp,h.mp,h.ready,h.ko,tg,S.menu&&S.menu.hero===h].join('|');if(key===r.k)return;r.k=key;
     r.b.textContent=h.hp;r.mp.textContent=h.maxmp?`MP ${h.mp}`:'—';r.tags.innerHTML=tg;
     r.hp.className='hp'+(h.hp<h.maxhp*.25?' crit':h.hp<h.maxhp*.5?' warn':'');
@@ -726,12 +831,30 @@ if(!fsReq||matchMedia('(display-mode: fullscreen)').matches)fsBtn.hidden=true;
 fsBtn.onclick=()=>{try{const r=fsEl()?fsExit.call(document):fsReq.call(docEl,{navigationUI:'hide'});if(r&&r.catch)r.catch(()=>{fsBtn.hidden=true;});}catch(e){fsBtn.hidden=true;}};
 const fsSync=()=>{fsBtn.textContent=fsEl()?'Exit full screen':'Full screen';};
 document.addEventListener('fullscreenchange',fsSync);document.addEventListener('webkitfullscreenchange',fsSync);
-const helpOv=$('helpOv');let helpPrev=null;
-$('helpBtn').onclick=()=>{helpPrev=S.mode;if(!S.over)setMode('wait');S.helpOpen=true;helpOv.hidden=false;$('helpClose').focus({preventScroll:true});};
-$('helpClose').onclick=()=>{helpOv.hidden=true;S.helpOpen=false;if(helpPrev)setMode(helpPrev);};
+const helpOv=$('helpOv'),autoOv=$('autoOv'),autoBtn=$('autoBtn');
+function openSheet(el,f){S.paused=true;el.hidden=false;if(f)f.focus({preventScroll:true});}
+function closeSheet(el){el.hidden=true;S.paused=!helpOv.hidden||!autoOv.hidden;}
+$('helpBtn').onclick=()=>openSheet(helpOv,$('helpClose'));
+$('helpClose').onclick=()=>closeSheet(helpOv);
+let pickStrat='balanced',pickWho={};
+function drawAuto(){
+  $('stratList').innerHTML=Object.entries(STRATS).map(([k,v])=>`<button type="button" class="strat" data-s="${k}" aria-pressed="${k===pickStrat}"><b>${esc(v.name)}</b><span>${esc(v.d)}</span></button>`).join('');
+  $('autoWho').innerHTML=S.heroes.map(h=>`<button type="button" class="chip" data-k="${h.key}" aria-pressed="${!!pickWho[h.key]}">${esc(h.name)} <em>${esc(h.cls)}</em></button>`).join('');
+  $('autoOff').hidden=!S.auto.on;
+  $('autoGo').textContent=S.auto.on?'Update auto battle':'Start auto battle';
+  $('autoGo').disabled=!Object.values(pickWho).some(Boolean);
+}
+function syncAuto(){autoBtn.setAttribute('aria-pressed',String(S.auto.on));autoBtn.textContent=S.auto.on?'Auto ●':'Auto';}
+autoBtn.onclick=()=>{pickStrat=S.auto.strat;pickWho={...S.auto.who};drawAuto();openSheet(autoOv,$('stratList').querySelector('[aria-pressed="true"]'));};
+$('stratList').onclick=e=>{const b=e.target.closest('.strat');if(!b)return;pickStrat=b.dataset.s;drawAuto();$('stratList').querySelector(`[data-s="${pickStrat}"]`).focus({preventScroll:true});};
+$('autoWho').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;const k=b.dataset.k;pickWho[k]=!pickWho[k];drawAuto();$('autoWho').querySelector(`[data-k="${k}"]`).focus({preventScroll:true});};
+$('autoGo').onclick=()=>{S.auto={on:true,strat:pickStrat,who:{...pickWho}};if(S.menu&&isAuto(S.menu.hero))S.menu=null;closeSheet(autoOv);syncAuto();say(`Auto battle: ${STRATS[pickStrat].name}.`);renderMenu();};
+$('autoOff').onclick=()=>{S.auto.on=false;closeSheet(autoOv);syncAuto();say('Manual control restored.');renderMenu();};
+$('autoCancel').onclick=()=>closeSheet(autoOv);
+addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!autoOv.hidden)closeSheet(autoOv);else if(!helpOv.hidden)closeSheet(helpOv);});
 $('again').onclick=async()=>{while(S.busy)await sleep(50);newGame();};
 
-makeBg();newGame();
+makeBg();newGame();syncAuto();
 let last=performance.now();
 (function frame(now){const dt=Math.min(.05,Math.max(0,(now-last)/1000));last=now;S.t+=dt;update(dt);render(dt);updateHud();requestAnimationFrame(frame);})(last);
 })();

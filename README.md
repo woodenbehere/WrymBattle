@@ -24,13 +24,13 @@ Five heroes take on a dragon in two phases:
 
 ## Install
 
-Open the play link on a phone or in Chrome/Edge, then use **Add to Home Screen** (iOS Safari: Share → Add to Home Screen). After the first load, it works offline.
+Open the play link on a phone or in Chrome/Edge, then use **Add to Home Screen** (iOS Safari: Share → Add to Home Screen). After the first load, it works offline. To force the newest version, tap the version number in the footer twice.
 
 ## Files
 
 - `index.html`: the whole game (canvas renderer, battle logic, UI)
 - `manifest.webmanifest`: PWA metadata
-- `sw.js`: service worker for offline play. Bump `VERSION` (and the footer version in `index.html`) when you change files so installed copies update.
+- `sw.js`: service worker for offline play. When you change files, bump `VERSION` here and `APP_VERSION` (plus the footer button text) in `index.html`.
 - `icons/`: app icons
 
 To run locally, serve the folder over HTTP (for example `python3 -m http.server`) and open `http://localhost:8000`. Service workers don't run from `file://`.

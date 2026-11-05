@@ -245,7 +245,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.1.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.2.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -259,7 +259,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 <p><b>Castle Valemont</b>: walk in to meet the King and Queen, rest in the guest rooms, raid the armory, and earn your way into the royal vault. Walk into people to talk to them.</p>
 <p><b>Auto</b> hands chosen heroes to the AI with a strategy you pick.</p>
     <p>Keyboard: arrows to move, Enter to choose, Esc to go back.</p>
-    <p><b>Towns</b>: walk onto Valemont Village (beside the castle) or Thornwick to shop, rest at the inn and manage <b>Party</b> equipment. Monsters give EXP and Gil, and heroes level up as they fight. Progress saves automatically once the wyrm falls.</p>
+    <p><b>Towns</b>: walk into Valemont Village (inside the castle walls, on both sides of the road) or Thornwick. Walk around, talk to townsfolk, and walk into shop doors to shop or rest at the inn. The <b>Adventurers&rsquo; Guild</b> in Valemont Village posts bounties for gil, EXP and gear. Monsters give EXP and Gil, and heroes level up as they fight. Progress saves automatically once the wyrm falls.</p>
 <div class="arow"><button class="btn ghost" id="newGameBtn" type="button">Start a new game</button><button class="btn" id="helpClose" type="button">Back to the game</button></div>
   </div>
 </div>
@@ -279,6 +279,15 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="pgrid"><div id="pStats"></div><div id="pEquip"></div></div>
     <div id="pPick"></div>
     <div class="arow"><button class="btn ghost" id="pOpt" type="button">Optimize</button><button class="btn" id="partyClose" type="button">Close</button></div>
+  </div>
+</div>
+<div class="sheet" id="guildOv" role="dialog" aria-modal="true" aria-label="Adventurers' Guild" hidden>
+  <div class="card help">
+    <div class="shop-h"><h2>Adventurers&rsquo; Guild</h2><span class="gil" id="guildGil"></span></div>
+    <div class="tip" id="guildRank"></div>
+    <div class="slist" id="guildList"></div>
+    <div class="tip" id="guildMsg"></div>
+    <div class="arow"><button class="btn" id="guildClose" type="button">Close</button></div>
   </div>
 </div>
 <div class="sheet" id="autoOv" role="dialog" aria-modal="true" aria-label="Auto battle" hidden>
@@ -459,7 +468,7 @@ function newGame(noBattle){
   S={t:S?S.t:0,mode,auto,paused:false,scene:'battle',log:[],items:{potion:4,hipotion:0,ether:2,feather:2,elixir:0,tent:3},parts:[],fx:[],
     heroes:ORDER.map((k,i)=>({key:k,...CL[k],maxhp:CL[k].hp,maxmp:CL[k].mp,i,atb:k==='thief'?94:rnd(15,65),ready:false,queued:false,ko:false,defend:false,guard:false,protect:0,dx:0,flash:0,cast:null,row:ROW0[k],limit:0,dy:0,x:0,y:58+i*18})),
     world:{x:WORLD.start.x,y:WORLD.start.y,danger:16,enc:true,face:-1,dist:0,walkT:0,steps:0,moving:false,camping:false,lastLand:'peak',place:''}};
-  for(const h of S.heroes)initHero(h);S.gil=300;S.bag={};S.wyrmDone=false;S.flags={chests:{}};S.dragon=makeEnemy('wyrm');S.foes=[S.dragon];
+  for(const h of S.heroes)initHero(h);S.gil=300;S.bag={};S.wyrmDone=false;S.flags={chests:{}};S.quests={};S.kills={};S.dragon=makeEnemy('wyrm');S.foes=[S.dragon];
   buildParty();if(!noBattle)startBattle('wyrm');
 }
 
@@ -909,26 +918,27 @@ function genWorld(seed){
       const d=Math.hypot(x-pk.x,y-pk.y);if(d<dmin||d>dmax)continue;if(avoid&&Math.hypot(x-avoid.x,y-avoid.y)<18)continue;
       let g=0;for(let yy=-1;yy<=1;yy++)for(let xx=-1;xx<=1;xx++)if(tiles[(y+yy)*WT+x+xx]===T_GRASS)g++;const sc=g*10+hash(x,y,seed+5);if(sc>bs){bs=sc;b={x,y};}}return b;};
   const town=placeAt(14,24,null),castle=placeAt(28,60,town);
-  let village=null;
+  let village=null,village2=null;
   if(castle){const cx=castle.x,cy=castle.y,x0=cx-4,x1=cx+4,y0=cy-3,y1=cy+5;
     if(x0>=1&&x1<WT-1&&y0>=1&&y1<HT-2){
       for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)tiles[y*WT+x]=(x===x0||x===x1||y===y0||y===y1)?T_WALL:T_LAWN;
       for(let y=cy+1;y<=y1;y++)tiles[y*WT+cx]=T_ROAD;
-      village={x:cx,y:cy+3};
-      for(const[dx,dy]of[[-1,0],[1,0],[-2,1],[2,-1],[-2,-1]])tiles[(cy+3+dy)*WT+cx+dx]=T_HOUSE;
+      village={x:cx-2,y:cy+3};village2={x:cx+2,y:cy+3};
+      for(const sd of[-1,1])for(const[dx,dy]of[[1,-1],[3,-1],[1,1],[3,1]])tiles[(cy+3+dy)*WT+cx+sd*dx]=T_HOUSE;
       // road from the gate out to open, reachable land
       const inC=(x,y)=>x>=x0&&x<=x1&&y>=y0&&y<=y1,st=(y1+1)*WT+cx,prev=new Map([[st,-1]]),q=[st];let end=-1;
       while(q.length){const k=q.shift(),x=k%WT,y=(k/WT)|0;if(seen[k]&&!BLOCKED.has(tiles[k])&&!inC(x,y)){end=k;break;}
         for(const[dx,dy]of[[0,1],[-1,0],[1,0],[0,-1]]){const X=x+dx,Y=y+dy,K=Y*WT+X;if(X<1||Y<1||X>=WT-1||Y>=HT-1||inC(X,Y)||prev.has(K))continue;prev.set(K,k);q.push(K);}}
       for(let k=end;k!==-1;k=prev.get(k))tiles[k]=T_ROAD;
     }}
-  if(town)set(town.x,town.y,T_TOWN);if(castle)set(castle.x,castle.y,T_CASTLE);if(village)set(village.x,village.y,T_TOWN);
+  if(town)set(town.x,town.y,T_TOWN);if(castle)set(castle.x,castle.y,T_CASTLE);if(village)set(village.x,village.y,T_TOWN);if(village2)set(village2.x,village2.y,T_TOWN);
   const lands=[{id:'peak',name:'Ember Peak',spr:'volcano',size:46,x:(pk.x+.5)*TS,y:(pk.y+.5)*TS,msg:"Ember Peak. The wyrm's lair lies quiet now."}];
   if(town)lands.push({id:'town',name:'Thornwick',spr:'town',size:26,x:(town.x+.5)*TS,y:(town.y+.7)*TS,msg:'Thornwick. Townsfolk wave as the heroes pass.'});
   if(castle)lands.push({id:'castle',name:'Castle Valemont',spr:'castle',size:30,x:(castle.x+.5)*TS,y:(castle.y+.7)*TS,msg:'Castle Valemont. Its gates stay shut, for now.'});
   if(village)lands.push({id:'village',name:'Valemont Village',spr:'town',size:26,x:(village.x+.5)*TS,y:(village.y+.7)*TS,msg:'Valemont Village, in the shadow of the castle.'});
+  if(village2)lands.push({id:'village',name:'Valemont Village',spr:'town',size:26,x:(village2.x+.5)*TS,y:(village2.y+.7)*TS,msg:'Valemont Village, in the shadow of the castle.'});
   const counts={};for(const t of tiles)counts[t]=(counts[t]||0)+1;
-  return {tiles,at,start:{x:(start.x+.5)*TS,y:(start.y+.5)*TS},lands,reach,counts,town,castle,village};
+  return {tiles,at,start:{x:(start.x+.5)*TS,y:(start.y+.5)*TS},lands,reach,counts,town,castle,village,village2};
 }
 
 const WSEED=16,PAD=160,PY=H/2+7;
@@ -1002,7 +1012,7 @@ function buildWorld(){
       for(const[x,y,h]of[[20,3,9],[26,4,7],[23,6,11]]){f('#d8541c',x,y,1,h);f(fr?'#ffb03a':'#ff7a2a',x,y+((fr?2:5)),1,2);}});
     if(WORLD.town)at((WORLD.town.x+P)*TS,(WORLD.town.y+P)*TS,f=>{const house=(x,y)=>{f('#3a2418',x-1,y+2,9,6);f('#f0e0b8',x,y+3,7,5);f('#c83c28',x-1,y,9,3);f('#8a2418',x-1,y+2,9,1);f('#5a3a24',x+3,y+5,1,3);f('#7ab0e0',x+1,y+4,1,1);};
       house(1,1);house(8,6);f('#2a7a2e',10,0,4,3);f('#4aa040',10,0,2,1);f('#5a3a24',11,3,1,2);f('#c8b07a',0,13,16,2);});
-    if(WORLD.village)at((WORLD.village.x+P)*TS,(WORLD.village.y+P)*TS,f=>{const house=(x,y,roof,dark)=>{f('#3a2418',x-1,y+2,9,6);f('#f0e0b8',x,y+3,7,5);f(roof,x-1,y,9,3);f(dark,x-1,y+2,9,1);f('#5a3a24',x+3,y+5,1,3);};
+    for(const V of[WORLD.village,WORLD.village2].filter(Boolean))at((V.x+P)*TS,(V.y+P)*TS,f=>{const house=(x,y,roof,dark)=>{f('#3a2418',x-1,y+2,9,6);f('#f0e0b8',x,y+3,7,5);f(roof,x-1,y,9,3);f(dark,x-1,y+2,9,1);f('#5a3a24',x+3,y+5,1,3);};
       house(1,0,'#3858c0','#24348a');house(8,1,'#7a48b0','#46286e');house(4,7,'#a8402a','#6e2418');f('#c8b07a',0,14,16,2);});
     if(WORLD.castle)at((WORLD.castle.x+P)*TS-8,(WORLD.castle.y+P)*TS-16,f=>{f('#3a3a48',3,9,26,23);f('#a8a8b8',4,10,24,21);f('#8a8a9a',4,10,24,2);
       for(let x=4;x<28;x+=4)f('#a8a8b8',x,8,2,2);
@@ -1057,7 +1067,7 @@ function mapUpdate(dt){
   if(Math.abs(vx)>.2)w.face=vx>0?1:-1;w.walkT+=dt;
   const moved=Math.hypot(w.x-ox,w.y-oy);if(!moved){w.moving=false;return;}
   w.dist+=moved;
-  {const tx=Math.floor(w.x/TS),ty=Math.floor(w.y/TS);if(WORLD.at(tx,ty)===T_CASTLE){if(!w.townLock){enterCastle();return;}}else if(WORLD.at(tx,ty)===T_TOWN){if(!w.townLock){const tl=WORLD.lands.find(q=>TOWNS[q.id]&&Math.floor(q.x/TS)===tx&&Math.floor(q.y/TS)===ty);if(tl){enterTown(tl.id);return;}}}else w.townLock=false;}
+  {const tx=Math.floor(w.x/TS),ty=Math.floor(w.y/TS);if(WORLD.at(tx,ty)===T_CASTLE){if(!w.townLock){enterCastle();return;}}else if(WORLD.at(tx,ty)===T_TOWN){if(!w.townLock){const tl=WORLD.lands.find(q=>TOWNS[q.id]&&Math.floor(q.x/TS)===tx&&Math.floor(q.y/TS)===ty);if(tl){enterInterior(tl.id);return;}}}else w.townLock=false;}
   saveT+=dt;if(saveT>8){saveT=0;saveGame();}
   const l=nearLand(),lid=l?l.id:null;if(lid!==w.lastLand){w.lastLand=lid;if(l)say(l.msg);renderMenu();}
   const pn=placeName();if(pn!==w.place){w.place=pn;renderMenu();}
@@ -1262,12 +1272,14 @@ function renderMapMenu(){
   cmdEl.innerHTML=`<div class="cmd-h"><span class="who">World map</span><span class="cls">${esc(w.place||placeName())} · ${fmtG(S.gil)}</span></div>`+
     opt('camp','Camp','Tent ×'+(S.items.tent||0),w.camping?'Resting…':(S.items.tent?'Use a Tent to restore all HP and MP':'Buy Tents at an item shop'),w.camping||S.scene!=='map'||!S.items.tent)+
     opt('party','Party','','Status and equipment')+
+    opt('quests','Quests','','Guild bounties')+
     opt('enc','Encounters',w.enc?'on':'off',w.enc?'Random battles while walking':'Walk in peace')+
     `<div class="log"><p>${esc(w.steps?S.log[S.log.length-1]:'Walk with the arrow keys or WASD, or press and hold on the map.')}</p></div>`;
 }
 function mapCmd(a){
   const w=S.world;
   if(a==='party')return openParty();
+  if(a==='quests')return openGuild(!(S.scene==='castle'&&IM&&IM.id==='guild'));
   if(S.scene==='castle'){if(a==='leave')return leaveCastle();return;}
   if(S.scene==='town'){if(a==='leave')return leaveTown();if(a==='inn')return innRest();if(a.startsWith('shop:'))return openShop(a.slice(5));return;}
   if(a==='camp'){if(!S.items.tent){say('You need a Tent to camp. Item shops sell them.');return;}S.items.tent--;camp().then(saveGame);return;}
@@ -1355,18 +1367,18 @@ $('partyClose').onclick=()=>{closeSheet(partyOv);renderMenu();};
 const SAVE_KEY='ember-wyrm-save-1';let saveT=0;
 function saveGame(){try{if(!S||!S.wyrmDone||S.scene==='battle'||S.scene==='trans')return;
   const d={v:1,heroes:S.heroes.map(h=>({key:h.key,lv:h.lv,exp:h.exp,hp:h.hp,mp:h.mp,ko:h.ko,row:h.row,limit:Math.round(h.limit),skills:h.skills,eq:h.eq})),
-    items:S.items,bag:S.bag,gil:S.gil,world:{x:S.world.x,y:S.world.y,enc:S.world.enc},town:S.scene==='town'?S.town:null,castle:S.scene==='castle'?{x:S.cpos.x,y:S.cpos.y}:null,flags:S.flags,auto:S.auto,mode:S.mode};
+    items:S.items,bag:S.bag,gil:S.gil,world:{x:S.world.x,y:S.world.y,enc:S.world.enc},town:S.scene==='town'?S.town:null,castle:S.scene==='castle'?{id:S.imap||'castle',x:S.cpos.x,y:S.cpos.y}:null,quests:S.quests,kills:S.kills,flags:S.flags,auto:S.auto,mode:S.mode};
   localStorage.setItem(SAVE_KEY,JSON.stringify(d));}catch(e){}}
 function loadGame(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');if(!d||d.v!==1)return false;
   newGame(true);S.wyrmDone=true;S.gil=d.gil|0;Object.assign(S.items,d.items||{});S.bag=d.bag||{};if(d.auto)S.auto=d.auto;if(d.mode)setMode(d.mode);
   for(const sv of d.heroes){const h=S.heroes.find(x=>x.key===sv.key);if(!h)continue;Object.assign(h,{lv:sv.lv,exp:sv.exp,row:sv.row||h.row,limit:sv.limit||0,skills:sv.skills,eq:Object.assign({acc:null,shield:null},sv.eq),ko:!!sv.ko});
     recalc(h);h.hp=Math.min(sv.hp,h.maxhp);h.mp=Math.min(sv.mp,h.maxmp);h.x=homeX(h);}
   if(d.world){let ok=null;for(let r=0;r<=6*TS&&!ok;r+=TS)for(let a=0;a<8&&!ok;a++){const x=d.world.x+Math.round(Math.cos(a*Math.PI/4))*r,y=d.world.y+Math.round(Math.sin(a*Math.PI/4))*r;if(walkable(x,y))ok={x,y};}if(ok){S.world.x=ok.x;S.world.y=ok.y;}}S.world.enc=d.world?d.world.enc!==false:true;
-  S.flags=Object.assign({chests:{}},d.flags||{});buildParty();toMap('Welcome back. Your journey continues.');if(d.town&&TOWNS[d.town])enterTown(d.town);else if(d.castle)enterCastle(d.castle);return true;}catch(e){return false;}}
+  S.quests=d.quests||{};S.kills=d.kills||{};S.flags=Object.assign({chests:{}},d.flags||{});buildParty();toMap('Welcome back. Your journey continues.');if(d.town&&MAPS[d.town])enterInterior(d.town);else if(d.castle)enterInterior(d.castle.id||'castle',d.castle);return true;}catch(e){return false;}}
 
 
 /* ---------- Castle Valemont interior ---------- */
-const CW=33,CH=24,CT=16;
+let CW=33,CH=24;const CT=16;
 const NPCSPR={
  king:{pal:{g:'#ffd34a',s:'#eabf98',e:'#1b1012',w:'#f0f0f0',r:'#c8323c',R:'#f8f0e0',k:'#5a3a24'},map:["...g.g.g....","...ggggg....","...sssss....","...seses....","...wwsww....","...wwwww....","..rrrwrrr...",".rrrrwrrrr..",".rrRrwrRrr..",".rrRrrrRrr..","..rRrrrRr...","..rrrrrrr...","...kk..kk..."]},
  queen:{pal:{g:'#ffd34a',h:'#8a4a24',s:'#eabf98',e:'#1b1012',p:'#7a48b0',P:'#b48cff',k:'#3a2418'},map:["...g.g.g....","...ggggg....","..hhhhhhh...","..hseseh....","..hsssssh...","..h.sss.h...","...ppPpp....","..pppPppp...","..ppPPPpp...",".pppPPPppp..",".ppppppppp..",".pppppppppp.",".pppppppppp."]},
@@ -1374,11 +1386,11 @@ const NPCSPR={
  smith:{pal:{b:'#d8a880',e:'#1b1012',a:'#7a4a24',s:'#c8b07a',k:'#3a2418',m:'#8a8a9a',w:'#6e4a2a'},map:["..bbbb......",".bbbbbb.....",".bebbeb.....",".bbbbbb..mm.","..bbbb...mm.",".ssaaass..w.","sssaaasss.w.","s.aaaaa.s.w.","..aaaaa.....","..aa.aa.....","..ss.ss.....",".kkk.kkk...."]},
  maid:{pal:{c:'#ffffff',h:'#5a3a24',s:'#eabf98',e:'#1b1012',d:'#2a2a3a',a:'#f0f0f0',k:'#1b1012'},map:["...cccc.....","..hcccch....","..hseseh....","..hsssshh...","...dsssd....","..ddaaddd...",".dddaaaddd..",".ddaaaaadd..",".ddaaaaadd..","..ddddddd...","..ss...ss...",".kkk...kkk.."]}
 };
-const ROOMS=[{n:'Royal Bedchamber',x0:1,y0:1,x1:8,y1:6},{n:'Guest Rooms',x0:1,y0:8,x1:8,y1:12},{n:'Throne Room',x0:12,y0:1,x1:20,y1:12},{n:'Royal Vault',x0:24,y0:1,x1:31,y1:6},
+const ROOMS_C=[{n:'Royal Bedchamber',x0:1,y0:1,x1:8,y1:6},{n:'Guest Rooms',x0:1,y0:8,x1:8,y1:12},{n:'Throne Room',x0:12,y0:1,x1:20,y1:12},{n:'Royal Vault',x0:24,y0:1,x1:31,y1:6},
  {n:'Armory',x0:24,y0:8,x1:31,y1:12},{n:'Great Hall',x0:1,y0:14,x1:31,y1:15},{n:'Entrance Hall',x0:13,y0:16,x1:19,y1:23},{n:'Corridor',x0:10,y0:1,x1:10,y1:13},{n:'Corridor',x0:22,y0:1,x1:22,y1:13}];
-const CHESTS={'24,12':{gear:'ironhelm'},'31,12':{gear:'chainvest'},'31,8':{item:'hipotion',n:2},
+const CHESTS_C={'24,12':{gear:'ironhelm'},'31,12':{gear:'chainvest'},'31,8':{item:'hipotion',n:2},
  '25,2':{gil:3000},'30,2':{item:'elixir',n:2},'25,5':{gear:'sagestaff'},'30,5':{gear:'dragoncrest'},'28,1':{gear:'royalblade',grand:true}};
-const NPCS=[
+const NPCS_C=[
  {x:15,y:2,spr:'king',talk:()=>{const f=S.flags;
    if(!f.ogre)return["King Aldous: So you are the heroes who slew the Ember Wyrm! Valemont is in your debt.","King Aldous: Yet another beast plagues us. A Hill Ogre raids the farms out in the hills.","King Aldous: Slay it, and I will open the royal vault to you."];
    if(!f.key){f.key=true;buildCastle();saveGame();return["King Aldous: The Hill Ogre is slain! The farmers sing your names.","King Aldous: As promised, take the Royal Key. The vault lies in the northeast of the castle.","Received the Royal Key!"];}
@@ -1395,7 +1407,8 @@ const NPCS=[
  {x:5,y:12,spr:'maid',talk:()=>["Maid Tilda: The guest beds are freshly made. Lie down any time to rest, free of charge."]},
  {x:28,y:4,spr:'sentinel',when:()=>!S.flags.sentinel,talk:()=>{vaultFight();return null;}}
 ];
-const C_BLOCK=new Set(['#','w','n','T','B','b','Q','q','P','p','t','K','c','C','L']);
+let ROOMS=ROOMS_C,CHESTS=CHESTS_C,NPCS=NPCS_C;
+const C_BLOCK=new Set(['#','w','n','T','B','b','Q','q','P','p','t','K','c','C','L','Y','W','H','d','f','x','J','v','l','F']);
 let CASTLE=null;const ctex=document.createElement('canvas');ctex.width=CW*CT;ctex.height=CH*CT;
 function buildCastle(){
   const g=[];for(let y=0;y<CH;y++)g.push(Array(CW).fill('#'));
@@ -1409,10 +1422,10 @@ function buildCastle(){
   for(const x of[2,5,8]){at(x,9,'B');at(x,10,'b');}at(1,12,'t');
   for(const x of[25,26,27,29,30])at(x,8,'K');
   for(const k in CHESTS){const[x,y]=k.split(',').map(Number);at(x,y,CHESTS[k].grand?'C':'c');}
-  CASTLE=g;drawCastleTex();
+  MAPS.castle.grid=g;if(IM===MAPS.castle){CASTLE=g;drawCastleTex();}return g;
 }
 function drawCastleMini(){castleMini=castleMini||document.createElement('canvas');castleMini.width=CW*3;castleMini.height=CH*3;const c=castleMini.getContext('2d');
-  const col=t=>t==='#'||t==='w'||t==='n'?'#3a3a46':t==='r'||t==='T'?'#a82a2a':t==='D'?'#8a6a3a':t==='L'?'#7a4a24':t==='E'?'#ffd34a':t==='c'||t==='C'?'#d8a840':'.'===t?'#a89e8a':'#6a6a7a';
+  const MCC={'#':'#3a3a46',w:'#3a3a46',n:'#3a3a46',r:'#a82a2a',T:'#a82a2a',D:'#8a6a3a',L:'#7a4a24',E:'#ffd34a',c:'#d8a840',C:'#d8a840','.':'#a89e8a',g:'#48a838',o:'#48a838',s:'#c8b890',a:'#c8a870',Y:'#1d5a24',W:'#d0d0d8',H:'#c84a2a',d:'#ffd34a',u:'#9a6a3a',F:'#4a88e0',f:'#8a6a3a',J:'#ffd34a',x:'#5a3418',v:'#c8b890',l:'#c8b890',k:'#7ab04a'};const col=t=>MCC[t]||'#6a6a7a';
   for(let y=0;y<CH;y++)for(let x=0;x<CW;x++){c.fillStyle=col(CASTLE[y][x]);c.fillRect(x*3,y*3,3,3);}}
 function drawCastleTex(){drawCastleMini();
   const c=ctex.getContext('2d'),g=CASTLE,opened=k=>S.flags&&S.flags.chests[k];
@@ -1439,20 +1452,22 @@ function drawCastleTex(){drawCastleMini();
       case 'K':wall();f('#7a4a24',1,3,14,2);f('#7a4a24',1,11,14,2);for(const x of[3,7,11]){f('#c8c8d8',x,1,2,12);f('#e8e8f0',x,1,1,10);f('#d8a840',x-1,10,4,1);}break;
       case 'B':case 'Q':{const roy=t==='Q';floor();f('#5a3418',1,1,14,15);f(roy?'#d8a840':'#7a4a24',1,1,14,2);f('#f0f0f0',3,3,10,5);f('#d8d8e0',3,7,10,1);f(roy?'#7a48b0':'#3858c0',2,9,12,7);f(roy?'#b48cff':'#6888e8',2,9,12,1);break;}
       case 'b':case 'q':{const roy=t==='q';floor();f('#5a3418',1,0,14,14);f(roy?'#7a48b0':'#3858c0',2,0,12,12);f(roy?'#46286e':'#24348a',2,6,12,1);f(roy?'#d8a840':'#7a4a24',1,12,14,2);break;}
-      case 'c':case 'C':{floor();const k=tx+','+ty,op=opened(k),gr=t==='C';
+      case 'c':case 'C':{floor();const k=chestKey(tx,ty),op=opened(k),gr=t==='C';
         f('#3a2418',1,4,14,11);f(gr?'#c89a3a':'#8a5a2a',2,5,12,9);f(gr?'#f2d070':'#5a3418',2,8,12,1);f(gr?'#f2d070':'#5a3418',7,5,2,9);
         if(op){f('#1a1008',2,2,12,4);f(gr?'#c89a3a':'#8a5a2a',2,1,12,2);}else{f(gr?'#d8a840':'#a8703a',2,4,12,2);f('#ffd34a',7,8,2,2);}break;}
+      default:drawExtraTile(t,tx,ty,f,ch);
     }
   }
+  drawOverlays(c);
 }
 const ctileAt=(x,y)=>{const tx=Math.floor(x/CT),ty=Math.floor(y/CT);return(ty<0||ty>=CH||tx<0||tx>=CW)?'#':CASTLE[ty][tx];};
 const npcAt=(tx,ty)=>NPCS.find(n=>n.x===tx&&n.y===ty&&(!n.when||n.when()));
 const cwalk=(x,y)=>!C_BLOCK.has(ctileAt(x,y))&&!npcAt(Math.floor(x/CT),Math.floor(y/CT));
-function roomName(){const tx=Math.floor(S.cpos.x/CT),ty=Math.floor(S.cpos.y/CT);const r=ROOMS.find(r=>tx>=r.x0&&tx<=r.x1&&ty>=r.y0&&ty<=r.y1);return r?r.n:'Castle Valemont';}
+function roomName(){const tx=Math.floor(S.cpos.x/CT),ty=Math.floor(S.cpos.y/CT);const r=ROOMS.find(r=>tx>=r.x0&&tx<=r.x1&&ty>=r.y0&&ty<=r.y1);return r?r.n:(IM?IM.name:'Castle Valemont');}
 function castleRender(){
   const p=S.cpos,cx=Math.max(0,Math.min(CW*CT-W,Math.round(p.x-W/2))),cy=Math.max(0,Math.min(CH*CT-H,Math.round(p.y-H/2)));
   ctx.fillStyle='#22222e';ctx.fillRect(0,0,W,H);ctx.drawImage(ctex,cx,cy,W,H,0,0,W,H);
-  for(const n of NPCS){if(n.when&&!n.when())continue;const sx=n.x*CT+8-cx,sy=n.y*CT+15-cy;if(sx<-16||sx>W+16||sy<-4||sy>H+20)continue;
+  for(const n of NPCS){if(n.when&&!n.when())continue;const sx=n.x*CT+8-cx+(n.ox||0),sy=n.y*CT+15-cy+(n.oy||0);if(sx<-16||sx>W+16||sy<-4||sy>H+20)continue;
     if(n.spr==='sentinel'){drawMon(ctx,MON.sentinel,sx,sy,false,1);continue;}
     ctx.fillStyle='rgba(0,0,0,.25)';ell(ctx,sx,sy,5,1.4);drawSprite(ctx,NPCSPR[n.spr],sx,sy,{});}
   const lead=S.heroes.find(h=>!h.ko)||S.heroes[0],w=S.world,bob=w.moving&&Math.floor(w.walkT*8)%2?1:0,px=Math.round(p.x-cx),py=Math.round(p.y-cy)+7;
@@ -1461,7 +1476,7 @@ function castleRender(){
 }
 let bumpKey='',bumpT=0;
 function castleUpdate(dt){
-  const w=S.world,p=S.cpos;if(S.paused||S.dlg){w.moving=false;return;}
+  const w=S.world,p=S.cpos;if(!S.paused)wanderNPCs(dt);if(S.paused||S.dlg){w.moving=false;return;}
   let vx=0,vy=0;
   if(keys.arrowleft||keys.a)vx-=1;if(keys.arrowright||keys.d)vx+=1;if(keys.arrowup||keys.w)vy-=1;if(keys.arrowdown||keys.s)vy+=1;
   if(steer){const L=Math.hypot(steer.x,steer.y);if(L>5){vx=steer.x/L;vy=steer.y/L;}}
@@ -1472,7 +1487,7 @@ function castleUpdate(dt){
   // bump into something: talk, open, rest
   const ax=Math.abs(vx)>Math.abs(vy),tx=Math.floor((p.x+(ax?Math.sign(vx)*9:0))/CT),ty=Math.floor((p.y+(ax?0:Math.sign(vy)*9))/CT);
   const key=tx+','+ty;bumpT+=dt;
-  if(!(tx===Math.floor(p.x/CT)&&ty===Math.floor(p.y/CT))&&(npcAt(tx,ty)||'LcCBbQqKw'.includes(CASTLE[ty]&&CASTLE[ty][tx]))){if(key!==bumpKey||bumpT>1.4){bumpKey=key;bumpT=0;w.moving=false;interact(tx,ty);return;}}
+  if(!(tx===Math.floor(p.x/CT)&&ty===Math.floor(p.y/CT))&&(npcAt(tx,ty)||'LcCBbQqKwdJ'.includes(CASTLE[ty]&&CASTLE[ty][tx]))){if(key!==bumpKey||bumpT>1.4){bumpKey=key;bumpT=0;w.moving=false;interact(tx,ty);return;}}
   else if(moved)bumpKey='';
   if(ctileAt(p.x,p.y)==='E'){leaveCastle();return;}
   const rn=roomName();if(rn!==S.croom){S.croom=rn;renderMenu();}
@@ -1480,26 +1495,24 @@ function castleUpdate(dt){
 function interact(tx,ty){
   const n=npcAt(tx,ty);if(n){const lines=n.talk();if(lines)showDialog(lines);return;}
   const t=CASTLE[ty][tx],k=tx+','+ty;
+  if(t==='d'){const D=(IM.doors||{})[k];if(!D)return;if(D.shop)return openShop(D.shop);if(D.inn)return innRest();if(D.guild)return enterInterior('guild');if(D.house)return showDialog(D.house);return;}
+  if(t==='J')return openGuild(false);
   if(t==='L')return showDialog(['The vault door is locked tight. The lock bears the royal crest.']);
   if(t==='w')return showDialog(['Through the window you can see the village rooftops.']);
   if(t==='K')return showDialog(['Racks of spears and polished swords for the castle guard.']);
   if(t==='Q'||t==='q')return showDialog(["The King's own bed. Best not to nap in it."]);
   if(t==='B'||t==='b')return showDialog(['A soft guest bed. The party lies down to rest…'],guestRest);
-  if(t==='c'||t==='C'){const C=CHESTS[k];if(S.flags.chests[k])return showDialog(['The chest is empty.']);
+  if(t==='c'||t==='C'){const C=CHESTS[k],ck=chestKey(tx,ty);if(S.flags.chests[ck])return showDialog(['The chest is empty.']);
     if(C.grand&&!S.flags.sentinel)return vaultFight();
     let msg;if(C.gear){S.bag[C.gear]=(S.bag[C.gear]||0)+1;msg=`Found ${GEAR[C.gear].name}!`;}else if(C.gil){S.gil+=C.gil;msg=`Found ${fmtG(C.gil)}!`;}else{S.items[C.item]=(S.items[C.item]||0)+C.n;msg=`Found ${C.n>1?C.n+' ':'a '}${ITEMS[C.item].name}${C.n>1?'s':''}!`;}
-    S.flags.chests[k]=true;drawCastleTex();saveGame();renderMenu();return showDialog([msg].concat(C.gear?['Equip it from the Party menu.']:[]));}
+    S.flags.chests[ck]=true;drawCastleTex();saveGame();renderMenu();return showDialog([msg].concat(C.gear?['Equip it from the Party menu.']:[]));}
 }
 function vaultFight(){showDialog(["The sentinel's eyes flare blue!","“INTRUDERS IN THE ROYAL VAULT. REMOVING.”"],async()=>{
   S.battleReturn='castle';for(let i=0;i<2;i++){flash('#86b4f2',140);await sleep(170);}startBattle(['wardorb','sentinel','wardorb']);flash('#000000',450);});}
 async function guestRest(){S.resting=true;await addFx(1600,(c,p)=>{const a=p<.3?p/.3:p>.75?(1-p)/.25:1;c.fillStyle=`rgba(6,6,24,${a*.85})`;c.fillRect(0,0,W,H);});
   for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;}S.resting=false;say('Well rested. HP and MP fully restored.');saveGame();}
-function enterCastle(pos){
-  if(!CASTLE)buildCastle();else drawCastleTex();
-  S.scene='castle';S.cpos=pos?{...pos}:{x:16*CT+8,y:21*CT+8};S.world.townLock=true;S.world.moving=false;for(const k in keys)keys[k]=false;steer=null;S.croom=roomName();
-  stage.classList.remove('map','town');stage.classList.add('castle');S.parts=[];say('Castle Valemont. Guards snap to attention as you enter.');renderMenu();saveGame();
-}
-function leaveCastle(){S.scene='map';stage.classList.remove('castle');stage.classList.add('map');S.world.townLock=true;say('You step back out into the fields.');renderMenu();saveGame();}
+function enterCastle(pos){enterInterior('castle',pos);}
+function leaveCastle(){if(IM&&IM.parent)return enterInterior(IM.parent,IM.parentPos);S.scene='map';stage.classList.remove('castle');stage.classList.add('map');S.world.townLock=true;say(IM&&IM.out||'You step back out into the fields.');renderMenu();saveGame();}
 function toCastle(msg){
   for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,dx:0,dy:0,flash:0,cast:null,coverHit:false});
   Object.assign(S,{scene:'castle',over:false,busy:false,menu:null,actQ:[],readyQ:[],fx:[],parts:[],onContinue:null});
@@ -1507,9 +1520,9 @@ function toCastle(msg){
   if(msg)say(msg);renderMenu();saveGame();
 }
 function renderCastleMenu(){
-  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">Castle Valemont</span><span class="cls">${esc(S.croom||'')} · ${fmtG(S.gil)}</span></div>`+
-    opt('party','Party','','Status and equipment')+opt('leave','Leave castle')+
-    `<div class="log"><p>${esc('Walk into people to talk, and into chests and beds to use them.')}</p><p>${esc(S.log[S.log.length-1]||'')}</p></div>`;
+  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${esc(IM?IM.name:'Castle Valemont')}</span><span class="cls">${esc(S.croom||'')} · ${fmtG(S.gil)}</span></div>`+
+    opt('party','Party','','Status and equipment')+opt('quests','Quests','','Guild bounties')+opt('leave',IM?IM.leave:'Leave castle')+
+    `<div class="log"><p>${esc('Walk into people to talk, and into doors, chests and beds to use them.')}</p><p>${esc(S.log[S.log.length-1]||'')}</p></div>`;
 }
 /* dialogue window */
 const dlgEl=$('dlg'),dlgText=$('dlgText');
@@ -1517,6 +1530,174 @@ function showDialog(lines,done){if(!lines||!lines.length){if(done)done();return;
 function advanceDlg(){const d=S.dlg;if(!d)return;d.i++;if(d.i>=d.lines.length){dlgEl.hidden=true;S.dlg=null;renderMenu();if(d.done)d.done();return;}dlgText.textContent=d.lines[d.i];}
 dlgEl.addEventListener('pointerdown',e=>{e.stopPropagation();advanceDlg();});
 addEventListener('keydown',e=>{if(!S||!S.dlg)return;if(['Enter',' ','z','Z','Escape'].includes(e.key)||MOVE_KEYS.includes(e.key.toLowerCase())){e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)advanceDlg();}},true);
+
+
+/* ---------- towns: shared interior engine ---------- */
+let IM=null;
+const chestKey=(x,y)=>(IM&&IM.id!=='castle'?IM.id+':':'')+x+','+y;
+const VMAP={
+ man:["...hhhh.....","..hhhhhh....","..hseseh....","..hssssh....","...ssss.....","..ttttttt...",".sttttttts..",".sttttttts..","..ttttttt...","..pppppp....","..pp..pp....",".kkk..kkk..."],
+ woman:["...hhhh.....","..hhhhhh....",".hhseseh....",".hhssssh....",".hh.ss.h....","..ddddddd...",".sdddddds...","..ddddddd...","..dddddddd..",".dddddddddd.",".dddddddddd.","..kk...kk..."],
+ kid:["....hhhh....","...hseseh...","...hsssh....","....tttt....","...sttttss..","....tttt....","....pppp....","....p..p....","...kk..kk..."]
+};
+const VPAL=(o)=>Object.assign({s:'#eabf98',e:'#1b1012',k:'#3a2418'},o);
+Object.assign(NPCSPR,{
+ farmer:{pal:VPAL({h:'#d8b060',t:'#5a8a3a',p:'#6e5a3a'}),map:VMAP.man},
+ man:{pal:VPAL({h:'#5a3a24',t:'#a83a3a',p:'#3a3a58'}),map:VMAP.man},
+ elder:{pal:VPAL({h:'#e8e8f0',t:'#6a4a8a',p:'#4a4a5a'}),map:VMAP.man},
+ adventurer:{pal:VPAL({h:'#c8c8d8',t:'#8a6a3a',p:'#5a3a24'}),map:VMAP.man},
+ ranger:{pal:VPAL({h:'#2f8a4a',t:'#3e6e2c',p:'#5a3a24'}),map:VMAP.man},
+ guildmaster:{pal:VPAL({h:'#3a3a3a',t:'#2a5a3a',p:'#3a3a3a'}),map:VMAP.man},
+ woman:{pal:VPAL({h:'#8a4a24',d:'#3a7ac8'}),map:VMAP.woman},
+ woman2:{pal:VPAL({h:'#e0b040',d:'#c85a8a'}),map:VMAP.woman},
+ mage:{pal:VPAL({h:'#2a2a3a',d:'#7a48b0'}),map:VMAP.woman},
+ kid:{pal:VPAL({h:'#c86a2a',t:'#e8c040',p:'#3a5ab0'}),map:VMAP.kid},
+ kid2:{pal:VPAL({h:'#3a2418',t:'#d85a5a',p:'#4a4a5a'}),map:VMAP.kid}
+});
+const MAPS={
+ castle:{id:'castle',name:'Castle Valemont',w:33,h:24,npcs:NPCS_C,rooms:ROOMS_C,chests:CHESTS_C,entry:{x:16*CT+8,y:21*CT+8},hello:'Castle Valemont. Guards snap to attention as you enter.',leave:'Leave castle',out:'You step back out onto the castle grounds.',build:()=>buildCastle()},
+ village:{id:'village',name:'Valemont Village',w:34,h:26,entry:{x:17*CT,y:23*CT+8},hello:'Valemont Village. Shops and the Adventurers’ Guild line the streets.',leave:'Leave village',out:'You head back onto the castle road.',
+  build(){const g=gridFill(this.w,this.h,'g'),set=(x,y,c)=>{if(x>=0&&y>=0&&x<this.w&&y<this.h)g[y][x]=c;};
+   for(let x=0;x<this.w;x++){set(x,0,'W');set(x,this.h-1,'W');}for(let y=0;y<this.h;y++){set(0,y,'W');set(this.w-1,y,'W');}
+   for(let x=1;x<this.w-1;x++){set(x,7,'s');set(x,8,'s');set(x,20,'s');set(x,21,'s');}
+   for(let y=7;y<this.h-1;y++){set(16,y,'s');set(17,y,'s');}
+   for(let y=9;y<=14;y++)for(let x=13;x<=20;x++)set(x,y,'s');
+   for(const[dx,dy]of[[0,0],[1,0],[0,1],[1,1]])set(16+dx,11+dy,'F');
+   for(const[x,y]of[[14,10],[19,10],[14,13],[19,13]])set(x,y,'v');for(const[x,y]of[[12,9],[21,9],[12,14],[21,14]])set(x,y,'l');
+   for(const[x,y]of[[3,10],[6,12],[9,10],[10,13],[23,10],[26,12],[29,10],[30,13],[3,23],[8,23],[25,23],[30,23],[11,24],[22,24],[14,16],[19,17]])set(x,y,'Y');
+   for(const[x,y]of[[5,11],[8,11],[24,11],[27,11],[13,23],[20,23],[15,17],[18,16],[5,23],[28,24],[2,13],[31,9]])set(x,y,'o');
+   this.buildings=[{x:2,y:2,w:5,h:5,door:4,roof:'#a8402a',sign:'weapon'},{x:8,y:2,w:5,h:5,door:10,roof:'#3a5ab0',sign:'armor'},
+    {x:14,y:1,w:6,h:6,door:16,roof:'#8a2a2a',sign:'guild',wall:'#d8c8a0'},{x:21,y:2,w:5,h:5,door:23,roof:'#7a48b0',sign:'magic'},{x:27,y:2,w:5,h:5,door:29,roof:'#5a7a3a'},
+    {x:2,y:15,w:5,h:5,door:4,roof:'#3e8a46',sign:'item'},{x:8,y:15,w:6,h:5,door:10,roof:'#c8902a',sign:'inn'},{x:20,y:15,w:5,h:5,door:22,roof:'#a85a3a'},{x:26,y:15,w:6,h:5,door:28,roof:'#4a6aa8'}];
+   for(const b of this.buildings){for(let y=b.y;y<b.y+b.h;y++)for(let x=b.x;x<b.x+b.w;x++)set(x,y,'H');set(b.door,b.y+b.h-1,'d');}
+   this.fountain={x:16,y:11};set(16,this.h-1,'E');set(17,this.h-1,'E');return g;},
+  doors:{'4,6':{shop:'weapon'},'10,6':{shop:'armor'},'16,6':{guild:true},'23,6':{shop:'magic'},'29,6':{house:['The door is locked. A note says: “Gone fishing.”']},
+   '4,19':{shop:'item'},'10,19':{inn:true},'22,19':{house:['Someone calls from inside: “We’re not buying anything!”']},'28,19':{house:['The house is quiet. Through the window you see a cat asleep on a stack of books.']}},
+  npcs:[
+   {x:15,y:23,spr:'guard',talk:()=>['Gate guard: Welcome to Valemont Village. The castle road is just outside the gate.']},
+   {x:18,y:23,spr:'guard',talk:()=>['Gate guard: Keep your weapons sheathed in town, and we’ll get along fine.']},
+   {x:9,y:9,spr:'farmer',wander:[2,9,12,14],talk:()=>['Farmer: Thornhares got into my cabbages again. If you’re heading out, give ’em a scare for me.']},
+   {x:22,y:12,spr:'woman',wander:[21,9,31,14],talk:()=>['Villager: The Adventurers’ Guild posts bounties on its board. Good gil for good work!']},
+   {x:15,y:9,spr:'kid',wander:[13,9,20,14],talk:()=>['Kid: Tag! You’re it! …Hey, come back!']},
+   {x:18,y:14,spr:'kid2',wander:[13,9,20,14],talk:()=>['Kid: When I grow up I’m going to slay a wyrm too. A bigger one.']},
+   {x:5,y:21,spr:'elder',wander:[2,20,14,22],talk:()=>['Elder: Mythril is expensive, but it’s worth every gil. Ask the armor shop.']},
+   {x:25,y:21,spr:'woman2',wander:[19,20,31,22],talk:()=>['Innkeeper’s daughter: The inn is only 80 gil a night. Best beds this side of the castle!']},
+   {x:24,y:8,spr:'adventurer',wander:[2,7,31,8],talk:()=>[S.flags.ogre?'Adventurer: You took down the Hill Ogre? The whole guild is talking about it.':'Adventurer: Hill Ogres roam the eastern hills. Don’t fight one under-leveled.']},
+   {x:11,y:22,spr:'man',wander:[2,22,14,24],talk:()=>['Merchant: Business is good since the wyrm fell. Caravans run every week now.']}]},
+ town:{id:'town',name:'Thornwick',w:24,h:18,entry:{x:12*CT,y:15*CT+8},hello:'Thornwick. Farmers wave from the fields.',leave:'Leave town',out:'You leave Thornwick behind.',
+  build(){const g=gridFill(this.w,this.h,'g'),set=(x,y,c)=>{if(x>=0&&y>=0&&x<this.w&&y<this.h)g[y][x]=c;};
+   for(let x=0;x<this.w;x++){set(x,0,'f');set(x,this.h-1,'f');}for(let y=0;y<this.h;y++){set(0,y,'f');set(this.w-1,y,'f');}
+   for(let x=1;x<this.w-1;x++){set(x,7,'a');set(x,8,'a');}for(let y=7;y<this.h-1;y++){set(11,y,'a');set(12,y,'a');}
+   for(let y=10;y<=14;y++)for(let x=14;x<=21;x++)if(y%2===0)set(x,y,'k');
+   for(const[x,y]of[[2,9],[8,10],[2,15],[9,15],[21,2],[22,5],[15,2],[20,16]])set(x,y,'Y');for(const[x,y]of[[5,15],[7,9],[19,8],[14,15]])set(x,y,'o');
+   this.buildings=[{x:2,y:2,w:5,h:5,door:4,roof:'#3e8a46',sign:'item'},{x:13,y:2,w:6,h:5,door:15,roof:'#c8902a',sign:'inn'},{x:3,y:10,w:5,h:4,door:5,roof:'#a85a3a'},{x:7,y:2,w:4,h:4,door:9,roof:'#7a5a3a'}];
+   for(const b of this.buildings){for(let y=b.y;y<b.y+b.h;y++)for(let x=b.x;x<b.x+b.w;x++)set(x,y,'H');set(b.door,b.y+b.h-1,'d');}
+   set(11,this.h-1,'E');set(12,this.h-1,'E');return g;},
+  doors:{'4,6':{shop:'item'},'15,6':{inn:true},'5,13':{house:['A farmer’s cottage. It smells of fresh bread.']},'9,5':{house:['The barn door is barred. Something inside goes “moo.”']}},
+  npcs:[
+   {x:16,y:12,spr:'farmer',wander:[14,9,21,15],talk:()=>['Farmer: Fields have been quiet since the wyrm fell. Bless you for that.']},
+   {x:6,y:8,spr:'woman',wander:[1,7,22,8],talk:()=>['Villager: Valemont Village has more shops, and the Adventurers’ Guild. It’s inside the castle walls to the east.']},
+   {x:10,y:12,spr:'kid',wander:[8,9,13,16],talk:()=>['Kid: I saw a Dusk Bat once! It was THIS big!']},
+   {x:19,y:7,spr:'elder',talk:()=>['Old man: Rest at the inn before you head into the desert. Those scorpions don’t play fair.']}]},
+ guild:{id:'guild',name:'Adventurers’ Guild',w:14,h:10,entry:{x:7*CT,y:8*CT+8},hello:'The Adventurers’ Guild hall. Mugs clink and a quest board hangs on the far wall.',leave:'Leave the guild',parent:'village',parentPos:{x:16*CT+8,y:7*CT+8},
+  build(){const g=gridFill(this.w,this.h,'u'),set=(x,y,c)=>{g[y][x]=c;};
+   for(let x=0;x<this.w;x++){set(x,0,'#');set(x,this.h-1,'#');}for(let y=0;y<this.h;y++){set(0,y,'#');set(this.w-1,y,'#');}
+   set(6,0,'J');set(7,0,'J');set(3,0,'n');set(10,0,'n');for(let x=2;x<=5;x++)set(x,3,'x');
+   for(const[x,y]of[[9,4],[10,4],[9,6],[10,6],[2,6],[3,6]])set(x,y,'t');set(1,1,'p');set(12,1,'p');set(12,8,'p');set(6,this.h-1,'E');set(7,this.h-1,'E');return g;},
+  npcs:[
+   {x:3,y:2,spr:'guildmaster',talk:()=>{showDialog(['Guildmaster Orla: Welcome, heroes. Bounties are posted on the board.','Guildmaster Orla: Take on what you can handle. Finish a job and I’ll pay you here.'],()=>openGuild(false));return null;}},
+   {x:11,y:5,spr:'ranger',talk:()=>['Ranger: Mandrakes drink water like it’s ale. Don’t bother summoning Undine on them.']},
+   {x:4,y:7,spr:'mage',wander:[1,7,12,8],talk:()=>['Mage: Ward Orbs soak up ice magic. Holy light cracks them, though.']},
+   {x:8,y:5,spr:'adventurer',talk:()=>['Adventurer: Climb the ranks and the guild trusts you with the big bounties.']}]}
+};
+function gridFill(w,h,c){const g=[];for(let y=0;y<h;y++)g.push(Array(w).fill(c));return g;}
+function drawExtraTile(t,tx,ty,f,ch){
+  const r=k=>((tx*73856093^ty*19349663^k*83492791)>>>0)%1000/1000;
+  const grass=()=>{f('#48a838',0,0,16,16);for(let k=0;k<3;k++){const x=1+((r(k)*12)|0),y=1+((r(k+4)*12)|0);f('#2f7c24',x,y);f('#2f7c24',x+2,y);f('#2f7c24',x+1,y+1);}};
+  const cobble=()=>{f('#a89c80',0,0,16,16);for(const[x,y,w]of[[0,0,7],[8,0,8],[3,5,9],[0,10,6],[7,10,9]]){f('#c8bca0',x+1,y+1,w-2,3);f('#b4a88c',x+1,y+3,w-2,1);}};
+  switch(t){
+    case 'g':grass();break;
+    case 's':case 'H':case 'd':case 'F':case 'v':case 'l':cobble();if(t==='v'){f('#5a3418',2,6,12,2);f('#8a5a2a',2,4,12,3);f('#5a3418',3,8,2,4);f('#5a3418',11,8,2,4);}
+      if(t==='l'){f('#3a3a46',7,4,2,12);f('#3a3a46',5,1,6,4);f('#ffd34a',6,2,4,2);}break;
+    case 'a':f('#c8a870',0,0,16,16);for(let k=0;k<4;k++)f(k%2?'#a88a58':'#dcc08a',(r(k)*15)|0,(r(k+6)*15)|0,2,1);break;
+    case 'Y':grass();f('#174d1e',2,2,12,11);f('#2a7a2e',3,1,10,11);f('#4aa040',4,2,4,3);f('#14421a',4,11,8,2);f('#5a3a24',7,12,2,4);break;
+    case 'o':grass();for(let k=0;k<5;k++)f(['#e84040','#ffd34a','#ffffff','#e88ad0','#ff9a3a'][k],(r(k)*13+1)|0,(r(k+7)*13+1)|0,2,2);break;
+    case 'W':{f('#7a7a8a',0,0,16,16);for(let row=0;row<4;row++){const y=row*4+3;f('#55556a',0,y,16,1);const off=row%2?4:0;f('#55556a',off+3,y-3,1,3);f('#55556a',off+11,y-3,1,3);}
+      if(ch(tx,ty-1)!=='W'){f('#5a5a6a',0,0,16,3);for(let x=0;x<16;x+=4)f('#b8b8c8',x,0,2,2);}if(ch(tx,ty+1)!=='W')f('#44444f',0,14,16,2);break;}
+    case 'f':grass();f('#7a5a34',1,3,2,11);f('#7a5a34',13,3,2,11);f('#a07a48',0,5,16,2);f('#a07a48',0,10,16,2);break;
+    case 'k':f('#8a6a40',0,0,16,16);for(let x=1;x<16;x+=4){f('#6e5030',x,0,1,16);f('#5ab848',x+1,3,2,2);f('#5ab848',x+1,10,2,2);f('#7ad05a',x+1,3,1,1);}break;
+    case 'u':f('#9a6a3a',0,0,16,16);for(let y=3;y<16;y+=5)f('#7a4a24',0,y,16,1);f('#7a4a24',((tx+ty)%2)*8+4,0,1,16);f('#aa7a48',1,0,14,1);break;
+    case 'x':f('#9a6a3a',0,0,16,16);f('#3a2418',0,2,16,14);f('#8a5a2a',0,2,16,4);f('#a8703a',0,2,16,1);f('#5a3418',0,6,16,10);break;
+    case 'J':{f('#5a5a6a',0,0,16,16);f('#7a4a24',1,2,14,12);f('#b8884a',2,3,12,10);for(const[x,y]of[[3,4],[8,5],[4,9],[9,9]]){f('#f0e8d0',x,y,4,3);f('#a82a2a',x+1,y,1,1);}break;}
+  }
+}
+function drawOverlays(c){
+  if(!IM)return;
+  if(IM.fountain){const X=IM.fountain.x*CT,Y=IM.fountain.y*CT,f=(col,x,y,w=1,h=1)=>{c.fillStyle=col;c.fillRect(X+x,Y+y,w,h);};
+    f('#6a6a7a',2,4,28,26);f('#9a9aac',3,4,26,24);f('#3a6ad0',6,8,20,16);f('#6aa8f0',7,9,8,3);f('#c8c8d8',14,6,4,14);f('#e8e8f0',15,4,2,4);f('#bfe0f8',12,3,8,2);f('#ffffff',10,12,1,1);f('#ffffff',21,17,1,1);}
+  for(const b of IM.buildings||[]){
+    const X=b.x*CT,Y=b.y*CT,w=b.w*CT,h=b.h*CT,f=(col,x,y,ww=1,hh=1)=>{c.fillStyle=col;c.fillRect(X+x,Y+y,ww,hh);},rh=Math.round(h*.46);
+    f('#3a2418',0,rh-2,w,h-rh+2);f(b.wall||'#e8d8b0',1,rh,w-2,h-rh-1);f('#a88a5a',1,rh,w-2,2);
+    for(let i=0;i<b.w;i++){if(b.x+i===b.door)continue;f('#3a2418',i*16+4,rh+7,8,8);f('#7ab0e0',i*16+5,rh+8,6,6);f('#bfe0f8',i*16+5,rh+8,2,2);f('#a88a5a',i*16+4,rh+15,8,1);}
+    for(let y=0;y<rh;y++){const ins=Math.round((rh-1-y)*.3);f(b.roof,ins,y,w-2*ins,1);if(y%4===3)f('#00000030',ins,y,w-2*ins,1);}
+    f('#ffffff30',Math.round((rh-1)*.3),0,w-2*Math.round((rh-1)*.3),1);f('#00000055',0,rh-1,w,1);
+    if(b.sign==='guild'){for(const x of[6,w-12]){f('#a82a2a',x,rh+2,6,12);f('#d8a840',x,rh+2,6,1);f('#d8a840',x+2,rh+6,2,2);}}
+    const dx=(b.door-b.x)*16;f('#3a2418',dx+2,h-16,12,16);f(b.sign==='guild'?'#5a2a1a':'#7a4a24',dx+3,h-15,10,15);f('#5a3418',dx+8,h-15,1,15);f('#ffd34a',dx+10,h-8,1,2);
+    if(b.sign){const sx=X+dx+8,sy=Y+rh+7;c.fillStyle='#5a3a24';c.fillRect(sx-7,sy-5,14,10);c.fillStyle='#e8d0a0';c.fillRect(sx-6,sy-4,12,8);
+      const fa=(col,x,y,ww=1,hh=1)=>{c.fillStyle=col;c.fillRect(Math.round(x),Math.round(y),ww,hh);};
+      if(b.sign==='guild'){for(let k=0;k<7;k++){fa('#8a8a9a',sx-3+k,sy-3+k);fa('#8a8a9a',sx+3-k,sy-3+k);}fa('#d8a840',sx-1,sy-1,2,2);}else drawSign(fa,b.sign,sx,sy);}
+  }
+}
+function wanderNPCs(dt){
+  const p=S.cpos,ptx=Math.floor(p.x/CT),pty=Math.floor(p.y/CT);
+  for(const n of NPCS){
+    if(n.ox){n.ox-=Math.sign(n.ox)*Math.min(Math.abs(n.ox),36*dt);}if(n.oy){n.oy-=Math.sign(n.oy)*Math.min(Math.abs(n.oy),36*dt);}
+    if(!n.wander||S.dlg||n.ox||n.oy)continue;n.wt=(n.wt||rnd(.5,2.5))-dt;if(n.wt>0)continue;n.wt=rnd(1.2,3.5);
+    const[dx,dy]=pick([[1,0],[-1,0],[0,1],[0,-1],[0,0]]);if(!dx&&!dy)continue;const tx=n.x+dx,ty=n.y+dy,[x0,y0,x1,y1]=n.wander;
+    if(tx<x0||tx>x1||ty<y0||ty>y1||C_BLOCK.has(CASTLE[ty][tx])||CASTLE[ty][tx]==='E'||(tx===ptx&&ty===pty)||NPCS.some(o=>o!==n&&o.x===tx&&o.y===ty))continue;
+    n.x=tx;n.y=ty;n.ox=-dx*CT;n.oy=-dy*CT;if(dx)n.face=dx;
+  }
+}
+function enterInterior(id,pos){
+  const M=MAPS[id];IM=M;CW=M.w;CH=M.h;NPCS=M.npcs||[];CHESTS=M.chests||{};ROOMS=M.rooms||[];
+  if(!M.grid)M.grid=M.build();CASTLE=M.grid;ctex.width=CW*CT;ctex.height=CH*CT;drawCastleTex();
+  S.scene='castle';S.imap=id;S.cpos=pos?{x:pos.x,y:pos.y}:{...M.entry};S.world.townLock=true;S.world.moving=false;for(const k in keys)keys[k]=false;steer=null;S.croom=roomName();
+  stage.classList.remove('map','town');stage.classList.add('castle');S.parts=[];say(M.hello);renderMenu();saveGame();
+}
+
+/* ---------- Adventurers' Guild quests ---------- */
+const QUESTS=[
+ {id:'goblins',name:'Goblin Trouble',desc:'Goblins harass travelers on the grassland roads. Defeat 5.',kind:'goblin',n:5,rank:0,rew:{gil:400,exp:300}},
+ {id:'slimes',name:'Slime Samples',desc:'The magic shop wants Bog Slime gel. Defeat 4 Bog Slimes.',kind:'slime',n:4,rank:0,rew:{gil:300,items:{hipotion:3}}},
+ {id:'bats',name:'Bat Swarm',desc:'Dusk Bats swarm the forests and deserts. Defeat 6.',kind:'bat',n:6,rank:0,rew:{gil:450,exp:300}},
+ {id:'wolves',name:'Wolf Pack',desc:'Grave Wolves stalk the woodcutters. Defeat 4.',kind:'wolf',n:4,rank:1,rew:{gil:500,gear:'angelring'}},
+ {id:'scorpions',name:'Desert Menace',desc:'Dune Scorpions block the caravan routes. Defeat 3.',kind:'scorpion',n:3,rank:1,rew:{gil:600,gear:'speedband'}},
+ {id:'salamanders',name:'Salamander Scales',desc:'Bring down 3 Ash Salamanders on the slopes of Ember Peak.',kind:'salamander',n:3,rank:2,rew:{gil:800,items:{elixir:1}}},
+ {id:'ogre',name:'Ogre Bounty',desc:'A standing bounty on the Hill Ogre that raids the hill farms.',kind:'ogre',n:1,rank:2,rew:{gil:1500,exp:600}}
+];
+const RANKS=['Copper','Bronze','Silver','Gold'];
+const questsDone=()=>Object.values(S.quests).filter(q=>q.state==='done').length;
+const rankIx=()=>{const d=questsDone();return d>=6?3:d>=4?2:d>=2?1:0;};
+const qProg=q=>{const st=S.quests[q.id];return st?Math.min(q.n,(S.kills[q.kind]||0)-st.base):0;};
+function rewText(r){const a=[];if(r.gil)a.push(fmtG(r.gil));if(r.exp)a.push(r.exp+' EXP');if(r.items)for(const k in r.items)a.push(`${ITEMS[k].name} ×${r.items[k]}`);if(r.gear)a.push(GEAR[r.gear].name);return a.join(' · ');}
+function questNotices(){const out=[];for(const q of QUESTS){const st=S.quests[q.id];if(st&&st.state==='active'&&!st.ready&&qProg(q)>=q.n){st.ready=true;out.push(`Quest complete: ${q.name}! Report to the guild.`);}}return out;}
+const guildOv=$('guildOv');let guildRemote=true,guildNote='';
+function openGuild(remote){guildRemote=remote;guildNote=remote?'Visit the guild hall in Valemont Village to accept bounties and collect rewards.':'';drawGuild();openSheet(guildOv,$('guildClose'));}
+function drawGuild(){
+  $('guildGil').textContent=fmtG(S.gil);$('guildRank').textContent=`Guild rank: ${RANKS[rankIx()]} · ${questsDone()} bounties completed`;
+  $('guildList').innerHTML=QUESTS.map(q=>{const st=S.quests[q.id],p=qProg(q),locked=rankIx()<q.rank;let status,btn='';
+    if(!st){status=locked?`Requires ${RANKS[q.rank]} rank`:'Available';btn=`<button type="button" class="btn sm" data-q="accept:${q.id}"${locked||guildRemote?' disabled':''}>Accept</button>`;}
+    else if(st.state==='done'){status='Completed';}
+    else{status=`Progress ${p} / ${q.n}`;btn=p>=q.n?`<button type="button" class="btn sm" data-q="claim:${q.id}"${guildRemote?' disabled':''}>Claim</button>`:'';}
+    return `<div class="srow"><div class="sinfo"><b>${esc(q.name)}</b><span>${esc(q.desc)}</span><span class="cmp"><span class="up">Reward: ${esc(rewText(q.rew))}</span></span></div><div class="sbuy"><span class="own">${esc(status)}</span>${btn}</div></div>`;}).join('');
+  $('guildMsg').innerHTML=esc(guildNote);
+}
+$('guildList').onclick=e=>{const b=e.target.closest('[data-q]');if(!b||b.disabled)return;const[act,id]=b.dataset.q.split(':'),q=QUESTS.find(x=>x.id===id);
+  if(act==='accept'){S.quests[id]={state:'active',base:S.kills[q.kind]||0};guildNote=`Accepted: ${q.name}. Good hunting.`;}
+  if(act==='claim'){const r=q.rew,before=rankIx();S.gil+=r.gil||0;if(r.items)for(const k in r.items)S.items[k]=(S.items[k]||0)+r.items[k];if(r.gear)S.bag[r.gear]=(S.bag[r.gear]||0)+1;
+    const ups=r.exp?awardBattle(r.exp,0):[];S.quests[id].state='done';guildNote=`Reward claimed: ${rewText(r)}.`+(ups.length?' '+ups.join(' '):'')+(rankIx()>before?` Guild rank up: ${RANKS[rankIx()]}!`:'');}
+  drawGuild();renderMenu();saveGame();};
+$('guildClose').onclick=()=>{closeSheet(guildOv);renderMenu();};
 
 /* ---------- auto battle AI ---------- */
 const STRATS={
@@ -1645,9 +1826,10 @@ function showOver(win){
   const d=S.foes[0],wy=d.kind==='wyrm',ret=()=>S.battleReturn==='castle'?toCastle():toMap();let t,p,b;
   if(win&&wy){S.wyrmDone=true;const ups=awardBattle(800,1500);t='Victory';p=`Both forms felled in ${fmt(S.clock)}. Gained 800 EXP and 1,500 G.`+(ups.length?' '+ups.join(' '):'');b='Enter the world map';S.onContinue=()=>toMap('The pass is clear. The world opens up before you.');}
   else if(win){let ex=0,gl=0;const got=[];for(const f of S.foes){const m=MON[f.kind];ex+=m.exp;gl+=m.gil;got.push(...rollDrops(f));}
-    const ups=awardBattle(ex,gl);let extra='';
+    for(const f of S.foes)S.kills[f.kind]=(S.kills[f.kind]||0)+1;const ups=awardBattle(ex,gl);let extra='';
     if(S.foes.some(f=>f.kind==='ogre')&&!S.flags.ogre){S.flags.ogre=true;extra=' The Hill Ogre is slain! King Aldous will want to hear of this.';}
     if(S.foes.some(f=>f.kind==='sentinel')&&!S.flags.sentinel){S.flags.sentinel=true;extra=' The sentinel crumbles. The grand chest is unguarded.';}
+    for(const n of questNotices())extra+=' '+n;
     t='Victory';p=`Gained ${ex} EXP and ${gl} G.`+(got.length?` Found ${got.join(', ')}.`:'')+(ups.length?' '+ups.join(' '):'')+extra;b='Continue';S.onContinue=ret;}
   else if(wy){t='The party has fallen';p=`${d.phase===2?'The Molten Wyrm':'The Ember Wyrm'} still had ${d.hp.toLocaleString()} of ${d.max.toLocaleString()} HP.`;b='Fight again';S.onContinue=newGame;}
   else{const inC=S.battleReturn==='castle';t='The party has fallen';p=inC?'The sentinel drove you out. You wake in the castle guest rooms, fully rested.':`The monsters drove you off. You wake at camp, fully rested.`;b=inC?'Wake up':'Return to camp';
@@ -1791,7 +1973,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.1.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.2.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

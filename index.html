@@ -143,6 +143,9 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .hud{--fs:min(3.15cqh,2.2cqw);font-size:var(--fs);display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr);gap:1cqh;min-height:0}
 .panel{background:var(--panel);border:2px solid var(--line);box-shadow:inset 0 0 0 2px #0a070b,inset 0 0 0 3px var(--panel-2);padding:.35em .55em;min-width:0;min-height:0;overflow:auto}
 .cmd{display:flex;flex-direction:column;gap:.05em}
+.cmd>*{flex-shrink:0}
+.opt.armed .l{color:var(--limit)} .opt.armed::before{color:var(--limit);opacity:1}
+.btn.armed{color:var(--limit);border-color:var(--limit)}
 .cmd-h{display:flex;align-items:baseline;gap:.4em;border-bottom:1px solid var(--line);padding-bottom:.2em;margin-bottom:.1em}
 .who{font-family:var(--f-display);font-size:.62em;color:var(--gold);letter-spacing:.06em}
 .cls{color:var(--muted);font-size:.85em}
@@ -246,7 +249,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.7.3</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.7.4</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -1473,7 +1476,7 @@ function drawField(h){
       if(busy)why='Use in battle';else if(!fieldOk(h))why=h.ko?'Knocked out':'Turned to stone';else if(h.mp<sk.mp)why='Not enough MP';
       else if(k==='exit'&&!exitOk())why='Only indoors';else if(k==='phoenix'&&!S.heroes.some(x=>x.ko)&&!fieldTargets('hp').length)why='No one needs it';
       else if(k!=='exit'&&k!=='phoenix'&&!fieldTargets(skType(id)).length)why='No one needs it';
-      return `<div class="srow"><div class="sinfo"><b>${esc(sk.name)}</b><span>${esc(k==='exit'?'Warp out of any dungeon, castle or town to the world map':sk.d)} · ${sk.mp} MP</span></div><div class="sbuy">${why?`<span class="own">${why}</span>`:''}<button type="button" class="btn sm" data-fs="${id}"${why?' disabled':''}>${id==='exit'&&exitArmed()?'Tap again':'Cast'}</button></div></div>`;}).join('')+'</div>';}
+      return `<div class="srow"><div class="sinfo"><b>${esc(sk.name)}</b><span>${esc(k==='exit'?'Warp out of any dungeon, castle or town to the world map':sk.d)} · ${sk.mp} MP</span></div><div class="sbuy">${why?`<span class="own">${why}</span>`:''}<button type="button" class="btn sm${id==='exit'&&exitArmed()?' armed':''}" data-fs="${id}"${why?' disabled':''}>${id==='exit'&&exitArmed()?'Tap again':'Cast'}</button></div></div>`;}).join('')+'</div>';}
   const its=FIELD_IT.filter(id=>S.items[id]>0);
   html+=`<p class="lab">Items</p>`+(its.length?`<div class="slist">`+its.map(id=>{const t=itType(id),need=t==='party'||t==='hpmp'?S.heroes.some(x=>fieldOk(x)&&(x.hp<x.maxhp||x.mp<x.maxmp)):fieldTargets(t).length;
       return `<div class="srow"><div class="sinfo"><b>${esc(ITEMS[id].name)}</b><span>${esc(ITEMS[id].d)} · have ${S.items[id]}</span></div><div class="sbuy">${busy||!need?`<span class="own">${busy?'Use in battle':'No one needs it'}</span>`:''}<button type="button" class="btn sm" data-fi="${id}"${busy||!need?' disabled':''}>Use</button></div></div>`;}).join('')+'</div>':'<p class="tip">No usable items.</p>');
@@ -1690,7 +1693,7 @@ function toCastle(msg){
 }
 function renderCastleMenu(){
   cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${esc(IM?IM.name:'Castle Valemont')}</span><span class="cls">${esc(S.croom||'')} · ${fmtG(S.gil)}</span></div>`+
-    opt('party','Party','','Status and equipment')+opt('quests','Quests','','Guild bounties')+(IM&&IM.dungeon?opt('camp','Camp','Tent ×'+(S.items.tent||0),onSave()?'Safe spot: restore all HP and MP':'Find a save circle to camp',!onSave()||!S.items.tent||S.resting):'')+(exitOk()?opt('exit',exitArmed()?'Tap again to cast Exit':'Exit',SK.exit.mp+' MP',exitArmed()?'Confirm: Ilse warps the party out to the world map':'Ilse warps the party out to the world map',!exitReady(),exitArmed()?'lim':''):'')+(IM&&!IM.leave?'':opt('leave',IM?IM.leave:'Leave castle'))+
+    opt('party','Party','','Status and equipment')+opt('quests','Quests','','Guild bounties')+(IM&&IM.dungeon?opt('camp','Camp','Tent ×'+(S.items.tent||0),onSave()?'Safe spot: restore all HP and MP':'Find a save circle to camp',!onSave()||!S.items.tent||S.resting):'')+(exitOk()?opt('exit',exitArmed()?'Tap again to cast Exit':'Exit',SK.exit.mp+' MP','Ilse warps the party out to the world map',!exitReady(),exitArmed()?'armed':''):'')+(IM&&!IM.leave?'':opt('leave',IM?IM.leave:'Leave castle'))+
     `<div class="log"><p>${esc('Walk into people to talk, and into doors, chests and beds to use them.')}</p><p>${esc(S.log[S.log.length-1]||'')}</p></div>`;
 }
 /* dialogue window */
@@ -2943,7 +2946,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.7.3',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.7.4',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

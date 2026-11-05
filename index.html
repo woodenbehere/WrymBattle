@@ -245,7 +245,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.3.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.3.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -297,7 +297,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <p class="lab">Strategy</p>
     <div class="strats" id="stratList"></div>
     <p class="lab">Heroes on auto &middot; habit</p>
-    <p class="tip">A habit overrides the strategy whenever it can be used. Full limit breaks still fire.</p>
+    <p class="tip">A habit overrides the strategy whenever it can be used, using the strongest version of a spell the hero has learned. New spells appear here once bought. Full limit breaks still fire.</p>
     <div class="awho" id="autoWho"></div>
     <div class="arow">
       <button class="btn ghost" id="autoOff" type="button">Manual control</button>
@@ -1837,9 +1837,9 @@ const STRATS={
 const HABITS={
  fighter:{rage:'Always Rage Strike',fight:'Always Fight'},
  thief:{steal:'Always Steal',mug:'Always Mug'},
- white:{cure:'Always Cure',cureall:'Always Cure All'},
- black:{frost:'Always Frost',thunder:'Always Thunder'},
- summoner:{undine:'Always Undine',sylph:'Always Sylph'}
+ white:{cure:'Always Cure',cura:'Always Cura',cureall:'Always Cure All',holy:'Always Holy'},
+ black:{fire:'Always Fire',frost:'Always Ice',thunder:'Always Lightning'},
+ summoner:{undine:'Always Undine',glacia:'Always Glacia',raijin:'Always Raijin',sylph:'Always Sylph'}
 };
 function habitAct(h,hb){
   const low=alive().sort((a,b)=>a.hp/a.maxhp-b.hp/b.maxhp)[0];
@@ -1848,8 +1848,9 @@ function habitAct(h,hb){
     case 'rage':return{kind:'skill',id:'rage'};
     case 'steal':return{kind:'skill',id:liveFoes().some(f=>f.steals>0)?'steal':'mug'};
     case 'mug':return{kind:'skill',id:'mug'};
-    case 'cure':return h.mp>=SK.cure.mp&&low?{kind:'skill',id:'cure',tg:low}:null;
-    default:return SK[hb]&&h.mp>=SK[hb].mp?{kind:'skill',id:hb}:null;
+    case 'cure':case 'cura':return h.skills.includes(hb)&&h.mp>=SK[hb].mp&&low?{kind:'skill',id:hb,tg:low}:null;
+    case 'fire':case 'frost':case 'thunder':if(h.key==='black'){for(const id of{fire:['fira','flame'],frost:['blizzara','frost'],thunder:['thundara','thunder']}[hb])if(h.skills.includes(id)&&h.mp>=SK[id].mp)return{kind:'skill',id};return null;}
+    default:return SK[hb]&&h.skills.includes(hb)&&h.mp>=SK[hb].mp?{kind:'skill',id:hb}:null;
   }
 }
 function aiFoe(c){const L=liveFoes();if(!L.length)return null;
@@ -1912,10 +1913,14 @@ function aiChoose(h){
   switch(h.key){
     case 'fighter':return((k==='aggressive'&&pct(h)>.4)||(k==='balanced'&&pct(h)>.75))?{kind:'skill',id:'rage'}:{kind:'fight'};
     case 'thief':return liveFoes().some(f=>f.steals>0)?{kind:'skill',id:k==='aggressive'?'mug':'steal'}:{kind:'fight'};
-    case 'black':{const off=h.skills.filter(id=>POW[id]&&SK[id].t==='enemy').map(id=>({id,v:POW[id]*bestMult(SK_EL[id])})).filter(o=>o.v>0).sort((a,b)=>b.v-a.v);for(const o of off)if(use(o.id))return{kind:'skill',id:o.id};}
+    case 'black':{const off=h.skills.filter(id=>POW[id]&&SK[id].t==='enemy').map(id=>{const v=POW[id]*bestMult(SK_EL[id]);return{id,v,s:k==='conserve'?v/SK[id].mp:v};}).filter(o=>o.v>0);
+      // finish off a weakened enemy with the cheapest spell that will do it
+      const weak=liveFoes().slice().sort((a,b)=>a.hp-b.hp)[0];
+      if(weak){const kill=off.filter(o=>elemMult(SK_EL[o.id],weak)>0&&h.mag*POW[o.id]*elemMult(SK_EL[o.id],weak)*.9>=weak.hp).sort((a,b)=>SK[a.id].mp-SK[b.id].mp)[0];if(kill&&can(kill.id))return{kind:'skill',id:kill.id,foe:weak};}
+      off.sort((a,b)=>b.s-a.s);for(const o of off)if(use(o.id))return{kind:'skill',id:o.id};}
       if(h.mp<10&&I.ether&&k!=='aggressive')return{kind:'item',id:'ether',tg:h};return{kind:'fight'};
-    case 'summoner':{const off=['undine','glacia','raijin'].filter(id=>h.skills.includes(id)).map(id=>({id,m:bestMult(SK_EL[id]),v:POW[id]*bestMult(SK_EL[id])})).filter(o=>o.v>0&&(k!=='conserve'||o.m>=2)).sort((a,b)=>b.v-a.v);for(const o of off)if(use(o.id))return{kind:'skill',id:o.id};return{kind:'fight'};}
-    case 'white':if(k==='aggressive'&&h.skills.includes('holy')&&use('holy'))return{kind:'skill',id:'holy'};return{kind:'fight'};
+    case 'summoner':{const off=['undine','glacia','raijin'].filter(id=>h.skills.includes(id)).map(id=>{const tot=liveFoes().reduce((a,f)=>a+elemMult(SK_EL[id],f),0);return{id,m:bestMult(SK_EL[id]),v:POW[id]*tot};}).filter(o=>o.v>0&&(k!=='conserve'||o.m>=2)).sort((a,b)=>b.v-a.v);for(const o of off)if(use(o.id))return{kind:'skill',id:o.id};return{kind:'fight'};}
+    case 'white':{if(h.skills.includes('holy')){const hm=bestMult('holy');if((k==='aggressive'||hm>1||(k==='balanced'&&h.mp>h.maxmp*.6))&&use('holy'))return{kind:'skill',id:'holy'};}return{kind:'fight'};}
   }
   return{kind:'fight'};
 }
@@ -1978,7 +1983,7 @@ function update(dt){
     for(const d of S.foes){const wy=d.kind==='wyrm';if(d.dead||d.queued)continue;d.atb+=36*dt*(wy?(d.phase===2?1.2:1)*(d.hp<d.max*.3?1.35:1):MON[d.kind].spd);if(d.atb>=100){d.atb=100;d.queued=true;S.actQ.push({actor:d,run:()=>{setTarget(d);return wy?dragonAct():monsterAct();}});}}
   }
   if(!S.busy&&!S.paused&&S.actQ.length){const a=S.actQ.shift();S.busy=true;(async()=>{try{await a.run();}catch(e){console.error(e);}S.busy=false;afterAction();})();}
-  if(!S.paused){for(const h of S.readyQ.slice())if(isAuto(h)&&!h.ko){const c=aiChoose(h);queueHero(h,c.kind,c.id,c.tg,aiFoe(c));}}
+  if(!S.paused){for(const h of S.readyQ.slice())if(isAuto(h)&&!h.ko){const c=aiChoose(h);queueHero(h,c.kind,c.id,c.tg,c.foe||aiFoe(c));}}
   if(!S.menu&&S.readyQ.length&&!S.paused)openMenu(S.readyQ[0]);
 }
 
@@ -2085,7 +2090,7 @@ let pickStrat='balanced',pickWho={},pickHabit={};
 function drawAuto(){
   $('stratList').innerHTML=Object.entries(STRATS).map(([k,v])=>`<button type="button" class="strat" data-s="${k}" aria-pressed="${k===pickStrat}"><b>${esc(v.name)}</b><span>${esc(v.d)}</span></button>`).join('');
   $('autoWho').innerHTML=S.heroes.map(h=>{const on=!!pickWho[h.key],hv=pickHabit[h.key]||'';
-    const opts=['<option value="">Follow strategy</option>'].concat(Object.entries(HABITS[h.key]).map(([v,l])=>`<option value="${v}"${v===hv?' selected':''}>${esc(l)}</option>`)).join('');
+    const opts=['<option value="">Follow strategy</option>'].concat(Object.entries(HABITS[h.key]).filter(([v])=>!TOMES[v]||h.skills.includes(v)).map(([v,l])=>`<option value="${v}"${v===hv?' selected':''}>${esc(l)}</option>`)).join('');
     return `<div class="hrow"><button type="button" class="chip" data-k="${h.key}" aria-pressed="${on}">${esc(h.name)} <em>${esc(h.cls)}</em></button><select class="hab" id="hab-${h.key}" data-k="${h.key}" aria-label="Habit for ${esc(h.name)}"${on?'':' disabled'}>${opts}</select></div>`;}).join('');
   $('autoOff').hidden=!S.auto.on;
   $('autoGo').textContent=S.auto.on?'Update auto battle':'Start auto battle';
@@ -2103,7 +2108,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.3.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.3.1',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

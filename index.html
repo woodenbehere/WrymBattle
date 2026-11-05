@@ -249,7 +249,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.7.4</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.8.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -261,7 +261,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Limit command appears.</p>
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
-<p><b>The hidden valley</b>: high in the island’s great mountain range lies a valley no road can reach. Fly the Aurora there to find Castle Arcanum and the village of Highmere, with the strongest spells, items and gear in the realm. The magi can raise the lost <b>Isle of Aether</b>, but its winds turn back the airship. King Aldous can build you a port and a ship: walk onto the dock to board, sail the open sea, and steer into any shore to land. The <b>Tower of Aether</b> has a hundred floors, guardians on floors 25, 50 and 75, waystones every tenth floor, and Zephyrion the Sky Wyrm at the top.</p>
+<p><b>The hidden valley</b>: high in the island’s great mountain range lies a valley no road can reach. Fly the Aurora there to find Castle Arcanum and the village of Highmere, with the strongest spells, items and gear in the realm. The magi can raise the lost <b>Isle of Aether</b>, but a wall of storm clouds surrounds it and hurls back the airship. King Aldous can build you a port and a ship: walk onto the dock to board, sail the open sea, and steer into any shore to land. The <b>Tower of Aether</b> has a hundred floors, guardians on floors 25, 50 and 75, waystones every tenth floor, and Zephyrion the Sky Wyrm at the top.</p>
 <p><b>Status ailments</b>: some monsters poison (HP drains over time, even while walking), petrify (the hero is out of the fight until cured) or confuse (the hero attacks at random). Cure them with Antidotes, Gold Needles, Remedies, or the <b>Heal</b> spell. Confusion wears off when a battle ends; poison and stone last until cured, or until you rest at an inn or camp. Open <b>Party</b> outside battle to cast healing magic (Cure, Heal, Revive, Exit and more) and use items. A <b>Ribbon</b> blocks them all. <b>Exit</b> warps the party out of any dungeon, castle or town to the world map. In Ironhold, the <b>Rune Hall</b> sells Firaga, Bio and the summons Ifrit, Titan and Bahamut, and the <b>Training Hall</b> teaches the Fighter monk arts (learn three to become a Monk) and the Thief new tricks.</p>
 <p><b>Deepdelve Mine</b>: on the northern cape, sealed until you finish King Aldous’s Hill Ogre quest and defeat Frostfang. Then a mine shaft drops five levels to Ironhold, the dwarf city. Read the old tablets on the Sky Road, slay Gravemaw the Earth Wyrm to free the trapped dwarves, and their King and Queen can blast free the airship <b>Aurora</b>. Walk aboard to fly anywhere on the world map with no random battles; choose <b>Land</b> to set down on open ground.</p>
 <p><b>Castle Valemont</b>: walk in to meet the King and Queen, rest in the guest rooms, raid the armory, and earn your way into the royal vault. Walk into people to talk to them.</p>
@@ -1023,6 +1023,7 @@ function drawMini(){
   const on=Math.floor(S.t*4)%2===0,sc=castle?3:1,px=castle?S.cpos.x/CT:S.world.x/TS,py=castle?S.cpos.y/CT:S.world.y/TS;
   if(castle){mctx.fillStyle='#86b4f2';for(const n of NPCS){if(n.when&&!n.when())continue;mctx.fillRect(n.x*sc+1,n.y*sc+1,1,1);}}
   else{for(const l of WORLD.lands){mctx.fillStyle=l.id==='peak'?'#ff7a2a':l.id==='castle'?'#ffffff':l.id==='mountain'?'#bfefff':l.id==='delve'?'#ffd34a':l.id==='arcanum'?'#b48cff':l.id==='tower'?'#ffffff':l.id==='port'?'#c8a870':'#ff6a4a';mctx.fillRect(Math.floor(l.x/TS)-1,Math.floor(l.y/TS)-1,3,3);}
+    if(stormOn()){const I=WORLD.isle;mctx.fillStyle='rgba(90,96,120,.85)';for(let a=0;a<6.283;a+=.12){const x=Math.round(I.cx+.5+Math.cos(a+S.t*.1)*STX),y=Math.round(I.cy+.5+Math.sin(a+S.t*.1)*STY);mctx.fillRect(x,y,2,2);}}
     const bt=S.flags&&S.flags.boat;if(bt&&!bt.boarded&&bt.x!=null){mctx.fillStyle='#f0f0f0';mctx.fillRect(Math.floor(bt.x/TS)-1,Math.floor(bt.y/TS),2,2);}
     const sh=S.flags&&S.flags.ship;if(sh&&!sh.boarded&&sh.x!=null){mctx.fillStyle='#86e0ff';mctx.fillRect(Math.floor(sh.x/TS)-1,Math.floor(sh.y/TS),3,2);}}
   mctx.fillStyle=on?'#ffffff':'#ff3a3a';mctx.fillRect(Math.round(px*sc)-1,Math.round(py*sc)-1,castle?3:2,castle?3:2);
@@ -1120,7 +1121,7 @@ function mapRender(dt){
   const w=S.world,T=Math.floor(S.t*1.6)%2?tex2:tex;
   ctx.fillStyle='#2048b8';ctx.fillRect(0,0,W,H);
   ctx.drawImage(T,Math.round(w.x-W/2)+PAD,Math.round(w.y-H/2)+PAD,W,H,0,0,W,H);
-  drawParkedShip();drawParkedBoat();drawWalker();
+  drawParkedShip();drawParkedBoat();drawStorm(dt,false);drawWalker();drawStorm(dt,true);
 }
 function drawWalker(){
   const w=S.world;if(w.camping||S.isleView)return;{const bt=S.flags&&S.flags.boat;if(bt&&bt.boarded){drawBoat(ctx,W/2,PY+3+Math.round(Math.sin(S.t*2)),w.face<0);return;}}{const sh=S.flags&&S.flags.ship;if(sh&&sh.boarded){const b=Math.round(Math.sin(S.t*2.2)*1.5);ctx.fillStyle='rgba(0,0,0,.22)';ell(ctx,W/2,PY+3,11,2.2);drawShip(ctx,W/2,PY-9+b,1,w.face<0,true);return;}}const lead=S.heroes.find(h=>!h.ko)||S.heroes[0];
@@ -1142,6 +1143,7 @@ function nearLand(){const w=S.world;for(const l of WORLD.lands)if(Math.hypot(l.x
 function placeName(){const l=nearLand();return l?l.name:(TILE_NAME[tileAt(S.world.x,S.world.y)]||'Wilds');}
 function mapUpdate(dt){
   const w=S.world;if(w.camping||S.paused||S.cut){w.moving=false;return;}
+  if(S.knock&&S.knock.t>0){S.knock.t-=dt;w.x=Math.max(TS,Math.min(WT*TS-TS,w.x+S.knock.vx*dt));w.y=Math.max(TS,Math.min(HT*TS-TS,w.y+S.knock.vy*dt));w.moving=true;w.walkT+=dt;return;}
   let vx=0,vy=0;
   if(keys.arrowleft||keys.a)vx-=1;if(keys.arrowright||keys.d)vx+=1;if(keys.arrowup||keys.w)vy-=1;if(keys.arrowdown||keys.s)vy+=1;
   if(steer){const L=Math.hypot(steer.x,steer.y);if(L>5){vx=steer.x/L;vy=steer.y/L;}}
@@ -1150,7 +1152,7 @@ function mapUpdate(dt){
   if(sail){const wet=(x,y)=>{const t=tileAt(x,y);return t===T_DEEP||t===T_SHAL;};if(wet(w.x+vx*sp,w.y))w.x+=vx*sp;if(wet(w.x,w.y+vy*sp))w.y+=vy*sp;if(Math.abs(vx)>.2)w.face=vx>0?1:-1;
     if(w.x===ox&&w.y===oy){const ax=w.x+vx*12,ay=w.y+vy*12,t=tileAt(ax,ay);if(!BLOCKED.has(t)&&!ENTRANCES.has(t)){Object.assign(bt,{boarded:false,x:w.x,y:w.y,lock:true,flip:w.face<0});w.x=(Math.floor(ax/TS)+.5)*TS;w.y=(Math.floor(ay/TS)+.5)*TS;w.townLock=true;say('The party wades ashore. Walk back to the ship to set sail again.');renderMenu();saveGame();}w.moving=false;return;}}
   else if(!fly&&bt&&bt.x!=null){if(bt.lock){if(Math.hypot(w.x-bt.x,w.y-bt.y)>20)bt.lock=false;}else if(Math.hypot(w.x+vx*10-bt.x,w.y+vy*10-bt.y)<12){bt.boarded=true;w.x=bt.x;w.y=bt.y;w.moving=false;say('All aboard! Sail the open sea, and steer into any shore to land.');renderMenu();saveGame();return;}}
-  if(sail){}else if(fly){w.x=Math.max(TS,Math.min(WT*TS-TS,w.x+vx*sp));w.y=Math.max(TS,Math.min(HT*TS-TS,w.y+vy*sp));}
+  if(sail){}else if(fly){w.x=Math.max(TS,Math.min(WT*TS-TS,w.x+vx*sp));w.y=Math.max(TS,Math.min(HT*TS-TS,w.y+vy*sp));if(stormHit(ox,oy))return;}
   else{if(walkable(w.x+vx*sp,w.y))w.x+=vx*sp;if(walkable(w.x,w.y+vy*sp))w.y+=vy*sp;}
   if(Math.abs(vx)>.2)w.face=vx>0?1:-1;w.walkT+=dt;
   const moved=Math.hypot(w.x-ox,w.y-oy);if(!moved){w.moving=false;return;}
@@ -2461,7 +2463,36 @@ function drawBoat(c,cx,by,flip){const ox=Math.round(cx-8),oy=Math.round(by-BOAT.
 function drawParkedBoat(){const bt=S.flags&&S.flags.boat;if(!bt||bt.boarded||bt.x==null)return;const w=S.world,sx=Math.round(bt.x-w.x+W/2),sy=Math.round(bt.y-w.y+PY);
   if(sx<-20||sx>W+20||sy<-20||sy>H+20)return;drawBoat(ctx,sx,sy+3+Math.round(Math.sin(S.t*2)),bt.flip);}
 function placeBoat(){const P=WORLD.port;if(!P)return;S.flags.boat={x:(P.wx+.5)*TS,y:(P.wy+.5)*TS,boarded:false,lock:false,flip:false};}
-const overIsle=()=>{const w=S.world,I=WORLD.isle;return !!(I&&I.up&&I.set.has(Math.floor(w.y/TS)*WT+Math.floor(w.x/TS)));};
+const overIsle=()=>{const w=S.world,I=WORLD.isle;return !!(I&&I.up&&!S.flags.skyWyrm&&I.set.has(Math.floor(w.y/TS)*WT+Math.floor(w.x/TS)));};
+/* the storm wall around the Isle of Aether: the airship is thrown back, ships at sea sail through */
+const STX=10,STY=7.5;
+const stormOn=()=>!!(WORLD&&WORLD.isle&&WORLD.isle.up&&S&&S.flags&&!S.flags.skyWyrm);
+function stormNorm(x,y){const I=WORLD.isle,dx=x/TS-(I.cx+.5),dy=y/TS-(I.cy+.5);return{n:Math.hypot(dx/STX,dy/STY),dx,dy};}
+let stormSayT=0;
+function stormHit(ox,oy){if(!stormOn())return false;const w=S.world,a=stormNorm(w.x,w.y);if(a.n>=1||a.n>=stormNorm(ox,oy).n)return false;
+  w.x=ox;w.y=oy;const L=Math.hypot(a.dx,a.dy)||1;S.knock={vx:a.dx/L*240,vy:a.dy/L*240,t:.6};
+  S.bolt={x:W/2+(Math.random()-.5)*20,t:.3};flash('#ffffff',220);shake();
+  if(performance.now()-stormSayT>2500){stormSayT=performance.now();say(pick(['Lightning lashes the Aurora! The storm hurls her back.','The winds shove the Aurora away. She cannot cross the storm.','Thunder cracks overhead. The Aurora is thrown clear of the clouds!']));}
+  return true;}
+const STORM_PUFFS=Array.from({length:70},(_,i)=>({a:i/70*6.283+Math.sin(i*7.1)*.05,r:.82+((i*37)%29)/29*.36,s:9+((i*13)%11),o:(i*53)%7}));
+function drawStorm(dt,top){
+  if(!stormOn())return;const w=S.world,I=WORLD.isle,cx=Math.round((I.cx+.5)*TS-w.x+W/2),cy=Math.round((I.cy+.5)*TS-w.y+PY),RX=STX*TS,RY=STY*TS;
+  if(cx+RX*1.3<0||cx-RX*1.3>W||cy+RY*1.3<0||cy-RY*1.3>H)return;
+  const t=S.t*.05,inside=stormNorm(w.x,w.y).n;
+  if(!top){ // shadows and clouds, under the ship
+    ctx.fillStyle='rgba(20,24,40,.22)';for(const p of STORM_PUFFS){const x=cx+Math.cos(p.a+t)*RX*p.r,y=cy+Math.sin(p.a+t)*RY*p.r;ctx.beginPath();ctx.arc(x+4,y+10,p.s*1.2,0,7);ctx.fill();}
+  for(const p of STORM_PUFFS){const x=Math.round(cx+Math.cos(p.a+t)*RX*p.r),y=Math.round(cy+Math.sin(p.a+t)*RY*p.r);if(x<-30||x>W+30||y<-30||y>H+30)continue;
+    ctx.fillStyle='rgba(58,62,80,.78)';ctx.beginPath();ctx.arc(x,y,p.s,0,7);ctx.fill();ctx.fillStyle='rgba(96,102,124,.7)';ctx.beginPath();ctx.arc(x-p.s*.3,y-p.s*.35,p.s*.7,0,7);ctx.fill();
+    ctx.fillStyle='rgba(140,146,168,.45)';ctx.beginPath();ctx.arc(x-p.s*.45,y-p.s*.55,p.s*.35,0,7);ctx.fill();}
+    return;}
+  // rain and lightning, over everything
+    ctx.strokeStyle='rgba(170,195,235,.55)';ctx.beginPath();
+    for(let k=0;k<120;k++){const a=Math.random()*6.283,r=.72+Math.random()*.6,x=cx+Math.cos(a)*RX*r,y=cy+Math.sin(a)*RY*r;if(x<-4||x>W+4||y<-4||y>H+4)continue;ctx.moveTo(x+.5,y);ctx.lineTo(x-1.5,y+5);}ctx.stroke();
+  if(Math.random()<dt*.9&&!S.bolt){const a=Math.random()*6.283;S.bolt={x:cx+Math.cos(a)*RX*.95,y0:cy+Math.sin(a)*RY*.95,t:.25};}
+  if(S.bolt){S.bolt.t-=dt;const bx=S.bolt.x,by=S.bolt.y0!=null?S.bolt.y0:PY;if(S.bolt.t<=0)S.bolt=null;else{
+    ctx.strokeStyle=S.bolt.t>.12?'#ffffff':'#ffe14a';ctx.lineWidth=2;ctx.beginPath();let px=bx,py=by-46;ctx.moveTo(px,py);while(py<by){py+=rnd(5,10);px=bx+rnd(-6,6);ctx.lineTo(px,Math.min(py,by));}ctx.stroke();ctx.lineWidth=1;
+    if(S.bolt.t>.15){ctx.fillStyle=`rgba(255,255,240,${inside<1.4?.18:.08})`;ctx.fillRect(0,0,W,H);}}}
+}
 function canLand(){return !overIsle()&&LAND_OK(tileAt(S.world.x,S.world.y));}
 
 /* Highmere, the hidden village */
@@ -2946,7 +2977,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.7.4',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.8.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

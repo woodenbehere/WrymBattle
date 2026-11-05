@@ -246,7 +246,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.7.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.7.3</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -1371,7 +1371,7 @@ function mapCmd(a){
   const w=S.world;
   if(a==='party')return openParty();
   if(a==='quests')return openGuild(!(S.scene==='castle'&&IM&&IM.id==='guild'));
-  if(S.scene==='castle'){if(a==='leave')return leaveCastle();if(a==='exit')return castExit();if(a==='camp')return dungeonCamp();return;}
+  if(S.scene==='castle'){if(a==='leave')return leaveCastle();if(a==='exit'){if(!exitArmed()){armExit();renderMenu();const b=cmdEl.querySelector('[data-a="exit"]');if(b&&kb)b.focus({preventScroll:true});return;}return castExit();}if(a==='camp')return dungeonCamp();return;}
   if(S.scene==='town'){if(a==='leave')return leaveTown();if(a==='inn')return innRest();if(a.startsWith('shop:'))return openShop(a.slice(5));return;}
   if(a==='land')return landShip();
   if(a==='camp'){if((S.flags.ship&&S.flags.ship.boarded)||(S.flags.boat&&S.flags.boat.boarded))return;if(!S.items.tent){say('You need a Tent to camp. Item shops sell them.');return;}S.items.tent--;camp().then(saveGame);return;}
@@ -1473,7 +1473,7 @@ function drawField(h){
       if(busy)why='Use in battle';else if(!fieldOk(h))why=h.ko?'Knocked out':'Turned to stone';else if(h.mp<sk.mp)why='Not enough MP';
       else if(k==='exit'&&!exitOk())why='Only indoors';else if(k==='phoenix'&&!S.heroes.some(x=>x.ko)&&!fieldTargets('hp').length)why='No one needs it';
       else if(k!=='exit'&&k!=='phoenix'&&!fieldTargets(skType(id)).length)why='No one needs it';
-      return `<div class="srow"><div class="sinfo"><b>${esc(sk.name)}</b><span>${esc(k==='exit'?'Warp out of any dungeon, castle or town to the world map':sk.d)} · ${sk.mp} MP</span></div><div class="sbuy">${why?`<span class="own">${why}</span>`:''}<button type="button" class="btn sm" data-fs="${id}"${why?' disabled':''}>Cast</button></div></div>`;}).join('')+'</div>';}
+      return `<div class="srow"><div class="sinfo"><b>${esc(sk.name)}</b><span>${esc(k==='exit'?'Warp out of any dungeon, castle or town to the world map':sk.d)} · ${sk.mp} MP</span></div><div class="sbuy">${why?`<span class="own">${why}</span>`:''}<button type="button" class="btn sm" data-fs="${id}"${why?' disabled':''}>${id==='exit'&&exitArmed()?'Tap again':'Cast'}</button></div></div>`;}).join('')+'</div>';}
   const its=FIELD_IT.filter(id=>S.items[id]>0);
   html+=`<p class="lab">Items</p>`+(its.length?`<div class="slist">`+its.map(id=>{const t=itType(id),need=t==='party'||t==='hpmp'?S.heroes.some(x=>fieldOk(x)&&(x.hp<x.maxhp||x.mp<x.maxmp)):fieldTargets(t).length;
       return `<div class="srow"><div class="sinfo"><b>${esc(ITEMS[id].name)}</b><span>${esc(ITEMS[id].d)} · have ${S.items[id]}</span></div><div class="sbuy">${busy||!need?`<span class="own">${busy?'Use in battle':'No one needs it'}</span>`:''}<button type="button" class="btn sm" data-fi="${id}"${busy||!need?' disabled':''}>Use</button></div></div>`;}).join('')+'</div>':'<p class="tip">No usable items.</p>');
@@ -1508,7 +1508,7 @@ function useField(id,tg){S.items[id]--;
   }}
 $('pField').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const h=S.heroes.find(x=>x.key===partyKey);
   if(b.dataset.fs){const id=b.dataset.fs,k=FIELD_SK[id];fieldNote='';
-    if(k==='exit'){closeSheet(partyOv);castExit();return;}
+    if(k==='exit'){if(!exitArmed()){armExit();drawParty();const e2=$('pField').querySelector('[data-fs="exit"]');if(e2)e2.focus({preventScroll:true});return;}closeSheet(partyOv);castExit();return;}
     if(k==='all'||k==='phoenix'){fieldNote=castField(h,id);fieldPend=null;}else fieldPend={kind:'sk',id};}
   else if(b.dataset.fi){const id=b.dataset.fi;fieldNote='';if(itType(id)==='party'){fieldNote=useField(id);fieldPend=null;}else fieldPend={kind:'it',id};}
   else if(b.dataset.ft){const i=+b.dataset.ft;if(i<0||!fieldPend){fieldPend=null;}else{const tg=S.heroes[i];fieldNote=fieldPend.kind==='sk'?castField(h,fieldPend.id,tg):useField(fieldPend.id,tg);fieldPend=null;}}
@@ -1690,7 +1690,7 @@ function toCastle(msg){
 }
 function renderCastleMenu(){
   cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${esc(IM?IM.name:'Castle Valemont')}</span><span class="cls">${esc(S.croom||'')} · ${fmtG(S.gil)}</span></div>`+
-    opt('party','Party','','Status and equipment')+opt('quests','Quests','','Guild bounties')+(IM&&IM.dungeon?opt('camp','Camp','Tent ×'+(S.items.tent||0),onSave()?'Safe spot: restore all HP and MP':'Find a save circle to camp',!onSave()||!S.items.tent||S.resting):'')+(exitOk()?opt('exit','Exit',SK.exit.mp+' MP','Ilse warps the party out to the world map',!exitReady()):'')+(IM&&!IM.leave?'':opt('leave',IM?IM.leave:'Leave castle'))+
+    opt('party','Party','','Status and equipment')+opt('quests','Quests','','Guild bounties')+(IM&&IM.dungeon?opt('camp','Camp','Tent ×'+(S.items.tent||0),onSave()?'Safe spot: restore all HP and MP':'Find a save circle to camp',!onSave()||!S.items.tent||S.resting):'')+(exitOk()?opt('exit',exitArmed()?'Tap again to cast Exit':'Exit',SK.exit.mp+' MP',exitArmed()?'Confirm: Ilse warps the party out to the world map':'Ilse warps the party out to the world map',!exitReady(),exitArmed()?'lim':''):'')+(IM&&!IM.leave?'':opt('leave',IM?IM.leave:'Leave castle'))+
     `<div class="log"><p>${esc('Walk into people to talk, and into doors, chests and beds to use them.')}</p><p>${esc(S.log[S.log.length-1]||'')}</p></div>`;
 }
 /* dialogue window */
@@ -2290,7 +2290,9 @@ async function confusedAct(h){const al=alive().filter(x=>x!==h);
 /* field: Exit */
 const exitOk=()=>{const w=S.heroes.find(x=>x.key==='white');return !!(S.scene==='castle'&&IM&&w.skills.includes('exit'));};
 const exitReady=()=>{const w=S.heroes.find(x=>x.key==='white');return !w.ko&&w.mp>=SK.exit.mp&&!S.resting&&!S.cut;};
-async function castExit(){if(!exitOk()||!exitReady())return;const w=S.heroes.find(x=>x.key==='white');w.mp-=SK.exit.mp;S.cut=true;for(const k in keys)keys[k]=false;steer=null;
+let exitArmT=0;const exitArmed=()=>Date.now()-exitArmT<3000;
+function armExit(){exitArmT=Date.now();setTimeout(()=>{if(exitArmed())return;if(S.scene==='castle')renderMenu();if(!partyOv.hidden)drawParty();},3100);}
+async function castExit(){exitArmT=0;if(!exitOk()||!exitReady())return;const w=S.heroes.find(x=>x.key==='white');w.mp-=SK.exit.mp;S.cut=true;for(const k in keys)keys[k]=false;steer=null;
   say(`${w.name} casts Exit!`);await addFx(900,(c,p)=>{const x=S.pScreen?S.pScreen.x:W/2,y=S.pScreen?S.pScreen.y:H/2;c.fillStyle=`rgba(255,255,255,${p*.8})`;c.fillRect(0,0,W,H);
     for(let k=0;k<10;k++){const a=k/10*6.283+p*9,r=30*(1-p);c.fillStyle=k%2?'#bfefff':'#ffffff';c.fillRect(Math.round(x+Math.cos(a)*r)-1,Math.round(y+Math.sin(a)*r)-1,2,2);}});
   S.cut=false;{const M=IM,par=M.parent;M.parent=null;try{leaveCastle();}finally{M.parent=par;}}flash('#ffffff',500);say('A flash of light, and the party stands under open sky again.');}
@@ -2941,7 +2943,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.7.2',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.7.3',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

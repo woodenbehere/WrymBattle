@@ -246,7 +246,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.5.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.5.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -259,7 +259,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
 <p><b>Status ailments</b>: some monsters poison (HP drains over time), petrify (the hero is out of the fight until cured) or confuse (the hero attacks at random). Cure them with Antidotes, Gold Needles, Remedies, or the <b>Heal</b> spell. Ailments wear off when a battle ends. A <b>Ribbon</b> blocks them all. <b>Exit</b> warps the party out of a dungeon from the menu. In Ironhold, the <b>Rune Hall</b> sells Firaga, Bio and the summons Ifrit, Titan and Bahamut, and the <b>Training Hall</b> teaches the Fighter monk arts (learn three to become a Monk) and the Thief new tricks.</p>
-<p><b>Deepdelve Mine</b>: on the northern cape, a mine shaft drops five levels to Ironhold, the dwarf city. Read the old tablets on the Sky Road, slay the Magma Worm, and the dwarves can blast free the airship <b>Aurora</b>. Walk aboard to fly anywhere on the world map with no random battles; choose <b>Land</b> to set down on open ground.</p>
+<p><b>Deepdelve Mine</b>: on the northern cape, sealed until you finish King Aldous’s Hill Ogre quest and defeat Frostfang. Then a mine shaft drops five levels to Ironhold, the dwarf city. Read the old tablets on the Sky Road, slay the Magma Worm, and the dwarves can blast free the airship <b>Aurora</b>. Walk aboard to fly anywhere on the world map with no random battles; choose <b>Land</b> to set down on open ground.</p>
 <p><b>Castle Valemont</b>: walk in to meet the King and Queen, rest in the guest rooms, raid the armory, and earn your way into the royal vault. Walk into people to talk to them.</p>
 <p><b>Auto</b> hands chosen heroes to the AI with a strategy you pick.</p>
     <p>Keyboard: arrows to move, Enter to choose, Esc to go back.</p>
@@ -1100,7 +1100,7 @@ function mapUpdate(dt){
   w.dist+=moved;
   if(fly){w.dist=0;saveT+=dt;if(saveT>8){saveT=0;saveGame();}const pn=placeName();if(pn!==w.place){w.place=pn;renderMenu();}return;}
   if(sh&&sh.x!=null){const dd=Math.hypot(w.x-sh.x,w.y-sh.y);if(sh.lock){if(dd>14)sh.lock=false;}else if(dd<9){sh.boarded=true;w.x=sh.x;w.y=sh.y;w.moving=false;say('All aboard the Aurora! Fly anywhere, then choose Land to set down on open ground.');renderMenu();saveGame();return;}}
-  {const tx=Math.floor(w.x/TS),ty=Math.floor(w.y/TS);if(WORLD.at(tx,ty)===T_CASTLE){if(!w.townLock){enterCastle();return;}}else if(WORLD.at(tx,ty)===T_CAVE){if(!w.townLock){enterInterior('mt1');return;}}else if(WORLD.at(tx,ty)===T_DELVE){if(!w.townLock){enterInterior('dd1');return;}}else if(WORLD.at(tx,ty)===T_TOWN){if(!w.townLock){const tl=WORLD.lands.find(q=>TOWNS[q.id]&&Math.floor(q.x/TS)===tx&&Math.floor(q.y/TS)===ty);if(tl){enterInterior(tl.id);return;}}}else w.townLock=false;}
+  {const tx=Math.floor(w.x/TS),ty=Math.floor(w.y/TS);if(WORLD.at(tx,ty)===T_CASTLE){if(!w.townLock){enterCastle();return;}}else if(WORLD.at(tx,ty)===T_CAVE){if(!w.townLock){enterInterior('mt1');return;}}else if(WORLD.at(tx,ty)===T_DELVE){if(!w.townLock){w.townLock=true;if(delveOpen()){enterInterior('dd1');return;}showDialog(delveBarred());return;}}else if(WORLD.at(tx,ty)===T_TOWN){if(!w.townLock){const tl=WORLD.lands.find(q=>TOWNS[q.id]&&Math.floor(q.x/TS)===tx&&Math.floor(q.y/TS)===ty);if(tl){enterInterior(tl.id);return;}}}else w.townLock=false;}
   saveT+=dt;if(saveT>8){saveT=0;saveGame();}
   const l=nearLand(),lid=l?l.id:null;if(lid!==w.lastLand){w.lastLand=lid;if(l)say(l.msg);renderMenu();}
   const pn=placeName();if(pn!==w.place){w.place=pn;renderMenu();}
@@ -1432,8 +1432,9 @@ const NPCS_C=[
  {x:15,y:2,spr:'king',talk:()=>{const f=S.flags;
    if(!f.ogre)return["King Aldous: So you are the heroes who slew the Ember Wyrm! Valemont is in your debt.","King Aldous: Yet another beast plagues us. A Hill Ogre raids the farms out in the hills.","King Aldous: Slay it, and I will open the royal vault to you."];
    if(!f.key){f.key=true;buildCastle();saveGame();return["King Aldous: The Hill Ogre is slain! The farmers sing your names.","King Aldous: As promised, take the Royal Key. The vault lies in the northeast of the castle.","Received the Royal Key!"];}
-   if(!f.sentinel)return["King Aldous: An old sentinel guards the vault. My grandfather built it, and it knows no friend."];
-   return["King Aldous: Valemont will never forget what you have done."];}},
+   if(!f.sentinel)return["King Aldous: An old sentinel guards the vault. My grandfather built it, and it knows no friend."].concat(f.wyrm2?[]:["King Aldous: And when you are ready, Frostfang, the Rime Wyrm, still nests atop the peak in the great mountain range."]);
+   if(f.wyrm2)return["King Aldous: Valemont will never forget what you have done.","King Aldous: A dwarf scout came up from the northern cape. Deepdelve Mine is unsealed, by my order. Go with my blessing."];
+   return["King Aldous: Valemont will never forget what you have done.","King Aldous: One more trial remains. Frostfang, the Rime Wyrm, nests atop the peak in the great mountain range. Slay it, and the realm will trust you with anything."];}},
  {x:17,y:2,spr:'queen',talk:()=>["Queen Mirelle: Welcome to Valemont, travelers.","Queen Mirelle: The guest rooms in the west wing are yours. Rest whenever you like."]},
  {x:22,y:2,spr:'guard',talk:()=>{const f=S.flags;
    if(!f.key)return["Captain Brann: Halt. Behind this door lies the royal vault.","Captain Brann: No one passes without the King's key."];
@@ -1976,6 +1977,9 @@ function drawShip(c,cx,by,sc,flip,lit){
 function drawParkedShip(){const sh=S.flags&&S.flags.ship;if(!sh||sh.boarded||sh.x==null)return;const w=S.world,sx=Math.round(sh.x-w.x+W/2),sy=Math.round(sh.y-w.y+PY);
   if(sx<-40||sx>W+40||sy<-30||sy>H+30)return;ctx.fillStyle='rgba(0,0,0,.28)';ell(ctx,sx,sy+1,12,2.5);drawShip(ctx,sx,sy-2+Math.round(Math.sin(S.t*1.6)),1,sh.flip,false);}
 const LAND_OK=t=>!BLOCKED.has(t)&&![T_TOWN,T_CASTLE,T_CAVE,T_DELVE].includes(t);
+const delveOpen=()=>!!(S.flags.key&&S.flags.wyrm2);
+function delveBarred(){const f=S.flags,need=[];if(!f.key)need.push(f.ogre?'report the Hill Ogre’s defeat to King Aldous':'complete King Aldous’s quest: slay the Hill Ogre in the hills');if(!f.wyrm2)need.push('defeat Frostfang atop Frostfang Peak');
+  return['Heavy timbers bar the mouth of Deepdelve Mine. A royal notice is nailed across them:','“Sealed by order of King Aldous. None may enter until the realm’s champions have proven themselves.”','Still to do: '+need.join(', and ')+'.'];}
 function canLand(){return LAND_OK(tileAt(S.world.x,S.world.y));}
 function landShip(){const w=S.world,sh=S.flags.ship;if(!sh||!sh.boarded)return;if(!canLand())return say('No open ground below. Fly over grass, sand, forest or hills to land.');
   w.x=(Math.floor(w.x/TS)+.5)*TS;w.y=(Math.floor(w.y/TS)+.5)*TS;Object.assign(sh,{boarded:false,x:w.x,y:w.y,lock:true,flip:w.face<0});
@@ -2544,7 +2548,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.5.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.5.1',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

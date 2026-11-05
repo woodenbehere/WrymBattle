@@ -54,6 +54,14 @@ Five heroes take on a dragon in two phases:
 - **The thieves' sign**: the first time Vesh finds a guild, the doorman shows him a three-gesture sign. Every visit after, he must make it in order at the door, or he's thrown back out through the trapdoor.
 - **Sky window**: the top-left window shows the sun rising and setting across the sky, and at night the moon crossing it in its current phase (red under a Blood Moon). Tap it for the time, weather and moon.
 - **Fishing weather**: the fishing scene shows night, stars and the moon, clouds, rain and storms. Schools are bigger and more frequent, and fish chase the lure more eagerly, in the rain and in the nights around the full moon.
+- **Seasons**: every three moons (45 days) the season turns, starting in Fall: Fall, Winter, Spring, Summer, then a new year. Fall has drifting leaves and an amber cast, Winter whitens the land and brings snow and blizzards instead of rain, Spring has blossom petals, Summer a warm glow. The sky window, Journal and Homestead all show the season.
+- **The Homestead**: a farmhouse a few leagues north of Castle Valemont. Old Hob greets you and sells seed.
+  - **Fields**: 24 plots to start (48 and 72 with land clearing). Stand on a plot to **Till**, **Plant**, **Water**, **Harvest** or **Clear** it, or use Till all, Plant all tilled, Water all and Harvest all.
+  - **Growing**: crops grow one day for each day they're watered (rain counts). Each has a season, and planted crops wither when the season turns. Crows eat a crop now and then unless you build a scarecrow.
+  - **Crops**: Spring turnip, potato and strawberry; Summer tomato, corn and melon; Fall carrot, wheat and pumpkin; Winter snowroot and frostberry.
+  - **Animals**: a Chicken Coop houses up to 6 chickens (eggs daily); a Barn houses up to 4 cows (milk daily) or sheep (wool every other day). Their goods appear in your crates each morning.
+  - **Buildings**: Coop, Barn, Well (waters every plot each morning), Scarecrow, two rounds of land clearing, and a Greenhouse (any seed grows in any season, and nothing withers).
+  - **Selling**: drop goods in the shipping bin, or use the Sell tab of the Homestead menu. The farmhouse bed is a free rest.
 - **Mine lift**: every level of Deepdelve Mine, and Ironhold, has a lift cage near its entrance. Walk into it to ride to any level you've already reached (Ironhold once Gravemaw is slain).
 - **Ironhold homes**: an Upper Ward of four houses flanks the airship bay, and another home sits on the south lane, all open to Vesh's night work.
 - **Class advancement**: each hero has a second class with a new look, stronger stats and a signature skill.

@@ -29,6 +29,9 @@ Five heroes take on a dragon in two phases:
 - **Saving**: progress saves automatically in your browser once the Ember Wyrm falls. Start over from the ? panel.
 - **Group battles**: fights against up to four enemies, each with its own turn gauge and health bar. Pick a target from the menu (a cursor marks it on screen); summons hit every enemy.
 - **Bestiary**: Thornhare, Goblin, Bog Slime, Grave Wolf, Mandrake, Dusk Bat, Sand Ray, Dune Scorpion, Stone Imp, Ash Salamander, the Hill Ogre, and the Vault Sentinel with its Ward Orbs.
+- **Frostfang Peak**: a cave in the great mountain range leads into a three-floor dungeon (Frostfang Trail, Icy Ledges, Frozen Summit) with its own monsters: Frost Harpy, Crag Lizard, Snow Wisp, Rime Golem, Mountain Yeti and the Yeti Chieftain. At the top waits Frostfang, the Rime Wyrm: an ice wyrm weak to fire that absorbs ice and unleashes a telegraphed Blizzard.
+- **Save circles**: glowing safe spots in the dungeon that save your progress, allow Tent camping, and are where you wake if the party falls.
+- **Mountain side quests**: return Brom the miner's lucky pickaxe, rescue the climber Kessa from behind the Yeti Chieftain, and gather three Frost Lilies for Hermit Oswin's Frost Ward (halves ice damage).
 - **Castle grounds**: a stone wall surrounds Castle Valemont and Valemont Village. A clear road runs from the south gate straight to the castle, with the village on both sides.
 - **Mini-map**: a map of the world (or the castle, when inside) sits in the top-right corner. Tap it to enlarge.
 - **Castle Valemont**: walk inside to meet King Aldous and Queen Mirelle in the throne room, rest in the guest rooms, loot the armory, and earn the Royal Key by slaying the Hill Ogre. The vault is locked, guarded by Captain Brann, and protected by an ancient sentinel.

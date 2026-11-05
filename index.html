@@ -246,7 +246,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.5.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.6.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -259,7 +259,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
 <p><b>Status ailments</b>: some monsters poison (HP drains over time), petrify (the hero is out of the fight until cured) or confuse (the hero attacks at random). Cure them with Antidotes, Gold Needles, Remedies, or the <b>Heal</b> spell. Ailments wear off when a battle ends. A <b>Ribbon</b> blocks them all. <b>Exit</b> warps the party out of a dungeon from the menu. In Ironhold, the <b>Rune Hall</b> sells Firaga, Bio and the summons Ifrit, Titan and Bahamut, and the <b>Training Hall</b> teaches the Fighter monk arts (learn three to become a Monk) and the Thief new tricks.</p>
-<p><b>Deepdelve Mine</b>: on the northern cape, sealed until you finish King Aldous’s Hill Ogre quest and defeat Frostfang. Then a mine shaft drops five levels to Ironhold, the dwarf city. Read the old tablets on the Sky Road, slay the Magma Worm, and the dwarves can blast free the airship <b>Aurora</b>. Walk aboard to fly anywhere on the world map with no random battles; choose <b>Land</b> to set down on open ground.</p>
+<p><b>Deepdelve Mine</b>: on the northern cape, sealed until you finish King Aldous’s Hill Ogre quest and defeat Frostfang. Then a mine shaft drops five levels to Ironhold, the dwarf city. Read the old tablets on the Sky Road, slay Gravemaw the Earth Wyrm to free the trapped dwarves, and their King and Queen can blast free the airship <b>Aurora</b>. Walk aboard to fly anywhere on the world map with no random battles; choose <b>Land</b> to set down on open ground.</p>
 <p><b>Castle Valemont</b>: walk in to meet the King and Queen, rest in the guest rooms, raid the armory, and earn your way into the royal vault. Walk into people to talk to them.</p>
 <p><b>Auto</b> hands chosen heroes to the AI with a strategy you pick.</p>
     <p>Keyboard: arrows to move, Enter to choose, Esc to go back.</p>
@@ -526,6 +526,7 @@ function drawDragon(t){
   const L2=d.look===2;
   let B=L2?'#4a1d1a':'#8e2b1f',D=L2?'#2a0e0d':'#5b1712',BEL=L2?'#ff9a3a':'#d9a24e',BEL2=L2?'#d8541c':'#a87634',MEM=L2?'#a3300f':'#4e1517',MEM2=L2?'#d9481a':'#742420',
     RIB=L2?'#ffcf6a':'#260808',RIB2=L2?'#ffb03a':'#3a0e0c',HORN=L2?'#3b2a24':'#e9dcbf',EYE=L2?'#9fe6ff':'#ffe14a',TOOTH=L2?'#ffe9c4':'#f2ead6',SP=L2?'#ff7a2a':'#5b1712';
+  if(d.look===4)({B,D,BEL,BEL2,MEM,MEM2,RIB,RIB2,HORN,EYE,TOOTH,SP}={B:'#7a6040',D:'#4a3a24',BEL:'#c8b080',BEL2:'#a08858',MEM:'#5a4a30',MEM2:'#7a6a48',RIB:'#d8c8a0',RIB2:'#b8a880',HORN:'#e8dcc0',EYE:'#7aff5a',TOOTH:'#ffffff',SP:'#9a9a8a'});
   if(d.look===3)({B,D,BEL,BEL2,MEM,MEM2,RIB,RIB2,HORN,EYE,TOOTH,SP}={B:'#5a86b8',D:'#2a4a78',BEL:'#d8f0ff',BEL2:'#a8c8e8',MEM:'#2e4e80',MEM2:'#4a72b0',RIB:'#e8f8ff',RIB2:'#bfe0f8',HORN:'#ffffff',EYE:'#ff5a8a',TOOTH:'#ffffff',SP:'#bfe0f8'});
   // far wing
   const sh=[84,74+bob];
@@ -753,6 +754,7 @@ async function breathAtk(name,lo,hi,big,pal=FIRE,elem){
 async function dragonAct(){
   const d=S.dragon;d.queued=false;d.atb=0;if(d.dead||!alive().length)return;d.turns++;
   if(d.variant==='frost')return frostAct(d);
+  if(d.variant==='earth')return earthAct(d);
   const p2=d.phase===2;
   if(d.charging){d.charging=false;d.lastInferno=d.turns;return p2?breathAtk('Inferno',900,980,true):breathAtk('Inferno',820,900,true);}
   if((p2||d.hp<d.max*.5)&&d.turns-d.lastInferno>=(p2?4:5)){d.charging=true;banner('');say('The wyrm draws a long, rumbling breath…');await sleep(700);return;}
@@ -842,6 +844,7 @@ Object.assign(MON,{
 for(const k in MON){const m=MON[k];m.h=m.map.length;m.w=Math.max(...m.map.map(r=>r.length));}
 const SK_EL={flame:'fire',frost:'ice',thunder:'thunder',undine:'water'};
 function elemMult(elem,d=S.dragon){if(!elem||!d)return 1;
+  if(d.kind==='wyrm'&&d.variant==='earth'){if(elem==='earth')return -1;if(elem==='water')return 2;if(elem==='ice')return 1.5;if(elem==='thunder')return .5;return 1;}
   if(d.kind==='wyrm'&&d.variant==='frost'){if(elem==='ice')return -1;if(elem==='fire')return 2;if(elem==='water')return .5;return 1;}
   if(d.kind==='wyrm'){if(elem==='fire')return -1;const p2=d.phase===2;if(elem==='ice')return p2?.5:2;if(elem==='water')return p2?2:1.5;return 1;}
   const m=MON[d.kind];if(m.absorb===elem)return -1;if(m.weak.includes(elem))return 2;return 1;}
@@ -859,6 +862,7 @@ function layoutFoes(){
   S.foes.forEach((f,i)=>{const m=MON[f.kind];f.s=(m.big||n===1)?m.scale:3;f.bx=SL[i][0];f.by=SL[i][1];f.ax=f.bx;f.ay=Math.round(f.by-m.h*f.s/2);});
 }
 function makeEnemy(kind,n=1){
+  if(kind==='earthwyrm')return{kind:'wyrm',variant:'earth',name:'Gravemaw',label:'Gravemaw',phase:1,look:4,hp:40000,max:40000,atb:rnd(0,20),queued:false,dx:0,flash:0,jaw:0,charging:false,lastInferno:0,turns:0,steals:3,alpha:1,dead:false,gone:false,mouth:{x:150,y:62}};
   if(kind==='frostwyrm')return{kind:'wyrm',variant:'frost',name:'Frostfang',label:'Frostfang',phase:1,look:3,hp:32000,max:32000,atb:rnd(0,20),queued:false,dx:0,flash:0,jaw:0,charging:false,lastInferno:0,turns:0,steals:3,alpha:1,dead:false,gone:false,mouth:{x:150,y:62}};
   if(kind==='wyrm')return{kind,name:'Ember Wyrm',phase:1,look:1,hp:16000,max:16000,atb:rnd(0,20),queued:false,dx:0,flash:0,jaw:0,charging:false,lastInferno:-99,turns:0,steals:4,alpha:1,dead:false,gone:false,mouth:{x:150,y:62}};
   const m=MON[kind],hp=Math.round(m.hp*(m.big?1:n>=3?.7:n===2?.85:1));return{kind,name:m.name,label:m.name,phase:1,look:1,hp,max:hp,atb:rnd(0,30),queued:false,dx:0,flash:0,jaw:0,charging:false,lastInferno:-99,turns:0,steals:m.steals,alpha:1,dead:false,gone:false,mouth:{x:0,y:0}};
@@ -1134,9 +1138,9 @@ function startBattle(kind){
   const kinds=Array.isArray(kind)?kind:[kind];S.foes=kinds.map(k=>makeEnemy(k,kinds.length));
   {const cnt={},seen={};for(const f of S.foes)cnt[f.name]=(cnt[f.name]||0)+1;for(const f of S.foes)if(cnt[f.name]>1){seen[f.name]=(seen[f.name]||0)+1;f.label=f.name+' '+'ABCD'[seen[f.name]-1];}}
   layoutFoes();setTarget(S.foes[0]);
-  S.log=[kinds[0]==='wyrm'?'The Ember Wyrm blocks the mountain pass.':kinds[0]==='frostwyrm'?'Frostfang, the Rime Wyrm, descends!':S.foes.length>1?`${S.foes.map(f=>f.label).join(', ')} attack!`:`A ${S.foes[0].name} appears!`];
+  S.log=[kinds[0]==='wyrm'?'The Ember Wyrm blocks the mountain pass.':kinds[0]==='frostwyrm'?'Frostfang, the Rime Wyrm, descends!':kinds[0]==='earthwyrm'?'Gravemaw, the Earth Wyrm, rises from the stone!':S.foes.length>1?`${S.foes.map(f=>f.label).join(', ')} attack!`:`A ${S.foes[0].name} appears!`];
   for(const h of S.heroes){Object.assign(h,{atb:h.ko?0:rnd(10,60),ready:false,queued:false,defend:false,guard:false,protect:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,poison:false,stone:false,confuse:false,ptick:0});h.x=homeX(h);}
-  const bgk=kinds[0]==='frostwyrm'?'summit':kinds[0]==='wyrm'?null:MON[kinds[0]].bg;if(bgk)makeFieldBg(bgk);else makeBg();S.snow=bgk==='mtn'||bgk==='summit';$('bossBox').dataset.k='';
+  const bgk=kinds[0]==='earthwyrm'?'deep':kinds[0]==='frostwyrm'?'summit':kinds[0]==='wyrm'?null:MON[kinds[0]].bg;if(bgk)makeFieldBg(bgk);else makeBg();S.snow=bgk==='mtn'||bgk==='summit';$('bossBox').dataset.k='';
   $('over').hidden=true;bannerEl.hidden=true;popsEl.innerHTML='';stage.classList.remove('map','town','castle');
   renderMenu();
 }
@@ -1541,7 +1545,7 @@ function castleUpdate(dt){
 function interact(tx,ty){
   const n=npcAt(tx,ty);if(n){const lines=n.talk();if(lines)showDialog(lines);return;}
   const t=CASTLE[ty][tx],k=tx+','+ty;
-  if(t==='d'){const D=(IM.doors||{})[k];if(!D)return;if(D.shop)return openShop(D.shop);if(D.inn)return innRest();if(D.guild)return enterInterior('guild');if(D.house)return showDialog(D.house);return;}
+  if(t==='d'){const D=(IM.doors||{})[k];if(!D)return;if(D.shop)return openShop(D.shop);if(D.inn)return innRest();if(D.guild)return enterInterior('guild');if(D.to)return enterInterior(D.to);if(D.house)return showDialog(D.house);return;}
   if(t==='J')return openGuild(false);
   if(t==='M')return showDialog((IM.lore||{})[k]||['Faded carvings cover the stone.']);
   if(t==='X')return showDialog(IM.rubble||['A wall of fused rubble blocks the way.']);
@@ -2023,13 +2027,13 @@ const DD={};
     const spots=r.spots.slice(),take=(near)=>{const want=Math.round(r.depth*near);spots.sort((p,q)=>Math.abs(p.d-want)-Math.abs(q.d-want));const s=spots.shift();
       for(let k=spots.length-1;k>=0;k--)if(Math.abs(spots[k].x-s.x)<3&&Math.abs(spots[k].y-s.y)<3)spots.splice(k,1);return s;};
     if(sp.id==='dd1'){const k=take(0),d=take(.08);DD.lift={x:d.x,y:d.y};
-      npcs.push({x:k.x,y:k.y,spr:'dwarf',talk:()=>S.flags.worm?['Kellin: You slew the Magma Worm? The road to Ironhold is open again!','Kellin: Tell the Chief that Kellin’s still keeping watch up here.']:
-        ['Kellin: Hold! Surface folk, down in Deepdelve? I’m Kellin, scout of Ironhold.','Kellin: A Magma Worm tunneled up from the deep and cut our city off. No one has gotten through in months.','Kellin: Ironhold lies at the bottom of the mine, six levels down. Get past the worm and my people will welcome you as heroes.']},
+      npcs.push({x:k.x,y:k.y,spr:'dwarf',talk:()=>S.flags.worm?['Kellin: You brought down Gravemaw? The road to Ironhold is open again!','Kellin: Tell the King that Kellin’s still keeping watch up here.']:
+        ['Kellin: Hold! Surface folk, down in Deepdelve? I’m Kellin, scout of Ironhold.','Kellin: Gravemaw, an Earth Wyrm, woke in the deep and collapsed every tunnel around our city. My people are trapped down there, King and Queen with them.','Kellin: Ironhold lies at the bottom of the mine, six levels down. The wyrm coils at the bottom of the fifth. They say it hates water.']},
        {x:d.x,y:d.y,spr:'dwarfsmith',talk:()=>{if(!S.flags.ironhold)return['Dorn: This is the lift down to Ironhold. The winch is worked from the bottom, and nobody down there answers.','Dorn: Make it to the city and we can ride up and down whenever you like.'];
          showDialog(['Dorn: Down to Ironhold? Hold on to something!'],()=>enterInterior('ironhold',{x:13*CT+8,y:23*CT+8}));return null;}});}
     if(sp.id==='dd4'){const h=take(.7);npcs.push({x:h.x,y:h.y,spr:'dwarfgirl',when:()=>!S.flags.hildeDone,talk:()=>{S.flags.hildeDone=true;S.bag.ironring=(S.bag.ironring||0)+1;saveGame();
-      return['Hilde: Oh, thank the stone! I’m Hilde, a crystal-cutter from Ironhold.','Hilde: The spores put me to sleep, and when I woke the shades had taken my pack and the worm had blocked the way home.','Hilde: Take my Iron Ring. It’s all I have left. I’ll follow your trail back down.','Received the Iron Ring!'];}});}
-    if(sp.id==='dd5')npcs.push({x:r.down.x,y:r.down.y,mon:'magmaworm',sc:2,when:()=>!S.flags.worm,talk:()=>{bossFight(['The ground heaves. Lava spills from cracks in the stone.','The Magma Worm bursts from the rock, blocking the way down!'],['slug','magmaworm','slug']);return null;}});
+      return['Hilde: Oh, thank the stone! I’m Hilde, a crystal-cutter from Ironhold.','Hilde: The spores put me to sleep, and when I woke the shades had taken my pack and the Earth Wyrm had sealed the way home.','Hilde: Take my Iron Ring. It’s all I have left. I’ll follow your trail back down.','Received the Iron Ring!'];}});}
+    if(sp.id==='dd5')npcs.push({x:r.down.x,y:r.down.y,mon:'earthicon',sc:2,when:()=>!S.flags.worm,talk:()=>{bossFight(['The cavern floor splits open. Rocks rain from the ceiling.','Gravemaw, the Earth Wyrm, heaves itself out of the stone, coiled across the only way down to Ironhold!'],['earthwyrm']);return null;}});
     MAPS[sp.id]={id:sp.id,name:sp.name,dungeon:true,pal:DD_PAL[sp.id],w:sp.w,h:sp.h,entry:{x:r.start.x*CT+8,y:r.start.y*CT+8},hello:sp.hello,build:()=>r.grid.map(row=>row.slice()),links,chests,lore,enc:sp.enc,npcs,
       ...(i===0?{leave:'Leave the mine',out:'You climb out into the sea wind of the northern cape.'}:{})};
   });
@@ -2039,7 +2043,7 @@ const DD={};
 const IRON_LORE={'10,7':['A mural: silver airships sail above the clouds, trailing the banners of the Sky Folk.'],
  '12,7':['A mural: a great fire wyrm tears through the sky fleet. Ships fall burning into the sea.'],
  '21,7':['A mural: one ship, the Aurora, dives down a shaft of light into the earth. Dwarves seal the stone behind her.'],
- '23,7':['A mural: a dwarf holds a glowing red heart before a wall of rubble. Above, the ship rises into a clear sky.','Carved beneath it: “When the sky is clear of fire, let the heart of the deep set her free.”']};
+ '23,7':['A mural: a dwarf holds a glowing heart of stone before a wall of rubble. Above, the ship rises into a clear sky.','Carved beneath it: “When the sky is clear of fire, let the heart of the deep set her free.”']};
 MAPS.ironhold={id:'ironhold',name:'Ironhold',dynamic:true,pal:DD_PAL.ironhold,w:34,h:26,entry:{x:16*CT+8,y:23*CT+8},hello:'Ironhold, city of the dwarves. Forges glow and hammers ring under a vault of stone.',
  lore:IRON_LORE,rubble:['A wall of fused stone seals the old Sky Road. Through a crack you glimpse a great wooden hull, and a faint blue glow.','Dwarven powder has only scorched it.'],
  onEnter(){if(!S.flags.ironhold){S.flags.ironhold=true;}},
@@ -2054,19 +2058,19 @@ MAPS.ironhold={id:'ironhold',name:'Ironhold',dynamic:true,pal:DD_PAL.ironhold,w:
    set(16,24,'U');return g;},
  links:{'16,24':{to:'dd5',x:0,y:0}},
  doors:{'5,13':{shop:'dwarfweapon'},'11,13':{shop:'dwarfarmor'},'22,13':{shop:'item'},'28,13':{inn:true},
-  '5,19':{house:['A dwarf family’s home. The smell of mushroom stew drifts out.']},'16,20':{house:['The Chief’s Hall. Banners of every clan hang inside. Chief Brannoc is out in the courtyard, glaring at the rubble.']},
+  '5,19':{house:['A dwarf family’s home. The smell of mushroom stew drifts out.']},'16,20':{to:'ironhall'},
   '26,19':{house:['A crystal-cutter’s workshop. Half-finished gems sparkle on every bench.']}},
  npcs:[
   {x:16,y:5,ship:true,when:()=>!S.flags.shipUp,talk:()=>null},
   {x:15,y:10,spr:'dwarfelder',talk:()=>S.flags.blasted?['Elder Thrain: Seren would be proud. The Aurora flies again!','Elder Thrain: Her skystone engine never tires. She will carry you over sea and mountain alike.']:
    ['Elder Thrain: Sit, sit. You will want to hear the tale of the Aurora.','Elder Thrain: Five hundred years ago the Sky Folk sailed above the clouds in ships of oak and skystone.','Elder Thrain: They came down the Sky Road, a great shaft from the northern cape, to trade with Ironhold.',
     'Elder Thrain: Then the Ember Wyrm woke and burned their fleet out of the sky. One ship escaped: the Aurora, flown by Captain Seren.','Elder Thrain: Seren brought her down the Sky Road, and our forefathers sealed the shaft behind her so the wyrm would never find her.',
-    'Elder Thrain: Her last words were, “Wake her when the sky is clear of fire.” And now you tell me the Ember Wyrm is dead…','Elder Thrain: Then the time has come. Speak to Chief Brannoc, by the rubble.']},
-  {x:18,y:9,spr:'dwarfchief',talk:()=>{const f=S.flags;if(f.blasted)return['Chief Brannoc: Did you see her fly? Straight up the old Sky Road!','Chief Brannoc: The Aurora waits up top, beside Deepdelve Mine. Gorrim’s lift will take you up.'];
-   showDialog(['Chief Brannoc: So you are the ones who slew the Magma Worm! Ironhold owes you its life.','Chief Brannoc: Behind that rubble sleeps the Aurora, last airship of the Sky Folk. Ordinary powder can’t crack sealing stone.',
-    'Chief Brannoc: But that Magma Heart you carry… ground into blasting powder, it burns hot enough to melt mountains.','Chief Brannoc: Stand back, friends. Let’s wake her up!'],blastSequence);return null;}},
+    'Elder Thrain: Her last words were, “Wake her when the sky is clear of fire.” And now you tell me the Ember Wyrm is dead…','Elder Thrain: Then the time has come. Their Majesties will want to thank you themselves. The Royal Hall is just south of here.']},
+  {x:18,y:9,spr:'dwarfchief',talk:()=>{const f=S.flags;if(f.blasted)return['Forgemaster Brannoc: Did you see her fly? Straight up the old Sky Road!','Forgemaster Brannoc: The Aurora waits up top, beside Deepdelve Mine. Gorrim’s lift will take you up.'];
+   if(!f.audience)return['Forgemaster Brannoc: You’re the ones who broke Gravemaw? Hammers and anvils, the whole city owes you!','Forgemaster Brannoc: King Durgan and Queen Sigrun are asking for you. The Royal Hall is the big red-roofed building, south of the plaza.'];
+   showDialog(['Forgemaster Brannoc: Stand back, friends. Let’s wake her up!'],blastSequence);return null;}},
   {x:6,y:14,spr:'dwarfsmith',wander:[2,14,13,15],talk:()=>['Smith Durra: Adamant takes a week at the forge to fold. Worth every gil, mind you.']},
-  {x:24,y:15,spr:'dwarf',wander:[20,14,31,15],talk:()=>[S.flags.blasted?'Miner: An airship! I never believed the old stories.':'Miner: The Chief has stared at that rubble every day for forty years.']},
+  {x:24,y:15,spr:'dwarf',wander:[20,14,31,15],talk:()=>[S.flags.blasted?'Miner: An airship! I never believed the old stories.':'Miner: Brannoc has stared at that rubble every day for forty years.']},
   {x:22,y:22,spr:'dwarf2',wander:[18,21,31,23],talk:()=>['Dwarf: Mind the forge pool. Lava doesn’t care how brave you are.']},
   {x:28,y:15,spr:'dwarfgirl',when:()=>!!S.flags.hildeDone,talk:()=>['Hilde: Home again, thanks to you! My pack is lost, but my head is still on my shoulders.']},
   {x:13,y:22,spr:'dwarf',talk:()=>{showDialog(['Gorrim: The lift runs up to the mine entrance. Hop on!'],()=>enterInterior('dd1',{x:DD.lift.x*CT+8,y:(DD.lift.y+1)*CT+8}));return null;}}]};
@@ -2088,7 +2092,7 @@ async function blastSequence(){
   f.shipUp=true;S.shipRise=0;placeShip();say('The Aurora soars up the old Sky Road toward the surface!');
   await tween(900,p=>{const e=p*p*(3-2*p);S.cam={x:c1.x+(S.cpos.x-c1.x)*e,y:c1.y+(S.cpos.y-c1.y)*e};});
   S.cam=null;S.cut=false;saveGame();renderMenu();
-  showDialog(['Chief Brannoc: HA! Did you see her go? Straight up the Sky Road like she was never asleep!','Chief Brannoc: She’ll be waiting on the surface, beside Deepdelve Mine. Take Gorrim’s lift up.','Chief Brannoc: Walk aboard and she’ll carry you anywhere under the sky. Over sea, over mountains. Fly her well!']);
+  showDialog(['Forgemaster Brannoc: HA! Did you see her go? Straight up the Sky Road like she was never asleep!','Forgemaster Brannoc: She’ll be waiting on the surface, beside Deepdelve Mine. Take Gorrim’s lift up.','King Durgan: The Aurora is yours, heroes. Walk aboard and she’ll carry you anywhere under the sky. Fly her well!']);
 }
 
 
@@ -2116,7 +2120,7 @@ Object.assign(SK,{
 });
 for(const id of['undine','glacia','raijin'])SK[id].all=true;
 Object.assign(POW,{firaga:34,blizzaga:34,thundaga:34,bio:22,ifrit:36,titan:34,bahamut:52});
-Object.assign(SK_EL,{firaga:'fire',blizzaga:'ice',thundaga:'thunder',ifrit:'fire'});
+Object.assign(SK_EL,{firaga:'fire',blizzaga:'ice',thundaga:'thunder',ifrit:'fire',titan:'earth'});
 const MONK=['chakra','pummel','wavefist','earthslash','purify','phoenixpalm'];
 Object.assign(TOMES,{heal:{who:'white',price:1200},exit:{who:'white',price:800},
  bio:{who:'black',price:6000,lv:20},firaga:{who:'black',price:9000,lv:25},blizzaga:{who:'black',price:9000,lv:25},thundaga:{who:'black',price:9000,lv:25},
@@ -2215,7 +2219,7 @@ async function doHero2(h,id,tg){const d=S.dragon;
       eachFoe(f=>fireFx(f.ax,f.ay));hitAll(h.mag*POW.ifrit,'fire');await sleep(400);break;}
     case 'titan':{await castPose(h,'#c9a074',300);await summonIntro('#c9a074');banner('Titan · Gaia’s Wrath');
       for(let k=0;k<4;k++){shake();eachFoe(f=>{for(let j=0;j<10;j++)part(f.bx+rnd(-18,18),f.by,{vx:rnd(-25,25),vy:rnd(-110,-50),g:200,life:rnd(.5,.8),c:pick(['#8a6a48','#c8a070','#5a3a24']),s:pick([2,3])});});await sleep(200);}
-      hitAll(h.mag*POW.titan,null);await sleep(400);break;}
+      hitAll(h.mag*POW.titan,'earth');await sleep(400);break;}
     case 'bahamut':{await castPose(h,'#b48cff',300);await summonIntro('#b48cff');banner('Bahamut · Megaflare');
       await addFx(1500,(c,p)=>{const cx=80,cy=90;c.fillStyle=`rgba(10,4,20,${.6*Math.sin(p*Math.PI)})`;c.fillRect(0,0,W,H);
         if(p<.5){c.strokeStyle='#b48cff';for(let k=0;k<12;k++){const a=k/12*6.283+p*6,r=70*(1-p*2)+6;c.beginPath();c.moveTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r*.7);c.lineTo(cx,cy);c.stroke();}}
@@ -2223,6 +2227,60 @@ async function doHero2(h,id,tg){const d=S.dragon;
       flash('#ffffff',600);shake();hitAll(h.mag*POW.bahamut,null);await sleep(450);break;}
   }
 }
+
+
+/* ---------- v2.6: Gravemaw the Earth Wyrm, and Ironhold's Royal Hall ---------- */
+MON.earthicon={...MON.frosticon,name:'Gravemaw',pal:{h:'#e8dcc0',B:'#7a6040',b:'#c8b080',e:'#7aff5a',t:'#ffffff',m:'#4a3a24',M:'#5a4a30'}};
+Object.assign(GEAR,{wyrmscale:{name:'Wyrmscale Mail',slot:'body',who:['fighter','thief'],def:34,mdef:16,price:18000}});
+const SAND=['#e8d090','#c8b080','#a08858','#7a6040','#ffffff'];
+async function rockfall(){banner('Rockfall');await addFx(900,()=>{for(let k=0;k<3;k++)part(rnd(170,250),-2,{vx:rnd(-20,0),vy:rnd(130,180),life:.9,c:pick(SAND),s:pick([2,3])});});
+  shake();for(const h of alive()){for(let k=0;k<8;k++)part(h.x,h.y,{vx:rnd(-30,30),vy:rnd(-40,-5),life:.4,c:pick(SAND)});hurt(h,rnd(420,500),'phys','earth');}await sleep(450);}
+async function landslide(){banner('Landslide');const d=S.dragon;await tween(260,p=>d.dx=-8*Math.sin(p*Math.PI));flash('#c8b080',600);shake();
+  await addFx(1000,(c,p)=>{const lvl=H-Math.sin(p*Math.PI)*90;c.fillStyle='rgba(122,96,64,.75)';c.fillRect(170,lvl,W-170,H-lvl);for(let k=0;k<4;k++)part(rnd(170,W),lvl,{vx:rnd(-20,20),vy:rnd(-60,-20),g:120,life:.5,c:pick(SAND),s:2});});
+  for(const h of alive())hurt(h,rnd(880,980),'phys','earth');say('The cavern wall comes crashing down on the party!');await sleep(400);}
+async function earthAct(d){
+  if(d.charging){d.charging=false;d.lastInferno=d.turns;return landslide();}
+  if(d.turns-d.lastInferno>=4){d.charging=true;banner('');say('Gravemaw digs its claws into the stone. The whole cavern trembles…');await sleep(700);return;}
+  const r=Math.random(),front=alive().filter(h=>h.row==='front');
+  if(r<.25)return single('Granite Claw',700,800,'#c8b080');
+  if(r<.42&&front.length)return tailLash(front);
+  if(r<.58)return statusAtk({name:'Petrifying Glare',lo:200,hi:260,type:'mag',col:'#7aff5a',st:'stone',ch:.3});
+  if(r<.8)return rockfall();
+  return breathAtk('Sand Breath',460,540,false,SAND,'earth');
+}
+Object.assign(NPCSPR,{dwarfking:{pal:VPAL({h:'#ffd34a',b:'#e8e8f0',t:'#a82a2a',B:'#ffd34a',p:'#3a2418'}),map:VMAP.dwarf},
+ dwarfqueen:{pal:VPAL({h:'#ffd34a',b:'#c8902a',t:'#6a48b0',B:'#ffd34a',p:'#4a3a5a'}),map:VMAP.dwarf}});
+function royalAudience(){const f=S.flags;
+  showDialog(['King Durgan: Heroes! Gravemaw buried us alive for a full season. Our tunnels were caving in and the grain stores were nearly empty.',
+   'Queen Sigrun: And you broke the wyrm and opened the road! Every hearth in Ironhold is singing your names tonight.',
+   'King Durgan: A debt like that deserves more than gold. It deserves the greatest secret of our kingdom.',
+   'King Durgan: Five hundred years ago the Sky Folk sailed above the clouds in ships of oak and skystone. They came down the Sky Road to trade with us.',
+   'Queen Sigrun: When the Ember Wyrm burned their fleet, one ship escaped: the Aurora. Captain Seren flew her down the Sky Road, and our ancestors sealed the stone behind her.',
+   'King Durgan: Seren’s last words were, “Wake her when the sky is clear of fire.” You slew the Ember Wyrm. The sky is clear.',
+   'Queen Sigrun: And that Earthheart you carry is the key. Ground into powder, it burns hot enough to break the sealing stone.',
+   'King Durgan: Forgemaster Brannoc! Bring your heartfire powder. To the Sky Road, all of you!'],
+   ()=>{f.audience=true;enterInterior('ironhold',{x:16*CT+8,y:10*CT+8});blastSequence();});}
+MAPS.ironhall={id:'ironhall',name:'Royal Hall of Ironhold',w:24,h:16,pal:DD_PAL.ironhold,parent:'ironhold',parentPos:{x:16*CT+8,y:21*CT+8},entry:{x:12*CT+8,y:14*CT+8},
+ hello:'The Royal Hall of Ironhold. Torchlight glints on gold and polished stone.',leave:'Leave the Royal Hall',
+ rooms:[{n:'Royal Bedchamber',x0:1,y0:1,x1:5,y1:6},{n:'Throne Room',x0:7,y0:1,x1:17,y1:10},{n:'Royal Treasury',x0:19,y0:1,x1:22,y1:6},{n:'Entrance Hall',x0:7,y0:11,x1:17,y1:14}],
+ chests:{'20,1':{item:'elixir',n:2},'22,1':{gil:8000},'22,5':{item:'remedy',n:3}},
+ build(){const g=gridFill(this.w,this.h,'#'),set=(x,y,c)=>{g[y][x]=c;},rect=(x0,y0,x1,y1,c)=>{for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)set(x,y,c);};
+   rect(1,1,5,6,'y');rect(7,1,17,10,'y');rect(19,1,22,6,'y');rect(7,11,17,14,'y');set(6,3,'D');set(18,3,'D');
+   for(let y=2;y<=14;y++)set(12,y,'r');set(11,2,'T');set(13,2,'T');
+   for(const[x,y]of[[9,4],[15,4],[9,8],[15,8]])set(x,y,'P');for(const x of[3,9,15,21])set(x,0,'n');
+   for(const[x,y]of[[7,1],[17,1],[7,14],[17,14],[1,6],[19,6]])set(x,y,'p');
+   set(2,2,'Q');set(2,3,'q');set(3,2,'Q');set(3,3,'q');set(5,1,'t');set(1,1,'t');
+   for(const k in this.chests){const[x,y]=k.split(',').map(Number);set(x,y,'c');}set(12,15,'E');return g;},
+ npcs:[
+  {x:11,y:2,spr:'dwarfking',talk:()=>{const f=S.flags;if(!f.audience&&!f.blasted){royalAudience();return null;}
+    return['King Durgan: The Aurora is yours, friends. Fly her well, and come home to Ironhold whenever you like.','King Durgan: The Rune Hall and the Training Hall are open to you, free of any royal tax. Ha!'];}},
+  {x:13,y:2,spr:'dwarfqueen',talk:()=>{const f=S.flags;if(!f.audience&&!f.blasted){royalAudience();return null;}
+    if(!f.queenGift){f.queenGift=true;S.bag.ribbon=(S.bag.ribbon||0)+1;saveGame();return['Queen Sigrun: Before you go, take this. A Ribbon, woven by my grandmother.','Queen Sigrun: No poison, curse or stone will touch whoever wears it.','Received the Ribbon!'];}
+    return['Queen Sigrun: Ironhold owes you its life. Our doors are always open.'];}},
+  {x:10,y:12,spr:'dwarf',talk:()=>['Royal Guard: Bow when you reach the thrones. Or don’t. Their Majesties are in a forgiving mood today.']},
+  {x:14,y:12,spr:'dwarf',talk:()=>['Royal Guard: The King hasn’t smiled like that in forty years.']},
+  {x:3,y:5,spr:'dwarfgirl',wander:[1,4,5,6],talk:()=>['Royal Maid: Their Majesties’ bedchamber. Mind the furs, they’re older than I am.']},
+  {x:20,y:4,spr:'dwarfelder',talk:()=>['Royal Treasurer: The Queen says the treasury chests are yours. Don’t tell the King how much is in them.']}]};
 
 async function dungeonEncounter(form){
   S.battleReturn='castle';S.transIn=true;S.scene='trans';for(const k in keys)keys[k]=false;steer=null;S.world.moving=false;
@@ -2394,7 +2452,8 @@ async function phaseTwo(){
 function fmt(s){s=Math.round(s);return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
 function showOver(win){
   const d=S.foes[0],wy=d.kind==='wyrm',ret=()=>S.battleReturn==='castle'?toCastle():toMap();let t,p,b;
-  if(win&&wy&&d.variant==='frost'){S.flags.wyrm2=true;const ups=awardBattle(3000,5000);S.bag.frostbrand=(S.bag.frostbrand||0)+1;S.bag.rimecrown=(S.bag.rimecrown||0)+1;t='Victory';p='Frostfang is defeated! Gained 3,000 EXP and 5,000 G. Found the Frostbrand and the Rime Crown.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toCastle('The summit falls silent. Snow drifts down over the peak.');}
+  if(win&&wy&&d.variant==='earth'){S.flags.worm=true;S.flags.heart=true;const ups=awardBattle(4000,6000);S.bag.wyrmscale=(S.bag.wyrmscale||0)+1;S.items.elixir=(S.items.elixir||0)+2;t='Victory';p='Gravemaw is defeated! Gained 4,000 EXP and 6,000 G. Found Wyrmscale Mail and 2 Elixirs. From the rubble of its body you pry loose the Earthheart, a stone that thrums like a forge.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toCastle('The tunnel ahead is clear. Far below, dwarven horns are sounding.');}
+  else if(win&&wy&&d.variant==='frost'){S.flags.wyrm2=true;const ups=awardBattle(3000,5000);S.bag.frostbrand=(S.bag.frostbrand||0)+1;S.bag.rimecrown=(S.bag.rimecrown||0)+1;t='Victory';p='Frostfang is defeated! Gained 3,000 EXP and 5,000 G. Found the Frostbrand and the Rime Crown.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toCastle('The summit falls silent. Snow drifts down over the peak.');}
   else if(win&&wy){S.wyrmDone=true;const ups=awardBattle(800,1500);t='Victory';p=`Both forms felled in ${fmt(S.clock)}. Gained 800 EXP and 1,500 G.`+(ups.length?' '+ups.join(' '):'');b='Enter the world map';S.onContinue=()=>toMap('The pass is clear. The world opens up before you.');}
   else if(win){let ex=0,gl=0;const got=[];for(const f of S.foes){const m=MON[f.kind];ex+=m.exp;gl+=m.gil;got.push(...rollDrops(f));}
     for(const f of S.foes)S.kills[f.kind]=(S.kills[f.kind]||0)+1;const ups=awardBattle(ex,gl);let extra='';
@@ -2548,7 +2607,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.5.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.6.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

@@ -245,7 +245,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.3.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.3.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -930,7 +930,7 @@ function genWorld(seed){
       for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)tiles[y*WT+x]=(x===x0||x===x1||y===y0||y===y1)?T_WALL:T_LAWN;
       for(let y=cy+1;y<=y1;y++)tiles[y*WT+cx]=T_ROAD;
       village={x:cx-2,y:cy+3};village2={x:cx+2,y:cy+3};
-      for(const sd of[-1,1])for(const[dx,dy]of[[1,-1],[3,-1],[1,1],[3,1]])tiles[(cy+3+dy)*WT+cx+sd*dx]=T_HOUSE;
+      for(const sd of[-1,1])for(const[dx,dy]of[[3,-2],[3,-1],[2,-2]])tiles[(cy+3+dy)*WT+cx+sd*dx]=T_HOUSE;
       // road from the gate out to open, reachable land
       const inC=(x,y)=>x>=x0&&x<=x1&&y>=y0&&y<=y1,st=(y1+1)*WT+cx,prev=new Map([[st,-1]]),q=[st];let end=-1;
       while(q.length){const k=q.shift(),x=k%WT,y=(k/WT)|0;if(seen[k]&&!BLOCKED.has(tiles[k])&&!inC(x,y)){end=k;break;}
@@ -1531,7 +1531,10 @@ function vaultFight(){showDialog(["The sentinel's eyes flare blue!","“INTRUDER
 async function guestRest(){S.resting=true;await addFx(1600,(c,p)=>{const a=p<.3?p/.3:p>.75?(1-p)/.25:1;c.fillStyle=`rgba(6,6,24,${a*.85})`;c.fillRect(0,0,W,H);});
   for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;}S.resting=false;say('Well rested. HP and MP fully restored.');saveGame();}
 function enterCastle(pos){enterInterior('castle',pos);}
-function leaveCastle(){if(IM&&IM.parent)return enterInterior(IM.parent,IM.parentPos);S.scene='map';stage.classList.remove('castle');stage.classList.add('map');S.world.townLock=true;say(IM&&IM.out||'You step back out into the fields.');renderMenu();saveGame();}
+function leaveCastle(){if(IM&&IM.parent)return enterInterior(IM.parent,IM.parentPos);S.scene='map';stage.classList.remove('castle');stage.classList.add('map');S.world.townLock=true;
+  {const tx=Math.floor(S.world.x/TS),ty=Math.floor(S.world.y/TS),opts=[[0,1],[-1,0],[1,0],[0,-1]];
+   if(IM&&IM.id==='village'&&WORLD.castle)opts.sort((a,b)=>Math.abs(tx+a[0]-WORLD.castle.x)-Math.abs(tx+b[0]-WORLD.castle.x));
+   for(const[dx,dy]of opts){const t=WORLD.at(tx+dx,ty+dy);if(!BLOCKED.has(t)&&t!==T_TOWN&&t!==T_CASTLE&&t!==T_CAVE){S.world.x=(tx+dx)*TS+TS/2;S.world.y=(ty+dy)*TS+TS/2;S.world.townLock=false;break;}}}say(IM&&IM.out||'You step back out into the fields.');renderMenu();saveGame();}
 function toCastle(msg){
   for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,dx:0,dy:0,flash:0,cast:null,coverHit:false});
   Object.assign(S,{scene:'castle',over:false,busy:false,menu:null,actQ:[],readyQ:[],fx:[],parts:[],onContinue:null});
@@ -2108,7 +2111,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.3.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.3.2',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

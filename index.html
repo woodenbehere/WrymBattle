@@ -255,7 +255,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.9.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.9.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -2840,7 +2840,7 @@ function fishRender(dt){const F=S.fishing;if(!F)return;
     if(F.state==='treasure'){ctx.fillStyle='#3a2418';ctx.fillRect(Math.round(lx)-5,Math.round(ly),11,8);ctx.fillStyle='#8a5a2a';ctx.fillRect(Math.round(lx)-4,Math.round(ly)+1,9,6);ctx.fillStyle='#ffd34a';ctx.fillRect(Math.round(lx),Math.round(ly)+3,1,2);}
     else if(F.state!=='fight'){ctx.fillStyle='#e84040';ctx.fillRect(Math.round(lx)-1,Math.round(ly)-1,3,3);ctx.fillStyle='#ffffff';ctx.fillRect(Math.round(lx)-1,Math.round(ly)-1,3,1);}}
   if(F.hooked){const f=F.hooked;drawFishShape(ctx,f,f.x,f.y,f.dir,f.len);if(f.pull&&Math.floor(S.t*10)%2){ctx.fillStyle='#ff5a5a';ctx.fillRect(Math.round(f.x)-1,Math.round(f.y-f.len*.4-8),2,4);}}
-  if(F.state==='fight'||F.state==='treasure'){const t=F.tension;ctx.fillStyle='rgba(10,8,14,.75)';ctx.fillRect(6,5,92,13);ctx.fillStyle='#e8e8f0';ctx.font='6px monospace';ctx.fillText('LINE',9,13);
+  if(false){const t=F.tension;ctx.fillStyle='rgba(10,8,14,.75)';ctx.fillRect(6,5,92,13);ctx.fillStyle='#e8e8f0';ctx.font='6px monospace';ctx.fillText('LINE',9,13);
     ctx.fillStyle='#2a2a34';ctx.fillRect(30,8,64,6);ctx.fillStyle=t>75?'#ff4a4a':t>45?'#ffd34a':'#5ad06a';ctx.fillRect(30,8,Math.round(64*t/100),6);
     if(F.hooked&&F.hooked.pull){ctx.fillStyle='#ff8a8a';ctx.fillText('THRASHING!',104,13);}}
   if(F.landing&&F.landing.fish){const f=F.landing.fish,L=Math.min(80,f.len*2.2);ctx.fillStyle='rgba(10,8,14,.55)';ctx.fillRect(0,FSURF+10,W,70);drawFishShape(ctx,f,W/2-10,FSURF+44,1,L);
@@ -3406,7 +3406,12 @@ function fishSky(){const n=isNight(),t=wxType();if(n)return t==='clear'?['#0a0e2
     ctx.fillStyle='rgba(220,236,255,.5)';for(let k=0;k<10;k++){const x=(k*29+Math.floor(S.t*3)*41)%W;ctx.fillRect(x-1,FSURF,3,1);}
     ctx.fillStyle='rgba(0,10,30,.18)';ctx.fillRect(0,FSURF,W,H-FSURF);}
   if(t==='storm'&&(S.t%5)<.12){ctx.fillStyle='rgba(255,255,240,.45)';ctx.fillRect(0,0,W,H);}
-  if(fishBoost()&&S.fishing.state==='aim'&&Math.floor(S.t*2)%2){ctx.fillStyle='rgba(255,255,255,.5)';for(const f of S.fishing.fish)ctx.fillRect(Math.round(f.x),FSURF+1,2,1);}};}
+  if(fishBoost()&&S.fishing.state==='aim'&&Math.floor(S.t*2)%2){ctx.fillStyle='rgba(255,255,255,.5)';for(const f of S.fishing.fish)ctx.fillRect(Math.round(f.x),FSURF+1,2,1);}fishUI(S.fishing);};}
+function fishUI(F){if(F.state==='fight'||F.state==='treasure'){const t=F.tension;ctx.fillStyle='rgba(10,8,14,.9)';ctx.fillRect(5,H-18,94,15);ctx.strokeStyle='#e8e8f0';ctx.strokeRect(5.5,H-17.5,93,14);ctx.fillStyle='#ffffff';ctx.font='6px monospace';ctx.fillText('LINE',9,H-9);
+  ctx.fillStyle='#2a2a34';ctx.fillRect(30,H-14,64,6);ctx.fillStyle=t>75?'#ff4a4a':t>45?'#ffd34a':'#5ad06a';ctx.fillRect(30,H-14,Math.round(64*t/100),6);
+  if(F.hooked&&F.hooked.pull){ctx.fillStyle='rgba(10,8,14,.9)';ctx.fillRect(101,H-17,50,11);ctx.fillStyle='#ff8a8a';ctx.fillText('THRASHING!',104,H-9);}}
+  if(F.landing&&F.landing.fish){const f=F.landing.fish,L=Math.min(80,f.len*2.2);ctx.fillStyle='rgba(10,8,14,.7)';ctx.fillRect(0,FSURF+10,W,70);drawFishShape(ctx,f,W/2-10,FSURF+44,1,L);
+    ctx.fillStyle='#ffd34a';ctx.font='8px monospace';const txt=`${f.size} cm`+(F.landing.first?'  NEW!':F.landing.rec?'  RECORD!':'');ctx.fillText(txt,W/2-ctx.measureText(txt).width/2-10,FSURF+76);}}
 
 /* full view on the world map */
 const bigX=document.createElement('button');bigX.type='button';bigX.className='btn sm bigx';bigX.textContent='✕ Menu';bigX.hidden=true;stage.appendChild(bigX);
@@ -4267,7 +4272,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.9.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.9.1',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

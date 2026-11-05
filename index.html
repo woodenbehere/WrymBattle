@@ -62,6 +62,9 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .stage.map{touch-action:none;cursor:pointer}
 .stage.map .boss,.stage.town .boss,.stage.castle .boss{display:none}
 .stage.castle{touch-action:none;cursor:pointer}
+.stage.fish{touch-action:none;cursor:crosshair} .stage.fish .boss{display:none} .stage.fish .note{bottom:auto;top:8px}
+.opt.reel .l,.opt.hook .l{font-size:1.35em} .opt.hook{animation:hookp .3s steps(2) infinite} @keyframes hookp{50%{background:rgba(238,122,214,.25)}}
+.opt.reel,.opt.hook{touch-action:none;user-select:none;-webkit-user-select:none}
 #mini{position:absolute;top:6px;right:6px;width:clamp(64px,22%,230px);height:auto;image-rendering:pixelated;image-rendering:crisp-edges;border:2px solid #e8e8f0;box-shadow:0 0 0 2px #000;background:#000;display:none;cursor:zoom-in;z-index:4}
 #mini.big{width:min(62%,560px);cursor:zoom-out}
 .stage.map #mini,.stage.castle #mini{display:block}
@@ -214,7 +217,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
   .hud{--fs:min(3.2cqw,3.4cqh);grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr);grid-template-rows:minmax(0,1fr)}
 }
 @media (max-width:480px){h1{display:none}.top{justify-content:flex-end}.tbtn,.mode button{font-size:10px;padding:.5em .55em;letter-spacing:.04em}.tools{gap:4px}}
-@media (prefers-reduced-motion:reduce){.stage.shake{animation:none}.row.ready .atb i,.row.lb .lim i{animation:none}.pop{animation-duration:1.2s}}
+@media (prefers-reduced-motion:reduce){.opt.hook{animation:none}.stage.shake{animation:none}.row.ready .atb i,.row.lb .lim i{animation:none}.pop{animation-duration:1.2s}}
 </style>
 </head>
 <body>
@@ -249,7 +252,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.8.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.9.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -262,6 +265,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
 <p><b>The hidden valley</b>: high in the island’s great mountain range lies a valley no road can reach. Fly the Aurora there to find Castle Arcanum and the village of Highmere, with the strongest spells, items and gear in the realm. The magi can raise the lost <b>Isle of Aether</b>, but a wall of storm clouds surrounds it and hurls back the airship. King Aldous can build you a port east of his castle: walk out along the pier to board the ship. On the main island she can only tie up at that pier; on the isle she can land on any beach. The <b>Tower of Aether</b> has a hundred floors, guardians on floors 25, 50 and 75, waystones every tenth floor, and Zephyrion the Sky Wyrm at the top.</p>
+<p><b>Fishing</b>: while sailing, schools of fish ripple on the water. Sail up to one and choose <b>Fish</b>. Tap the water to cast, hold <b>Reel</b> to work the lure, keep still while a fish nibbles, then tap <b>HOOK!</b> the moment it bites. While landing it, watch the line: ease off when the fish thrashes or the line snaps. Snag chests on the seabed for treasure, including magic armor found nowhere else. Old Gill at the Adventurers’ Guild buys your catch, and the <b>Fish Book</b> logs every kind with its largest size and date.</p>
 <p><b>Status ailments</b>: some monsters poison (HP drains over time, even while walking), petrify (the hero is out of the fight until cured) or confuse (the hero attacks at random). Cure them with Antidotes, Gold Needles, Remedies, or the <b>Heal</b> spell. Confusion wears off when a battle ends; poison and stone last until cured, or until you rest at an inn or camp. Open <b>Party</b> outside battle to cast healing magic (Cure, Heal, Revive, Exit and more) and use items. A <b>Ribbon</b> blocks them all. <b>Exit</b> warps the party out of any dungeon, castle or town to the world map. In Ironhold, the <b>Rune Hall</b> sells Firaga, Bio and the summons Ifrit, Titan and Bahamut, and the <b>Training Hall</b> teaches the Fighter monk arts (learn three to become a Monk) and the Thief new tricks.</p>
 <p><b>Deepdelve Mine</b>: on the northern cape, sealed until you finish King Aldous’s Hill Ogre quest and defeat Frostfang. Then a mine shaft drops five levels to Ironhold, the dwarf city. Read the old tablets on the Sky Road, slay Gravemaw the Earth Wyrm to free the trapped dwarves, and their King and Queen can blast free the airship <b>Aurora</b>. Walk aboard to fly anywhere on the world map with no random battles; choose <b>Land</b> to set down on open ground.</p>
 <p><b>Castle Valemont</b>: walk in to meet the King and Queen, rest in the guest rooms, raid the armory, and earn your way into the royal vault. Walk into people to talk to them.</p>
@@ -288,6 +292,14 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="pgrid"><div id="pStats"></div><div id="pEquip"></div></div>
     <div id="pPick"></div>
     <div class="arow"><button class="btn ghost" id="pOpt" type="button">Optimize</button><button class="btn" id="partyClose" type="button">Close</button></div>
+  </div>
+</div>
+<div class="sheet" id="fishOv" role="dialog" aria-modal="true" aria-label="Fish Book" hidden>
+  <div class="card help">
+    <div class="shop-h"><h2>Fish Book</h2><span class="gil" id="fishCount"></span></div>
+    <p class="tip" id="fishMsg"></p>
+    <div class="slist" id="fishList"></div>
+    <div class="arow"><button class="btn" id="fishClose" type="button">Close</button></div>
   </div>
 </div>
 <div class="sheet" id="guildOv" role="dialog" aria-modal="true" aria-label="Adventurers' Guild" hidden>
@@ -578,7 +590,7 @@ function drawDragon(t){
 
 /* ---------- render ---------- */
 function render(dt){
-  if(S.scene==='battle')battleRender(dt);else if(S.scene==='town')townRender(dt);else if(S.scene==='castle'||(S.scene==='trans'&&S.transIn))castleRender();else mapRender(dt);
+  if(S.scene==='battle')battleRender(dt);else if(S.scene==='town')townRender(dt);else if(S.scene==='castle'||(S.scene==='trans'&&S.transIn))castleRender();else if(S.scene==='fish')fishRender(dt);else mapRender(dt);
   if(S.scene==='map'||S.scene==='castle')drawMini();
   const now=performance.now();
   S.fx=S.fx.filter(f=>{const p=Math.min(1,(now-f.t0)/f.dur);f.draw(ctx,p);if(p>=1){f.done();return false;}return true;});
@@ -1126,7 +1138,7 @@ function mapRender(dt){
   const w=S.world,T=Math.floor(S.t*1.6)%2?tex2:tex;
   ctx.fillStyle='#2048b8';ctx.fillRect(0,0,W,H);
   ctx.drawImage(T,Math.round(w.x-W/2)+PAD,Math.round(w.y-H/2)+PAD,W,H,0,0,W,H);
-  drawParkedShip();drawParkedBoat();drawStorm(dt,false);drawWalker();drawStorm(dt,true);
+  drawSchools();drawParkedShip();drawParkedBoat();drawStorm(dt,false);drawWalker();drawStorm(dt,true);
 }
 function drawWalker(){
   const w=S.world;if(w.camping||S.isleView)return;{const bt=S.flags&&S.flags.boat;if(bt&&bt.boarded){drawBoat(ctx,W/2,PY+3+Math.round(Math.sin(S.t*2)),w.face<0);return;}}{const sh=S.flags&&S.flags.ship;if(sh&&sh.boarded){const b=Math.round(Math.sin(S.t*2.2)*1.5);ctx.fillStyle='rgba(0,0,0,.22)';ell(ctx,W/2,PY+3,11,2.2);drawShip(ctx,W/2,PY-9+b,1,w.face<0,true);return;}}const lead=S.heroes.find(h=>!h.ko)||S.heroes[0];
@@ -1371,15 +1383,18 @@ function renderTownMenu(){
 function renderMapMenu(){
   const w=S.world;
   cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${S.flags.ship&&S.flags.ship.boarded?'Airship Aurora':S.flags.boat&&S.flags.boat.boarded?'At sea':'World map'}</span><span class="cls">${esc(w.place||placeName())} · ${fmtG(S.gil)}</span></div>`+
-    (S.flags.ship&&S.flags.ship.boarded?opt('land','Land','',canLand()?'Set the Aurora down here':overIsle()?'The tower’s winds won’t let her land':'Fly over open ground to land',!canLand()):'')+
+    (S.flags.boat&&S.flags.boat.boarded?opt('fish','Fish','',nearSchool()?'A school of fish is right below!':'Sail up to a school of fish',!nearSchool()):'')+(S.flags.ship&&S.flags.ship.boarded?opt('land','Land','',canLand()?'Set the Aurora down here':overIsle()?'The tower’s winds won’t let her land':'Fly over open ground to land',!canLand()):'')+
     opt('camp','Camp','Tent ×'+(S.items.tent||0),w.camping?'Resting…':S.flags.ship&&S.flags.ship.boarded?'Land the airship first':(S.items.tent?'Use a Tent to restore all HP and MP':'Buy Tents at an item shop'),w.camping||S.scene!=='map'||!S.items.tent||!!(S.flags.ship&&S.flags.ship.boarded)||!!(S.flags.boat&&S.flags.boat.boarded))+
     opt('party','Party','','Status and equipment')+
-    opt('quests','Quests','','Guild bounties')+
+    opt('quests','Quests','','Guild bounties')+(S.flags.port?opt('fishbook','Fish Book','',fishBookSub()):'')+
     opt('enc','Encounters',w.enc?'on':'off',w.enc?'Random battles while walking':'Walk in peace')+
     `<div class="log"><p>${esc(w.steps?S.log[S.log.length-1]:'Walk with the arrow keys or WASD, or press and hold on the map.')}</p></div>`;
 }
 function mapCmd(a){
   const w=S.world;
+  if(a==='fishbook')return openFishBook();
+  if(S.scene==='fish'){if(a==='fishcast')fishCast(rnd(50,160));if(a==='fishstop')stopFishing();return;}
+  if(a==='fish')return startFishing();
   if(a==='party')return openParty();
   if(a==='quests')return openGuild(!(S.scene==='castle'&&IM&&IM.id==='guild'));
   if(S.scene==='castle'){if(a==='leave')return leaveCastle();if(a==='exit'){if(!exitArmed()){armExit();renderMenu();const b=cmdEl.querySelector('[data-a="exit"]');if(b&&kb)b.focus({preventScroll:true});return;}return castExit();}if(a==='camp')return dungeonCamp();return;}
@@ -1701,7 +1716,7 @@ function toCastle(msg){
 }
 function renderCastleMenu(){
   cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${esc(IM?IM.name:'Castle Valemont')}</span><span class="cls">${esc(S.croom||'')} · ${fmtG(S.gil)}</span></div>`+
-    opt('party','Party','','Status and equipment')+opt('quests','Quests','','Guild bounties')+(IM&&IM.dungeon?opt('camp','Camp','Tent ×'+(S.items.tent||0),onSave()?'Safe spot: restore all HP and MP':'Find a save circle to camp',!onSave()||!S.items.tent||S.resting):'')+(exitOk()?opt('exit',exitArmed()?'Tap again to cast Exit':'Exit',SK.exit.mp+' MP','Ilse warps the party out to the world map',!exitReady(),exitArmed()?'armed':''):'')+(IM&&!IM.leave?'':opt('leave',IM?IM.leave:'Leave castle'))+
+    opt('party','Party','','Status and equipment')+opt('quests','Quests','','Guild bounties')+(S.flags.port?opt('fishbook','Fish Book','',fishBookSub()):'')+(IM&&IM.dungeon?opt('camp','Camp','Tent ×'+(S.items.tent||0),onSave()?'Safe spot: restore all HP and MP':'Find a save circle to camp',!onSave()||!S.items.tent||S.resting):'')+(exitOk()?opt('exit',exitArmed()?'Tap again to cast Exit':'Exit',SK.exit.mp+' MP','Ilse warps the party out to the world map',!exitReady(),exitArmed()?'armed':''):'')+(IM&&!IM.leave?'':opt('leave',IM?IM.leave:'Leave castle'))+
     `<div class="log"><p>${esc('Walk into people to talk, and into doors, chests and beds to use them.')}</p><p>${esc(S.log[S.log.length-1]||'')}</p></div>`;
 }
 /* dialogue window */
@@ -2653,6 +2668,195 @@ async function doHero3(h,id,tg){const d=S.dragon;
   }
 }
 
+
+/* ---------- v2.9: fishing at sea ---------- */
+const FISH=[
+ {id:'sardine',name:'Silver Sardine',min:12,max:22,w:30,str:.5,sta:2,depth:[52,86],col:'#c8d8e8',belly:'#ffffff',len:7,price:20},
+ {id:'mackerel',name:'Blue Mackerel',min:25,max:42,w:24,str:.8,sta:3,depth:[50,92],col:'#3a6ab8',belly:'#d8e8f0',stripe:'#1e3a6a',len:10,price:45},
+ {id:'bream',name:'Red Sea Bream',min:30,max:55,w:18,str:1,sta:4,depth:[64,110],col:'#e85a5a',belly:'#ffd8c8',len:12,price:80},
+ {id:'puffer',name:'Pufferfish',min:15,max:32,w:12,str:.7,sta:3,depth:[56,104],col:'#e8c068',belly:'#fff3c4',round:true,len:9,price:70},
+ {id:'squid',name:'Glow Squid',min:30,max:65,w:12,str:1.1,sta:4,depth:[76,124],col:'#e8a8d8',belly:'#ffffff',squid:true,len:12,price:90},
+ {id:'flounder',name:'Sand Flounder',min:30,max:60,w:12,str:.9,sta:5,depth:[118,128],col:'#a8906a',belly:'#e8d8b0',flat:true,len:13,price:85},
+ {id:'yellowtail',name:'Yellowtail',min:60,max:100,w:9,str:1.5,sta:6,depth:[56,110],col:'#5a8ab8',belly:'#e8e8f0',stripe:'#ffd34a',len:16,price:180},
+ {id:'grouper',name:'Giant Grouper',min:100,max:200,w:5,str:2.6,sta:9,depth:[104,126],col:'#6a5a3a',belly:'#a89070',len:24,price:400},
+ {id:'opah',name:'Moonfish',min:80,max:150,w:3,str:2.4,sta:8,depth:[64,118],col:'#e86a6a',belly:'#ffd8a8',round:true,spots:'#ffffff',len:18,price:600},
+ {id:'swordfish',name:'Swordfish',min:150,max:300,w:3,str:3,sta:10,depth:[56,104],col:'#3a4a8a',belly:'#c8d0e8',sword:true,len:28,price:700},
+ {id:'tuna',name:'Sunscale Tuna',min:150,max:260,w:2,str:3.2,sta:12,depth:[60,110],col:'#ffd34a',belly:'#fff3c4',stripe:'#c8902a',len:30,price:1200},
+ {id:'serpent',name:'Aether Sea Serpent',min:300,max:520,w:1,str:3.6,sta:12,depth:[96,126],col:'#2a8a8a',belly:'#86e0ff',eel:true,len:46,price:5000,isle:true}];
+const FISHD=Object.fromEntries(FISH.map(f=>[f.id,f]));
+Object.assign(GEAR,{
+ tidalrobe:{name:'Tidecaller Robe',slot:'body',who:MAGES,def:40,mdef:56,mag:18,price:90000},
+ pearlcrown:{name:'Pearl Crown',slot:'head',who:MAGES,def:20,mdef:32,mag:12,price:60000},
+ sirenpendant:{name:'Siren’s Pendant',slot:'acc',who:MAGES,mag:18,mdef:18,spd:2,price:60000},
+ kingfisher:{name:'Kingfisher Ring',slot:'acc',who:ALLC,str:12,mag:12,spd:3,def:8,mdef:8,price:50000}});
+NPCSPR.angler={pal:VPAL({h:'#e8e8f0',t:'#3a6a8a',p:'#5a4a3a'}),map:VMAP.man};
+const fbook=()=>S.flags.fishbook||(S.flags.fishbook={}),fbasket=()=>S.flags.basket||(S.flags.basket=[]),freg=()=>S.flags.fishReg||(S.flags.fishReg={});
+const fishDate=iso=>{try{return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}catch(e){return iso.slice(0,10);}};
+
+/* schools of fish on the world map */
+function makeSchool(x,y){const I=WORLD.isle,nearIsle=I&&I.up&&Math.hypot(x/TS-I.cx,y/TS-I.cy)<22,deep=tileAt(x,y)===T_DEEP;
+  const pool=FISH.filter(f=>!f.isle||nearIsle).map(f=>({f,w:f.w*(f.w<=3?(nearIsle?2.2:1)*(deep?1.5:1):1)})),tot=pool.reduce((a,b)=>a+b.w,0);
+  const roll=()=>{let r=Math.random()*tot;for(const p of pool){r-=p.w;if(r<=0)return p.f;}return pool[0].f;};
+  const fish=[];for(let i=0,n=2+Math.floor(Math.random()*4);i<n;i++){const sp=roll();fish.push({id:sp.id,size:Math.round(sp.min+(sp.max-sp.min)*Math.pow(Math.random(),1.6))});}
+  return{x,y,fish,chest:Math.random()<.35,ttl:rnd(45,75),ph:Math.random()*6};}
+function schoolsTick(dt){const bt=S.flags&&S.flags.boat;if(!bt||!bt.boarded){if(S.nearFish){S.nearFish=false;renderMenu();}return;}
+  const w=S.world;S.schools=(S.schools||[]).filter(s=>(s.ttl-=dt)>0&&Math.hypot(s.x-w.x,s.y-w.y)<16*TS&&(s.fish.length||s.chest));
+  S.schoolT=(S.schoolT==null?1.5:S.schoolT)-dt;
+  if(S.schoolT<=0&&S.schools.length<3){S.schoolT=rnd(4,9);for(let k=0;k<12;k++){const a=Math.random()*6.283,r=rnd(3,8)*TS,x=w.x+Math.cos(a)*r,y=w.y+Math.sin(a)*r,t=tileAt(x,y);
+    if(x<TS||y<TS||x>(WT-1)*TS||y>(HT-1)*TS||(t!==T_DEEP&&t!==T_SHAL))continue;if(WORLD.isle&&WORLD.isle.set.has(Math.floor(y/TS)*WT+Math.floor(x/TS)))continue;S.schools.push(makeSchool(x,y));break;}}
+  const nf=!!nearSchool();if(nf!==!!S.nearFish){S.nearFish=nf;renderMenu();}}
+function nearSchool(){const w=S.world,bt=S.flags&&S.flags.boat;if(!bt||!bt.boarded)return null;return(S.schools||[]).find(s=>Math.hypot(s.x-w.x,s.y-w.y)<28)||null;}
+function drawSchools(){const w=S.world;for(const s of S.schools||[]){const sx=Math.round(s.x-w.x+W/2),sy=Math.round(s.y-w.y+PY);if(sx<-20||sx>W+20||sy<-20||sy>H+20)continue;
+  const fade=Math.min(1,s.ttl/4);ctx.globalAlpha=fade;ctx.strokeStyle='rgba(232,246,255,.6)';const rr=3+((S.t*7+s.ph)%7);ctx.beginPath();ctx.ellipse(sx,sy,rr*1.4,rr*.7,0,0,7);ctx.stroke();
+  ctx.fillStyle='rgba(8,24,56,.6)';for(let i=0;i<Math.min(6,s.fish.length+2);i++){const a=S.t*1.6+i*1.1+s.ph,fx=sx+Math.cos(a)*7,fy=sy+Math.sin(a)*3.5;ctx.beginPath();ctx.ellipse(fx,fy,2.6,1.2,Math.cos(a)>0?-.3:.3,0,7);ctx.fill();}
+  if(s.chest&&Math.floor(S.t*3+s.ph)%4===0){ctx.fillStyle='#ffe07a';ctx.fillRect(sx+5,sy-4,1,1);ctx.fillRect(sx+4,sy-3,3,1);ctx.fillRect(sx+5,sy-2,1,1);}ctx.globalAlpha=1;}}
+
+/* the fishing scene: a side view under the surface */
+const FSURF=40,FBOT=131,FTIP={x:194,y:9};
+async function startFishing(){const sc=nearSchool();if(!sc||S.scene!=='map')return;S.scene='trans';S.transIn=false;for(const k in keys)keys[k]=false;steer=null;S.world.moving=false;
+  for(let i=0;i<2;i++){flash('#bfefff',140);await sleep(170);}
+  await addFx(500,(c,p)=>{c.fillStyle=`rgba(10,40,90,${p})`;c.fillRect(0,0,W,H*p);});
+  const fish=sc.fish.map(o=>{const sp=FISHD[o.id],k=(o.size-sp.min)/Math.max(1,sp.max-sp.min);return{o,sp,size:o.size,len:Math.round(sp.len*(.8+.45*k)),x:rnd(20,176),y:rnd(sp.depth[0],sp.depth[1]),dir:Math.random()<.5?-1:1,spd:rnd(8,16)/(1+sp.str*.15),state:'swim',cool:0,turnT:rnd(1,4)};});
+  S.fishing={school:sc,state:'aim',lx:FTIP.x,ly:FTIP.y,reel:false,lastReel:-9,tension:0,fish,chest:sc.chest?{x:rnd(30,170),got:false}:null,hooked:null,t:0,bub:[]};
+  S.scene='fish';stage.classList.remove('map','castle','town');stage.classList.add('fish');popsEl.innerHTML='';
+  say(`Vesh readies a rod. ${fish.length} fish below${sc.chest?', and something glints on the seabed':''}. Tap the water to cast.`);renderMenu();}
+function stopFishing(){const F=S.fishing;if(F){const sc=F.school;sc.fish=F.fish.map(f=>f.o);if(F.chest&&F.chest.got)sc.chest=false;}
+  S.fishing=null;S.scene='map';stage.classList.remove('fish');stage.classList.add('map');popsEl.innerHTML='';say('Vesh stows the rod.');renderMenu();saveGame();}
+function fishCast(x){const F=S.fishing;if(!F||F.state!=='aim')return;F.state='cast';F.castT=0;F.castTo=Math.max(14,Math.min(182,x));F.reel=false;}
+function fishPress(){const F=S.fishing;if(!F)return;if(F.state==='aim')return fishCast(rnd(50,160));if(F.state==='bite'){F.hookPress=true;return;}if(F.state==='land')return;F.reel=true;F.lastReel=F.t;}
+function fishRelease(){if(S.fishing)S.fishing.reel=false;}
+function fishLose(f,msg,remove){const F=S.fishing;F.hooked=null;F.tension=0;if(remove){const i=F.fish.indexOf(f);if(i>=0)F.fish.splice(i,1);}else{f.state='swim';f.cool=5;f.dir=-1;}
+  F.state='aim';say(msg);renderMenu();}
+function fishUpdate(dt){const F=S.fishing;if(!F||S.paused)return;F.t+=dt;const reelMul=S.flags.fishReel?1.4:1,lineMul=S.flags.fishLine?.7:1;
+  if(Math.random()<dt*3)F.bub.push({x:rnd(4,250),y:FBOT,v:rnd(10,22)});F.bub=F.bub.filter(b=>(b.y-=b.v*dt)>FSURF);
+  for(const f of F.fish){if(f.cool>0)f.cool-=dt;if(f.state==='swim'){f.x+=f.dir*f.spd*dt;f.turnT-=dt;if(f.x<12||f.x>182||f.turnT<=0){f.dir=f.x<12?1:f.x>182?-1:-f.dir;f.turnT=rnd(1.5,4);}
+    f.y+=Math.sin(F.t*1.3+f.x*.05)*3*dt;f.y=Math.max(f.sp.depth[0],Math.min(f.sp.depth[1],f.y));}}
+  const engaged=F.fish.find(f=>f.state==='approach'||f.state==='nibble'||f.state==='bite');
+  switch(F.state){
+    case 'cast':{F.castT+=dt/.6;const p=Math.min(1,F.castT);F.lx=FTIP.x+(F.castTo-FTIP.x)*p;F.ly=FTIP.y+(FSURF-FTIP.y)*p-Math.sin(p*Math.PI)*26;
+      if(p>=1){F.state='lure';F.ly=FSURF+1;for(let k=0;k<8;k++)part(F.lx,FSURF,{vx:rnd(-20,20),vy:rnd(-40,-10),g:90,life:.5,c:'#e8f6ff'});renderMenu();}break;}
+    case 'lure':{if(F.reel){const dx=FTIP.x-4-F.lx;F.lx+=Math.sign(dx)*Math.min(Math.abs(dx),44*reelMul*dt);F.ly=Math.max(FSURF+1,F.ly-20*reelMul*dt);F.lastReel=F.t;}
+      else F.ly=Math.min(FBOT-2,F.ly+13*dt);
+      if(F.lx>=FTIP.x-6&&F.ly<=FSURF+3){for(const f of F.fish)if(f.state!=='swim'){f.state='swim';f.cool=1;}F.state='aim';F.lx=FTIP.x;F.ly=FTIP.y;say(F.fish.length||(F.chest&&!F.chest.got)?'Reeled in. Tap the water to cast again.':'The school has scattered. Stop fishing to sail on.');renderMenu();break;}
+      if(F.chest&&!F.chest.got&&F.ly>=FBOT-6&&Math.abs(F.lx-F.chest.x)<9){F.state='treasure';F.chest.got=true;say('Snagged something heavy on the seabed! Reel it in.');renderMenu();break;}
+      const moving=F.t-F.lastReel<1.1||F.ly<FBOT-3;
+      if(!engaged&&moving)for(const f of F.fish){if(f.state!=='swim'||f.cool>0)continue;const R=48/(.7+f.sp.str*.3);if(Math.hypot(f.x-F.lx,f.y-F.ly)<R){f.state='approach';break;}}
+      for(const f of F.fish){
+        if(f.state==='approach'){const mx=f.x+f.dir*f.len/2,dx=F.lx-mx,dy=F.ly-f.y;f.dir=dx>0?1:-1;const d=Math.hypot(dx,dy),v=f.spd*1.5*dt;if(d<3){f.state='nibble';f.nib=1+Math.floor(Math.random()*3);f.nibT=.6;}else{f.x+=dx/d*v;f.y+=dy/d*v;}}
+        else if(f.state==='nibble'){f.x=F.lx-f.dir*f.len/2;f.y=F.ly;if(F.reel){f.state='swim';f.cool=3;f.dir=-f.dir;say('The fish darts away! Keep still while it nibbles.');continue;}
+          f.nibT-=dt;if(f.nibT<=0){f.nib--;F.ly+=1.5;if(f.nib<=0){f.state='bite';F.state='bite';F.biteT=Math.max(.35,.8-.09*f.sp.str);F.hookPress=false;say('!  Tap HOOK now!');renderMenu();}else f.nibT=.6;}}}
+      break;}
+    case 'bite':{const f=engaged;if(!f){F.state='lure';renderMenu();break;}f.x=F.lx-f.dir*f.len/2;F.ly=Math.min(FBOT-2,F.ly+6*dt);f.y=F.ly;F.biteT-=dt;
+      if(F.hookPress){F.hookPress=false;f.state='hooked';F.hooked=f;F.state='fight';f.stam=f.sp.sta*(.7+.6*(f.size-f.sp.min)/Math.max(1,f.sp.max-f.sp.min));f.pull=true;f.phaseT=rnd(.8,1.6)*(.8+f.sp.str*.2);F.tension=10;
+        say(`Hooked! Hold Reel, and ease off when it thrashes.`);shake();renderMenu();}
+      else if(F.biteT<=0){f.state='swim';f.cool=4;f.dir=-f.dir;F.state='lure';say('Too slow! It stole a nibble and swam off.');renderMenu();}break;}
+    case 'fight':{const f=F.hooked;f.phaseT-=dt;if(f.phaseT<=0){if(f.stam<=0)f.pull=false;else f.pull=!f.pull;f.phaseT=f.pull?rnd(.8,1.8)*(.7+f.sp.str*.25):rnd(.8,1.6);}
+      const tx=FTIP.x-4,ty=FSURF+3,dx=tx-f.x,dy=ty-f.y,d=Math.max(1,Math.hypot(dx,dy)),heavy=1/(.75+f.sp.str*.22);
+      if(f.pull){f.dir=dx>0?-1:1;const ps=(6+f.sp.str*7)*dt;f.x-=dx/d*ps*.9;f.y=Math.min(FBOT-4,f.y-dy/d*ps*.5+ps*.3);f.stam-=dt*(F.reel?1.6:1);
+        if(F.reel){F.tension+=(14+f.sp.str*10)*lineMul*dt;f.x+=dx/d*12*reelMul*heavy*dt;f.y+=dy/d*12*reelMul*heavy*dt;}else F.tension-=26*dt;
+        if(Math.random()<dt*10)part(f.x,f.y,{vx:rnd(-20,20),vy:rnd(-20,5),life:.3,c:'#e8f6ff'});}
+      else{f.dir=dx>0?1:-1;if(F.reel){f.x+=dx/d*36*reelMul*heavy*dt;f.y+=dy/d*36*reelMul*heavy*dt;F.tension-=8*dt;}else F.tension-=34*dt;}
+      F.tension=Math.max(0,Math.min(100,F.tension));F.lx=f.x+f.dir*f.len/2;F.ly=f.y;
+      if(F.tension>=100){fishLose(f,'SNAP! The line broke and the fish got away.',true);shake();break;}
+      if(f.x<4){fishLose(f,'The fish ran out all your line and got away.',true);break;}
+      if(f.x>=tx-6&&f.y<=ty+6)landFish(f);break;}
+    case 'treasure':{if(F.reel){const dx=FTIP.x-4-F.lx;F.lx+=Math.sign(dx)*Math.min(Math.abs(dx),18*reelMul*dt);F.ly=Math.max(FSURF+1,F.ly-14*reelMul*dt);F.tension=Math.min(60,F.tension+6*dt);}
+      else{F.ly=Math.min(FBOT-2,F.ly+6*dt);F.tension=Math.max(0,F.tension-20*dt);}
+      if(F.lx>=FTIP.x-8&&F.ly<=FSURF+4){F.state='land';F.landT=2.4;F.landing={chest:true,msg:openSeaChest()};F.tension=0;banner('Treasure!');say(F.landing.msg);renderMenu();saveGame();}break;}
+    case 'land':{F.landT-=dt;if(F.landT<=0){F.state='aim';F.landing=null;F.lx=FTIP.x;F.ly=FTIP.y;
+      if(!F.fish.length&&!(F.chest&&!F.chest.got))say('The school has scattered. Stop fishing to sail on.');renderMenu();}break;}
+  }
+}
+function landFish(f){const F=S.fishing,b=fbook(),id=f.sp.id,e=b[id]||(b[id]={n:0,best:0,date:null,first:null}),now=new Date().toISOString(),rec=f.size>e.best;
+  e.n++;if(!e.first)e.first=now;if(rec){e.best=f.size;e.date=now;}fbasket().push({sp:id,size:f.size});
+  const i=F.fish.indexOf(f);if(i>=0)F.fish.splice(i,1);F.hooked=null;F.tension=0;F.state='land';F.landT=2.4;F.landing={fish:f,rec,first:e.n===1};
+  banner(`${f.sp.name} · ${f.size} cm`);say(`Caught a ${f.size} cm ${f.sp.name}!`+(e.n===1?' A new kind for the Fish Book!':rec?' A new record!':''));
+  for(let k=0;k<20;k++)part(FTIP.x-4,FSURF,{vx:rnd(-40,40),vy:rnd(-70,-20),g:120,life:.6,c:'#e8f6ff'});renderMenu();saveGame();}
+function openSeaChest(){const f=S.flags,arm=['tidalrobe','pearlcrown','sirenpendant'].filter(id=>!f['sea_'+id]),r=Math.random();
+  if(arm.length&&r<.3){const id=pick(arm);f['sea_'+id]=true;S.bag[id]=(S.bag[id]||0)+1;return`Inside the chest: the ${GEAR[id].name}! Sea magic hums through it. Equip it from the Party menu.`;}
+  if(r<.62){const g=500+Math.floor(Math.random()*26)*100;S.gil+=g;return`Inside the chest: ${fmtG(g)} in old coins.`;}
+  const it=pick(['elixir','hiether','xpotion','megalixir','remedy']);S.items[it]=(S.items[it]||0)+1;return`Inside the chest: a ${ITEMS[it].name}.`;}
+function drawFishShape(c,f,x,y,dir,L){const sp=f.sp||f,h=L*(sp.round?.7:sp.flat?.32:sp.eel?.16:sp.squid?.36:.42),fx=v=>x+dir*v;
+  if(sp.eel){c.fillStyle=sp.col;for(let i=0;i<L;i+=2){const yy=y+Math.sin(S.t*6+i*.25)*h*.6;c.fillRect(Math.round(fx(L/2-i))-1,Math.round(yy-h/2),2,Math.max(2,Math.round(h*(1-i/L*.6))));}
+    c.fillStyle=sp.belly;for(let i=4;i<L;i+=6)c.fillRect(Math.round(fx(L/2-i)),Math.round(y+Math.sin(S.t*6+i*.25)*h*.6),1,1);c.fillStyle='#ffd34a';c.fillRect(Math.round(fx(L/2-2)),Math.round(y-h/2+1),1,1);return;}
+  if(sp.squid){c.fillStyle=sp.col;c.beginPath();c.ellipse(x+dir*L*.1,y,L*.3,h/2,0,0,7);c.fill();c.strokeStyle=sp.col;for(let k=-2;k<=2;k++){c.beginPath();c.moveTo(fx(-L*.15),y+k*h*.15);c.lineTo(fx(-L*.5),y+k*h*.25+Math.sin(S.t*8+k)*2);c.stroke();}
+    c.fillStyle='#1b1012';c.fillRect(Math.round(fx(L*.25)),Math.round(y-1),1,1);return;}
+  c.fillStyle=sp.col;c.beginPath();c.moveTo(fx(-L*.38),y);c.lineTo(fx(-L*.55),y-h*.55);c.lineTo(fx(-L*.55),y+h*.55);c.closePath();c.fill();
+  c.beginPath();c.ellipse(x,y,L*.42,h/2,0,0,7);c.fill();c.fillStyle=sp.belly;c.beginPath();c.ellipse(x,y+h*.18,L*.34,h*.24,0,0,7);c.fill();
+  if(sp.stripe){c.fillStyle=sp.stripe;c.fillRect(Math.round(Math.min(fx(-L*.3),fx(L*.3))),Math.round(y-1),Math.round(L*.6),1);}
+  if(sp.spots){c.fillStyle=sp.spots;for(let k=0;k<4;k++)c.fillRect(Math.round(fx(-L*.2+k*L*.1)),Math.round(y-h*.2+(k%2)*2),1,1);}
+  c.fillStyle=sp.col;c.beginPath();c.moveTo(fx(-L*.05),y-h/2);c.lineTo(fx(-L*.2),y-h*.85);c.lineTo(fx(L*.12),y-h/2);c.closePath();c.fill();
+  if(sp.sword){c.fillStyle='#c8d0e8';c.fillRect(Math.round(Math.min(fx(L*.4),fx(L*.85))),Math.round(y-1),Math.round(L*.45),1);}
+  c.fillStyle='#ffffff';c.fillRect(Math.round(fx(L*.26))-1,Math.round(y-h*.15)-1,2,2);c.fillStyle='#1b1012';c.fillRect(Math.round(fx(L*.27)),Math.round(y-h*.15),1,1);}
+function fishRender(dt){const F=S.fishing;if(!F)return;
+  let g=ctx.createLinearGradient(0,0,0,FSURF);g.addColorStop(0,'#4a7ad0');g.addColorStop(1,'#bfe0f8');ctx.fillStyle=g;ctx.fillRect(0,0,W,FSURF);
+  ctx.fillStyle='rgba(255,255,255,.7)';ctx.fillRect(30,8,26,2);ctx.fillRect(36,6,12,2);ctx.fillRect(120,14,30,2);
+  g=ctx.createLinearGradient(0,FSURF,0,H);g.addColorStop(0,'#2a78c8');g.addColorStop(.6,'#164a8a');g.addColorStop(1,'#0a2048');ctx.fillStyle=g;ctx.fillRect(0,FSURF,W,H-FSURF);
+  ctx.fillStyle='rgba(191,239,255,.08)';for(let k=0;k<5;k++){const x=((k*61+S.t*6)%300)-20;ctx.beginPath();ctx.moveTo(x,FSURF);ctx.lineTo(x+14,FSURF);ctx.lineTo(x+44,H);ctx.lineTo(x+20,H);ctx.closePath();ctx.fill();}
+  ctx.fillStyle='#c8b080';ctx.fillRect(0,FBOT,W,H-FBOT);ctx.fillStyle='#a89060';for(let x=0;x<W;x+=7)ctx.fillRect(x,FBOT+2+((x*7)%5),3,1);
+  for(const[x,h]of[[18,22],[40,14],[96,26],[150,18],[176,12],[240,20]]){ctx.strokeStyle='#2a8a4a';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,FBOT);for(let k=1;k<=4;k++)ctx.lineTo(x+Math.sin(S.t*1.5+k+x)*3,FBOT-h*k/4);ctx.stroke();ctx.lineWidth=1;}
+  for(const[x,w2]of[[64,16],[126,10],[208,20]]){ctx.fillStyle='#5a5a6a';ctx.fillRect(x,FBOT-6,w2,6);ctx.fillStyle='#7a7a8a';ctx.fillRect(x+2,FBOT-6,w2-4,2);}
+  ctx.fillStyle='rgba(232,246,255,.6)';for(const b of F.bub)ctx.fillRect(Math.round(b.x+Math.sin(b.y*.2)*2),Math.round(b.y),1,1);
+  if(F.chest&&!F.chest.got){const x=Math.round(F.chest.x)-5;ctx.fillStyle='#3a2418';ctx.fillRect(x,FBOT-7,11,8);ctx.fillStyle='#8a5a2a';ctx.fillRect(x+1,FBOT-6,9,6);ctx.fillStyle='#c8902a';ctx.fillRect(x+1,FBOT-4,9,1);ctx.fillStyle='#ffd34a';ctx.fillRect(x+5,FBOT-4,1,2);
+    if(Math.floor(S.t*3)%3===0){ctx.fillStyle='#fff3c4';ctx.fillRect(x+8,FBOT-9,1,1);}}
+  for(const f of F.fish){if(f===F.hooked)continue;drawFishShape(ctx,f,f.x,f.y,f.dir,f.len);if(f.state==='bite'){ctx.fillStyle='#ffd34a';ctx.fillRect(Math.round(f.x)-1,Math.round(f.y-f.len*.4-9),2,5);ctx.fillRect(Math.round(f.x)-1,Math.round(f.y-f.len*.4-3),2,2);}}
+  // waves on the surface
+  ctx.fillStyle='#e8f6ff';for(let x=0;x<W;x+=6)ctx.fillRect(x,FSURF+Math.round(Math.sin(S.t*3+x*.15)),3,1);
+  // the boat and Vesh
+  ctx.fillStyle='#3a2418';ctx.beginPath();ctx.moveTo(198,FSURF-6);ctx.lineTo(256,FSURF-6);ctx.lineTo(256,FSURF+8);ctx.lineTo(208,FSURF+8);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#8a5a2a';ctx.fillRect(201,FSURF-5,55,5);ctx.fillStyle='#a07a48';ctx.fillRect(201,FSURF-5,55,1);ctx.fillStyle='#5a3a24';ctx.fillRect(244,0,2,FSURF-6);ctx.fillStyle='#f0f0f0';ctx.fillRect(246,2,9,22);
+  drawSprite(ctx,SPR.thief,214,FSURF-6,{});
+  ctx.strokeStyle='#7a5a34';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(211,FSURF-14);ctx.lineTo(FTIP.x,FTIP.y);ctx.stroke();
+  if(F.state!=='aim'||F.landing){const lx=F.state==='aim'?FTIP.x:F.lx,ly=F.state==='aim'?FTIP.y+6:F.ly;ctx.strokeStyle=F.tension>70?'#ff8a8a':'rgba(240,240,240,.85)';ctx.beginPath();ctx.moveTo(FTIP.x,FTIP.y);
+    const sag=F.state==='fight'?Math.max(0,10-F.tension/8):8;ctx.quadraticCurveTo((FTIP.x+lx)/2,Math.max(FTIP.y,(FTIP.y+ly)/2+sag),lx,ly);ctx.stroke();
+    if(F.state==='treasure'){ctx.fillStyle='#3a2418';ctx.fillRect(Math.round(lx)-5,Math.round(ly),11,8);ctx.fillStyle='#8a5a2a';ctx.fillRect(Math.round(lx)-4,Math.round(ly)+1,9,6);ctx.fillStyle='#ffd34a';ctx.fillRect(Math.round(lx),Math.round(ly)+3,1,2);}
+    else if(F.state!=='fight'){ctx.fillStyle='#e84040';ctx.fillRect(Math.round(lx)-1,Math.round(ly)-1,3,3);ctx.fillStyle='#ffffff';ctx.fillRect(Math.round(lx)-1,Math.round(ly)-1,3,1);}}
+  if(F.hooked){const f=F.hooked;drawFishShape(ctx,f,f.x,f.y,f.dir,f.len);if(f.pull&&Math.floor(S.t*10)%2){ctx.fillStyle='#ff5a5a';ctx.fillRect(Math.round(f.x)-1,Math.round(f.y-f.len*.4-8),2,4);}}
+  if(F.state==='fight'||F.state==='treasure'){const t=F.tension;ctx.fillStyle='rgba(10,8,14,.75)';ctx.fillRect(6,5,92,13);ctx.fillStyle='#e8e8f0';ctx.font='6px monospace';ctx.fillText('LINE',9,13);
+    ctx.fillStyle='#2a2a34';ctx.fillRect(30,8,64,6);ctx.fillStyle=t>75?'#ff4a4a':t>45?'#ffd34a':'#5ad06a';ctx.fillRect(30,8,Math.round(64*t/100),6);
+    if(F.hooked&&F.hooked.pull){ctx.fillStyle='#ff8a8a';ctx.fillText('THRASHING!',104,13);}}
+  if(F.landing&&F.landing.fish){const f=F.landing.fish,L=Math.min(80,f.len*2.2);ctx.fillStyle='rgba(10,8,14,.55)';ctx.fillRect(0,FSURF+10,W,70);drawFishShape(ctx,f,W/2-10,FSURF+44,1,L);
+    ctx.fillStyle='#ffd34a';ctx.font='8px monospace';const txt=`${f.size} cm`+(F.landing.first?'  NEW!':F.landing.rec?'  RECORD!':'');ctx.fillText(txt,W/2-ctx.measureText(txt).width/2-10,FSURF+76);}
+}
+function renderFishMenu(){const F=S.fishing;if(!F)return;const left=F.fish.length,chest=F.chest&&!F.chest.got;
+  const hint={aim:'Tap the water to cast',cast:'Casting…',lure:'Hold Reel to draw the lure in',bite:'Bite!',fight:'Reel, but ease off when it thrashes',treasure:'Reel in the treasure',land:'Landed!'}[F.state]||'';
+  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">Fishing</span><span class="cls">Vesh · ${esc(hint)}</span></div>`+
+    (F.state==='aim'?opt('fishcast','Cast','',left||chest?'Or tap the water where you want the lure to land':'Nothing left here',!(left||chest)):F.state==='bite'?opt('reel','HOOK!','','Tap now!',false,'armed hook'):opt('reel','Reel','','Hold to reel in',F.state==='cast'||F.state==='land','reel'))+
+    opt('fishstop','Stop fishing')+`<div class="log"><p>${esc(`Fish here: ${left}${chest?' · a chest on the seabed':''}`)}</p><p>${esc(S.log[S.log.length-1]||'')}</p></div>`;}
+cmdEl.addEventListener('pointerdown',e=>{if(S.scene!=='fish')return;const b=e.target.closest('[data-a="reel"]');if(!b||b.disabled)return;e.preventDefault();fishPress();});
+addEventListener('pointerup',fishRelease);addEventListener('pointercancel',fishRelease);
+stage.addEventListener('pointerdown',e=>{if(S.scene!=='fish'||e.target.closest('.overlay,.dlg')||e.target===miniEl)return;const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;
+  const F=S.fishing;if(!F)return;e.preventDefault();if(F.state==='aim'){if(y>FSURF-24&&x<190)fishCast(x);return;}fishPress();});
+addEventListener('keydown',e=>{if(S.scene!=='fish'||S.dlg||(e.target.closest&&e.target.closest('.sheet:not([hidden])')))return;const k=e.key;
+  if(k===' '||k==='z'||k==='Z'||k==='Enter'){e.preventDefault();if(!e.repeat)fishPress();}else if(k==='Escape'){e.preventDefault();stopFishing();}});
+addEventListener('keyup',e=>{if(e.key===' '||e.key==='z'||e.key==='Z'||e.key==='Enter')fishRelease();});
+
+/* the Fish Book */
+function fishBookSub(){const n=Object.keys(fbook()).length;return`${n} of ${FISH.length} kinds caught`;}
+function openFishBook(){drawFishBook();openSheet($('fishOv'),$('fishClose'));}
+function drawFishBook(){const b=fbook(),reg=freg(),bk=fbasket();$('fishCount').textContent=`${Object.keys(b).length} / ${FISH.length}`;
+  $('fishMsg').textContent=bk.length?`In your basket: ${bk.length} fish. Bring them to Old Gill at the Adventurers’ Guild.`:'Catch fish at sea and bring them to Old Gill at the Adventurers’ Guild in Valemont Village.';
+  $('fishList').innerHTML=FISH.map(f=>{const e=b[f.id];if(!e)return`<div class="srow"><div class="sinfo"><b>???</b><span>${f.isle?'Said to lurk only in the waters around the Isle of Aether.':f.w<=3?'A rare catch. Try the deep sea.':'Not caught yet.'}</span></div><div class="sbuy"><span class="own">${f.min}–${f.max} cm</span></div></div>`;
+    return`<div class="srow"><div class="sinfo"><b>${esc(f.name)}</b><span>Largest: ${e.best} cm · ${esc(fishDate(e.date))}</span><span class="cmp">Caught ${e.n} · first on ${esc(fishDate(e.first))}${reg[f.id]?' · <span class="up">registered with Gill</span>':''}</span></div><div class="sbuy"><span class="own">${f.min}–${f.max} cm</span></div></div>`;}).join('');}
+$('fishClose').onclick=()=>{closeSheet($('fishOv'));renderMenu();};
+
+/* Old Gill, the guild's angler */
+const FISH_MILES=[{n:3,give:()=>{S.flags.fishLine=true;},lines:['Old Gill: Three kinds already! Take my Sturdy Line. It holds a lot more strain before it snaps.','Received the Sturdy Line!']},
+ {n:6,give:()=>{S.flags.fishReel=true;},lines:['Old Gill: Six kinds! You’ve earned my Master Reel. It pulls in line much faster.','Received the Master Reel!']},
+ {n:9,give:()=>{S.items.megalixir=(S.items.megalixir||0)+3;},lines:['Old Gill: Nine kinds… I haven’t seen a collection like this in forty years. Take these Megalixirs.','Received 3 Megalixirs!']},
+ {n:12,give:()=>{S.bag.kingfisher=(S.bag.kingfisher||0)+1;},lines:['Old Gill: Every kind in the sea. Even the Aether Sea Serpent! You’re the finest angler I’ve ever met.','Old Gill: Wear my Kingfisher Ring. It belonged to my teacher.','Received the Kingfisher Ring!']}];
+MAPS.guild.npcs.push({x:11,y:2,spr:'angler',talk:()=>{const f=S.flags,reg=freg(),bk=fbasket();
+  if(!f.port)return['Old Gill: Name’s Gill. I fished these waters for fifty years, until my knees gave out.','Old Gill: Get yourselves a ship someday, and bring me what swims out there. I pay well.'];
+  if(!bk.length){const n=Object.keys(reg).length,next=FISH_MILES.find(m=>n<m.n);
+    return[`Old Gill: You’ve brought me ${n} of the ${FISH.length} kinds in these seas.`,next?`Old Gill: Bring me ${next.n-n} more new kind${next.n-n>1?'s':''} and I’ll have something for you.`:'Old Gill: There’s nothing left in the sea I haven’t seen. Thanks to you.',
+      'Old Gill: Sail near a school of fish and choose Fish. Hold Reel to work the lure, wait out the nibbles, then HOOK when it bites. Ease off when a big one thrashes.'];}
+  let gil=0;const fresh=[];for(const c of bk){const sp=FISHD[c.sp];gil+=Math.round(sp.price*c.size/((sp.min+sp.max)/2));if(!reg[c.sp]){reg[c.sp]=true;fresh.push(sp.name);}}
+  const cnt=bk.length;f.basket=[];S.gil+=gil;const lines=[`Old Gill: ${cnt} fish! Let’s have a look…`];
+  if(fresh.length)lines.push(`Old Gill: A ${fresh.join(', and a ')}! I’ll put ${fresh.length>1?'those':'that'} on my wall.`);
+  lines.push(`Old Gill: Here’s ${fmtG(gil)} for the lot.`);const n=Object.keys(reg).length;
+  for(const m of FISH_MILES)if(n>=m.n&&!f['fm'+m.n]){f['fm'+m.n]=true;m.give();lines.push(...m.lines);}
+  saveGame();renderMenu();return lines;}});
+
 async function dungeonEncounter(form){
   S.battleReturn='castle';S.transIn=true;S.scene='trans';for(const k in keys)keys[k]=false;steer=null;S.world.moving=false;
   for(let i=0;i<2;i++){flash('#ffffff',140);await sleep(170);}
@@ -2845,7 +3049,8 @@ function showOver(win){
   $('overT').textContent=t;$('overP').textContent=p;$('again').textContent=b;$('over').hidden=false;$('again').focus({preventScroll:true});
 }
 function update(dt){
-  if(S.scene==='map'){mapUpdate(dt);return;}
+  if(S.scene==='map'){mapUpdate(dt);schoolsTick(dt);return;}
+  if(S.scene==='fish'){fishUpdate(dt);return;}
   if(S.scene==='castle'){castleUpdate(dt);return;}
   if(S.scene!=='battle'||S.over)return;
   const flowing=!S.busy&&!S.paused&&!(S.mode==='wait'&&S.menu);
@@ -2868,6 +3073,7 @@ function opt(a,label,right,sub,dis,cls){return `<button class="opt${cls?' '+cls:
 function renderMenu(focus){
   if(S.scene==='town'){renderTownMenu();return;}
   if(S.scene==='castle'){renderCastleMenu();return;}
+  if(S.scene==='fish'){renderFishMenu();return;}
   if(S.scene!=='battle'){renderMapMenu();return;}
   const m=S.menu;
   if(!m){
@@ -2983,7 +3189,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.8.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.9.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

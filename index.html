@@ -245,7 +245,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.3.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.4.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -257,6 +257,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Limit command appears.</p>
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
+<p><b>Deepdelve Mine</b>: on the northern cape, a mine shaft drops five levels to Ironhold, the dwarf city. Read the old tablets on the Sky Road, slay the Magma Worm, and the dwarves can blast free the airship <b>Aurora</b>. Walk aboard to fly anywhere on the world map with no random battles; choose <b>Land</b> to set down on open ground.</p>
 <p><b>Castle Valemont</b>: walk in to meet the King and Queen, rest in the guest rooms, raid the armory, and earn your way into the royal vault. Walk into people to talk to them.</p>
 <p><b>Auto</b> hands chosen heroes to the AI with a strategy you pick.</p>
     <p>Keyboard: arrows to move, Enter to choose, Esc to go back.</p>
@@ -877,9 +878,10 @@ Object.assign(BGS,{ash:{sky:['#3a1414','#a8401a'],far:'#3a2020',g:['#5a4640','#2
 function makeFieldBg(theme){
   const T=BGS[theme],b=bg.getContext('2d');
   let g=b.createLinearGradient(0,0,0,50);g.addColorStop(0,T.sky[0]);g.addColorStop(1,T.sky[1]);b.fillStyle=g;b.fillRect(0,0,W,50);
-  b.fillStyle='rgba(255,255,255,.55)';for(let i=0;i<5;i++){const x=rnd(0,W),y=rnd(4,26);b.fillRect(x|0,y|0,rnd(14,30)|0,2);b.fillRect((x+4)|0,(y-1)|0,rnd(6,14)|0,1);}
+  if(!T.cave){b.fillStyle='rgba(255,255,255,.55)';for(let i=0;i<5;i++){const x=rnd(0,W),y=rnd(4,26);b.fillRect(x|0,y|0,rnd(14,30)|0,2);b.fillRect((x+4)|0,(y-1)|0,rnd(6,14)|0,1);}}
   b.fillStyle=T.far;b.beginPath();b.moveTo(0,50);for(let x=0;x<=W;x+=4)b.lineTo(x,44-Math.abs(Math.sin(x*.04+1))*8-Math.sin(x*.13)*2);b.lineTo(W,50);b.closePath();b.fill();
   if(theme==='forest'){b.fillStyle='#10261a';for(let x=-4;x<W;x+=9){const hgt=rnd(12,22);b.beginPath();b.moveTo(x,48);b.lineTo(x+5,48-hgt);b.lineTo(x+10,48);b.closePath();b.fill();}}
+  if(T.cave){for(let x=-2;x<W;x+=rnd(5,12)){const hh=rnd(6,22),ww=rnd(3,6);b.fillStyle=T.far;b.beginPath();b.moveTo(x,0);b.lineTo(x+ww,0);b.lineTo(x+ww/2,hh);b.closePath();b.fill();}for(let i=0;i<14;i++){b.fillStyle=pick(T.spk);b.fillRect(rnd(0,W)|0,rnd(2,40)|0,1,1);}}
   g=b.createLinearGradient(0,46,0,H);g.addColorStop(0,T.g[0]);g.addColorStop(1,T.g[1]);b.fillStyle=g;b.fillRect(0,46,W,H-46);
   for(let i=0;i<380;i++){const y=rnd(48,H),x=rnd(0,W);b.fillStyle=pick(T.spk);b.fillRect(x|0,y|0,1+((y-46)/40|0),1);}
   if(theme==='desert'){b.strokeStyle='#c49a50';for(let k=0;k<6;k++){const y=rnd(60,H);b.beginPath();for(let x=0;x<=W;x+=6)b.lineTo(x,y+Math.sin(x*.05+k)*3);b.stroke();}}
@@ -888,7 +890,7 @@ function makeFieldBg(theme){
 
 /* ---------- world map ---------- */
 const WT=96,HT=64,TS=16;
-const T_DEEP=0,T_SHAL=1,T_SAND=2,T_GRASS=3,T_FOREST=4,T_HILLS=5,T_MTN=6,T_DESERT=7,T_ASH=8,T_TOWN=9,T_CASTLE=10,T_PEAK=11,T_WALL=12,T_ROAD=13,T_HOUSE=14,T_LAWN=15,T_CAVE=16;
+const T_DEEP=0,T_SHAL=1,T_SAND=2,T_GRASS=3,T_FOREST=4,T_HILLS=5,T_MTN=6,T_DESERT=7,T_ASH=8,T_TOWN=9,T_CASTLE=10,T_PEAK=11,T_WALL=12,T_ROAD=13,T_HOUSE=14,T_LAWN=15,T_CAVE=16,T_DELVE=17;
 const BLOCKED=new Set([T_DEEP,T_SHAL,T_MTN,T_PEAK,T_WALL,T_HOUSE]);
 function genWorld(seed){
   const hash=(i,j,s)=>{let n=Math.imul(i,374761393)+Math.imul(j,668265263)+Math.imul(s,1442695041);n=Math.imul(n^(n>>>13),1274126177);n^=n>>>16;return (n>>>0)/4294967296;};
@@ -948,8 +950,11 @@ function genWorld(seed){
     const nb=[[0,1],[1,0],[-1,0],[0,-1]].some(([dx,dy])=>{const k=(y+dy)*WT+x+dx;return seen[k]&&!BLOCKED.has(tiles[k])&&tiles[k]!==T_LAWN&&tiles[k]!==T_ROAD;});if(!nb||mt<12)continue;
     const sc=mt+Math.hypot(x-start.x,y-start.y)*.4+hash(x,y,seed+11)*3;if(sc>best&&Math.hypot(x-pk.x,y-pk.y)>12){best=sc;cave={x,y};}}}
   if(cave){tiles[cave.y*WT+cave.x]=T_CAVE;lands.push({id:'mountain',name:'Frostfang Peak',spr:'town',size:20,x:(cave.x+.5)*TS,y:(cave.y+.5)*TS,msg:'Frostfang Peak. A trail winds up into the snow.'});}
+  // Deepdelve Mine: the northernmost open tile you can walk to
+  let delve=null;for(let y=1;y<HT-1&&!delve;y++){const row=[];for(let x=1;x<WT-1;x++){const k=y*WT+x;if(seen[k]&&[T_GRASS,T_SAND,T_FOREST,T_HILLS,T_DESERT].includes(tiles[k]))row.push(x);}if(row.length)delve={x:row[Math.floor(row.length/2)],y};}
+  if(delve){tiles[delve.y*WT+delve.x]=T_DELVE;lands.push({id:'delve',name:'Deepdelve Mine',spr:'town',size:20,x:(delve.x+.5)*TS,y:(delve.y+.5)*TS,msg:'Deepdelve Mine. Warm air rises from a timbered shaft on the northern cape.'});}
   const counts={};for(const t of tiles)counts[t]=(counts[t]||0)+1;
-  return {tiles,at,start:{x:(start.x+.5)*TS,y:(start.y+.5)*TS},lands,reach,counts,town,castle,village,village2,cave};
+  return {tiles,at,start:{x:(start.x+.5)*TS,y:(start.y+.5)*TS},lands,reach,counts,town,castle,village,village2,cave,delve};
 }
 
 const WSEED=16,PAD=160,PY=H/2+7;
@@ -961,10 +966,11 @@ function drawMini(){
   mctx.imageSmoothingEnabled=false;mctx.drawImage(base,0,0);
   const on=Math.floor(S.t*4)%2===0,sc=castle?3:1,px=castle?S.cpos.x/CT:S.world.x/TS,py=castle?S.cpos.y/CT:S.world.y/TS;
   if(castle){mctx.fillStyle='#86b4f2';for(const n of NPCS){if(n.when&&!n.when())continue;mctx.fillRect(n.x*sc+1,n.y*sc+1,1,1);}}
-  else{for(const l of WORLD.lands){mctx.fillStyle=l.id==='peak'?'#ff7a2a':l.id==='castle'?'#ffffff':l.id==='mountain'?'#bfefff':'#ff6a4a';mctx.fillRect(Math.floor(l.x/TS)-1,Math.floor(l.y/TS)-1,3,3);}}
+  else{for(const l of WORLD.lands){mctx.fillStyle=l.id==='peak'?'#ff7a2a':l.id==='castle'?'#ffffff':l.id==='mountain'?'#bfefff':l.id==='delve'?'#ffd34a':'#ff6a4a';mctx.fillRect(Math.floor(l.x/TS)-1,Math.floor(l.y/TS)-1,3,3);}
+    const sh=S.flags&&S.flags.ship;if(sh&&!sh.boarded&&sh.x!=null){mctx.fillStyle='#86e0ff';mctx.fillRect(Math.floor(sh.x/TS)-1,Math.floor(sh.y/TS),3,2);}}
   mctx.fillStyle=on?'#ffffff':'#ff3a3a';mctx.fillRect(Math.round(px*sc)-1,Math.round(py*sc)-1,castle?3:2,castle?3:2);
 }
-const TILE_NAME={[T_CAVE]:'Frostfang Trail',[T_LAWN]:'Castle Grounds',[T_ROAD]:'Valemont Road',[T_SAND]:'Coast',[T_GRASS]:'Grasslands',[T_FOREST]:'Forest',[T_HILLS]:'Hills',[T_DESERT]:'Desert',[T_ASH]:'Ashlands',[T_TOWN]:'Thornwick',[T_CASTLE]:'Castle Valemont'};
+const TILE_NAME={[T_DELVE]:'Deepdelve Mine',[T_DEEP]:'Open Sea',[T_SHAL]:'Shallows',[T_MTN]:'Mountains',[T_WALL]:'Castle Wall',[T_HOUSE]:'Valemont Village',[T_CAVE]:'Frostfang Trail',[T_LAWN]:'Castle Grounds',[T_ROAD]:'Valemont Road',[T_SAND]:'Coast',[T_GRASS]:'Grasslands',[T_FOREST]:'Forest',[T_HILLS]:'Hills',[T_DESERT]:'Desert',[T_ASH]:'Ashlands',[T_TOWN]:'Thornwick',[T_CASTLE]:'Castle Valemont'};
 const ENC={
  [T_GRASS]:[['thornhare'],['thornhare','thornhare'],['goblin','goblin'],['goblin','thornhare','goblin'],['slime'],['goblin']],
  [T_FOREST]:[['wolf'],['wolf','wolf'],['mandrake','slime'],['bat','bat','bat'],['mandrake'],['wolf','mandrake']],
@@ -1006,6 +1012,7 @@ function buildWorld(){
           f('#c8a070',ax-half,y,half,1);f('#7a5432',ax,y,half+1,1);f('#3e2814',ax-half,y);f('#3e2814',ax+half,y);if(yy===0)f('#3e2814',ax,y);}
         f('#5a3c20',4,9,1,3);f('#5a3c20',11,11,1,2);break;
       case T_DESERT:f('#e0bc68',0,0,16,16);for(let k=0;k<2;k++){const y=3+k*7+((r(k)*3)|0);for(let x=0;x<16;x++){const yy=y+Math.round(Math.sin((x+r(k+3)*8)*.5));f('#c49a48',x,yy);if(x%3===0)f('#f0d890',x,yy-1);}}break;
+      case T_DELVE:f('#e8d090',0,0,16,16);f('#d0b070',2,13,3,1);f('#2a1e16',3,5,10,11);f('#120c08',4,6,8,10);f('#7a5a34',2,4,12,2);f('#7a5a34',2,4,2,12);f('#7a5a34',12,4,2,12);f('#a07a48',2,4,12,1);f('#5a3a1e',6,9,4,1);f('#5a3a1e',6,12,4,1);f(fr?'#fff3c4':'#ffd34a',7,1,2,2);f('#5a3a24',7,3,2,1);break;
       case T_LAWN:grass();break;
       case T_ROAD:f('#c8a870',0,0,16,16);for(let k=0;k<5;k++)f(k%2?'#a88a58':'#dcc08a',(r(k)*15)|0,(r(k+6)*15)|0,k%3?1:2,1);break;
       case T_WALL:{f('#7a7a8a',0,0,16,16);for(let row=0;row<4;row++){const y=row*4+3;f('#55556a',0,y,16,1);const off=row%2?4:0;f('#55556a',off+3,y-3,1,3);f('#55556a',off+11,y-3,1,3);}
@@ -1036,9 +1043,9 @@ function buildWorld(){
   for(let ty=-P;ty<HT+P;ty++)for(let tx=-P;tx<WT+P;tx++)drawTile(c,tx,ty,0);
   drawLandmarks(c,0);
   tex2=document.createElement('canvas');tex2.width=tex.width;tex2.height=tex.height;const c2=tex2.getContext('2d');c2.drawImage(tex,0,0);
-  for(let ty=-P;ty<HT+P;ty++)for(let tx=-P;tx<WT+P;tx++){const t=WORLD.at(tx,ty);if(isWater(t)||t===T_ASH||t===T_PEAK)drawTile(c2,tx,ty,1);}
+  for(let ty=-P;ty<HT+P;ty++)for(let tx=-P;tx<WT+P;tx++){const t=WORLD.at(tx,ty);if(isWater(t)||t===T_ASH||t===T_PEAK||t===T_DELVE)drawTile(c2,tx,ty,1);}
   drawLandmarks(c2,1);
-  const MC={[T_DEEP]:'#1a3a9a',[T_SHAL]:'#3068d8',[T_SAND]:'#e8d090',[T_GRASS]:'#48a838',[T_FOREST]:'#1d5a24',[T_HILLS]:'#7ab04a',[T_MTN]:'#8a6a48',[T_DESERT]:'#e0bc68',[T_ASH]:'#5a4640',[T_PEAK]:'#ff7a2a',[T_TOWN]:'#ff6a4a',[T_CASTLE]:'#ffffff',[T_WALL]:'#d0d0d8',[T_ROAD]:'#c8a870',[T_HOUSE]:'#c84a2a',[T_LAWN]:'#5ab848',[T_CAVE]:'#e8f0ff'};
+  const MC={[T_DEEP]:'#1a3a9a',[T_SHAL]:'#3068d8',[T_SAND]:'#e8d090',[T_GRASS]:'#48a838',[T_FOREST]:'#1d5a24',[T_HILLS]:'#7ab04a',[T_MTN]:'#8a6a48',[T_DESERT]:'#e0bc68',[T_ASH]:'#5a4640',[T_PEAK]:'#ff7a2a',[T_TOWN]:'#ff6a4a',[T_CASTLE]:'#ffffff',[T_WALL]:'#d0d0d8',[T_ROAD]:'#c8a870',[T_HOUSE]:'#c84a2a',[T_LAWN]:'#5ab848',[T_CAVE]:'#e8f0ff',[T_DELVE]:'#ffd34a'};
   worldMini=document.createElement('canvas');worldMini.width=WT;worldMini.height=HT;const mc=worldMini.getContext('2d');
   for(let y=0;y<HT;y++)for(let x=0;x<WT;x++){mc.fillStyle=MC[WORLD.at(x,y)]||'#000';mc.fillRect(x,y,1,1);}
 }
@@ -1048,10 +1055,10 @@ function mapRender(dt){
   const w=S.world,T=Math.floor(S.t*1.6)%2?tex2:tex;
   ctx.fillStyle='#2048b8';ctx.fillRect(0,0,W,H);
   ctx.drawImage(T,Math.round(w.x-W/2)+PAD,Math.round(w.y-H/2)+PAD,W,H,0,0,W,H);
-  drawWalker();
+  drawParkedShip();drawWalker();
 }
 function drawWalker(){
-  const w=S.world;if(w.camping)return;const lead=S.heroes.find(h=>!h.ko)||S.heroes[0];
+  const w=S.world;if(w.camping)return;{const sh=S.flags&&S.flags.ship;if(sh&&sh.boarded){const b=Math.round(Math.sin(S.t*2.2)*1.5);ctx.fillStyle='rgba(0,0,0,.22)';ell(ctx,W/2,PY+3,11,2.2);drawShip(ctx,W/2,PY-9+b,1,w.face<0,true);return;}}const lead=S.heroes.find(h=>!h.ko)||S.heroes[0];
   const bob=w.moving&&Math.floor(w.walkT*8)%2?1:0;
   ctx.fillStyle='rgba(0,0,0,.3)';ell(ctx,W/2,PY,5,1.5);
   drawSprite(ctx,SPR[lead.key],W/2,PY-bob,{flip:w.face>0});
@@ -1074,12 +1081,15 @@ function mapUpdate(dt){
   if(keys.arrowleft||keys.a)vx-=1;if(keys.arrowright||keys.d)vx+=1;if(keys.arrowup||keys.w)vy-=1;if(keys.arrowdown||keys.s)vy+=1;
   if(steer){const L=Math.hypot(steer.x,steer.y);if(L>5){vx=steer.x/L;vy=steer.y/L;}}
   const L=Math.hypot(vx,vy);w.moving=L>0;if(!L)return;
-  vx/=L;vy/=L;const sp=72*dt,ox=w.x,oy=w.y;
-  if(walkable(w.x+vx*sp,w.y))w.x+=vx*sp;if(walkable(w.x,w.y+vy*sp))w.y+=vy*sp;
+  vx/=L;vy/=L;const sh=S.flags&&S.flags.ship,fly=!!(sh&&sh.boarded),sp=(fly?150:72)*dt,ox=w.x,oy=w.y;
+  if(fly){w.x=Math.max(TS,Math.min(WT*TS-TS,w.x+vx*sp));w.y=Math.max(TS,Math.min(HT*TS-TS,w.y+vy*sp));}
+  else{if(walkable(w.x+vx*sp,w.y))w.x+=vx*sp;if(walkable(w.x,w.y+vy*sp))w.y+=vy*sp;}
   if(Math.abs(vx)>.2)w.face=vx>0?1:-1;w.walkT+=dt;
   const moved=Math.hypot(w.x-ox,w.y-oy);if(!moved){w.moving=false;return;}
   w.dist+=moved;
-  {const tx=Math.floor(w.x/TS),ty=Math.floor(w.y/TS);if(WORLD.at(tx,ty)===T_CASTLE){if(!w.townLock){enterCastle();return;}}else if(WORLD.at(tx,ty)===T_CAVE){if(!w.townLock){enterInterior('mt1');return;}}else if(WORLD.at(tx,ty)===T_TOWN){if(!w.townLock){const tl=WORLD.lands.find(q=>TOWNS[q.id]&&Math.floor(q.x/TS)===tx&&Math.floor(q.y/TS)===ty);if(tl){enterInterior(tl.id);return;}}}else w.townLock=false;}
+  if(fly){w.dist=0;saveT+=dt;if(saveT>8){saveT=0;saveGame();}const pn=placeName();if(pn!==w.place){w.place=pn;renderMenu();}return;}
+  if(sh&&sh.x!=null){const dd=Math.hypot(w.x-sh.x,w.y-sh.y);if(sh.lock){if(dd>14)sh.lock=false;}else if(dd<9){sh.boarded=true;w.x=sh.x;w.y=sh.y;w.moving=false;say('All aboard the Aurora! Fly anywhere, then choose Land to set down on open ground.');renderMenu();saveGame();return;}}
+  {const tx=Math.floor(w.x/TS),ty=Math.floor(w.y/TS);if(WORLD.at(tx,ty)===T_CASTLE){if(!w.townLock){enterCastle();return;}}else if(WORLD.at(tx,ty)===T_CAVE){if(!w.townLock){enterInterior('mt1');return;}}else if(WORLD.at(tx,ty)===T_DELVE){if(!w.townLock){enterInterior('dd1');return;}}else if(WORLD.at(tx,ty)===T_TOWN){if(!w.townLock){const tl=WORLD.lands.find(q=>TOWNS[q.id]&&Math.floor(q.x/TS)===tx&&Math.floor(q.y/TS)===ty);if(tl){enterInterior(tl.id);return;}}}else w.townLock=false;}
   saveT+=dt;if(saveT>8){saveT=0;saveGame();}
   const l=nearLand(),lid=l?l.id:null;if(lid!==w.lastLand){w.lastLand=lid;if(l)say(l.msg);renderMenu();}
   const pn=placeName();if(pn!==w.place){w.place=pn;renderMenu();}
@@ -1282,8 +1292,9 @@ function renderTownMenu(){
 }
 function renderMapMenu(){
   const w=S.world;
-  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">World map</span><span class="cls">${esc(w.place||placeName())} · ${fmtG(S.gil)}</span></div>`+
-    opt('camp','Camp','Tent ×'+(S.items.tent||0),w.camping?'Resting…':(S.items.tent?'Use a Tent to restore all HP and MP':'Buy Tents at an item shop'),w.camping||S.scene!=='map'||!S.items.tent)+
+  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${S.flags.ship&&S.flags.ship.boarded?'Airship Aurora':'World map'}</span><span class="cls">${esc(w.place||placeName())} · ${fmtG(S.gil)}</span></div>`+
+    (S.flags.ship&&S.flags.ship.boarded?opt('land','Land','',canLand()?'Set the Aurora down here':'Fly over open ground to land',!canLand()):'')+
+    opt('camp','Camp','Tent ×'+(S.items.tent||0),w.camping?'Resting…':S.flags.ship&&S.flags.ship.boarded?'Land the airship first':(S.items.tent?'Use a Tent to restore all HP and MP':'Buy Tents at an item shop'),w.camping||S.scene!=='map'||!S.items.tent||!!(S.flags.ship&&S.flags.ship.boarded))+
     opt('party','Party','','Status and equipment')+
     opt('quests','Quests','','Guild bounties')+
     opt('enc','Encounters',w.enc?'on':'off',w.enc?'Random battles while walking':'Walk in peace')+
@@ -1295,7 +1306,8 @@ function mapCmd(a){
   if(a==='quests')return openGuild(!(S.scene==='castle'&&IM&&IM.id==='guild'));
   if(S.scene==='castle'){if(a==='leave')return leaveCastle();if(a==='camp')return dungeonCamp();return;}
   if(S.scene==='town'){if(a==='leave')return leaveTown();if(a==='inn')return innRest();if(a.startsWith('shop:'))return openShop(a.slice(5));return;}
-  if(a==='camp'){if(!S.items.tent){say('You need a Tent to camp. Item shops sell them.');return;}S.items.tent--;camp().then(saveGame);return;}
+  if(a==='land')return landShip();
+  if(a==='camp'){if(S.flags.ship&&S.flags.ship.boarded)return;if(!S.items.tent){say('You need a Tent to camp. Item shops sell them.');return;}S.items.tent--;camp().then(saveGame);return;}
   if(a==='enc'){w.enc=!w.enc;say(w.enc?'Random encounters on.':'Random encounters off.');renderMenu();saveGame();}
 }
 
@@ -1386,7 +1398,7 @@ function loadGame(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY)||'null
   newGame(true);S.wyrmDone=true;S.gil=d.gil|0;Object.assign(S.items,d.items||{});S.bag=d.bag||{};if(d.auto)S.auto=d.auto;if(d.mode)setMode(d.mode);
   for(const sv of d.heroes){const h=S.heroes.find(x=>x.key===sv.key);if(!h)continue;Object.assign(h,{lv:sv.lv,exp:sv.exp,row:sv.row||h.row,limit:sv.limit||0,skills:sv.skills,eq:Object.assign({acc:null,shield:null},sv.eq),ko:!!sv.ko});
     recalc(h);h.hp=Math.min(sv.hp,h.maxhp);h.mp=Math.min(sv.mp,h.maxmp);h.x=homeX(h);}
-  if(d.world){let ok=null;for(let r=0;r<=6*TS&&!ok;r+=TS)for(let a=0;a<8&&!ok;a++){const x=d.world.x+Math.round(Math.cos(a*Math.PI/4))*r,y=d.world.y+Math.round(Math.sin(a*Math.PI/4))*r;if(walkable(x,y))ok={x,y};}if(ok){S.world.x=ok.x;S.world.y=ok.y;}}S.world.enc=d.world?d.world.enc!==false:true;
+  if(d.world&&d.flags&&d.flags.ship&&d.flags.ship.boarded){S.world.x=d.world.x;S.world.y=d.world.y;}else if(d.world){let ok=null;for(let r=0;r<=6*TS&&!ok;r+=TS)for(let a=0;a<8&&!ok;a++){const x=d.world.x+Math.round(Math.cos(a*Math.PI/4))*r,y=d.world.y+Math.round(Math.sin(a*Math.PI/4))*r;if(walkable(x,y))ok={x,y};}if(ok){S.world.x=ok.x;S.world.y=ok.y;}}S.world.enc=d.world?d.world.enc!==false:true;
   S.lastSave=d.lastSave||null;S.quests=d.quests||{};S.kills=d.kills||{};S.flags=Object.assign({chests:{}},d.flags||{});buildParty();toMap('Welcome back. Your journey continues.');if(d.town&&MAPS[d.town])enterInterior(d.town);else if(d.castle)enterInterior(d.castle.id||'castle',d.castle);return true;}catch(e){return false;}}
 
 
@@ -1421,7 +1433,7 @@ const NPCS_C=[
  {x:28,y:4,spr:'sentinel',when:()=>!S.flags.sentinel,talk:()=>{vaultFight();return null;}}
 ];
 let ROOMS=ROOMS_C,CHESTS=CHESTS_C,NPCS=NPCS_C;
-const C_BLOCK=new Set(['#','w','n','T','B','b','Q','q','P','p','t','K','c','C','L','Y','W','H','d','f','x','J','v','l','F','R','I','j','e']);
+const C_BLOCK=new Set(['#','w','n','T','B','b','Q','q','P','p','t','K','c','C','L','Y','W','H','d','f','x','J','v','l','F','R','I','j','e','G','M','X','O','V']);
 let CASTLE=null;const ctex=document.createElement('canvas');ctex.width=CW*CT;ctex.height=CH*CT;
 function buildCastle(){
   const g=[];for(let y=0;y<CH;y++)g.push(Array(CW).fill('#'));
@@ -1438,7 +1450,7 @@ function buildCastle(){
   MAPS.castle.grid=g;if(IM===MAPS.castle){CASTLE=g;drawCastleTex();}return g;
 }
 function drawCastleMini(){castleMini=castleMini||document.createElement('canvas');castleMini.width=CW*3;castleMini.height=CH*3;const c=castleMini.getContext('2d');
-  const MCC={R:'#5a5048',m:'#8a7a68',i:'#e8f0f8',I:'#a8d8f8',j:'#1a1820',U:'#ffd34a',N:'#ffd34a','*':'#86b4f2',z:'#e8f0f8',e:'#bfefff','#':'#3a3a46',w:'#3a3a46',n:'#3a3a46',r:'#a82a2a',T:'#a82a2a',D:'#8a6a3a',L:'#7a4a24',E:'#ffd34a',c:'#d8a840',C:'#d8a840','.':'#a89e8a',g:'#48a838',o:'#48a838',s:'#c8b890',a:'#c8a870',Y:'#1d5a24',W:'#d0d0d8',H:'#c84a2a',d:'#ffd34a',u:'#9a6a3a',F:'#4a88e0',f:'#8a6a3a',J:'#ffd34a',x:'#5a3418',v:'#c8b890',l:'#c8b890',k:'#7ab04a'};const col=t=>MCC[t]||'#6a6a7a';
+  const MCC={R:'#5a5048',m:'#8a7a68',i:'#e8f0f8',I:'#a8d8f8',j:'#1a1820',U:'#ffd34a',N:'#ffd34a','*':'#86b4f2',z:'#e8f0f8',e:'#bfefff','#':'#3a3a46',w:'#3a3a46',n:'#3a3a46',r:'#a82a2a',T:'#a82a2a',D:'#8a6a3a',L:'#7a4a24',E:'#ffd34a',c:'#d8a840',C:'#d8a840','.':'#a89e8a',g:'#48a838',o:'#48a838',s:'#c8b890',a:'#c8a870',Y:'#1d5a24',W:'#d0d0d8',H:'#c84a2a',d:'#ffd34a',u:'#9a6a3a',F:'#4a88e0',f:'#8a6a3a',J:'#ffd34a',x:'#5a3418',v:'#c8b890',l:'#c8b890',k:'#7ab04a',y:'#5a5868',X:'#a8987a',O:'#e84a8a',V:'#ff7a2a',G:'#b48cff',M:'#86e0ff'};const P=IM&&IM.pal,col=t=>P&&t==='m'?P.f[0]:P&&(t==='R'||t==='M')?P.r[1]:P&&t==='G'?P.g[0]:MCC[t]||'#6a6a7a';
   for(let y=0;y<CH;y++)for(let x=0;x<CW;x++){c.fillStyle=col(CASTLE[y][x]);c.fillRect(x*3,y*3,3,3);}}
 function drawCastleTex(){drawCastleMini();
   const c=ctex.getContext('2d'),g=CASTLE,opened=k=>S.flags&&S.flags.chests[k];
@@ -1457,7 +1469,7 @@ function drawCastleTex(){drawCastleMini();
         const rc=q=>'rDTE'.includes(q);if(!rc(ch(tx-1,ty)))f('#d8a840',0,0,2,16);if(!rc(ch(tx+1,ty)))f('#d8a840',14,0,2,16);break;}
       case 'D':floor();if(C_BLOCK.has(ch(tx,ty-1))&&C_BLOCK.has(ch(tx,ty+1))){f('#3a2a1e',0,0,16,2);f('#3a2a1e',0,14,16,2);}else{f('#3a2a1e',0,0,2,16);f('#3a2a1e',14,0,2,16);}break;
       case 'L':floor();f('#5a3418',1,0,14,16);f('#7a4a24',2,1,12,15);for(const x of[5,9])f('#5a3418',x,1,1,15);f('#3a3a48',2,4,12,2);f('#3a3a48',2,11,12,2);f('#ffd34a',10,7,3,3);f('#3a2a1e',11,8,1,1);break;
-      case 'E':floor();f('#a82a2a',2,2,12,12);f('#d8a840',2,2,12,1);f('#d8a840',2,13,12,1);f('#ffd34a',7,5,2,6);f('#ffd34a',5,9,6,1);f('#ffd34a',6,10,4,1);break;
+      case 'E':if(IM&&IM.dungeon)drawMtTile('m',tx,ty,f,ch);else floor();f('#a82a2a',2,2,12,12);f('#d8a840',2,2,12,1);f('#d8a840',2,13,12,1);f('#ffd34a',7,5,2,6);f('#ffd34a',5,9,6,1);f('#ffd34a',6,10,4,1);break;
       case 'T':f('#a82a2a',0,0,16,16);f('#7a5a18',3,0,10,14);f('#d8a840',4,0,8,13);f('#f2d070',5,0,2,12);f('#a82a2a',5,8,6,5);f('#c84a3a',5,8,6,1);f('#7a5a18',3,13,2,3);f('#7a5a18',11,13,2,3);break;
       case 'P':floor();f('#6e685c',4,14,9,2);f('#c8c0b0',4,0,8,15);f('#e0d8c8',5,0,2,15);f('#8a8478',10,0,2,15);break;
       case 'p':floor();f('#3a9a3a',3,1,10,7);f('#5abf4a',5,1,4,3);f('#2a6a2a',9,5,4,3);f('#a85a2a',4,8,8,7);f('#c87a3a',4,8,8,1);break;
@@ -1465,7 +1477,7 @@ function drawCastleTex(){drawCastleMini();
       case 'K':wall();f('#7a4a24',1,3,14,2);f('#7a4a24',1,11,14,2);for(const x of[3,7,11]){f('#c8c8d8',x,1,2,12);f('#e8e8f0',x,1,1,10);f('#d8a840',x-1,10,4,1);}break;
       case 'B':case 'Q':{const roy=t==='Q';floor();f('#5a3418',1,1,14,15);f(roy?'#d8a840':'#7a4a24',1,1,14,2);f('#f0f0f0',3,3,10,5);f('#d8d8e0',3,7,10,1);f(roy?'#7a48b0':'#3858c0',2,9,12,7);f(roy?'#b48cff':'#6888e8',2,9,12,1);break;}
       case 'b':case 'q':{const roy=t==='q';floor();f('#5a3418',1,0,14,14);f(roy?'#7a48b0':'#3858c0',2,0,12,12);f(roy?'#46286e':'#24348a',2,6,12,1);f(roy?'#d8a840':'#7a4a24',1,12,14,2);break;}
-      case 'c':case 'C':{floor();const k=chestKey(tx,ty),op=opened(k),gr=t==='C';
+      case 'c':case 'C':{if(IM&&IM.dungeon)drawMtTile('m',tx,ty,f,ch);else floor();const k=chestKey(tx,ty),op=opened(k),gr=t==='C';
         f('#3a2418',1,4,14,11);f(gr?'#c89a3a':'#8a5a2a',2,5,12,9);f(gr?'#f2d070':'#5a3418',2,8,12,1);f(gr?'#f2d070':'#5a3418',7,5,2,9);
         if(op){f('#1a1008',2,2,12,4);f(gr?'#c89a3a':'#8a5a2a',2,1,12,2);}else{f(gr?'#d8a840':'#a8703a',2,4,12,2);f('#ffd34a',7,8,2,2);}break;}
       default:drawExtraTile(t,tx,ty,f,ch);
@@ -1478,10 +1490,11 @@ const npcAt=(tx,ty)=>NPCS.find(n=>n.x===tx&&n.y===ty&&(!n.when||n.when()));
 const cwalk=(x,y)=>!C_BLOCK.has(ctileAt(x,y))&&!npcAt(Math.floor(x/CT),Math.floor(y/CT));
 function roomName(){const tx=Math.floor(S.cpos.x/CT),ty=Math.floor(S.cpos.y/CT);const r=ROOMS.find(r=>tx>=r.x0&&tx<=r.x1&&ty>=r.y0&&ty<=r.y1);return r?r.n:(IM?IM.name:'Castle Valemont');}
 function castleRender(){
-  const p=S.cpos,cx=Math.max(0,Math.min(CW*CT-W,Math.round(p.x-W/2))),cy=Math.max(0,Math.min(CH*CT-H,Math.round(p.y-H/2)));
+  const p=S.cpos,cm=S.cam||p,cx=Math.max(0,Math.min(CW*CT-W,Math.round(cm.x-W/2))),cy=Math.max(0,Math.min(CH*CT-H,Math.round(cm.y-H/2)));S.camOff={x:cx,y:cy};
   ctx.fillStyle='#22222e';ctx.fillRect(0,0,W,H);ctx.drawImage(ctex,cx,cy,W,H,0,0,W,H);
-  for(const n of NPCS){if(n.when&&!n.when())continue;const sx=n.x*CT+8-cx+(n.ox||0),sy=n.y*CT+15-cy+(n.oy||0);if(sx<-16||sx>W+16||sy<-4||sy>H+20)continue;
-    if(n.spr==='sentinel'||n.mon){drawMon(ctx,MON[n.mon||'sentinel'],sx,sy,false,1);continue;}
+  for(const n of NPCS){if(n.when&&!n.when())continue;const sx=n.x*CT+8-cx+(n.ox||0),sy=n.y*CT+15-cy+(n.oy||0);if(!n.ship&&(sx<-16||sx>W+16||sy<-4||sy>H+20))continue;
+    if(n.ship){drawShip(ctx,sx+8,sy-Math.round((S.shipRise||0)*200)+Math.round(Math.sin(S.t*1.8)*1.5),3,false,true);continue;}
+    if(n.spr==='sentinel'||n.mon){drawMon(ctx,MON[n.mon||'sentinel'],sx,sy,false,n.sc||1);continue;}
     ctx.fillStyle='rgba(0,0,0,.25)';ell(ctx,sx,sy,5,1.4);drawSprite(ctx,NPCSPR[n.spr],sx,sy,{});}
   const lead=S.heroes.find(h=>!h.ko)||S.heroes[0],w=S.world,bob=w.moving&&Math.floor(w.walkT*8)%2?1:0,px=Math.round(p.x-cx),py=Math.round(p.y-cy)+7;
   ctx.fillStyle='rgba(0,0,0,.3)';ell(ctx,px,py,5,1.5);drawSprite(ctx,SPR[lead.key],px,py-bob,{flip:w.face>0});
@@ -1489,7 +1502,7 @@ function castleRender(){
 }
 let bumpKey='',bumpT=0;
 function castleUpdate(dt){
-  const w=S.world,p=S.cpos;if(!S.paused)wanderNPCs(dt);if(S.paused||S.dlg){w.moving=false;return;}
+  const w=S.world,p=S.cpos;if(!S.paused)wanderNPCs(dt);if(S.paused||S.dlg||S.cut){w.moving=false;return;}
   let vx=0,vy=0;
   if(keys.arrowleft||keys.a)vx-=1;if(keys.arrowright||keys.d)vx+=1;if(keys.arrowup||keys.w)vy-=1;if(keys.arrowdown||keys.s)vy+=1;
   if(steer){const L=Math.hypot(steer.x,steer.y);if(L>5){vx=steer.x/L;vy=steer.y/L;}}
@@ -1500,7 +1513,7 @@ function castleUpdate(dt){
   // bump into something: talk, open, rest
   const ax=Math.abs(vx)>Math.abs(vy),tx=Math.floor((p.x+(ax?Math.sign(vx)*9:0))/CT),ty=Math.floor((p.y+(ax?0:Math.sign(vy)*9))/CT);
   const key=tx+','+ty;bumpT+=dt;
-  if(!(tx===Math.floor(p.x/CT)&&ty===Math.floor(p.y/CT))&&(npcAt(tx,ty)||'LcCBbQqKwdJ'.includes(CASTLE[ty]&&CASTLE[ty][tx]))){if(key!==bumpKey||bumpT>1.4){bumpKey=key;bumpT=0;w.moving=false;interact(tx,ty);return;}}
+  if(!(tx===Math.floor(p.x/CT)&&ty===Math.floor(p.y/CT))&&(npcAt(tx,ty)||'LcCBbQqKwdJMX'.includes(CASTLE[ty]&&CASTLE[ty][tx]))){if(key!==bumpKey||bumpT>1.4){bumpKey=key;bumpT=0;w.moving=false;interact(tx,ty);return;}}
   else if(moved)bumpKey='';
   if(ctileAt(p.x,p.y)==='E'){leaveCastle();return;}
   {const ct=ctileAt(p.x,p.y),ptx=Math.floor(p.x/CT),pty=Math.floor(p.y/CT);
@@ -1516,6 +1529,8 @@ function interact(tx,ty){
   const t=CASTLE[ty][tx],k=tx+','+ty;
   if(t==='d'){const D=(IM.doors||{})[k];if(!D)return;if(D.shop)return openShop(D.shop);if(D.inn)return innRest();if(D.guild)return enterInterior('guild');if(D.house)return showDialog(D.house);return;}
   if(t==='J')return openGuild(false);
+  if(t==='M')return showDialog((IM.lore||{})[k]||['Faded carvings cover the stone.']);
+  if(t==='X')return showDialog(IM.rubble||['A wall of fused rubble blocks the way.']);
   if(t==='L')return showDialog(['The vault door is locked tight. The lock bears the royal crest.']);
   if(t==='w')return showDialog(['Through the window you can see the village rooftops.']);
   if(t==='K')return showDialog(['Racks of spears and polished swords for the castle guard.']);
@@ -1534,7 +1549,7 @@ function enterCastle(pos){enterInterior('castle',pos);}
 function leaveCastle(){if(IM&&IM.parent)return enterInterior(IM.parent,IM.parentPos);S.scene='map';stage.classList.remove('castle');stage.classList.add('map');S.world.townLock=true;
   {const tx=Math.floor(S.world.x/TS),ty=Math.floor(S.world.y/TS),opts=[[0,1],[-1,0],[1,0],[0,-1]];
    if(IM&&IM.id==='village'&&WORLD.castle)opts.sort((a,b)=>Math.abs(tx+a[0]-WORLD.castle.x)-Math.abs(tx+b[0]-WORLD.castle.x));
-   for(const[dx,dy]of opts){const t=WORLD.at(tx+dx,ty+dy);if(!BLOCKED.has(t)&&t!==T_TOWN&&t!==T_CASTLE&&t!==T_CAVE){S.world.x=(tx+dx)*TS+TS/2;S.world.y=(ty+dy)*TS+TS/2;S.world.townLock=false;break;}}}say(IM&&IM.out||'You step back out into the fields.');renderMenu();saveGame();}
+   for(const[dx,dy]of opts){const t=WORLD.at(tx+dx,ty+dy);if(!BLOCKED.has(t)&&t!==T_TOWN&&t!==T_CASTLE&&t!==T_CAVE&&t!==T_DELVE){S.world.x=(tx+dx)*TS+TS/2;S.world.y=(ty+dy)*TS+TS/2;S.world.townLock=false;break;}}}say(IM&&IM.out||'You step back out into the fields.');renderMenu();saveGame();}
 function toCastle(msg){
   for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,dx:0,dy:0,flash:0,cast:null,coverHit:false});
   Object.assign(S,{scene:'castle',over:false,busy:false,menu:null,actQ:[],readyQ:[],fx:[],parts:[],onContinue:null});
@@ -1683,9 +1698,9 @@ function wanderNPCs(dt){
 }
 function enterInterior(id,pos){
   const M=MAPS[id];IM=M;CW=M.w;CH=M.h;NPCS=M.npcs||[];CHESTS=M.chests||{};ROOMS=M.rooms||[];
-  if(!M.grid)M.grid=M.build();CASTLE=M.grid;ctex.width=CW*CT;ctex.height=CH*CT;drawCastleTex();
+  if(!M.grid||M.dynamic)M.grid=M.build();CASTLE=M.grid;ctex.width=CW*CT;ctex.height=CH*CT;drawCastleTex();
   S.scene='castle';S.imap=id;S.cpos=pos?{x:pos.x,y:pos.y}:{...M.entry};S.world.townLock=true;S.world.moving=false;for(const k in keys)keys[k]=false;steer=null;S.croom=roomName();
-  stage.classList.remove('map','town');stage.classList.add('castle');S.parts=[];say(M.hello);renderMenu();saveGame();
+  S.cam=null;stage.classList.remove('map','town');stage.classList.add('castle');S.parts=[];say(M.hello);if(M.onEnter)M.onEnter();renderMenu();saveGame();
 }
 
 /* ---------- Adventurers' Guild quests ---------- */
@@ -1790,21 +1805,275 @@ Object.assign(MAPS,{
   npcs:[{x:13,y:2,mon:'frosticon',when:()=>!S.flags.wyrm2,talk:()=>{bossFight(['The summit shakes. Ice cracks across the stone.','Frostfang, the Rime Wyrm, rises from the snow!'],['frostwyrm']);return null;}}]}
 });
 function drawMtTile(t,tx,ty,f,ch){
-  const r=k=>((tx*73856093^ty*19349663^k*83492791)>>>0)%1000/1000,snow=IM&&IM.snow;
-  const floor=()=>{if(snow){f('#e8f0f8',0,0,16,16);f('#c8d8e8',(r(1)*12)|0,(r(2)*14)|0,4,1);f('#ffffff',(r(3)*14)|0,(r(4)*14)|0,2,1);}else{f('#8a7a68',0,0,16,16);f('#7a6a58',(r(1)*13)|0,(r(2)*14)|0,3,2);f('#a8988a',(r(3)*14)|0,(r(4)*14)|0,2,1);}};
+  const r=k=>((tx*73856093^ty*19349663^k*83492791)>>>0)%1000/1000,snow=IM&&IM.snow,P=IM&&IM.pal;
+  const RC=P?P.r:['#4a4038','#5a5048','#6e6258','#7a6e62','#3a322c'],GC=P&&P.g?P.g:['#b48cff','#f0e8ff','#6a48b0'];
+  const floor=()=>{if(snow){f('#e8f0f8',0,0,16,16);f('#c8d8e8',(r(1)*12)|0,(r(2)*14)|0,4,1);f('#ffffff',(r(3)*14)|0,(r(4)*14)|0,2,1);}
+    else if(P){f(P.f[0],0,0,16,16);if(P.slab){f(P.f[1],0,0,16,1);f(P.f[1],0,0,1,16);f(P.f[1],((tx%2)?8:0),8,8,1);f(P.f[2],1,1,6,1);}
+      f(P.f[1],(r(1)*13)|0,(r(2)*14)|0,3,2);f(P.f[2],(r(3)*14)|0,(r(4)*14)|0,2,1);}
+    else{f('#8a7a68',0,0,16,16);f('#7a6a58',(r(1)*13)|0,(r(2)*14)|0,3,2);f('#a8988a',(r(3)*14)|0,(r(4)*14)|0,2,1);}};
+  const rock=()=>{f(RC[0],0,0,16,16);f(RC[1],1,1,14,13);f(RC[2],2,2,6,5);f(RC[3],9,6,5,4);f(RC[4],0,14,16,2);
+      if(snow&&ch(tx,ty-1)!=='R'){f('#e8f0f8',0,0,16,4);f('#ffffff',1,0,10,1);}if(snow&&ch(tx,ty+1)!=='R')f('#c8d8e8',0,13,16,1);};
   switch(t){
-    case 'R':{f('#4a4038',0,0,16,16);f('#5a5048',1,1,14,13);f('#6e6258',2,2,6,5);f('#7a6e62',9,6,5,4);f('#3a322c',0,14,16,2);
-      if(snow&&ch(tx,ty-1)!=='R'){f('#e8f0f8',0,0,16,4);f('#ffffff',1,0,10,1);}if(snow&&ch(tx,ty+1)!=='R')f('#c8d8e8',0,13,16,1);break;}
+    case 'R':rock();break;
     case 'm':case 'i':floor();break;
+    case 'y':{const b=P?P.f:['#4a4652','#3e3a46','#5a5664'];f(b[0],0,0,16,16);f(b[1],0,7,16,1);f(b[1],0,15,16,1);f(b[1],(ty%2?4:12),0,1,7);f(b[1],(ty%2?10:2),8,1,7);f(b[2],1,0,5,1);f(b[2],9,8,5,1);break;}
+    case 'G':rock();{const a=(r(5)*6)|0;f(GC[2],3+a,4,3,10);f(GC[0],4+a,3,2,10);f(GC[1],4+a,3,1,4);f(GC[2],9-a/2|0,7,3,7);f(GC[0],10-a/2|0,6,2,7);f(GC[1],10-a/2|0,6,1,2);}break;
+    case 'M':rock();f('#2a2a34',2,1,12,14);f('#8a8a9a',3,2,10,12);f('#a8a8b8',3,2,10,1);for(const y of[4,7,10])for(let x=4;x<12;x+=2)if(r(x+y)>.3)f('#3a8ab8',x,y,1+(r(x*y)>.5?1:0),1);f('#86e0ff',7,12,2,1);break;
+    case 'X':floor();for(const[x,y,w,h,c]of[[0,6,7,6,'#6a5a4a'],[5,2,7,8,'#7a6a58'],[9,7,7,8,'#5a4a3a'],[2,10,6,5,'#8a7a68']]){f('#2a2018',x,y+h-1,w,1);f(c,x,y,w,h-1);f('#a8987a',x+1,y,w-2,1);}f('#ff7a2a',7,13,1,1);break;
+    case 'O':floor();f('#e8d8c0',7,8,3,7);f('#c8b8a0',9,8,1,7);f('#a82a5a',2,3,13,6);f('#e84a8a',3,2,11,5);f('#ffb8d8',5,3,2,1);f('#ffffff',10,4,1,1);f('#ffffff',6,5,1,1);f('#7a1e44',2,8,13,1);break;
+    case 'V':{f('#8a1e0a',0,0,16,16);f('#c83a0a',1,1,14,14);for(let k=0;k<4;k++)f(k%2?'#ff7a2a':'#ffb03a',(r(k)*12)|0,(r(k+5)*12)|0,4,2);f('#ffd34a',(r(9)*12)|0,(r(10)*13)|0,2,1);
+      for(const[dx,dy,x,y,w,h]of[[0,-1,0,0,16,1],[0,1,0,15,16,1],[-1,0,0,0,1,16],[1,0,15,0,1,16]])if(ch(tx+dx,ty+dy)!=='V')f('#3a1008',x,y,w,h);break;}
     case 'I':floor();f('#5a8ab8',2,3,12,12);f('#a8d8f8',3,3,10,10);f('#e8f8ff',4,4,4,3);f('#86b4f2',10,9,3,3);break;
     case 'j':f('#1a1820',0,0,16,16);f('#2a2630',0,0,16,2);f('#3a3440',2,0,3,1);break;
     case 'e':floor();f('#5a8ab8',5,6,3,8);f('#bfefff',6,4,2,9);f('#86b4f2',9,8,3,6);f('#e8f8ff',10,7,1,5);break;
-    case 'U':floor();for(let k=0;k<4;k++){f('#5a5048',2,13-k*3,12,1);f(snow?'#d8e0e8':'#a89a88',2,11-k*3,12,2);}f('#ffd34a',7,1,2,2);break;
-    case 'N':floor();f('#1a1610',2,2,12,12);for(let k=0;k<3;k++)f('#4a4038',3+k,4+k*3,10-k*2,2);f('#ffd34a',7,13,2,2);break;
+    case 'U':floor();for(let k=0;k<4;k++){f(RC[1],2,13-k*3,12,1);f(snow?'#d8e0e8':P?P.f[2]:'#a89a88',2,11-k*3,12,2);}f('#ffd34a',7,1,2,2);break;
+    case 'N':floor();f('#1a1610',2,2,12,12);for(let k=0;k<3;k++)f(RC[0],3+k,4+k*3,10-k*2,2);f('#ffd34a',7,13,2,2);break;
     case '*':floor();{const g=['#86b4f2','#bfefff'];f(g[0],4,2,8,1);f(g[0],4,13,8,1);f(g[0],2,4,1,8);f(g[0],13,4,1,8);f(g[0],3,3,1,1);f(g[0],12,3,1,1);f(g[0],3,12,1,1);f(g[0],12,12,1,1);f(g[1],7,6,2,4);f(g[1],6,7,4,2);f('#ffffff',7,7,2,2);}break;
     case 'z':floor();if(!(S.flags.lilies||{})[chestKey(tx,ty)]){f('#3a8a4a',7,9,2,5);f('#ffffff',5,5,6,4);f('#bfefff',6,4,4,6);f('#86b4f2',7,6,2,2);}break;
   }
 }
+/* ---------- Deepdelve: seeded cave generator ---------- */
+function caveGen(seed,w,h,o){
+  let a=seed>>>0;const rand=()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};
+  const g=[];for(let y=0;y<h;y++)g.push(Array(w).fill('R'));
+  const inb=(x,y)=>x>=1&&y>=1&&x<w-1&&y<h-1,isF=(x,y)=>inb(x,y)&&g[y][x]==='m';
+  const sx=Math.floor(w/2),sy=h-3;
+  const carve=(x,y)=>{if(inb(x,y))g[y][x]='m';};
+  // a winding chain of chambers from the bottom to the top, joined by tunnels, with dead-end side alcoves
+  const room=(x,y,rx,ry)=>{for(let yy=-ry;yy<=ry;yy++)for(let xx=-rx;xx<=rx;xx++)if((xx/(rx+.5))**2+(yy/(ry+.5))**2<=1&&rand()>.06)carve(x+xx,y+yy);};
+  const tunnel=(x0,y0,x1,y1,wide)=>{let x=x0,y=y0,guard=0;while((x!==x1||y!==y1)&&guard++<400){const dx=Math.sign(x1-x),dy=Math.sign(y1-y);
+      if(rand()<.22){if(rand()<.5)x+=rand()<.5?1:-1;else y+=rand()<.5?1:-1;}else if(dx&&(!dy||rand()<Math.abs(x1-x)/(Math.abs(x1-x)+Math.abs(y1-y))))x+=dx;else y+=dy;
+      x=Math.max(2,Math.min(w-3,x));y=Math.max(2,Math.min(h-3,y));carve(x,y);if(wide&&rand()<.55)carve(x+(rand()<.5?1:0),y+(rand()<.5?1:0));}};
+  const n=o.rooms||7,pts=[{x:sx,y:sy}];let side=rand()<.5?-1:1;
+  for(let i=1;i<=n;i++){const y=Math.round(sy-(sy-3)*i/n+(rand()-.5)*2),span=(w-8)/2;side=-side;
+    const x=Math.round(w/2+side*(span*(.35+rand()*.65)));pts.push({x:Math.max(4,Math.min(w-5,x)),y:Math.max(3,Math.min(h-4,y))});}
+  for(let i=1;i<pts.length;i++){tunnel(pts[i-1].x,pts[i-1].y,pts[i].x,pts[i].y,rand()<.6);room(pts[i].x,pts[i].y,2+Math.floor(rand()*2),1+Math.floor(rand()*2));}
+  carve(sx,sy);carve(sx,sy-1);carve(sx,sy-2);
+  for(let k=0;k<(o.alcoves||4);k++){const p=pts[1+Math.floor(rand()*(pts.length-1))],dir=p.x<w/2?1:-1,len=4+Math.floor(rand()*6),ey=Math.max(2,Math.min(h-3,p.y+Math.round((rand()-.5)*6)));
+    const ex=Math.max(2,Math.min(w-3,p.x+dir*len));tunnel(p.x,p.y,ex,ey,false);}
+  for(let k=0;k<(o.loops||1);k++){const i=1+Math.floor(rand()*(pts.length-2)),j=Math.min(pts.length-1,i+2);tunnel(pts[i].x,pts[i].y,pts[j].x,pts[j].y,false);}
+  // smooth: knock out single-tile wall specks so corridors read cleanly
+  for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++)if(g[y][x]==='R'){let n=0;for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]])if(g[y+dy][x+dx]==='m')n++;if(n>=4)g[y][x]='m';}
+  // bfs from the start
+  const dist=()=>{const d=new Map(),q=[[sx,sy]];d.set(sx+','+sy,0);while(q.length){const[x,y]=q.shift(),k=d.get(x+','+y);for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const X=x+dx,Y=y+dy,K=X+','+Y;if(!d.has(K)&&isF(X,Y)){d.set(K,k+1);q.push([X,Y]);}}}return d;};
+  let D=dist();
+  // drop unreachable pockets
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(g[y][x]==='m'&&!D.has(x+','+y))g[y][x]='R';
+  const tiles=[...D.entries()].map(([k,v])=>{const[x,y]=k.split(',').map(Number);return{x,y,d:v};});
+  const nb4=(x,y)=>[[1,0],[-1,0],[0,1],[0,-1]].filter(([dx,dy])=>isF(x+dx,y+dy)).length;
+  const ring=(x,y,s=1)=>{for(let yy=-1;yy<=s;yy++)for(let xx=-1;xx<=s;xx++)if(!isF(x+xx,y+yy))return false;return true;};
+  // stairs down: the farthest tile that has a neighbour to arrive on
+  const far=tiles.filter(t=>t.y>1&&nb4(t.x,t.y)>=1&&!(Math.abs(t.x-sx)<3&&Math.abs(t.y-sy)<3)).sort((p,q)=>q.d-p.d)[0];
+  g[sy+1][sx]=o.exit?'E':'U';
+  g[far.y][far.x]='N';
+  // the tile beside the stairs down that leads back toward the start
+  let back=null;for(const[dx,dy]of[[0,1],[1,0],[-1,0],[0,-1]]){const X=far.x+dx,Y=far.y+dy;if(isF(X,Y)&&D.get(X+','+Y)===far.d-1){back={x:X,y:Y};break;}}
+  const used=new Set([sx+','+sy,far.x+','+far.y,back.x+','+back.y]);
+  const near=(x,y,r)=>[...used].some(k=>{const[a2,b2]=k.split(',').map(Number);return Math.abs(a2-x)<=r&&Math.abs(b2-y)<=r;});
+  // chests in dead ends, far from the start
+  const chests=[];const dead=tiles.filter(t=>nb4(t.x,t.y)===1&&g[t.y][t.x]==='m'&&t.d>6).sort((p,q)=>q.d-p.d);
+  for(const t of dead){if(chests.length>=(o.chests||2))break;if(near(t.x,t.y,2))continue;g[t.y][t.x]='c';chests.push(t.x+','+t.y);used.add(t.x+','+t.y);}
+  // extra chests in open spots if not enough dead ends
+  for(const t of tiles.filter(t=>t.d>8).sort((p,q)=>((p.x*7+p.y*13)%17)-((q.x*7+q.y*13)%17))){if(chests.length>=(o.chests||2))break;if(near(t.x,t.y,3)||!ring(t.x,t.y))continue;g[t.y][t.x]='c';chests.push(t.x+','+t.y);used.add(t.x+','+t.y);}
+  // save circles: open spots at the given fractions of the way through
+  const saves=[];for(const fr of(o.saves||[])){const want=Math.round(far.d*fr);const c=tiles.filter(t=>g[t.y][t.x]==='m'&&ring(t.x,t.y)&&!near(t.x,t.y,2)).sort((p,q)=>Math.abs(p.d-want)-Math.abs(q.d-want))[0];if(c){g[c.y][c.x]='*';saves.push(c.x+','+c.y);used.add(c.x+','+c.y);}}
+  // blocking decor (pools, mushrooms) only where every surrounding tile is open floor, so paths never break
+  for(const dc of(o.decor||[])){let n=0;const cand=tiles.filter(t=>t.d>3).sort(()=>rand()-.5);
+    for(const t of cand){if(n>=dc.n)break;const s=dc.big&&rand()<.6?2:1;if(!ring(t.x,t.y,s)||near(t.x,t.y,2))continue;
+      for(let yy=0;yy<s;yy++)for(let xx=0;xx<s;xx++)g[t.y+yy][t.x+xx]=dc.c;n++;}}
+  // wall dressing: crystals and lore tablets on walls that face open floor
+  const face=[];for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++)if(g[y][x]==='R'&&isF(x,y+1))face.push({x,y});
+  if(o.crystal)for(const p of face)if(rand()<o.crystal)g[p.y][p.x]='G';
+  const tablets=[];if(o.tablets){const D2=dist();const fc=face.filter(p=>D2.has(p.x+','+(p.y+1))).sort((p,q)=>D2.get(p.x+','+(p.y+1))-D2.get(q.x+','+(q.y+1)));
+    for(let i=0;i<o.tablets;i++){const p=fc[Math.floor((i+.6)/(o.tablets+.2)*(fc.length-1))];if(!p)continue;g[p.y][p.x]='M';tablets.push(p.x+','+p.y);}}
+  const spots=tiles.filter(t=>g[t.y][t.x]==='m'&&ring(t.x,t.y)&&!near(t.x,t.y,1)).sort((p,q)=>p.d-q.d);
+  return{grid:g,spots,start:{x:sx,y:sy},up:{x:sx,y:sy+1},down:{x:far.x,y:far.y},back,chests,saves,tablets,depth:far.d};
+}
+
+/* ---------- Deepdelve Mine, Ironhold and the airship Aurora ---------- */
+Object.assign(MON,{
+ crawler:{name:'Deep Crawler',hp:4200,exp:230,gil:170,spd:1.2,scale:4,bg:'deep',weak:['fire'],absorb:null,steals:2,steal:['hipotion','potion'],drop:[{id:'hipotion',ch:.25}],
+  atk:[{name:'Mandibles',lo:460,hi:540,w:3,col:'#ffffff'},{name:'Acid Spit',lo:380,hi:460,w:1,type:'mag',col:'#a8f05a'}],
+  pal:{A:'#4a2a5a',a:'#8a5aa0',e:'#ff5a3a',l:'#2a1a2a'},
+  map:["..aa............",".AaAa...........","AeaaAAaAAaAAaA..","AaaaaaaaaaaaaaaA",".AAaAAaAAaAAaAA.",".l.l.l.l.l.l.l..","l.l.l.l.l.l.l.l."]},
+ mole:{name:'Burrow Mole',hp:5000,exp:250,gil:190,spd:.95,scale:4,bg:'deep',weak:['water'],absorb:null,steals:2,steal:['hipotion','ether'],drop:[{id:'ether',ch:.15}],
+  atk:[{name:'Claw',lo:480,hi:560,w:3,col:'#ffffff'},{name:'Tremor',lo:260,hi:320,w:1,all:true,col:'#a8987a'}],
+  pal:{M:'#3a2a1e',m:'#7a5a3e',e:'#1b1012',n:'#f0a8a8',N:'#c87a7a',c:'#e8e0c8'},
+  map:["...MMMMM....","..MmmmmmM...",".MmemmmmmM..","NnmmmmmmmmM.","NNnmmmmmmmM.",".MmmmmmmmmM.",".MmmmmmmmmM.","..MmmmmmmM..",".cc.M..M.cc.","ccc.....ccc."]},
+ spider:{name:'Crystal Spider',hp:4600,exp:270,gil:230,spd:1.35,scale:4,bg:'crystal',weak:['thunder'],absorb:'ice',steals:1,steal:['ether'],drop:[{id:'ether',ch:.25}],
+  atk:[{name:'Fang',lo:440,hi:520,w:3,col:'#ffffff'},{name:'Crystal Web',lo:240,hi:300,w:1,all:true,type:'mag',col:'#e0c8ff'}],
+  pal:{g:'#b48cff',G:'#6a48b0',w:'#f0e8ff',e:'#ff3a6a',l:'#3a2a5a'},
+  map:["....w..w......","...gGwgGw.....","..GgggggggG...",".eeGgggggggG..",".GGgggggggGG..","l.l.GGGG.l.l..",".l.l.l.l.l.l..","l..l..l..l..l."]},
+ shade:{name:'Gloom Shade',hp:3800,exp:290,gil:210,spd:1.4,scale:4,bg:'deep',weak:['holy','fire'],absorb:'thunder',steals:1,steal:['ether','hipotion'],drop:[{id:'ether',ch:.3}],
+  atk:[{name:'Drain Touch',lo:460,hi:540,w:3,type:'mag',col:'#8a7ab8'},{name:'Dread',lo:260,hi:320,w:1,all:true,type:'mag',col:'#5a4a8a'}],
+  pal:{S:'#24203a',s:'#5a548a',e:'#ffd34a'},
+  map:["...SSSS...","..SsssssS.",".SseesssS.",".SssssssS.",".SsSssSsS.","SssssssssS","SsSssssSsS",".SssssssS.",".SsSssSsS.","..S.SS.S..",".S..S..S..","....S....."]},
+ slug:{name:'Magma Slug',hp:6800,exp:350,gil:270,spd:.8,scale:4,bg:'magma',weak:['ice','water'],absorb:'fire',steals:1,steal:['hipotion','elixir'],drop:[{id:'hipotion',ch:.4}],
+  atk:[{name:'Lava Spit',lo:560,hi:640,w:3,type:'mag',col:'#ff7a2a'},{name:'Magma Wave',lo:300,hi:360,w:1,all:true,type:'mag',col:'#ffb03a'}],
+  pal:{F:'#c84a1a',f:'#ffb03a',e:'#1b1012',l:'#ff7a2a',o:'#5a2a1a'},
+  map:["..ff............",".fFFf...........","fFeFFFFFFFFf....","FFFFFFFFFFFFFFf.","FFlFFFlFFFFlFFFf","ooooooooooooooo.","..o...o...o....."]},
+ magmaworm:{name:'Magma Worm',hp:26000,exp:3500,gil:4000,spd:1.05,scale:4,big:true,boss:true,bg:'magma',weak:['ice','water'],absorb:'fire',steals:1,steal:['elixir'],drop:[],
+  atk:[{name:'Crushing Coil',lo:760,hi:880,w:3,col:'#ffffff'},{name:'Magma Breath',lo:420,hi:500,w:2,all:true,type:'mag',col:'#ff7a2a'},{name:'Quake',lo:380,hi:440,w:1,all:true,col:'#a8987a'}],
+  pal:{W:'#5a160a',w:'#c8401a',e:'#ffd34a',t:'#ffffff',l:'#ffb03a'},
+  map:["..WWWW..........",".WwwwwW.........","WweewwwW........","WwwwwwwWW.......","WtwtwwwwW.......",".WtWtWwwwW......","....WwwwwW......",".....WwwwwW.....","......WwwwwW....",".....WwlwwwW....","....WwwwlwwW....","..WWwwwwwwwWWW..",".WwwwwlwwwwwwwW.","WWWWWWWWWWWWWWWW"]}
+});
+for(const k of['crawler','mole','spider','shade','slug','magmaworm']){const q=MON[k];q.h=q.map.length;q.w=Math.max(...q.map.map(r=>r.length));}
+Object.assign(BGS,{deep:{cave:true,sky:['#0e0a14','#2a2232'],far:'#1a1420',g:['#4a4048','#1c181e'],spk:['#6a5e66','#3a3238']},
+ crystal:{cave:true,sky:['#120e24','#3a2a5a'],far:'#241a3a',g:['#4a4060','#1e1a2a'],spk:['#b48cff','#5e5478']},
+ magma:{cave:true,sky:['#1a0806','#5a1a0a'],far:'#2a1010',g:['#5a3a2e','#1e0c08'],spk:['#7a4a34','#ff7a2a']}});
+Object.assign(GEAR,{
+ dwarfaxe:{name:'Dwarven Axe',slot:'weapon',who:['fighter'],atk:70,str:6,price:24000},
+ shadowedge:{name:'Shadow Edge',slot:'weapon',who:['thief'],atk:46,spd:3,price:19000},
+ runicstaff:{name:'Runic Staff',slot:'weapon',who:['white','summoner'],atk:10,mag:22,price:18000},
+ magmarod:{name:'Magma Rod',slot:'weapon',who:['black'],atk:4,mag:26,price:19000},
+ wyrmwhip:{name:'Wyrmbone Whip',slot:'weapon',who:['summoner'],atk:28,mag:14,price:18000},
+ adamantshield:{name:'Adamant Shield',slot:'shield',who:['fighter','thief'],def:22,mdef:8,price:12000},
+ dwarfhelm:{name:'Dwarven Helm',slot:'head',who:['fighter','thief'],def:16,mdef:6,price:9000},
+ adamantarmor:{name:'Adamant Armor',slot:'body',who:['fighter'],def:40,mdef:10,price:20000},
+ ninjagarb:{name:'Ninja Garb',slot:'body',who:['thief'],def:26,mdef:10,spd:2,price:15000},
+ runicrobe:{name:'Runic Robe',slot:'body',who:MAGES,def:18,mdef:24,mag:6,price:15000},
+ ironring:{name:'Iron Ring',slot:'acc',who:ALLC,def:10,mdef:4,price:4000}});
+Object.assign(SHOPS,{dwarfweapon:{name:'Ironhold Forge',hello:'Dwarven steel, folded a hundred times. Nothing finer under the earth.',stock:['dwarfaxe','shadowedge','runicstaff','magmarod','wyrmwhip']},
+ dwarfarmor:{name:'Ironhold Armory',hello:'Adamant plate and runed robes. Built to outlast you.',stock:['adamantshield','dwarfhelm','adamantarmor','ninjagarb','runicrobe','ironring']}});
+QUESTS.push({id:'crawlers',name:'Deep Trouble',desc:'Deep Crawlers swarm Deepdelve Mine. Defeat 5.',kind:'crawler',n:5,rank:2,rew:{gil:2500,exp:1500}},
+ {id:'slugs',name:'Molten Menace',desc:'Magma Slugs ooze through the deepest mine levels. Defeat 3.',kind:'slug',n:3,rank:3,rew:{gil:4000,gear:'ironring'}});
+VMAP.dwarf=["............","............","...hhhh.....","..hhhhhh....","..hseseh....","..bsssbb....","..bbbbbb....",".tbbbbbbt...",".tttttttts..","..tBBBBt....","..pp..pp....",".kkk..kkk..."];
+Object.assign(NPCSPR,{
+ dwarf:{pal:VPAL({h:'#8a8a9a',b:'#8a5a2a',t:'#3a5a8a',B:'#c8902a',p:'#3a3a46'}),map:VMAP.dwarf},
+ dwarf2:{pal:VPAL({h:'#a8703a',b:'#2a1e16',t:'#3e6e3a',B:'#8a6a3a',p:'#4a3a2a'}),map:VMAP.dwarf},
+ dwarfelder:{pal:VPAL({h:'#6a48b0',b:'#f0f0f8',t:'#4a3a6a',B:'#ffd34a',p:'#2a2a3a'}),map:VMAP.dwarf},
+ dwarfchief:{pal:VPAL({h:'#ffd34a',b:'#c8401a',t:'#a82a2a',B:'#ffd34a',p:'#3a2418'}),map:VMAP.dwarf},
+ dwarfsmith:{pal:VPAL({h:'#3a3a46',b:'#e87a2a',t:'#7a4a24',B:'#3a2418',p:'#3a3a46'}),map:VMAP.dwarf},
+ dwarfgirl:{pal:VPAL({h:'#c8401a',b:'#eabf98',t:'#7a48b0',B:'#e8c068',p:'#4a3a5a'}),map:VMAP.dwarf}
+});
+/* the Aurora: drawn bow-right, mirrored when flying west */
+const SHIP={pal:{p:'#6e4a1e',P:'#e8c068',q:'#fff3c4',r:'#4a3020',h:'#3a2418',H:'#9a6a34',g:'#86e0ff',b:'#ffd34a',y:'#86e0ff',w:'#e8e8f0'},
+ map:["........pppppppppppppppp........",".....pppPPPPPPPPPPPPPPPPppp.....","....pPPPPqPPPPPPPPqPPPPPPPPp....","...pPPPPPqPPPPPPPPqPPPPPPPPPp...","...pPPPPPqPPPPPPPPqPPPPPPPPPPp..",
+  "....pPPPPqPPPPPPPPqPPPPPPPPPp...",".....pppPPPPPPPPPPPPPPPPPPpp....","........pppppppppppppppppp......","..........r...r....r...r........",".w........r...r....r...r.....b..",
+  "www.hhhhhhhhhhhhhhhhhhhhhhhhhbbb",".w..hHHHHHHHHHHHHHHHHHHHHHHHHHb.",".w..hHgHHHgHHHgHHHgHHHgHHHHHHh..","....hHHHHHHHHHHHHHHHHHHHHHHHHh..",".....hhHHHHHHHHHHHHHHHHHHHHhh...",
+  ".......hhhhhhhhhhhhhhhhhhhhh....","..........yy....yy....yy........"]};
+SHIP.h=SHIP.map.length;SHIP.w=32;
+function drawShip(c,cx,by,sc,flip,lit){
+  const s=sc||1,ox=Math.round(cx-SHIP.w*s/2),oy=Math.round(by-SHIP.h*s),spin=Math.floor(S.t*12)%2;
+  for(let j=0;j<SHIP.h;j++){const row=SHIP.map[j];for(let i=0;i<row.length;i++){let ch=row[i];
+    if(i<3&&j>=9&&j<=12){ch='.';if(spin?((i===1&&j!==12)||(j===10)):((i===0||i===2)&&(j===9||j===11)||(i===1&&j===10)))ch='w';}
+    if(ch==='.')continue;if(ch==='y'&&!lit)continue;let col=SHIP.pal[ch];if(ch==='y'||ch==='g')col=Math.floor(S.t*3)%2?'#bff4ff':'#86e0ff';
+    c.fillStyle=col;c.fillRect(ox+(flip?SHIP.w-1-i:i)*s,oy+j*s,s,s);}}
+}
+function drawParkedShip(){const sh=S.flags&&S.flags.ship;if(!sh||sh.boarded||sh.x==null)return;const w=S.world,sx=Math.round(sh.x-w.x+W/2),sy=Math.round(sh.y-w.y+PY);
+  if(sx<-40||sx>W+40||sy<-30||sy>H+30)return;ctx.fillStyle='rgba(0,0,0,.28)';ell(ctx,sx,sy+1,12,2.5);drawShip(ctx,sx,sy-2+Math.round(Math.sin(S.t*1.6)),1,sh.flip,false);}
+const LAND_OK=t=>!BLOCKED.has(t)&&![T_TOWN,T_CASTLE,T_CAVE,T_DELVE].includes(t);
+function canLand(){return LAND_OK(tileAt(S.world.x,S.world.y));}
+function landShip(){const w=S.world,sh=S.flags.ship;if(!sh||!sh.boarded)return;if(!canLand())return say('No open ground below. Fly over grass, sand, forest or hills to land.');
+  w.x=(Math.floor(w.x/TS)+.5)*TS;w.y=(Math.floor(w.y/TS)+.5)*TS;Object.assign(sh,{boarded:false,x:w.x,y:w.y,lock:true,flip:w.face<0});
+  w.danger=Math.max(w.danger,10);w.townLock=true;say('The Aurora settles gently onto the ground. Walk back aboard to fly again.');renderMenu();saveGame();}
+function placeShip(){const d=WORLD.delve,ok=t=>[T_GRASS,T_SAND,T_FOREST,T_HILLS,T_DESERT].includes(t);let best=null;
+  if(d)for(let r=2;r<=8&&!best;r++)for(let dy=r;dy>=-r&&!best;dy--)for(let dx=-r;dx<=r;dx++){if(Math.max(Math.abs(dx),Math.abs(dy))!==r)continue;if(ok(WORLD.at(d.x+dx,d.y+dy))){best={x:d.x+dx,y:d.y+dy};break;}}
+  const p=best?{x:(best.x+.5)*TS,y:(best.y+.5)*TS}:{x:WORLD.start.x,y:WORLD.start.y};S.flags.ship={found:true,x:p.x,y:p.y,boarded:false,lock:false,flip:false};}
+
+/* five generated floors, built together so their stairs can point at each other */
+const DD_PAL={
+ dd1:{f:['#6e5a44','#5e4c38','#86705a'],r:['#2a2018','#4a3c30','#5e4c3e','#6a5848','#2a2018'],g:['#ffd34a','#fff3c4','#c8902a']},
+ dd2:{f:['#4a4060','#3e3652','#5e5478'],r:['#1e1a2a','#3a3250','#4a4266','#564c78','#1e1a2a'],g:['#b48cff','#f0e8ff','#6a48b0']},
+ dd3:{f:['#6a7488','#5a6478','#8a94a8'],r:['#22262f','#3e4658','#4e586c','#5a6478','#22262f'],g:['#86e0ff','#e8f8ff','#3a8ab8'],slab:true},
+ dd4:{f:['#3e5a4e','#344c42','#5a7a66'],r:['#18221e','#2e3e36','#3c5046','#486050','#18221e'],g:['#7ae8c8','#e8fff8','#2a9a7a']},
+ dd5:{f:['#5a3a2e','#4a2e24','#7a4a34'],r:['#1e0c08','#3e1e16','#56281c','#6a3424','#1e0c08'],g:['#ff7a2a','#ffd34a','#c83a0a']},
+ ironhold:{f:['#4a4652','#3e3a46','#5a5664'],r:['#1e1e26','#3a3a46','#4a4a5a','#56566a','#1e1e26'],g:['#86e0ff','#e8f8ff','#3a8ab8']}};
+const DD_SPEC=[
+ {id:'dd1',name:'Deepdelve Mine',seed:7101,w:34,h:24,o:{exit:true,chests:2,saves:[.55],crystal:.04,fill:.34},hello:'Deepdelve Mine. Old timbers creak, and warm air rises from below.',
+  chest:[{item:'hipotion',n:3},{item:'ether',n:2}],enc:[['crawler'],['crawler','crawler'],['mole'],['crawler','mole']]},
+ {id:'dd2',name:'Crystal Galleries',seed:7202,w:34,h:26,o:{chests:3,saves:[.5],crystal:.18,fill:.36},hello:'The Crystal Galleries. Violet light glitters from every wall.',
+  chest:[{gear:'ironring'},{item:'elixir',n:1},{gil:3000}],enc:[['spider'],['spider','spider'],['mole','spider'],['crawler','spider','crawler']]},
+ {id:'dd3',name:'Old Sky Road',seed:7303,w:36,h:26,o:{chests:2,saves:[.5],tablets:3,crystal:.03,fill:.36},hello:'The Old Sky Road. Worn paving stones run off into the dark, carved with strange sky-blue script.',
+  chest:[{gear:'dwarfhelm'},{gil:5000}],enc:[['shade'],['shade','spider'],['mole','mole'],['shade','shade','shade'],['crawler','shade']],
+  lore:[["An ancient tablet, carved in sky-blue script. A dwarf’s chalk rubbing beside it reads:","“Here runs the Sky Road, where the ships of the Sky Folk came down to trade with the Hold of Iron.”"],
+   ["Another tablet, cracked down the middle:","“Our fleet burns. The fire wyrm has woken. Captain Seren takes the Aurora down the Road to hide her.”"],
+   ["The last tablet, half buried in rubble:","“The dwarves have sealed the Road behind us. The Aurora sleeps. Let the one who wakes her find the sky clear of fire.”"]]},
+ {id:'dd4',name:'Fungal Hollow',seed:7404,w:34,h:26,o:{chests:3,saves:[.45],decor:[{c:'O',n:14}],crystal:.05,fill:.38},hello:'The Fungal Hollow. Giant mushrooms glow softly and the air is thick with spores.',
+  chest:[{item:'ether',n:3},{gear:'runicrobe'},{item:'tent',n:3}],enc:[['shade','mole'],['spider','spider','shade'],['mole','mole','crawler'],['shade','shade']]},
+ {id:'dd5',name:'Magma Depths',seed:7505,w:36,h:26,o:{chests:2,saves:[.4,.92],decor:[{c:'V',n:12,big:true}],crystal:.06,fill:.38},hello:'The Magma Depths. Rivers of lava light the cavern red. Something huge has carved these tunnels.',
+  chest:[{item:'elixir',n:2},{gear:'shadowedge'}],enc:[['slug'],['slug','crawler'],['slug','slug'],['shade','slug','shade']]}
+];
+const DD={};
+(function buildDeep(){
+  for(const sp of DD_SPEC)DD[sp.id]=caveGen(sp.seed,sp.w,sp.h,sp.o);
+  DD_SPEC.forEach((sp,i)=>{const r=DD[sp.id],links={},chests={},lore={},npcs=[];
+    const above=i>0?DD[DD_SPEC[i-1].id]:null,below=i<DD_SPEC.length-1?DD[DD_SPEC[i+1].id]:null;
+    if(above)links[r.up.x+','+r.up.y]={to:DD_SPEC[i-1].id,x:above.back.x,y:above.back.y};
+    links[r.down.x+','+r.down.y]=below?{to:DD_SPEC[i+1].id,x:below.start.x,y:below.start.y}:{to:'ironhold',x:16,y:23};
+    r.chests.forEach((k,j)=>{chests[k]=sp.chest[j%sp.chest.length];});
+    (r.tablets||[]).forEach((k,j)=>{lore[k]=sp.lore[j];});
+    const spots=r.spots.slice(),take=(near)=>{const want=Math.round(r.depth*near);spots.sort((p,q)=>Math.abs(p.d-want)-Math.abs(q.d-want));const s=spots.shift();
+      for(let k=spots.length-1;k>=0;k--)if(Math.abs(spots[k].x-s.x)<3&&Math.abs(spots[k].y-s.y)<3)spots.splice(k,1);return s;};
+    if(sp.id==='dd1'){const k=take(0),d=take(.08);DD.lift={x:d.x,y:d.y};
+      npcs.push({x:k.x,y:k.y,spr:'dwarf',talk:()=>S.flags.worm?['Kellin: You slew the Magma Worm? The road to Ironhold is open again!','Kellin: Tell the Chief that Kellin’s still keeping watch up here.']:
+        ['Kellin: Hold! Surface folk, down in Deepdelve? I’m Kellin, scout of Ironhold.','Kellin: A Magma Worm tunneled up from the deep and cut our city off. No one has gotten through in months.','Kellin: Ironhold lies at the bottom of the mine, six levels down. Get past the worm and my people will welcome you as heroes.']},
+       {x:d.x,y:d.y,spr:'dwarfsmith',talk:()=>{if(!S.flags.ironhold)return['Dorn: This is the lift down to Ironhold. The winch is worked from the bottom, and nobody down there answers.','Dorn: Make it to the city and we can ride up and down whenever you like.'];
+         showDialog(['Dorn: Down to Ironhold? Hold on to something!'],()=>enterInterior('ironhold',{x:13*CT+8,y:23*CT+8}));return null;}});}
+    if(sp.id==='dd4'){const h=take(.7);npcs.push({x:h.x,y:h.y,spr:'dwarfgirl',when:()=>!S.flags.hildeDone,talk:()=>{S.flags.hildeDone=true;S.bag.ironring=(S.bag.ironring||0)+1;saveGame();
+      return['Hilde: Oh, thank the stone! I’m Hilde, a crystal-cutter from Ironhold.','Hilde: The spores put me to sleep, and when I woke the shades had taken my pack and the worm had blocked the way home.','Hilde: Take my Iron Ring. It’s all I have left. I’ll follow your trail back down.','Received the Iron Ring!'];}});}
+    if(sp.id==='dd5')npcs.push({x:r.down.x,y:r.down.y,mon:'magmaworm',sc:2,when:()=>!S.flags.worm,talk:()=>{bossFight(['The ground heaves. Lava spills from cracks in the stone.','The Magma Worm bursts from the rock, blocking the way down!'],['slug','magmaworm','slug']);return null;}});
+    MAPS[sp.id]={id:sp.id,name:sp.name,dungeon:true,pal:DD_PAL[sp.id],w:sp.w,h:sp.h,entry:{x:r.start.x*CT+8,y:r.start.y*CT+8},hello:sp.hello,build:()=>r.grid.map(row=>row.slice()),links,chests,lore,enc:sp.enc,npcs,
+      ...(i===0?{leave:'Leave the mine',out:'You climb out into the sea wind of the northern cape.'}:{})};
+  });
+})();
+
+/* Ironhold, the dwarf city on the sixth level */
+const IRON_LORE={'10,7':['A mural: silver airships sail above the clouds, trailing the banners of the Sky Folk.'],
+ '12,7':['A mural: a great fire wyrm tears through the sky fleet. Ships fall burning into the sea.'],
+ '21,7':['A mural: one ship, the Aurora, dives down a shaft of light into the earth. Dwarves seal the stone behind her.'],
+ '23,7':['A mural: a dwarf holds a glowing red heart before a wall of rubble. Above, the ship rises into a clear sky.','Carved beneath it: “When the sky is clear of fire, let the heart of the deep set her free.”']};
+MAPS.ironhold={id:'ironhold',name:'Ironhold',dynamic:true,pal:DD_PAL.ironhold,w:34,h:26,entry:{x:16*CT+8,y:23*CT+8},hello:'Ironhold, city of the dwarves. Forges glow and hammers ring under a vault of stone.',
+ lore:IRON_LORE,rubble:['A wall of fused stone seals the old Sky Road. Through a crack you glimpse a great wooden hull, and a faint blue glow.','Dwarven powder has only scorched it.'],
+ onEnter(){if(!S.flags.ironhold){S.flags.ironhold=true;}},
+ build(){const g=gridFill(this.w,this.h,'R'),set=(x,y,c)=>{if(x>=0&&y>=0&&x<this.w&&y<this.h)g[y][x]=c;},rect=(x0,y0,x1,y1,c)=>{for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)set(x,y,c);};
+   rect(9,1,24,5,'y');for(let x=15;x<=18;x++)set(x,0,'j');rect(16,6,17,7,'y');if(!S.flags.blasted){set(16,7,'X');set(17,7,'X');}
+   rect(2,8,31,23,'y');for(const x of[10,12,21,23])set(x,7,'M');for(const x of[4,7,27,30])set(x,7,'G');for(const[x,y]of[[9,1],[24,1],[9,5],[24,5]])set(x,y,'G');
+   for(const[x,y]of[[9,17],[10,17],[9,18],[10,18]])set(x,y,'V');
+   this.buildings=[{x:3,y:9,w:5,h:5,door:5,roof:'#5a5a6a',wall:'#a89a88',sign:'weapon'},{x:9,y:9,w:5,h:5,door:11,roof:'#3a5a8a',wall:'#a89a88',sign:'armor'},
+    {x:20,y:9,w:5,h:5,door:22,roof:'#3e6e3a',wall:'#a89a88',sign:'item'},{x:26,y:9,w:5,h:5,door:28,roof:'#8a6a3a',wall:'#a89a88',sign:'inn'},
+    {x:3,y:16,w:5,h:4,door:5,roof:'#6a4a3a',wall:'#9a8c7a'},{x:13,y:16,w:8,h:5,door:16,roof:'#a82a2a',wall:'#b8a890',sign:'guild'},{x:24,y:16,w:5,h:4,door:26,roof:'#4a4a5a',wall:'#9a8c7a'}];
+   for(const b of this.buildings){for(let y=b.y;y<b.y+b.h;y++)for(let x=b.x;x<b.x+b.w;x++)set(x,y,'H');set(b.door,b.y+b.h-1,'d');}
+   set(16,24,'U');return g;},
+ links:{'16,24':{to:'dd5',x:0,y:0}},
+ doors:{'5,13':{shop:'dwarfweapon'},'11,13':{shop:'dwarfarmor'},'22,13':{shop:'item'},'28,13':{inn:true},
+  '5,19':{house:['A dwarf family’s home. The smell of mushroom stew drifts out.']},'16,20':{house:['The Chief’s Hall. Banners of every clan hang inside. Chief Brannoc is out in the courtyard, glaring at the rubble.']},
+  '26,19':{house:['A crystal-cutter’s workshop. Half-finished gems sparkle on every bench.']}},
+ npcs:[
+  {x:16,y:5,ship:true,when:()=>!S.flags.shipUp,talk:()=>null},
+  {x:15,y:10,spr:'dwarfelder',talk:()=>S.flags.blasted?['Elder Thrain: Seren would be proud. The Aurora flies again!','Elder Thrain: Her skystone engine never tires. She will carry you over sea and mountain alike.']:
+   ['Elder Thrain: Sit, sit. You will want to hear the tale of the Aurora.','Elder Thrain: Five hundred years ago the Sky Folk sailed above the clouds in ships of oak and skystone.','Elder Thrain: They came down the Sky Road, a great shaft from the northern cape, to trade with Ironhold.',
+    'Elder Thrain: Then the Ember Wyrm woke and burned their fleet out of the sky. One ship escaped: the Aurora, flown by Captain Seren.','Elder Thrain: Seren brought her down the Sky Road, and our forefathers sealed the shaft behind her so the wyrm would never find her.',
+    'Elder Thrain: Her last words were, “Wake her when the sky is clear of fire.” And now you tell me the Ember Wyrm is dead…','Elder Thrain: Then the time has come. Speak to Chief Brannoc, by the rubble.']},
+  {x:18,y:9,spr:'dwarfchief',talk:()=>{const f=S.flags;if(f.blasted)return['Chief Brannoc: Did you see her fly? Straight up the old Sky Road!','Chief Brannoc: The Aurora waits up top, beside Deepdelve Mine. Gorrim’s lift will take you up.'];
+   showDialog(['Chief Brannoc: So you are the ones who slew the Magma Worm! Ironhold owes you its life.','Chief Brannoc: Behind that rubble sleeps the Aurora, last airship of the Sky Folk. Ordinary powder can’t crack sealing stone.',
+    'Chief Brannoc: But that Magma Heart you carry… ground into blasting powder, it burns hot enough to melt mountains.','Chief Brannoc: Stand back, friends. Let’s wake her up!'],blastSequence);return null;}},
+  {x:6,y:14,spr:'dwarfsmith',wander:[2,14,13,15],talk:()=>['Smith Durra: Adamant takes a week at the forge to fold. Worth every gil, mind you.']},
+  {x:24,y:15,spr:'dwarf',wander:[20,14,31,15],talk:()=>[S.flags.blasted?'Miner: An airship! I never believed the old stories.':'Miner: The Chief has stared at that rubble every day for forty years.']},
+  {x:22,y:22,spr:'dwarf2',wander:[18,21,31,23],talk:()=>['Dwarf: Mind the forge pool. Lava doesn’t care how brave you are.']},
+  {x:28,y:15,spr:'dwarfgirl',when:()=>!!S.flags.hildeDone,talk:()=>['Hilde: Home again, thanks to you! My pack is lost, but my head is still on my shoulders.']},
+  {x:13,y:22,spr:'dwarf',talk:()=>{showDialog(['Gorrim: The lift runs up to the mine entrance. Hop on!'],()=>enterInterior('dd1',{x:DD.lift.x*CT+8,y:(DD.lift.y+1)*CT+8}));return null;}}]};
+MAPS.ironhold.links['16,24']={to:'dd5',x:DD.dd5.back.x,y:DD.dd5.back.y};
+
+/* blasting the Aurora free */
+async function blastSequence(){
+  const f=S.flags;S.cut=true;for(const k in keys)keys[k]=false;steer=null;S.cpos={x:16*CT+8,y:10*CT+8};S.world.face=1;
+  const scr=(x,y)=>({x:x-(S.camOff?S.camOff.x:0),y:y-(S.camOff?S.camOff.y:0)}),c0={x:17*CT,y:10*CT+8},c1={x:17*CT,y:4*CT+8};
+  await tween(1000,p=>{const e=p*p*(3-2*p);S.cam={x:c0.x,y:c0.y+(c1.y-c0.y)*e};});
+  say('Brannoc packs heartfire powder into the rubble and lights the fuse…');
+  for(let k=0;k<16;k++){const q=scr(17*CT+rnd(-6,6),8*CT+4-k*.5);part(q.x,q.y,{vx:rnd(-20,20),vy:rnd(-30,-10),life:.4,c:pick(['#ffd34a','#ff7a2a','#ffffff'])});await sleep(70);}
+  flash('#ffffff',700);shake();f.blasted=true;IM.grid=IM.build();CASTLE=IM.grid;drawCastleTex();
+  {const q=scr(17*CT,7*CT+8);for(let k=0;k<90;k++)part(q.x+rnd(-14,14),q.y+rnd(-6,6),{vx:rnd(-60,60),vy:rnd(-70,10),g:60,life:rnd(.5,1.2),c:pick(['#a8987a','#6a5a4a','#ff7a2a','#ffd34a','#c8c0b0']),s:2});}
+  await sleep(1100);shake();say('The sealing stone shatters! Deep in the cavern, a skystone engine hums to life…');
+  for(let k=0;k<30;k++){const q=scr(17*CT+rnd(-40,40),5*CT+rnd(-8,10));part(q.x,q.y,{vy:rnd(-30,-10),life:rnd(.6,1.2),c:pick(['#86e0ff','#bff4ff','#ffffff'])});await sleep(40);}
+  await sleep(500);
+  await tween(2800,p=>{S.shipRise=p*p;if(Math.random()<.5){const q=scr(17*CT+rnd(-30,30),5*CT+16-p*p*200);part(q.x,q.y,{vy:rnd(10,40),life:.6,c:pick(['#86e0ff','#bff4ff'])});}});
+  f.shipUp=true;S.shipRise=0;placeShip();say('The Aurora soars up the old Sky Road toward the surface!');
+  await tween(900,p=>{const e=p*p*(3-2*p);S.cam={x:c1.x+(S.cpos.x-c1.x)*e,y:c1.y+(S.cpos.y-c1.y)*e};});
+  S.cam=null;S.cut=false;saveGame();renderMenu();
+  showDialog(['Chief Brannoc: HA! Did you see her go? Straight up the Sky Road like she was never asleep!','Chief Brannoc: She’ll be waiting on the surface, beside Deepdelve Mine. Take Gorrim’s lift up.','Chief Brannoc: Walk aboard and she’ll carry you anywhere under the sky. Over sea, over mountains. Fly her well!']);
+}
+
 async function dungeonEncounter(form){
   S.battleReturn='castle';S.transIn=true;S.scene='trans';for(const k in keys)keys[k]=false;steer=null;S.world.moving=false;
   for(let i=0;i<2;i++){flash('#ffffff',140);await sleep(170);}
@@ -1965,13 +2234,14 @@ function showOver(win){
   else if(win){let ex=0,gl=0;const got=[];for(const f of S.foes){const m=MON[f.kind];ex+=m.exp;gl+=m.gil;got.push(...rollDrops(f));}
     for(const f of S.foes)S.kills[f.kind]=(S.kills[f.kind]||0)+1;const ups=awardBattle(ex,gl);let extra='';
     if(S.foes.some(f=>f.kind==='ogre')&&!S.flags.ogre){S.flags.ogre=true;extra=' The Hill Ogre is slain! King Aldous will want to hear of this.';}
+    if(S.foes.some(f=>f.kind==='magmaworm')&&!S.flags.worm){S.flags.worm=true;S.flags.heart=true;extra+=' The Magma Worm is slain! From its molten core you take the Magma Heart, still glowing hot. The way down to Ironhold is open.';}
     if(S.foes.some(f=>f.kind==='yetiking')&&!S.flags.yeti){S.flags.yeti=true;extra+=' The Yeti Chieftain falls! The ledge is clear.';}
     if(S.foes.some(f=>f.kind==='sentinel')&&!S.flags.sentinel){S.flags.sentinel=true;extra=' The sentinel crumbles. The grand chest is unguarded.';}
     for(const n of questNotices())extra+=' '+n;
     t='Victory';p=`Gained ${ex} EXP and ${gl} G.`+(got.length?` Found ${got.join(', ')}.`:'')+(ups.length?' '+ups.join(' '):'')+extra;b='Continue';S.onContinue=ret;}
   else if(wy&&!d.variant){t='The party has fallen';p=`${d.phase===2?'The Molten Wyrm':'The Ember Wyrm'} still had ${d.hp.toLocaleString()} of ${d.max.toLocaleString()} HP.`;b='Fight again';S.onContinue=newGame;}
-  else{const inC=S.battleReturn==='castle';t='The party has fallen';p=inC?(IM&&IM.dungeon?'The party collapses on the mountain. You wake at the last save circle, fully rested.':'The sentinel drove you out. You wake in the castle guest rooms, fully rested.'):`The monsters drove you off. You wake at camp, fully rested.`;b=inC?'Wake up':'Return to camp';
-    S.onContinue=()=>{for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;}if(inC&&IM&&IM.dungeon){const ls=S.lastSave&&MAPS[S.lastSave.map]?S.lastSave:{map:'mt1',x:MAPS.mt1.entry.x,y:MAPS.mt1.entry.y};toCastle();enterInterior(ls.map,{x:ls.x,y:ls.y});say('You wake at the save circle.');}else if(inC){S.cpos={x:5*CT+8,y:11*CT+8};toCastle('You wake in a guest bed.');}else toMap('You wake at camp, sore but alive.');};}
+  else{const inC=S.battleReturn==='castle';t='The party has fallen';p=inC?(IM&&IM.dungeon?`The party collapses ${IM.id.startsWith('dd')?'in the depths':'on the mountain'}. You wake at the last save circle, fully rested.`:'The sentinel drove you out. You wake in the castle guest rooms, fully rested.'):`The monsters drove you off. You wake at camp, fully rested.`;b=inC?'Wake up':'Return to camp';
+    S.onContinue=()=>{for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;}if(inC&&IM&&IM.dungeon){const fb=IM.id.startsWith('dd')?'dd1':'mt1',ls=S.lastSave&&MAPS[S.lastSave.map]?S.lastSave:{map:fb,x:MAPS[fb].entry.x,y:MAPS[fb].entry.y};toCastle();enterInterior(ls.map,{x:ls.x,y:ls.y});say('You wake at the save circle.');}else if(inC){S.cpos={x:5*CT+8,y:11*CT+8};toCastle('You wake in a guest bed.');}else toMap('You wake at camp, sore but alive.');};}
   $('overT').textContent=t;$('overP').textContent=p;$('again').textContent=b;$('over').hidden=false;$('again').focus({preventScroll:true});
 }
 function update(dt){
@@ -2111,7 +2381,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.3.2',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.4.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

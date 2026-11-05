@@ -116,6 +116,9 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .tip{margin:0;font-size:16px;line-height:1.2;color:var(--muted)}
 .tip .btn{margin-left:8px}
 .slist{display:grid;gap:6px}
+body.bigmap::before{content:'';position:fixed;inset:0;background:#000;z-index:30}
+body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100vw,calc(100vh * 16 / 9));max-width:none;margin:0;border:0}
+.bigx{position:absolute;top:31%;right:6px;z-index:5;opacity:.85}
 .srow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--panel-2);border:2px solid var(--line);padding:6px 10px}
 .card.help .srow b{font-family:var(--f-display);font-size:12px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;color:var(--text)}
 .sinfo{display:grid;gap:2px;min-width:0}
@@ -252,7 +255,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.3.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.4.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -265,7 +268,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
 <p><b>The hidden valley</b>: high in the island’s great mountain range lies a valley no road can reach. Fly the Aurora there to find Castle Arcanum and the village of Highmere, with the strongest spells, items and gear in the realm. The magi can raise the lost <b>Isle of Aether</b>, but a wall of storm clouds surrounds it and hurls back the airship. King Aldous can build you a port east of his castle: walk out along the pier to board the ship. On the main island she can only tie up at that pier; on the isle she can land on any beach. The <b>Tower of Aether</b> has a hundred floors, guardians on floors 25, 50 and 75, waystones every tenth floor, and Zephyrion the Sky Wyrm at the top.</p>
-<p><b>Day and night</b>: a day passes in about six minutes. The icon in the top-left corner shows the sun by day, the moon and its phase by night (a 15-day cycle), and the weather; tap it for details. Weather drifts between clear, cloudy, rain and storms, with cloud shadows sweeping the ground. Different monsters come out at night (Will-o’-Wisps, wolf packs), in the rain (Rain Toads), and in storms (Thunderbirds); Thornhares sleep at night. Every other full moon rises as a <b>Blood Moon</b> (the first on day 9, then every 30 days): zombies, ghouls and Zombie Knights swarm the wilds, Valemont’s gate and Thornwick’s gates shut until dawn, and the magi of Arcanum hold a holy barrier over their valley. In the week before, any king offers the Blood Moon Hunt: slay 5, 15, 30 or 50 of the dead for rising rewards. Aboard the Aurora, choose <b>Explore the ship</b> to walk her decks: bunks below restore HP and MP, Quartermaster Hilde runs a shop, and the training room’s <b>Battle Simulator</b> lets you practice against any creature you’ve fought. Simulations give no EXP, gil or items, and the party is always restored to how it started, win or lose. Take the helm to fly on. Rest at an inn after dark and Vesh can slip out alone. At night he can’t leave town, but he can pick locks (tap when the pick is in the gold), sneak through sleeping houses, and steal goods to sell to the hidden <b>thieves’ guild</b> in every town (look for a trapdoor at night). Walking near sleepers wakes them; guards with lanterns catch anyone who gets too close. Guild masters give quests, the trainer teaches new battle skills, and the last quest makes Vesh a <b>Ninja</b>.</p>
+<p><b>Day and night</b>: a day passes in about six minutes. The icon in the top-left corner shows the sun by day, the moon and its phase by night (a 15-day cycle), and the weather; tap it for details. Weather drifts between clear, cloudy, rain and storms, with cloud shadows sweeping the ground. Different monsters come out at night (Will-o’-Wisps, wolf packs), in the rain (Rain Toads), and in storms (Thunderbirds); Thornhares sleep at night. Every other full moon rises as a <b>Blood Moon</b> (the first on day 9, then every 30 days): zombies, ghouls and Zombie Knights swarm the wilds, Valemont’s gate and Thornwick’s gates shut until dawn, and the magi of Arcanum hold a holy barrier over their valley. In the week before, any king offers the Blood Moon Hunt: slay 5, 15, 30 or 50 of the dead for rising rewards. Inns, beds, tents and bunks let you sleep until morning or until nightfall, but no one sleeps under a Blood Moon. Shops close at dusk (19:00) and open at dawn (6:00), and townsfolk head home for the night. Fish bite more in the rain and around the full moon. Thieves’ guild doormen want the secret sign every time; get it wrong and you’re thrown out. On the world map, <b>Full view</b> hides the menus while you travel. Aboard the Aurora, choose <b>Explore the ship</b> to walk her decks: bunks below restore HP and MP, Quartermaster Hilde runs a shop, and the training room’s <b>Battle Simulator</b> lets you practice against any creature you’ve fought. Simulations give no EXP, gil or items, and the party is always restored to how it started, win or lose. Take the helm to fly on. Rest at an inn after dark and Vesh can slip out alone. At night he can’t leave town, but he can pick locks (tap when the pick is in the gold), sneak through sleeping houses, and steal goods to sell to the hidden <b>thieves’ guild</b> in every town (look for a trapdoor at night). Walking near sleepers wakes them; guards with lanterns catch anyone who gets too close. Guild masters give quests, the trainer teaches new battle skills, and the last quest makes Vesh a <b>Ninja</b>.</p>
 <p><b>Fishing</b>: while sailing, schools of fish ripple on the water. Sail up to one and choose <b>Fish</b>. Tap the water to cast, hold <b>Reel</b> to work the lure, keep still while a fish nibbles, then tap <b>HOOK!</b> the moment it bites. While landing it, watch the line: ease off when the fish thrashes or the line snaps. Snag chests on the seabed for treasure, including magic armor found nowhere else. Old Gill at the Adventurers’ Guild buys your catch, and the <b>Fish Book</b> logs every kind with its largest size and date.</p>
 <p><b>Status ailments</b>: some monsters poison (HP drains over time, even while walking), petrify (the hero is out of the fight until cured) or confuse (the hero attacks at random). Cure them with Antidotes, Gold Needles, Remedies, or the <b>Heal</b> spell. Confusion wears off when a battle ends; poison and stone last until cured, or until you rest at an inn or camp. Open <b>Party</b> outside battle to cast healing magic (Cure, Heal, Revive, Exit and more) and use items. A <b>Ribbon</b> blocks them all. <b>Exit</b> warps the party out of any dungeon, castle or town to the world map. In Ironhold, the <b>Rune Hall</b> sells Firaga, Bio and the summons Ifrit, Titan and Bahamut, and the <b>Training Hall</b> teaches the Fighter monk arts (learn three to become a Monk) and the Thief new tricks.</p>
 <p><b>Deepdelve Mine</b>: on the northern cape, sealed until you finish King Aldous’s Hill Ogre quest and defeat Frostfang. Then a mine shaft drops five levels to Ironhold, the dwarf city. Read the old tablets on the Sky Road, slay Gravemaw the Earth Wyrm to free the trapped dwarves, and their King and Queen can blast free the airship <b>Aurora</b>. Walk aboard to fly anywhere on the world map with no random battles; choose <b>Land</b> to set down on open ground.</p>
@@ -597,7 +600,7 @@ function drawDragon(t){
 
 /* ---------- render ---------- */
 function render(dt){
-  if(S.scene==='battle')battleRender(dt);else if(S.scene==='town')townRender(dt);else if(S.scene==='castle'||(S.scene==='trans'&&S.transIn))castleRender();else if(S.scene==='fish')fishRender(dt);else mapRender(dt);
+  const shk=shakeBegin();if(S.scene==='battle')battleRender(dt);else if(S.scene==='town')townRender(dt);else if(S.scene==='castle'||(S.scene==='trans'&&S.transIn))castleRender();else if(S.scene==='fish')fishRender(dt);else mapRender(dt);if(shk)ctx.restore();if(S.scene!=='map'&&document.body.classList.contains('bigmap')){document.body.classList.remove('bigmap');bigX.hidden=true;}
   if(S.scene!=='battle'&&S.scene!=='fish'){drawWeather(dt);drawNight();drawBlood(dt);if(S.scene==='map'||S.scene==='castle')drawSkyHud();}if(S.lock&&S.scene==='castle')drawLock();
   if(S.scene==='map'||S.scene==='castle')drawMini();
   const now=performance.now();
@@ -752,7 +755,7 @@ async function doHero(h,kind,id,tg){
     case 'glacia':{await castPose(h,'#bfefff',300);await summonIntro('#bfefff');banner('Glacia · Frozen Gale');shake();
       await addFx(1000,(c,p)=>{for(let k=0;k<6;k++)part(170-p*160+rnd(-10,10),rnd(30,135),{vx:rnd(-90,-50),vy:rnd(-10,10),life:.4,c:pick(['#ffffff','#bfefff','#6fc3f0'])});c.fillStyle=`rgba(200,240,255,${.35*Math.sin(p*Math.PI)})`;c.fillRect(0,0,W,H);});
       hitAll(h.mag*POW.glacia,'ice');await sleep(350);break;}
-    case 'raijin':{await castPose(h,'#ffe14a',300);await summonIntro('#ffe14a');banner('Raijin · Storm Drum');for(let k=0;k<3;k++){shake();boltFx(DX+rnd(-20,20),DY+rnd(-10,10));await sleep(220);}
+    case 'raijin':{await castPose(h,'#ffe14a',300);await summonIntro('#ffe14a');banner('Raijin · Storm Drum');addFx(1700,(c,p)=>{c.fillStyle=`rgba(10,10,30,${.45*Math.sin(p*Math.PI)})`;c.fillRect(0,0,W,H);});for(let k=0;k<14;k++){if(k%3===0)shake();boltFx(rnd(8,W-8),rnd(36,H-16));if(k%2)boltFx(rnd(8,W-8),rnd(36,H-16));await sleep(95);}
       hitAll(h.mag*POW.raijin,'thunder');await sleep(350);break;}
     case 'undine':{await castPose(h,'#6fb3ff',300);await summonIntro('#6fb3ff');banner('Undine · Tidal Surge');shake();
       await addFx(1150,(c,p)=>{const f=196-p*270;c.fillStyle='rgba(30,100,190,.6)';c.fillRect(f,40,64,104);c.fillStyle='rgba(120,190,255,.5)';c.fillRect(f,40,8,104);c.fillStyle='#dff3ff';for(let y=40;y<H;y+=4)c.fillRect(Math.round(f+Math.sin(y*.3+p*20)*3),y,3,2);if(Math.random()<.7)part(f,rnd(40,H),{vx:rnd(-40,10),vy:rnd(-40,0),life:.4,c:'#cfeaff'});});
@@ -1177,7 +1180,7 @@ function mapUpdate(dt){
   vx/=L;vy/=L;const sh=S.flags&&S.flags.ship,fly=!!(sh&&sh.boarded),bt=S.flags&&S.flags.boat,sail=!!(bt&&bt.boarded&&!fly),sp=(fly?150:sail?110:72)*dt,ox=w.x,oy=w.y;
   if(sail){const wet=(x,y)=>{const t=tileAt(x,y);return t===T_DEEP||t===T_SHAL;};if(wet(w.x+vx*sp,w.y))w.x+=vx*sp;if(wet(w.x,w.y+vy*sp))w.y+=vy*sp;if(Math.abs(vx)>.2)w.face=vx>0?1:-1;
     if(w.x===ox&&w.y===oy){const ax=w.x+vx*12,ay=w.y+vy*12,t=tileAt(ax,ay);const onIsle=WORLD.isle&&WORLD.isle.set.has(Math.floor(ay/TS)*WT+Math.floor(ax/TS));if(!BLOCKED.has(t)&&!ENTRANCES.has(t)&&!(t===T_PORT||onIsle)){if(performance.now()-(S.dockSayT||0)>2500){S.dockSayT=performance.now();say('No place to tie up here. On the main island the ship can only dock at the Eastern Port pier.');}}
-    else if(!BLOCKED.has(t)&&!ENTRANCES.has(t)){Object.assign(bt,{boarded:false,x:w.x,y:w.y,lock:true,flip:w.face<0});w.x=(Math.floor(ax/TS)+.5)*TS;w.y=(Math.floor(ay/TS)+.5)*TS;w.townLock=true;say(t===T_PORT?'The ship ties up at the pier. Walk back aboard to set sail again.':'The party wades ashore. Walk back to the ship to set sail again.');renderMenu();saveGame();}w.moving=false;return;}}
+    else if(!BLOCKED.has(t)&&!ENTRANCES.has(t)){Object.assign(bt,{boarded:false,x:(Math.floor(w.x/TS)+.5)*TS,y:(Math.floor(w.y/TS)+.5)*TS,lock:true,flip:w.face<0});w.x=(Math.floor(ax/TS)+.5)*TS;w.y=(Math.floor(ay/TS)+.5)*TS;w.townLock=true;say(t===T_PORT?'The ship ties up at the pier. Walk back aboard to set sail again.':'The party wades ashore. Walk back to the ship to set sail again.');renderMenu();saveGame();}w.moving=false;return;}}
   else if(!fly&&bt&&bt.x!=null){if(bt.lock){if(Math.hypot(w.x-bt.x,w.y-bt.y)>20)bt.lock=false;}else if(Math.hypot(w.x+vx*10-bt.x,w.y+vy*10-bt.y)<12){bt.boarded=true;w.x=bt.x;w.y=bt.y;w.moving=false;say('All aboard! Steer into the isle’s beaches to land, or back into the pier to dock.');renderMenu();saveGame();return;}}
   if(sail){}else if(fly){w.x=Math.max(TS,Math.min(WT*TS-TS,w.x+vx*sp));w.y=Math.max(TS,Math.min(HT*TS-TS,w.y+vy*sp));if(stormHit(ox,oy))return;}
   else{if(walkable(w.x+vx*sp,w.y))w.x+=vx*sp;if(walkable(w.x,w.y+vy*sp))w.y+=vy*sp;}
@@ -1202,8 +1205,8 @@ async function encounter(kind){
   startBattle(kind);flash('#000000',450);
 }
 async function camp(){
-  const w=S.world;if(w.camping||S.scene!=='map')return;w.camping=true;w.moving=false;renderMenu();
-  say('The party pitches camp for the night…');
+  const w=S.world;if(w.camping||S.scene!=='map')return;const rw=await restWhen('The tent is up.');if(!rw){S.items.tent=(S.items.tent||0)+1;renderMenu();return;}w.camping=true;w.moving=false;renderMenu();
+  say(rw==='night'?'The party naps until dark…':'The party pitches camp for the night…');
   await addFx(2600,(c,p)=>{const a=p<.25?p/.25:p>.8?(1-p)/.2:1;
     c.fillStyle=`rgba(8,8,32,${a*.72})`;c.fillRect(0,0,W,H);
     c.globalAlpha=a;c.fillStyle='#fff8d8';for(let k=0;k<14;k++)c.fillRect((k*37)%W,(k*13)%(H-4),1,1);
@@ -1212,8 +1215,8 @@ async function camp(){
     c.fillStyle='#3a2a1a';c.fillRect(x-8,y-5,3,5);
     const fl=Math.sin(S.t*20)*1.2;c.fillStyle='#5a3a24';c.fillRect(x+8,y-1,7,1);c.fillStyle='#ff7a2a';c.fillRect(x+9,y-4+fl,5,3);c.fillStyle='#ffd34a';c.fillRect(x+10,y-6+fl,3,3);c.fillStyle='#fff3c4';c.fillRect(x+11,y-5+fl,1,2);
     c.globalAlpha=1;});
-  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}toMorning();
-  w.camping=false;w.danger=Math.max(w.danger,10);say('Morning. Everyone is rested: HP and MP fully restored.');renderMenu();
+  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}if(rw==='morning')toMorning();else toNightfall();
+  w.camping=false;w.danger=Math.max(w.danger,10);say(rw==='night'?'Nightfall. Everyone is rested: HP and MP fully restored.':'Morning. Everyone is rested: HP and MP fully restored.');renderMenu();
 }
 function startBattle(kind){
   Object.assign(S,{scene:'battle',clock:0,busy:false,over:false,actQ:[],readyQ:[],menu:null,turns:0,stolen:0,noted:{},parts:[],fx:[],escaped:false,onContinue:null});
@@ -1380,11 +1383,11 @@ function enterTown(id){
 function leaveTown(){S.scene='map';S.town=null;stage.classList.remove('town');stage.classList.add('map');say('Back on the road.');renderMenu();saveGame();}
 async function innRest(){
   if(S.resting)return;if(S.gil<INN_COST){say(`The inn costs ${INN_COST} G. You have ${fmtG(S.gil)}.`);return;}
-  S.gil-=INN_COST;if(thiefNightOk()&&await askChoice('The party turns in for the night. Vesh lies awake, restless…',['Let Vesh slip out alone','Everyone sleeps till morning'])===0)return startSolo();
+  const rw=await restWhen('The innkeeper hands over a key.');if(!rw)return;if(S.gil<INN_COST)return;S.gil-=INN_COST;if(rw==='night')toNightfall();if(rw==='morning'&&thiefNightOk()&&await askChoice('The party turns in for the night. Vesh lies awake, restless…',['Let Vesh slip out alone','Everyone sleeps till morning'])===0)return startSolo();
   S.resting=true;renderMenu();say('The party rests at the inn…');
   await addFx(1800,(c,p)=>{const a=p<.3?p/.3:p>.75?(1-p)/.25:1;c.fillStyle=`rgba(6,6,24,${a*.85})`;c.fillRect(0,0,W,H);});
-  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}toMorning();
-  S.resting=false;say('A good night\'s sleep. HP and MP fully restored.');renderMenu();saveGame();
+  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}if(rw==='morning')toMorning();
+  S.resting=false;say(rw==='night'?'The party wakes as the sun goes down. HP and MP fully restored.':'A good night\'s sleep. HP and MP fully restored.');renderMenu();saveGame();
 }
 function renderTownMenu(){
   const T=TOWNS[S.town];
@@ -1395,7 +1398,7 @@ function renderTownMenu(){
 function renderMapMenu(){
   const w=S.world;
   cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${S.flags.ship&&S.flags.ship.boarded?'Airship Aurora':S.flags.boat&&S.flags.boat.boarded?'At sea':'World map'}</span><span class="cls">${esc(w.place||placeName())} · ${fmtG(S.gil)} · <span class="clk">${clkText()}</span></span></div>`+
-    (S.flags.boat&&S.flags.boat.boarded?opt('fish','Fish','',nearSchool()?'A school of fish is right below!':'Sail up to a school of fish',!nearSchool()):'')+(S.flags.ship&&S.flags.ship.boarded?opt('deck','Explore the ship','','Walk the top deck, or head below to rest, shop and train'):'')+(S.flags.ship&&S.flags.ship.boarded?opt('land','Land','',canLand()?'Set the Aurora down here':overIsle()?'The tower’s winds won’t let her land':'Fly over open ground to land',!canLand()):'')+
+    (S.flags.boat&&S.flags.boat.boarded?opt('fish','Fish','',nearSchool()?'A school of fish is right below!':'Sail up to a school of fish',!nearSchool()):'')+opt('big','Full view','','Hide the menus while you walk, sail or fly')+(S.flags.ship&&S.flags.ship.boarded?opt('deck','Explore the ship','','Walk the top deck, or head below to rest, shop and train'):'')+(S.flags.ship&&S.flags.ship.boarded?opt('land','Land','',canLand()?'Set the Aurora down here':overIsle()?'The tower’s winds won’t let her land':'Fly over open ground to land',!canLand()):'')+
     opt('camp','Camp','Tent ×'+(S.items.tent||0),w.camping?'Resting…':S.flags.ship&&S.flags.ship.boarded?'Land the airship first':(S.items.tent?'Use a Tent to restore all HP and MP':'Buy Tents at an item shop'),w.camping||S.scene!=='map'||!S.items.tent||!!(S.flags.ship&&S.flags.ship.boarded)||!!(S.flags.boat&&S.flags.boat.boarded))+
     opt('party','Party','','Status and equipment')+
     opt('quests','Quests','','Guild bounties')+(S.flags.port?opt('fishbook','Fish Book','',fishBookSub()):'')+
@@ -1566,7 +1569,7 @@ function loadGame(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY)||'null
   for(const sv of d.heroes){const h=S.heroes.find(x=>x.key===sv.key);if(!h)continue;Object.assign(h,{lv:sv.lv,exp:sv.exp,row:sv.row||h.row,limit:sv.limit||0,skills:sv.skills,eq:Object.assign({acc:null,shield:null},sv.eq),ko:!!sv.ko,poison:!!sv.poison,stone:!!sv.stone});
     recalc(h);h.hp=Math.min(sv.hp,h.maxhp);h.mp=Math.min(sv.mp,h.maxmp);h.x=homeX(h);}
   if(d.world&&d.flags&&((d.flags.ship&&d.flags.ship.boarded)||(d.flags.boat&&d.flags.boat.boarded))){S.world.x=d.world.x;S.world.y=d.world.y;}else if(d.world){let ok=null;for(let r=0;r<=6*TS&&!ok;r+=TS)for(let a=0;a<8&&!ok;a++){const x=d.world.x+Math.round(Math.cos(a*Math.PI/4))*r,y=d.world.y+Math.round(Math.sin(a*Math.PI/4))*r;if(walkable(x,y))ok={x,y};}if(ok){S.world.x=ok.x;S.world.y=ok.y;}}S.world.enc=d.world?d.world.enc!==false:true;
-  S.lastSave=d.lastSave||null;S.quests=d.quests||{};S.kills=d.kills||{};S.flags=Object.assign({chests:{}},d.flags||{});if(S.flags.port&&S.flags.boat&&!S.flags.boat.boarded&&S.flags.dockV!==2){placeBoat();}if(S.flags.port)S.flags.dockV=2;for(const h of S.heroes)recalc(h);buildParty();toMap('Welcome back. Your journey continues.');if(d.town&&MAPS[d.town])enterInterior(d.town);else if(d.castle)enterInterior(d.castle.id||'castle',d.castle);return true;}catch(e){return false;}}
+  S.lastSave=d.lastSave||null;S.quests=d.quests||{};S.kills=d.kills||{};S.flags=Object.assign({chests:{}},d.flags||{});if(S.flags.port&&S.flags.boat&&!S.flags.boat.boarded&&S.flags.dockV!==3){placeBoat();}if(S.flags.port)S.flags.dockV=3;for(const h of S.heroes)recalc(h);buildParty();toMap('Welcome back. Your journey continues.');if(d.town&&MAPS[d.town])enterInterior(d.town);else if(d.castle)enterInterior(d.castle.id||'castle',d.castle);return true;}catch(e){return false;}}
 
 
 /* ---------- Castle Valemont interior ---------- */
@@ -1720,8 +1723,8 @@ function interact(tx,ty){
 }
 function vaultFight(){showDialog(["The sentinel's eyes flare blue!","“INTRUDERS IN THE ROYAL VAULT. REMOVING.”"],async()=>{
   S.battleReturn='castle';for(let i=0;i<2;i++){flash('#86b4f2',140);await sleep(170);}startBattle(['wardorb','sentinel','wardorb']);flash('#000000',450);});}
-async function guestRest(){S.resting=true;await addFx(1600,(c,p)=>{const a=p<.3?p/.3:p>.75?(1-p)/.25:1;c.fillStyle=`rgba(6,6,24,${a*.85})`;c.fillRect(0,0,W,H);});
-  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}toMorning();S.resting=false;say('Well rested. HP and MP fully restored.');saveGame();}
+async function guestRest(){const rw=await restWhen('A soft bed.');if(!rw)return;S.resting=true;await addFx(1600,(c,p)=>{const a=p<.3?p/.3:p>.75?(1-p)/.25:1;c.fillStyle=`rgba(6,6,24,${a*.85})`;c.fillRect(0,0,W,H);});
+  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}if(rw==='morning')toMorning();else toNightfall();S.resting=false;say(rw==='night'?'Up again at nightfall. HP and MP fully restored.':'Well rested. HP and MP fully restored.');saveGame();}
 function enterCastle(pos){enterInterior('castle',pos);}
 function leaveCastle(){if(IM&&IM.parent)return enterInterior(IM.parent,IM.parentPos);S.scene='map';stage.classList.remove('castle');stage.classList.add('map');S.world.townLock=true;
   {const tx=Math.floor(S.world.x/TS),ty=Math.floor(S.world.y/TS),opts=[[0,1],[-1,0],[1,0],[0,-1]];
@@ -2717,12 +2720,12 @@ const fishDate=iso=>{try{return new Date(iso).toLocaleDateString('en-US',{month:
 function makeSchool(x,y){const I=WORLD.isle,nearIsle=I&&I.up&&Math.hypot(x/TS-I.cx,y/TS-I.cy)<22,deep=tileAt(x,y)===T_DEEP;
   const pool=FISH.filter(f=>!f.isle||nearIsle).map(f=>({f,w:f.w*(f.w<=3?(nearIsle?2.2:1)*(deep?1.5:1):1)})),tot=pool.reduce((a,b)=>a+b.w,0);
   const roll=()=>{let r=Math.random()*tot;for(const p of pool){r-=p.w;if(r<=0)return p.f;}return pool[0].f;};
-  const fish=[];for(let i=0,n=2+Math.floor(Math.random()*4);i<n;i++){const sp=roll();fish.push({id:sp.id,size:Math.round(sp.min+(sp.max-sp.min)*Math.pow(Math.random(),1.6))});}
+  const fish=[];for(let i=0,n=2+Math.floor(Math.random()*4)+fishBoost()*2;i<n;i++){const sp=roll();fish.push({id:sp.id,size:Math.round(sp.min+(sp.max-sp.min)*Math.pow(Math.random(),1.6))});}
   return{x,y,fish,chest:Math.random()<.35,ttl:rnd(45,75),ph:Math.random()*6};}
 function schoolsTick(dt){const bt=S.flags&&S.flags.boat;if(!bt||!bt.boarded){if(S.nearFish){S.nearFish=false;renderMenu();}return;}
   const w=S.world;S.schools=(S.schools||[]).filter(s=>(s.ttl-=dt)>0&&Math.hypot(s.x-w.x,s.y-w.y)<16*TS&&(s.fish.length||s.chest));
   S.schoolT=(S.schoolT==null?1.5:S.schoolT)-dt;
-  if(S.schoolT<=0&&S.schools.length<3){S.schoolT=rnd(4,9);for(let k=0;k<12;k++){const a=Math.random()*6.283,r=rnd(3,8)*TS,x=w.x+Math.cos(a)*r,y=w.y+Math.sin(a)*r,t=tileAt(x,y);
+  if(S.schoolT<=0&&S.schools.length<3+fishBoost()*2){S.schoolT=rnd(4,9)/(1+fishBoost());for(let k=0;k<12;k++){const a=Math.random()*6.283,r=rnd(3,8)*TS,x=w.x+Math.cos(a)*r,y=w.y+Math.sin(a)*r,t=tileAt(x,y);
     if(x<TS||y<TS||x>(WT-1)*TS||y>(HT-1)*TS||(t!==T_DEEP&&t!==T_SHAL))continue;if(WORLD.isle&&WORLD.isle.set.has(Math.floor(y/TS)*WT+Math.floor(x/TS)))continue;S.schools.push(makeSchool(x,y));break;}}
   const nf=!!nearSchool();if(nf!==!!S.nearFish){S.nearFish=nf;renderMenu();}}
 function nearSchool(){const w=S.world,bt=S.flags&&S.flags.boat;if(!bt||!bt.boarded)return null;return(S.schools||[]).find(s=>Math.hypot(s.x-w.x,s.y-w.y)<28)||null;}
@@ -2760,7 +2763,7 @@ function fishUpdate(dt){const F=S.fishing;if(!F||S.paused)return;F.t+=dt;const r
       if(F.lx>=FTIP.x-6&&F.ly<=FSURF+3){for(const f of F.fish)if(f.state!=='swim'){f.state='swim';f.cool=1;}F.state='aim';F.lx=FTIP.x;F.ly=FTIP.y;say(F.fish.length||(F.chest&&!F.chest.got)?'Reeled in. Tap the water to cast again.':'The school has scattered. Stop fishing to sail on.');renderMenu();break;}
       if(F.chest&&!F.chest.got&&F.ly>=FBOT-6&&Math.abs(F.lx-F.chest.x)<9){F.state='treasure';F.chest.got=true;say('Snagged something heavy on the seabed! Reel it in.');renderMenu();break;}
       const moving=F.t-F.lastReel<1.1||F.ly<FBOT-3;
-      if(!engaged&&moving)for(const f of F.fish){if(f.state!=='swim'||f.cool>0)continue;const R=48/(.7+f.sp.str*.3);if(Math.hypot(f.x-F.lx,f.y-F.ly)<R){f.state='approach';break;}}
+      if(!engaged&&moving)for(const f of F.fish){if(f.state!=='swim'||f.cool>0)continue;const R=48/(.7+f.sp.str*.3)*(1+.35*fishBoost());if(Math.hypot(f.x-F.lx,f.y-F.ly)<R){f.state='approach';break;}}
       for(const f of F.fish){
         if(f.state==='approach'){const mx=f.x+f.dir*f.len/2,dx=F.lx-mx,dy=F.ly-f.y;f.dir=dx>0?1:-1;const d=Math.hypot(dx,dy),v=f.spd*1.5*dt;if(d<3){f.state='nibble';f.nib=1+Math.floor(Math.random()*3);f.nibT=.6;}else{f.x+=dx/d*v;f.y+=dy/d*v;}}
         else if(f.state==='nibble'){f.x=F.lx-f.dir*f.len/2;f.y=F.ly;if(F.reel){f.state='swim';f.cool=3;f.dir=-f.dir;say('The fish darts away! Keep still while it nibbles.');continue;}
@@ -2809,8 +2812,8 @@ function drawFishShape(c,f,x,y,dir,L){const sp=f.sp||f,h=L*(sp.round?.7:sp.flat?
   if(sp.sword){c.fillStyle='#c8d0e8';c.fillRect(Math.round(Math.min(fx(L*.4),fx(L*.85))),Math.round(y-1),Math.round(L*.45),1);}
   c.fillStyle='#ffffff';c.fillRect(Math.round(fx(L*.26))-1,Math.round(y-h*.15)-1,2,2);c.fillStyle='#1b1012';c.fillRect(Math.round(fx(L*.27)),Math.round(y-h*.15),1,1);}
 function fishRender(dt){const F=S.fishing;if(!F)return;
-  let g=ctx.createLinearGradient(0,0,0,FSURF);g.addColorStop(0,'#4a7ad0');g.addColorStop(1,'#bfe0f8');ctx.fillStyle=g;ctx.fillRect(0,0,W,FSURF);
-  ctx.fillStyle='rgba(255,255,255,.7)';ctx.fillRect(30,8,26,2);ctx.fillRect(36,6,12,2);ctx.fillRect(120,14,30,2);
+  const fsk=fishSky();let g=ctx.createLinearGradient(0,0,0,FSURF);g.addColorStop(0,fsk[0]);g.addColorStop(1,fsk[1]);ctx.fillStyle=g;ctx.fillRect(0,0,W,FSURF);
+  ctx.fillStyle=wxType()==='clear'&&!isNight()?'rgba(255,255,255,.7)':'rgba(0,0,0,0)';ctx.fillRect(30,8,26,2);ctx.fillRect(36,6,12,2);ctx.fillRect(120,14,30,2);
   g=ctx.createLinearGradient(0,FSURF,0,H);g.addColorStop(0,'#2a78c8');g.addColorStop(.6,'#164a8a');g.addColorStop(1,'#0a2048');ctx.fillStyle=g;ctx.fillRect(0,FSURF,W,H-FSURF);
   ctx.fillStyle='rgba(191,239,255,.08)';for(let k=0;k<5;k++){const x=((k*61+S.t*6)%300)-20;ctx.beginPath();ctx.moveTo(x,FSURF);ctx.lineTo(x+14,FSURF);ctx.lineTo(x+44,H);ctx.lineTo(x+20,H);ctx.closePath();ctx.fill();}
   ctx.fillStyle='#c8b080';ctx.fillRect(0,FBOT,W,H-FBOT);ctx.fillStyle='#a89060';for(let x=0;x<W;x+=7)ctx.fillRect(x,FBOT+2+((x*7)%5),3,1);
@@ -3284,10 +3287,10 @@ MAPS.ship_below={id:'ship_below',ship:true,name:'Aurora · Below Deck',w:24,h:14
   {x:4,y:9,spr:'dwarf2',wander:[1,4,7,12],talk:()=>['Deckhand Tobb: Bunks are free, and they don’t even creak. Much.','Deckhand Tobb: Lie down in one whenever the party needs a rest.']},
   {x:21,y:6,spr:'magus2',talk:()=>simTalk()}]};
 
-function shipRest(){if(S.resting)return;askChoice('Turn in for a rest in the bunks?',['Rest','Not now']).then(async c=>{if(c!==0)return;S.resting=true;renderMenu();
+function shipRest(){if(S.resting)return;restWhen('The bunks are made up.').then(async rw=>{if(!rw)return;S.resting=true;renderMenu();
   await addFx(1600,(c2,p)=>{const a=p<.3?p/.3:p>.75?(1-p)/.25:1;c2.fillStyle=`rgba(6,6,24,${a*.85})`;c2.fillRect(0,0,W,H);});
   for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}
-  if(isNight())toMorning();else{let m=clockMin()+120;if(m>=1440){m-=1440;S.flags.day=(S.flags.day||1)+1;}S.flags.clock=m;}
+  if(rw==='morning')toMorning();else toNightfall();
   S.resting=false;say('The hum of the engine lulls everyone to sleep. HP and MP fully restored.');renderMenu();saveGame();});}
 function enterShip(){if(!(S.flags.ship&&S.flags.ship.boarded))return;enterInterior('ship_top',{x:12*CT+8,y:11*CT+8});}
 function leaveShip(){S.scene='map';stage.classList.remove('castle');stage.classList.add('map');S.world.townLock=false;S.world.moving=false;
@@ -3329,6 +3332,83 @@ function simRestore(){const q=S.sim;if(!q)return;S.sim=null;
   $('overP').textContent=win?`All foes down in ${fmt(S.clock)}. The simulator grants no EXP, gil or items. The party will be restored to how it stood before the fight.`:`The party fell after ${fmt(S.clock)}. No harm done: the crystal restores everyone to how they stood before the fight.`;
   $('again').textContent='Back to the ship';S.onContinue=()=>toCastle();$('over').hidden=false;$('again').focus({preventScroll:true});};}
 {const tc0=toCastle;toCastle=function(msg){if(S.sim){const ran=msg==='The party fell back.';simRestore();msg=ran?'You step out of the simulation. The crystal restores the party.':'The crystal dims. The party is just as it was before the fight.';}return tc0(msg);};}
+
+
+/* ---------- v3.4: batch of fixes and small features ---------- */
+/* screen shake inside the canvas (the old CSS shake moved the whole frame and showed a black edge) */
+shake=function(){if(reduce)return;S.shk=performance.now();};
+function shakeBegin(){if(!S.shk)return false;const e=performance.now()-S.shk;if(e>450){S.shk=0;return false;}const p=e/450,a=3*(1-p);
+  ctx.save();ctx.translate(W/2+Math.sin(p*40)*a,H/2+Math.cos(p*33)*a*.7);ctx.scale(1.05,1.05);ctx.translate(-W/2,-H/2);return true;}
+
+/* the sky window: the sun rises and sets along an arc; at night the moon crosses it, showing its phase */
+drawSkyHud=function(){const x0=4,y0=4,w=36,h=18,m=clockMin(),night=isNight();
+  let top,bot;
+  if(night){top='#0a0e2a';bot='#1e2450';}
+  else if(m<7*60){const k=(m-5*60)/120;top=tintHex('#1e2450','#4a7ad0',k);bot=tintHex('#5a3a6a','#ffb070',k);}
+  else if(m>=18*60){const k=(m-18*60)/120;top=tintHex('#4a7ad0','#1e2450',k);bot=tintHex('#ffb070','#5a3a6a',k);}
+  else{top='#4a8ae0';bot='#a8d8f8';}
+  const g=ctx.createLinearGradient(0,y0,0,y0+h);g.addColorStop(0,top);g.addColorStop(1,bot);ctx.fillStyle=g;ctx.fillRect(x0,y0,w,h);
+  if(night){ctx.fillStyle='#ffffff';for(const[a,b]of[[3,3],[11,6],[20,2],[29,5],[33,10],[7,11],[25,12]])if((Math.floor(S.t*1.3)+a)%7)ctx.fillRect(x0+a,y0+b,1,1);}
+  const t=night?((m-20*60+1440)%1440)/(9*60):(m-5*60)/(15*60),cx=Math.round(x0+3+t*(w-6)),cy=Math.round(y0+h-3-Math.sin(t*Math.PI)*(h-7));
+  if(!night){ctx.fillStyle='rgba(255,211,74,.35)';ctx.beginPath();ctx.arc(cx,cy,5,0,7);ctx.fill();ctx.fillStyle='#ffd34a';ctx.beginPath();ctx.arc(cx,cy,3,0,7);ctx.fill();ctx.fillStyle='#fff3c4';ctx.fillRect(cx-1,cy-1,2,2);}
+  else{const p=(moonIx()+.5)/15,r=4,bl=bloodTonight();for(let y=-r;y<=r;y++){const hw=Math.sqrt(Math.max(0,r*r-y*y));for(let x=-r;x<=r;x++){if(x*x+y*y>r*r+1)continue;const c=Math.cos(p*6.283)*hw,lit=p<.5?x>c:x<-c;
+      ctx.fillStyle=lit?(bl?((x+y)%5===0?'#b81c24':'#e8403a'):((x+y)%5===0?'#d8d4b8':'#f0ecd0')):'#2a2a3e';ctx.fillRect(cx+x,cy+y,1,1);}}}
+  ctx.fillStyle=night?'#141826':'#2a5a2a';ctx.fillRect(x0,y0+h-2,w,2);
+  ctx.strokeStyle='rgba(232,232,240,.45)';ctx.strokeRect(x0+.5,y0+.5,w-1,h-1);};
+
+/* resting: until morning or nightfall, never under a Blood Moon */
+function toNightfall(){S.flags.clock=20*60;}
+async function restWhen(what){
+  if(bloodTonight()&&clockMin()>=18*60||isBloodMoon()){say('No one can sleep under a Blood Moon. The dead are restless, and so is everyone else.');return null;}
+  if(isNight())return'morning';
+  const c=await askChoice(`${what} Sleep until…`,['Morning','Nightfall','Not now']);return c===0?'morning':c===1?'night':null;}
+
+/* shops keep daylight hours */
+const NIGHT_SHOPS=new Set(['aurora','tguild']);
+const shopsShut=()=>{const m=clockMin();return m>=19*60||m<6*60;};
+{const os0=openShop;openShop=function(id){if(shopsShut()&&!NIGHT_SHOPS.has(id)){say(`${SHOPS[id].name}: Closed for the night. We open at dawn.`);return;}return os0(id);};}
+
+/* villagers head home at dusk */
+const HOME_MAPS=new Set(['village','town','highmere','ironhold']);
+const homeTime=()=>{const m=clockMin();return m>=19*60||m<6*60;};
+function villagersHome(){if(!IM||!HOME_MAPS.has(IM.id)||S.flags.solo)return;for(const n of NPCS){if(n._home||n.guard||n.ship||n.mon||/guard/.test(n.spr||''))continue;n._home=true;const w0=n.when;n.when=()=>!homeTime()&&(!w0||w0());}}
+{const ei0=enterInterior;enterInterior=function(id,pos){const from=IM&&S.scene==='castle'?IM.id:null;const r=ei0(id,pos);villagersHome();if(id.startsWith('tg_')&&!(from&&from.startsWith('tg_')))thiefSign();return r;};}
+let duskSaid=-1;
+{const tc1=tickClock;tickClock=function(dt){const was=homeTime();tc1(dt);if(!was&&homeTime()&&S.scene==='castle'&&IM&&HOME_MAPS.has(IM.id)&&!S.flags.solo){say('Dusk settles in. Shutters close and the townsfolk head home.');}};}
+
+/* the thieves' sign at the guild door */
+const SIGNS=['Tug the left ear','Tap the nose twice','Thumb over the shoulder','Two fingers to the heart','Rub the chin','Tip of the hat'];
+async function thiefSign(){const f=S.flags;await sleep(250);
+  if(!f.tsign){const a=SIGNS.slice().sort(()=>Math.random()-.5).slice(0,3);f.tsign=a;saveGame();
+    showDialog(['Doorman: Hold it. New blood? I’ll show you once, so watch close.',`Doorman: ${a[0]}. Then ${a[1].toLowerCase()}. Then ${a[2].toLowerCase()}.`,'Doorman: Make the sign at any guild door, every time. Get it wrong and you’re out on your ear.','(Vesh commits the thieves’ sign to memory. It’s noted in the Journal too.)']);return;}
+  for(let i=0;i<3;i++){const opts=SIGNS.slice().sort(()=>Math.random()-.5).slice(0,4);if(!opts.includes(f.tsign[i]))opts[Math.floor(Math.random()*4)]=f.tsign[i];
+    const c=await askChoice(i===0?'A doorman blocks the stairs. “Sign.” Vesh makes the first gesture…':`…then the ${i===1?'second':'third'}…`,opts);
+    if(opts[c]!==f.tsign[i]){if(IM&&IM.id.startsWith('tg_'))leaveCastle();showDialog(['Doorman: That’s not the sign. Out!','(Vesh is shoved back up through the trapdoor.)']);return;}}
+  say('The doorman nods and steps aside.');}
+
+/* the boat ties up beside the pier, not on top of it */
+{const pb0=placeBoat;placeBoat=function(){pb0();const P=WORLD.port,bt=S.flags.boat;if(!P||!bt)return;const[ex,ey]=P.pier[1],[dx,dy]=P.dir;
+  for(const[sx,sy]of[[dy,dx],[-dy,-dx]]){const X=ex+sx,Y=ey+sy,t=WORLD.at(X,Y);if(t===T_DEEP||t===T_SHAL){bt.x=(X+.5)*TS;bt.y=(Y+.5)*TS;bt.flip=dx<0;break;}}S.flags.dockV=3;};}
+
+/* fish bite more in rain and under a full moon */
+const fishBoost=()=>(wxRainy()?1:0)+(isNight()&&Math.abs(moonIx()-7)<=1?1:0);
+function fishSky(){const n=isNight(),t=wxType();if(n)return t==='clear'?['#0a0e2a','#2a3a6a']:['#1a1c2a','#3a3e52'];if(t==='storm')return['#3a3e52','#7a7e92'];if(t==='rain')return['#5a6278','#9aa2b8'];if(t==='cloudy')return['#7a8ab0','#c8d0e0'];return['#4a7ad0','#bfe0f8'];}
+{const fr0=fishRender;fishRender=function(dt){fr0(dt);if(!S.fishing)return;const n=isNight(),t=wxType();
+  if(n){ctx.fillStyle='rgba(8,12,40,.38)';ctx.fillRect(0,0,W,H);if(t==='clear'){ctx.fillStyle='#ffffff';for(let k=0;k<14;k++)if((k+Math.floor(S.t))%5)ctx.fillRect((k*53)%W,(k*7)%(FSURF-8)+2,1,1);}
+    const p=(moonIx()+.5)/15,r=6,cx=214,cy=12,bl=bloodTonight();if(t!=='storm'&&t!=='rain')for(let y=-r;y<=r;y++){const hw=Math.sqrt(Math.max(0,r*r-y*y));for(let x=-r;x<=r;x++){if(x*x+y*y>r*r)continue;const c=Math.cos(p*6.283)*hw,lit=p<.5?x>c:x<-c;if(!lit)continue;ctx.fillStyle=bl?'#e8403a':'#f0ecd0';ctx.fillRect(cx+x,cy+y,1,1);}}}
+  if(t==='cloudy'||t==='rain'||t==='storm'){const dark=t==='cloudy'?'#c8ccd8':'#6a6e82';ctx.fillStyle=dark;for(let k=0;k<4;k++){const x=((k*83+S.t*(t==='storm'?10:4))%320)-40;ctx.beginPath();ctx.ellipse(x,8+(k%2)*5,22,6,0,0,7);ctx.ellipse(x+16,5+(k%2)*5,14,6,0,0,7);ctx.fill();}}
+  if(t==='rain'||t==='storm'){ctx.fillStyle='rgba(170,200,255,.55)';for(let k=0;k<60;k++){const x=(k*37+S.t*60*(k%3+2))%W,y=(k*23+S.t*220)%FSURF;ctx.fillRect(Math.round(x),Math.round(y),1,3);}
+    ctx.fillStyle='rgba(220,236,255,.5)';for(let k=0;k<10;k++){const x=(k*29+Math.floor(S.t*3)*41)%W;ctx.fillRect(x-1,FSURF,3,1);}
+    ctx.fillStyle='rgba(0,10,30,.18)';ctx.fillRect(0,FSURF,W,H-FSURF);}
+  if(t==='storm'&&(S.t%5)<.12){ctx.fillStyle='rgba(255,255,240,.45)';ctx.fillRect(0,0,W,H);}
+  if(fishBoost()&&S.fishing.state==='aim'&&Math.floor(S.t*2)%2){ctx.fillStyle='rgba(255,255,255,.5)';for(const f of S.fishing.fish)ctx.fillRect(Math.round(f.x),FSURF+1,2,1);}};}
+
+/* full view on the world map */
+const bigX=document.createElement('button');bigX.type='button';bigX.className='btn sm bigx';bigX.textContent='✕ Menu';bigX.hidden=true;stage.appendChild(bigX);
+function setBig(on){document.body.classList.toggle('bigmap',on);bigX.hidden=!on;if(on)say('Full view. Tap ✕ Menu (or press Esc) to bring the menus back.');renderMenu();}
+bigX.onclick=()=>setBig(false);
+addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('bigmap'))setBig(false);});
+{const mc1=mapCmd;mapCmd=function(a){if(a==='big')return setBig(true);return mc1(a);};}
 
 async function dungeonEncounter(form){
   S.battleReturn='castle';S.transIn=true;S.scene='trans';for(const k in keys)keys[k]=false;steer=null;S.world.moving=false;
@@ -3665,7 +3745,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.3.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.4.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

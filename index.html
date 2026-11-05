@@ -252,7 +252,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.9.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.0.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -265,6 +265,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
 <p><b>The hidden valley</b>: high in the island’s great mountain range lies a valley no road can reach. Fly the Aurora there to find Castle Arcanum and the village of Highmere, with the strongest spells, items and gear in the realm. The magi can raise the lost <b>Isle of Aether</b>, but a wall of storm clouds surrounds it and hurls back the airship. King Aldous can build you a port east of his castle: walk out along the pier to board the ship. On the main island she can only tie up at that pier; on the isle she can land on any beach. The <b>Tower of Aether</b> has a hundred floors, guardians on floors 25, 50 and 75, waystones every tenth floor, and Zephyrion the Sky Wyrm at the top.</p>
+<p><b>Day and night</b>: a day passes in about six minutes. Rest at an inn after dark and Vesh can slip out alone. At night he can’t leave town, but he can pick locks (tap when the pick is in the gold), sneak through sleeping houses, and steal goods to sell to the hidden <b>thieves’ guild</b> in every town (look for a trapdoor at night). Walking near sleepers wakes them; guards with lanterns catch anyone who gets too close. Guild masters give quests, the trainer teaches new battle skills, and the last quest makes Vesh a <b>Ninja</b>.</p>
 <p><b>Fishing</b>: while sailing, schools of fish ripple on the water. Sail up to one and choose <b>Fish</b>. Tap the water to cast, hold <b>Reel</b> to work the lure, keep still while a fish nibbles, then tap <b>HOOK!</b> the moment it bites. While landing it, watch the line: ease off when the fish thrashes or the line snaps. Snag chests on the seabed for treasure, including magic armor found nowhere else. Old Gill at the Adventurers’ Guild buys your catch, and the <b>Fish Book</b> logs every kind with its largest size and date.</p>
 <p><b>Status ailments</b>: some monsters poison (HP drains over time, even while walking), petrify (the hero is out of the fight until cured) or confuse (the hero attacks at random). Cure them with Antidotes, Gold Needles, Remedies, or the <b>Heal</b> spell. Confusion wears off when a battle ends; poison and stone last until cured, or until you rest at an inn or camp. Open <b>Party</b> outside battle to cast healing magic (Cure, Heal, Revive, Exit and more) and use items. A <b>Ribbon</b> blocks them all. <b>Exit</b> warps the party out of any dungeon, castle or town to the world map. In Ironhold, the <b>Rune Hall</b> sells Firaga, Bio and the summons Ifrit, Titan and Bahamut, and the <b>Training Hall</b> teaches the Fighter monk arts (learn three to become a Monk) and the Thief new tricks.</p>
 <p><b>Deepdelve Mine</b>: on the northern cape, sealed until you finish King Aldous’s Hill Ogre quest and defeat Frostfang. Then a mine shaft drops five levels to Ironhold, the dwarf city. Read the old tablets on the Sky Road, slay Gravemaw the Earth Wyrm to free the trapped dwarves, and their King and Queen can blast free the airship <b>Aurora</b>. Walk aboard to fly anywhere on the world map with no random battles; choose <b>Land</b> to set down on open ground.</p>
@@ -292,6 +293,12 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="pgrid"><div id="pStats"></div><div id="pEquip"></div></div>
     <div id="pPick"></div>
     <div class="arow"><button class="btn ghost" id="pOpt" type="button">Optimize</button><button class="btn" id="partyClose" type="button">Close</button></div>
+  </div>
+</div>
+<div class="sheet" id="choiceOv" role="dialog" aria-modal="true" aria-label="Choose" hidden>
+  <div class="card help">
+    <p id="choiceText"></p>
+    <div class="arow" id="choiceBtns"></div>
   </div>
 </div>
 <div class="sheet" id="fishOv" role="dialog" aria-modal="true" aria-label="Fish Book" hidden>
@@ -426,7 +433,7 @@ function greyOf(hex){const n=parseInt(hex.slice(1),16);const l=Math.round(((n>>1
 for(const k in SPR){SPR[k].grey={};for(const c in SPR[k].pal)SPR[k].grey[c]=greyOf(SPR[k].pal[c]);}
 function drawSprite(c,spr,x,y,o){
   const m=spr.map,h=m.length,w=12;const pal=(o.ko||o.stone)?spr.grey:(o.white?null:spr.pal);
-  if(o.ko){const ox=Math.round(x-h/2),oy=Math.round(y-w+4);
+  if(o.ko||o.lie){const ox=Math.round(x-h/2),oy=Math.round(y-w+4);
     for(let j=0;j<h;j++)for(let i=0;i<w;i++){const ch=m[j][i];if(!ch||ch==='.')continue;c.fillStyle=pal[ch]||'#777';c.fillRect(ox+(h-1-j),oy+i,1,1);}return;}
   const ox=Math.round(x-w/2),oy=Math.round(y-h);
   for(let j=0;j<h;j++)for(let i=0;i<w;i++){const ch=m[j][i];if(!ch||ch==='.')continue;const col=pal?pal[ch]:'#ffffff';if(!col)continue;c.fillStyle=col;c.fillRect(ox+(o.flip?w-1-i:i),oy+j,1,1);}
@@ -591,6 +598,7 @@ function drawDragon(t){
 /* ---------- render ---------- */
 function render(dt){
   if(S.scene==='battle')battleRender(dt);else if(S.scene==='town')townRender(dt);else if(S.scene==='castle'||(S.scene==='trans'&&S.transIn))castleRender();else if(S.scene==='fish')fishRender(dt);else mapRender(dt);
+  if(S.scene!=='battle'&&S.scene!=='fish')drawNight();if(S.lock&&S.scene==='castle')drawLock();
   if(S.scene==='map'||S.scene==='castle')drawMini();
   const now=performance.now();
   S.fx=S.fx.filter(f=>{const p=Math.min(1,(now-f.t0)/f.dur);f.draw(ctx,p);if(p>=1){f.done();return false;}return true;});
@@ -1203,7 +1211,7 @@ async function camp(){
     c.fillStyle='#3a2a1a';c.fillRect(x-8,y-5,3,5);
     const fl=Math.sin(S.t*20)*1.2;c.fillStyle='#5a3a24';c.fillRect(x+8,y-1,7,1);c.fillStyle='#ff7a2a';c.fillRect(x+9,y-4+fl,5,3);c.fillStyle='#ffd34a';c.fillRect(x+10,y-6+fl,3,3);c.fillStyle='#fff3c4';c.fillRect(x+11,y-5+fl,1,2);
     c.globalAlpha=1;});
-  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}
+  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}toMorning();
   w.camping=false;w.danger=Math.max(w.danger,10);say('Morning. Everyone is rested: HP and MP fully restored.');renderMenu();
 }
 function startBattle(kind){
@@ -1291,6 +1299,7 @@ function recalc(h){
   for(const s of SLOTS){const it=GEAR[h.eq[s]];if(it)for(const k in t)t[k]+=it[k]||0;}
   h.res=SLOTS.map(s=>GEAR[h.eq[s]]&&GEAR[h.eq[s]].res).filter(Boolean);h.immune=SLOTS.some(s=>GEAR[h.eq[s]]&&GEAR[h.eq[s]].immune);
   if(h.key==='fighter')h.cls=MONK.filter(id=>h.skills&&h.skills.includes(id)).length>=3?'Monk':'Fighter';
+  if(h.key==='thief'){const nj=!!(S&&S.flags&&S.flags.ninja);if(nj){t.str+=10;t.spd+=4;}h.cls=nj?'Ninja':'Thief';h.spLabel=nj?'Ninjutsu':'Tricks';}
   h.maxhp=Math.round(c.hp*(1+g.hp*L));h.maxmp=Math.round(c.mp*(1+g.mp*L));
   h.bstr=Math.round(g.str0+g.str*L)+t.str;h.atk=t.atk;h.str=h.bstr+t.atk;h.mag=Math.round(g.mag0+g.mag*L)+t.mag;
   h.spd=c.spd+Math.floor(g.spd*L)+t.spd;h.def=t.def;h.mdef=t.mdef;
@@ -1369,9 +1378,10 @@ function enterTown(id){
 function leaveTown(){S.scene='map';S.town=null;stage.classList.remove('town');stage.classList.add('map');say('Back on the road.');renderMenu();saveGame();}
 async function innRest(){
   if(S.resting)return;if(S.gil<INN_COST){say(`The inn costs ${INN_COST} G. You have ${fmtG(S.gil)}.`);return;}
-  S.gil-=INN_COST;S.resting=true;renderMenu();say('The party rests at the inn…');
+  S.gil-=INN_COST;if(thiefNightOk()&&await askChoice('The party turns in for the night. Vesh lies awake, restless…',['Let Vesh slip out alone','Everyone sleeps till morning'])===0)return startSolo();
+  S.resting=true;renderMenu();say('The party rests at the inn…');
   await addFx(1800,(c,p)=>{const a=p<.3?p/.3:p>.75?(1-p)/.25:1;c.fillStyle=`rgba(6,6,24,${a*.85})`;c.fillRect(0,0,W,H);});
-  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}
+  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}toMorning();
   S.resting=false;say('A good night\'s sleep. HP and MP fully restored.');renderMenu();saveGame();
 }
 function renderTownMenu(){
@@ -1382,7 +1392,7 @@ function renderTownMenu(){
 }
 function renderMapMenu(){
   const w=S.world;
-  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${S.flags.ship&&S.flags.ship.boarded?'Airship Aurora':S.flags.boat&&S.flags.boat.boarded?'At sea':'World map'}</span><span class="cls">${esc(w.place||placeName())} · ${fmtG(S.gil)}</span></div>`+
+  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${S.flags.ship&&S.flags.ship.boarded?'Airship Aurora':S.flags.boat&&S.flags.boat.boarded?'At sea':'World map'}</span><span class="cls">${esc(w.place||placeName())} · ${fmtG(S.gil)} · <span class="clk">${clockText()}</span></span></div>`+
     (S.flags.boat&&S.flags.boat.boarded?opt('fish','Fish','',nearSchool()?'A school of fish is right below!':'Sail up to a school of fish',!nearSchool()):'')+(S.flags.ship&&S.flags.ship.boarded?opt('land','Land','',canLand()?'Set the Aurora down here':overIsle()?'The tower’s winds won’t let her land':'Fly over open ground to land',!canLand()):'')+
     opt('camp','Camp','Tent ×'+(S.items.tent||0),w.camping?'Resting…':S.flags.ship&&S.flags.ship.boarded?'Land the airship first':(S.items.tent?'Use a Tent to restore all HP and MP':'Buy Tents at an item shop'),w.camping||S.scene!=='map'||!S.items.tent||!!(S.flags.ship&&S.flags.ship.boarded)||!!(S.flags.boat&&S.flags.boat.boarded))+
     opt('party','Party','','Status and equipment')+
@@ -1397,7 +1407,9 @@ function mapCmd(a){
   if(a==='fish')return startFishing();
   if(a==='party')return openParty();
   if(a==='quests')return openGuild(!(S.scene==='castle'&&IM&&IM.id==='guild'));
-  if(S.scene==='castle'){if(a==='leave')return leaveCastle();if(a==='exit'){if(!exitArmed()){armExit();renderMenu();const b=cmdEl.querySelector('[data-a="exit"]');if(b&&kb)b.focus({preventScroll:true});return;}return castExit();}if(a==='camp')return dungeonCamp();return;}
+  if(S.scene==='castle'){if(a==='sneak'){S.sneak=!S.sneak;say(S.sneak?'Vesh drops into a silent crouch.':'Vesh straightens up.');return renderMenu();}if(a==='pick')return lockTap();if(a==='pickstop'){S.lock=null;say('Vesh slips the pick back into a pocket.');return renderMenu();}
+    if(a==='endnight'){askChoice('Head back to the inn and end the night?',['Return to bed','Not yet']).then(c=>{if(c===0)endSolo('Vesh slips back to the inn and under the covers.');});return;}
+    if(a==='leave')return leaveCastle();if(a==='exit'){if(!exitArmed()){armExit();renderMenu();const b=cmdEl.querySelector('[data-a="exit"]');if(b&&kb)b.focus({preventScroll:true});return;}return castExit();}if(a==='camp')return dungeonCamp();return;}
   if(S.scene==='town'){if(a==='leave')return leaveTown();if(a==='inn')return innRest();if(a.startsWith('shop:'))return openShop(a.slice(5));return;}
   if(a==='land')return landShip();
   if(a==='camp'){if((S.flags.ship&&S.flags.ship.boarded)||(S.flags.boat&&S.flags.boat.boarded))return;if(!S.items.tent){say('You need a Tent to camp. Item shops sell them.');return;}S.items.tent--;camp().then(saveGame);return;}
@@ -1415,9 +1427,9 @@ function drawShop(){
   let rows='';
   if(shopTab==='buy'){
     for(const id of sh.stock){
-      if(TOMES[id]){const t=TOMES[id],h=S.heroes.find(x=>x.key===t.who),known=h.skills.includes(id),lvOk=!t.lv||h.lv>=t.lv;
-        rows+=`<div class="srow"><div class="sinfo"><b>${esc(SK[id].name)}</b><span>${esc(SK[id].d)} · ${SK[id].mp?SK[id].mp+' MP':'No MP'}</span><span>For ${esc(h.name)} (${esc(h.cls)})${t.lv?` · needs Lv ${t.lv}`:''}</span></div>
-          <div class="sbuy"><span class="price">${fmtG(t.price)}</span><button type="button" class="btn sm" data-buy="${id}"${known||!lvOk||S.gil<t.price?' disabled':''}>${known?'Learned':lvOk?'Learn':'Lv '+t.lv}</button></div></div>`;continue;}
+      if(TOMES[id]){const t=TOMES[id],h=S.heroes.find(x=>x.key===t.who),known=h.skills.includes(id),lvOk=(!t.lv||h.lv>=t.lv)&&(!t.rank||thiefRank()>=t.rank);
+        rows+=`<div class="srow"><div class="sinfo"><b>${esc(SK[id].name)}</b><span>${esc(SK[id].d)} · ${SK[id].mp?SK[id].mp+' MP':'No MP'}</span><span>For ${esc(h.name)} (${esc(h.cls)})${t.lv?` · needs Lv ${t.lv}`:''}${t.rank?` · needs ${RANK_NAME[t.rank]} rank`:''}</span></div>
+          <div class="sbuy"><span class="price">${fmtG(t.price)}</span><button type="button" class="btn sm" data-buy="${id}"${known||!lvOk||S.gil<t.price?' disabled':''}>${known?'Learned':lvOk?'Learn':t.rank&&thiefRank()<t.rank?RANK_NAME[t.rank]:'Lv '+t.lv}</button></div></div>`;continue;}
       if(GEAR[id]){const it=GEAR[id],who=S.heroes.filter(h=>it.who.includes(h.key));
         rows+=`<div class="srow"><div class="sinfo"><b>${esc(it.name)}</b><span>${SLOT_NAME[it.slot]} · ${gearLine(it)}</span><span class="cmp">${who.map(h=>`${esc(h.name)} ${diffFor(it,h)}`).join(' &nbsp;')}</span></div>
           <div class="sbuy"><span class="price">${fmtG(it.price)}</span><span class="own">Have ${S.bag[id]||0}</span><button type="button" class="btn sm" data-buy="${id}"${S.gil<it.price?' disabled':''}>Buy</button></div></div>`;continue;}
@@ -1437,7 +1449,7 @@ $('shopTabs').onclick=e=>{const b=e.target.closest('[data-tab]');if(!b)return;sh
 $('shopList').onclick=e=>{
   const b=e.target.closest('button');if(!b||b.disabled)return;
   if(b.dataset.buy){const id=b.dataset.buy;
-    if(TOMES[id]){const t=TOMES[id],h=S.heroes.find(x=>x.key===t.who);if(S.gil<t.price||h.skills.includes(id)||(t.lv&&h.lv<t.lv))return;S.gil-=t.price;h.skills.push(id);const wasCls=h.cls;recalc(h);if(h.cls!==wasCls)shopNote=`${h.name} learned ${SK[id].name}! ${h.name} is now a ${h.cls}!`;elseshopNote=`${h.name} learned ${SK[id].name}!`;}
+    if(TOMES[id]){const t=TOMES[id],h=S.heroes.find(x=>x.key===t.who);if(S.gil<t.price||h.skills.includes(id)||(t.lv&&h.lv<t.lv)||(t.rank&&thiefRank()<t.rank))return;S.gil-=t.price;h.skills.push(id);const wasCls=h.cls;recalc(h);if(h.cls!==wasCls)shopNote=`${h.name} learned ${SK[id].name}! ${h.name} is now a ${h.cls}!`;elseshopNote=`${h.name} learned ${SK[id].name}!`;}
     else if(GEAR[id]){const it=GEAR[id];if(S.gil<it.price)return;S.gil-=it.price;S.bag[id]=(S.bag[id]||0)+1;
       const best=S.heroes.filter(h=>it.who.includes(h.key)).map(h=>({h,g:gearScore(it,h)-gearScore(GEAR[h.eq[it.slot]],h)})).sort((a,b)=>b.g-a.g)[0];
       shopNote=`Bought ${it.name}.`+(best&&best.g>0?` <button type="button" class="btn sm" data-equip="${id}:${best.h.key}">Equip on ${esc(best.h.name)}</button>`:'');}
@@ -1552,7 +1564,7 @@ function loadGame(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY)||'null
   for(const sv of d.heroes){const h=S.heroes.find(x=>x.key===sv.key);if(!h)continue;Object.assign(h,{lv:sv.lv,exp:sv.exp,row:sv.row||h.row,limit:sv.limit||0,skills:sv.skills,eq:Object.assign({acc:null,shield:null},sv.eq),ko:!!sv.ko,poison:!!sv.poison,stone:!!sv.stone});
     recalc(h);h.hp=Math.min(sv.hp,h.maxhp);h.mp=Math.min(sv.mp,h.maxmp);h.x=homeX(h);}
   if(d.world&&d.flags&&((d.flags.ship&&d.flags.ship.boarded)||(d.flags.boat&&d.flags.boat.boarded))){S.world.x=d.world.x;S.world.y=d.world.y;}else if(d.world){let ok=null;for(let r=0;r<=6*TS&&!ok;r+=TS)for(let a=0;a<8&&!ok;a++){const x=d.world.x+Math.round(Math.cos(a*Math.PI/4))*r,y=d.world.y+Math.round(Math.sin(a*Math.PI/4))*r;if(walkable(x,y))ok={x,y};}if(ok){S.world.x=ok.x;S.world.y=ok.y;}}S.world.enc=d.world?d.world.enc!==false:true;
-  S.lastSave=d.lastSave||null;S.quests=d.quests||{};S.kills=d.kills||{};S.flags=Object.assign({chests:{}},d.flags||{});if(S.flags.port&&S.flags.boat&&!S.flags.boat.boarded&&S.flags.dockV!==2){placeBoat();}if(S.flags.port)S.flags.dockV=2;buildParty();toMap('Welcome back. Your journey continues.');if(d.town&&MAPS[d.town])enterInterior(d.town);else if(d.castle)enterInterior(d.castle.id||'castle',d.castle);return true;}catch(e){return false;}}
+  S.lastSave=d.lastSave||null;S.quests=d.quests||{};S.kills=d.kills||{};S.flags=Object.assign({chests:{}},d.flags||{});if(S.flags.port&&S.flags.boat&&!S.flags.boat.boarded&&S.flags.dockV!==2){placeBoat();}if(S.flags.port)S.flags.dockV=2;for(const h of S.heroes)recalc(h);buildParty();toMap('Welcome back. Your journey continues.');if(d.town&&MAPS[d.town])enterInterior(d.town);else if(d.castle)enterInterior(d.castle.id||'castle',d.castle);return true;}catch(e){return false;}}
 
 
 /* ---------- Castle Valemont interior ---------- */
@@ -1651,18 +1663,20 @@ function castleRender(){
   for(const n of NPCS){if(n.when&&!n.when())continue;const sx=n.x*CT+8-cx+(n.ox||0),sy=n.y*CT+15-cy+(n.oy||0);if(!n.ship&&(sx<-16||sx>W+16||sy<-4||sy>H+20))continue;
     if(n.ship){drawShip(ctx,sx+8,sy-Math.round((S.shipRise||0)*200)+Math.round(Math.sin(S.t*1.8)*1.5),3,false,true);continue;}
     if(n.spr==='sentinel'||n.mon){drawMon(ctx,MON[n.mon||'sentinel'],sx,sy,false,n.sc||1);continue;}
+    if(n.sleep){drawSprite(ctx,NPCSPR[n.spr],sx+2,sy-3,{lie:true});const wk=n.wake||0;ctx.fillStyle=wk>.66?'#ff6a6a':wk>.33?'#ffd34a':'#e8e8f0';ctx.font='6px monospace';ctx.fillText(wk>.66?'?!':'z',sx+5+Math.round(Math.sin(S.t*2)*1),sy-12-Math.round((S.t*6)%4));continue;}
     ctx.fillStyle='rgba(0,0,0,.25)';ell(ctx,sx,sy,5,1.4);drawSprite(ctx,NPCSPR[n.spr],sx,sy,{});}
-  const lead=S.heroes.find(h=>!h.ko)||S.heroes[0],w=S.world,bob=w.moving&&Math.floor(w.walkT*8)%2?1:0,px=Math.round(p.x-cx),py=Math.round(p.y-cy)+7;
+  const lead=S.flags.solo?thief():S.heroes.find(h=>!h.ko)||S.heroes[0],w=S.world,bob=w.moving&&Math.floor(w.walkT*8)%2?1:0,px=Math.round(p.x-cx),py=Math.round(p.y-cy)+7;
   ctx.fillStyle='rgba(0,0,0,.3)';ell(ctx,px,py,5,1.5);drawSprite(ctx,SPR[lead.key],px,py-bob,{flip:w.face>0});
   S.pScreen={x:px,y:py-7};
 }
 let bumpKey='',bumpT=0;
 function castleUpdate(dt){
-  const w=S.world,p=S.cpos;if(!S.paused)wanderNPCs(dt);if(S.paused||S.dlg||S.cut){w.moving=false;return;}
+  const w=S.world,p=S.cpos;if(!S.paused&&!S.lock)wanderNPCs(dt);if(S.paused||S.dlg||S.cut||S.lock){w.moving=false;return;}
+  if(S.flags.solo&&soloTick(dt))return;
   let vx=0,vy=0;
   if(keys.arrowleft||keys.a)vx-=1;if(keys.arrowright||keys.d)vx+=1;if(keys.arrowup||keys.w)vy-=1;if(keys.arrowdown||keys.s)vy+=1;
   if(steer){const L=Math.hypot(steer.x,steer.y);if(L>5){vx=steer.x/L;vy=steer.y/L;}}
-  const L=Math.hypot(vx,vy);w.moving=L>0;if(!L)return;vx/=L;vy/=L;const sp=60*dt;
+  const L=Math.hypot(vx,vy);w.moving=L>0;if(!L)return;vx/=L;vy/=L;const sp=(S.flags.solo&&S.sneak?28:60)*dt;
   const ox=p.x,oy=p.y,nx=p.x+vx*sp,ny=p.y+vy*sp;let moved=false;
   if(cwalk(nx,p.y)){p.x=nx;moved=true;}if(cwalk(p.x,ny)){p.y=ny;moved=true;}
   if(Math.abs(vx)>.2)w.face=vx>0?1:-1;w.walkT+=dt;
@@ -1671,7 +1685,7 @@ function castleUpdate(dt){
   const key=tx+','+ty;bumpT+=dt;
   if(!(tx===Math.floor(p.x/CT)&&ty===Math.floor(p.y/CT))&&(npcAt(tx,ty)||'LcCBbQqKwdJMXZ'.includes(CASTLE[ty]&&CASTLE[ty][tx]))){if(key!==bumpKey||bumpT>1.4){bumpKey=key;bumpT=0;w.moving=false;interact(tx,ty);return;}}
   else if(moved)bumpKey='';
-  if(ctileAt(p.x,p.y)==='E'){leaveCastle();return;}
+  if(ctileAt(p.x,p.y)==='E'){if(S.flags.solo&&!IM.parent){p.x=ox;p.y=oy;if(performance.now()-(S.soloSayT||0)>2500){S.soloSayT=performance.now();say('Vesh can’t leave town alone. Choose Return to bed when the night’s work is done.');}return;}leaveCastle();return;}
   {const ct=ctileAt(p.x,p.y),ptx=Math.floor(p.x/CT),pty=Math.floor(p.y/CT);
    if((ct==='U'||ct==='N')&&IM.links){const L=IM.links[ptx+','+pty];if(L){enterInterior(L.to,{x:L.x*CT+8,y:L.y*CT+8});return;}}
    if(ct==='*'){const key=IM.id+':'+ptx+','+pty;if(S.lastSaveKey!==key){S.lastSaveKey=key;S.lastSave={map:IM.id,x:ptx*CT+8,y:pty*CT+8};say('A save circle. Progress saved, and you can camp here safely.');saveGame();renderMenu();}}
@@ -1684,7 +1698,8 @@ function castleUpdate(dt){
 function interact(tx,ty){
   const n=npcAt(tx,ty);if(n){const lines=n.talk();if(lines)showDialog(lines);return;}
   const t=CASTLE[ty][tx],k=tx+','+ty;
-  if(t==='d'){const D=(IM.doors||{})[k];if(!D)return;if(D.shop)return openShop(D.shop);if(D.inn)return innRest();if(D.guild)return enterInterior('guild');if(D.to)return enterInterior(D.to);if(D.house)return showDialog(D.house);return;}
+  if(t==='d'){const D=(IM.doors||{})[k];if(!D)return;if(S.flags.solo){if(D.inn){askChoice('Back at the inn. Slip into bed and end the night?',['Return to bed','Not yet']).then(c=>{if(c===0)endSolo('Vesh slips back under the covers.');});return;}if(D.house)return tryHouse(k);return say('Shuttered and dark for the night.');}
+  if(D.shop)return openShop(D.shop);if(D.inn)return innRest();if(D.guild)return enterInterior('guild');if(D.to)return enterInterior(D.to);if(D.house)return showDialog(D.house);return;}
   if(t==='J')return openGuild(false);
   if(t==='Z')return showDialog(pick(IM.books||[['Rows of dusty books.']]));
   if(t==='M')return showDialog((IM.lore||{})[k]||['Faded carvings cover the stone.']);
@@ -1693,8 +1708,10 @@ function interact(tx,ty){
   if(t==='w')return showDialog(['Through the window you can see the village rooftops.']);
   if(t==='K')return showDialog(['Racks of spears and polished swords for the castle guard.']);
   if(t==='Q'||t==='q')return showDialog(["The King's own bed. Best not to nap in it."]);
+  if((t==='B'||t==='b')&&S.flags.solo){noiseBurst(.25);return say('Someone is asleep there. Best not.');}
   if(t==='B'||t==='b')return showDialog(['A soft guest bed. The party lies down to rest…'],guestRest);
   if(t==='c'||t==='C'){const C=CHESTS[k],ck=chestKey(tx,ty);if(S.flags.chests[ck])return showDialog(['The chest is empty.']);
+    if(C.loot||C.quest)return openLootChest(C,ck);
     if(C.grand&&!S.flags.sentinel)return vaultFight();
     let msg;if(C.flag){S.flags[C.flag]=true;msg=C.msg;}else if(C.gear){S.bag[C.gear]=(S.bag[C.gear]||0)+1;msg=`Found ${GEAR[C.gear].name}!`;}else if(C.gil){S.gil+=C.gil;msg=`Found ${fmtG(C.gil)}!`;}else{S.items[C.item]=(S.items[C.item]||0)+C.n;msg=`Found ${C.n>1?C.n+' ':'a '}${ITEMS[C.item].name}${C.n>1?'s':''}!`;}
     S.flags.chests[ck]=true;drawCastleTex();saveGame();renderMenu();return showDialog([msg].concat(C.gear?['Equip it from the Party menu.']:[]));}
@@ -1702,7 +1719,7 @@ function interact(tx,ty){
 function vaultFight(){showDialog(["The sentinel's eyes flare blue!","“INTRUDERS IN THE ROYAL VAULT. REMOVING.”"],async()=>{
   S.battleReturn='castle';for(let i=0;i<2;i++){flash('#86b4f2',140);await sleep(170);}startBattle(['wardorb','sentinel','wardorb']);flash('#000000',450);});}
 async function guestRest(){S.resting=true;await addFx(1600,(c,p)=>{const a=p<.3?p/.3:p>.75?(1-p)/.25:1;c.fillStyle=`rgba(6,6,24,${a*.85})`;c.fillRect(0,0,W,H);});
-  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}S.resting=false;say('Well rested. HP and MP fully restored.');saveGame();}
+  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}toMorning();S.resting=false;say('Well rested. HP and MP fully restored.');saveGame();}
 function enterCastle(pos){enterInterior('castle',pos);}
 function leaveCastle(){if(IM&&IM.parent)return enterInterior(IM.parent,IM.parentPos);S.scene='map';stage.classList.remove('castle');stage.classList.add('map');S.world.townLock=true;
   {const tx=Math.floor(S.world.x/TS),ty=Math.floor(S.world.y/TS),opts=[[0,1],[-1,0],[1,0],[0,-1]];
@@ -1714,8 +1731,8 @@ function toCastle(msg){
   $('over').hidden=true;bannerEl.hidden=true;popsEl.innerHTML='';stage.classList.remove('map','town');stage.classList.add('castle');drawCastleTex();
   if(msg)say(msg);renderMenu();saveGame();
 }
-function renderCastleMenu(){
-  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${esc(IM?IM.name:'Castle Valemont')}</span><span class="cls">${esc(S.croom||'')} · ${fmtG(S.gil)}</span></div>`+
+function renderCastleMenu(){if(S.flags.solo)return renderSoloMenu();
+  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${esc(IM?IM.name:'Castle Valemont')}</span><span class="cls">${esc(S.croom||'')} · ${fmtG(S.gil)} · <span class="clk">${clockText()}</span></span></div>`+
     opt('party','Party','','Status and equipment')+opt('quests','Quests','','Guild bounties')+(S.flags.port?opt('fishbook','Fish Book','',fishBookSub()):'')+(IM&&IM.dungeon?opt('camp','Camp','Tent ×'+(S.items.tent||0),onSave()?'Safe spot: restore all HP and MP':'Find a save circle to camp',!onSave()||!S.items.tent||S.resting):'')+(exitOk()?opt('exit',exitArmed()?'Tap again to cast Exit':'Exit',SK.exit.mp+' MP','Ilse warps the party out to the world map',!exitReady(),exitArmed()?'armed':''):'')+(IM&&!IM.leave?'':opt('leave',IM?IM.leave:'Leave castle'))+
     `<div class="log"><p>${esc('Walk into people to talk, and into doors, chests and beds to use them.')}</p><p>${esc(S.log[S.log.length-1]||'')}</p></div>`;
 }
@@ -1855,10 +1872,10 @@ function wanderNPCs(dt){
   }
 }
 function enterInterior(id,pos){
-  const M=ensureMap(id);IM=M;CW=M.w;CH=M.h;NPCS=M.npcs||[];CHESTS=M.chests||{};ROOMS=M.rooms||[];
+  const M=ensureMap(id);IM=M;CW=M.w;CH=M.h;NPCS=(S.flags&&S.flags.solo&&M.night)?M.night:(M.npcs||[]);CHESTS=M.chests||{};ROOMS=M.rooms||[];
   if(!M.grid||M.dynamic)M.grid=M.build();CASTLE=M.grid;ctex.width=CW*CT;ctex.height=CH*CT;drawCastleTex();
   S.scene='castle';S.imap=id;S.cpos=pos?{x:pos.x,y:pos.y}:{...M.entry};S.world.townLock=true;S.world.moving=false;for(const k in keys)keys[k]=false;steer=null;S.croom=roomName();
-  S.cam=null;stage.classList.remove('map','town');stage.classList.add('castle');S.parts=[];say(M.hello);if(M.onEnter)M.onEnter();renderMenu();saveGame();
+  S.cam=null;bumpKey='';S.soloLast=null;stage.classList.remove('map','town');stage.classList.add('castle');S.parts=[];say(M.hello);if(M.onEnter)M.onEnter();renderMenu();saveGame();
 }
 
 /* ---------- Adventurers' Guild quests ---------- */
@@ -2314,7 +2331,7 @@ async function confusedAct(h){const al=alive().filter(x=>x!==h);
   if(h.confuse&&Math.random()<.3){h.confuse=false;pop(h.x,h.y-22,'Clear-headed','lbl');}await sleep(150);}
 
 /* field: Exit */
-const exitOk=()=>{const w=S.heroes.find(x=>x.key==='white');return !!(S.scene==='castle'&&IM&&w.skills.includes('exit'));};
+const exitOk=()=>{const w=S.heroes.find(x=>x.key==='white');return !!(S.scene==='castle'&&IM&&!S.flags.solo&&w.skills.includes('exit'));};
 const exitReady=()=>{const w=S.heroes.find(x=>x.key==='white');return !w.ko&&w.mp>=SK.exit.mp&&!S.resting&&!S.cut;};
 let exitArmT=0;const exitArmed=()=>Date.now()-exitArmT<3000;
 function armExit(){exitArmT=Date.now();setTimeout(()=>{if(exitArmed())return;if(S.scene==='castle')renderMenu();if(!partyOv.hidden)drawParty();},3100);}
@@ -2632,7 +2649,7 @@ function makeTowerFloor(n){const r=towerGen(n),tier=Math.min(4,Math.floor((n-1)/
     hello:n===1?'The Tower of Aether. Wind howls through a hundred floors of white stone.':n===100?'The summit of the Tower of Aether. Storm clouds churn overhead.':n%10===0?`Floor ${n}. A waystone glows here.`:`Floor ${n} of the Tower of Aether.`,
     build:()=>r.grid.map(row=>row.slice()),links,chests,npcs,enc:[[id(0)],[id(0),id(1)],[id(1),id(2),id(1)],[id(2),id(3)],[id(0),id(2),id(3)]],
     onEnter(){S.flags.towerMax=Math.max(S.flags.towerMax||0,n);},...(n===1?{leave:'Leave the tower',out:'You step out onto the windswept isle.'}:{})};}
-function ensureMap(id){if(!MAPS[id]&&/^tw\d+$/.test(id)){const n=+id.slice(2);if(n>=1&&n<=100)MAPS[id]=makeTowerFloor(n);}return MAPS[id];}
+function ensureMap(id){if(!MAPS[id]&&id&&id.startsWith('h_')){const m=makeHouse(id);if(m)MAPS[id]=m;}if(!MAPS[id]&&/^tw\d+$/.test(id)){const n=+id.slice(2);if(n>=1&&n<=100)MAPS[id]=makeTowerFloor(n);}return MAPS[id];}
 
 /* Zephyrion, the Sky Wyrm */
 const STORM=['#ffffff','#fff6c0','#ffe14a','#86e0ff','#bfefff'];
@@ -2665,6 +2682,7 @@ async function doHero3(h,id,tg){const d=S.dragon;
     case 'phoenix':{await castPose(h,'#ff7a2a',300);await summonIntro('#ff7a2a');banner('Phoenix · Rebirth Flame');
       await addFx(1200,(c,p)=>{for(let k=0;k<3;k++)part(rnd(185,235),H,{vx:rnd(-10,10),vy:rnd(-110,-60),life:.9,c:pick(FIRE)});});
       for(const x of S.heroes){if(x.ko)revive(x,.5);else if(!x.stone){healFx(x);heal(x,h.mag*10);}}say('The party rises from the flames!');await sleep(400);break;}
+    default:await doHero4(h,id,tg);
   }
 }
 
@@ -2857,6 +2875,169 @@ MAPS.guild.npcs.push({x:11,y:2,spr:'angler',talk:()=>{const f=S.flags,reg=freg()
   for(const m of FISH_MILES)if(n>=m.n&&!f['fm'+m.n]){f['fm'+m.n]=true;m.give();lines.push(...m.lines);}
   saveGame();renderMenu();return lines;}});
 
+
+/* ---------- v3.0: day and night, Vesh's night work, the thieves' guilds ---------- */
+const OUTDOOR=new Set(['village','town','highmere']),THIEF_TOWNS=['village','town','ironhold','highmere'];
+const clockMin=()=>S.flags.clock==null?8*60:S.flags.clock;
+const isNight=()=>{const m=clockMin();return m>=20*60||m<5*60;};
+function clockText(){const m=Math.floor(clockMin()),h=Math.floor(m/60),mm=String(m%60).padStart(2,'0');return`${m>=20*60||m<5*60?'Night':m>=18*60?'Dusk':m<7*60?'Dawn':'Day'} ${String(h).padStart(2,'0')}:${mm}`;}
+function toMorning(){if(clockMin()>=6*60)S.flags.day=(S.flags.day||1)+1;S.flags.clock=6*60;}
+function tickClock(dt){const f=S.flags;let m=clockMin()+dt*(f.solo?1.5:4);if(m>=1440){m-=1440;f.day=(f.day||1)+1;}f.clock=m;
+  const el=cmdEl.querySelector('.clk');if(el)el.textContent=clockText();
+  if(f.solo&&m>=5*60&&m<12*60&&!S.dlg)endSolo('Dawn is breaking! Vesh hurries back to the inn before anyone wakes.');}
+function nightAmt(){const m=clockMin();if(m>=20*60||m<5*60)return 1;if(m>=18*60)return(m-18*60)/120;if(m<7*60)return 1-(m-5*60)/120;return 0;}
+function drawNight(){const a=nightAmt();if(a<=0)return;let k=0;
+  if(S.scene==='map'||(S.scene==='trans'&&!S.transIn))k=.55;else if(IM&&OUTDOOR.has(IM.id))k=.62;else if(IM&&(/^(castle|arcanum|ironhall)$/.test(IM.id)||IM.id.startsWith('h_')||IM.id.startsWith('tg_')))k=.3;else return;
+  ctx.fillStyle=`rgba(8,12,40,${a*k})`;ctx.fillRect(0,0,W,H);
+  if(S.scene!=='castle'||!S.camOff)return;
+  const glow=(x,y,r,al)=>{const g=ctx.createRadialGradient(x,y,2,x,y,r);g.addColorStop(0,`rgba(255,214,140,${al})`);g.addColorStop(1,'rgba(255,214,140,0)');ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2);};
+  for(const n of NPCS){if(n.when&&!n.when())continue;const sx=n.x*CT+8-S.camOff.x+(n.ox||0),sy=n.y*CT+8-S.camOff.y+(n.oy||0);
+    if(n.guard)glow(sx,sy,30*a,.22);if(n.mon==='hatch'&&Math.floor(S.t*2+n.x)%5===0){ctx.fillStyle='#fff3c4';ctx.fillRect(sx+3,sy-2,1,3);ctx.fillRect(sx+2,sy-1,3,1);}}
+  if(S.flags.solo&&S.pScreen)glow(S.pScreen.x,S.pScreen.y,46,.12);}
+
+/* choices */
+function askChoice(text,options){return new Promise(res=>{$('choiceText').textContent=text;const box=$('choiceBtns');
+  box.innerHTML=options.map((o,i)=>`<button type="button" class="btn${i?' ghost':''}" data-c="${i}">${esc(o)}</button>`).join('');
+  box.onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;closeSheet($('choiceOv'));res(+b.dataset.c);};openSheet($('choiceOv'),box.querySelector('button'));});}
+
+/* Vesh alone at night */
+const thief=()=>S.heroes.find(h=>h.key==='thief');
+const thiefNightOk=()=>{const m=clockMin(),v=thief();return IM&&THIEF_TOWNS.includes(IM.id)&&!v.ko&&!v.stone&&(m>=18*60||m<5*60);};
+async function startSolo(){const t=IM.id;for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}
+  S.flags.nightNo=(S.flags.nightNo||0)+1;S.flags.solo={town:t,x:S.cpos.x,y:S.cpos.y};S.sneak=false;S.alert=false;S.soloLast=null;
+  await addFx(1400,(c,p)=>{const a=p<.4?p/.4:p>.75?(1-p)/.25:1;c.fillStyle=`rgba(6,6,24,${a*.9})`;c.fillRect(0,0,W,H);});
+  S.flags.clock=23*60;enterInterior(t,{x:S.cpos.x,y:S.cpos.y});
+  showDialog(['Midnight. The others are snoring.','Vesh pulls on dark clothes and slips out into the sleeping town.',
+    S.flags.sneakLearned?'Houses are locked and their owners asleep. Sneak to stay quiet, and keep clear of the guards’ lanterns.':'Houses are locked tight, and guards walk the streets with lanterns. Rumor says a thieves’ guild hides somewhere in this town, under a trapdoor only seen at night…']);saveGame();}
+function endSolo(msg){const s=S.flags.solo;if(!s)return;S.flags.solo=null;S.lock=null;S.sneak=false;S.alert=false;toMorning();enterInterior(s.town,{x:s.x,y:s.y});
+  showDialog([msg,'Morning. Vesh is back in bed before the others wake… mostly.']);saveGame();}
+function caughtByGuard(){const n=(S.flags.lootBag||[]).length;S.flags.lootBag=[];
+  endSolo(`Guard: Halt! Thief!`+(n?` (Vesh drops ${n} stolen item${n>1?'s':''} as he runs.)`:' (Vesh bolts back to the inn empty-handed.)'));}
+function soloTick(dt){const p=S.cpos,mv=S.soloLast?Math.hypot(p.x-S.soloLast.x,p.y-S.soloLast.y):0;S.soloLast={x:p.x,y:p.y};const px=p.x/CT,py=p.y/CT;
+  for(const n of NPCS)if(n.guard&&Math.hypot(n.x+.5-px,n.y+.5-py)<(S.sneak?1.25:2.3)*(S.alert?1.3:1)){caughtByGuard();return true;}
+  for(const n of NPCS)if(n.sleep){const d=Math.hypot(n.x+.5-px,n.y+.5-py);if(mv>0&&d<3.4)n.wake=(n.wake||0)+(S.sneak?.11:.85)*(IM.light||1)*((3.4-d)/3.4+.15)*dt;else n.wake=Math.max(0,(n.wake||0)-.05*dt);
+    if(n.wake>=1){n.wake=0;const R=S.flags.barred||(S.flags.barred={});R[IM.id]=S.flags.nightNo;S.alert=true;const back=IM.parentPos;enterInterior(IM.parent,back);
+      showDialog(['“Who’s there?! THIEF!”','Vesh dives out of the window and rolls into the street. That house is barred for the night, and the watch is on alert.']);return true;}}
+  return false;}
+function noiseBurst(v){for(const n of NPCS)if(n.sleep)n.wake=(n.wake||0)+v*(S.sneak?.3:1)*(IM.light||1);}
+function renderSoloMenu(){const bag=(S.flags.lootBag||[]).length;
+  if(S.lock){cmdEl.innerHTML=`<div class="cmd-h"><span class="who">Lockpicking</span><span class="cls">Pin ${S.lock.done+1} of ${S.lock.pins} · <span class="clk">${clockText()}</span></span></div>`+
+    opt('pick','Pick','','Tap when the pick is in the gold zone',false,'reel')+opt('pickstop','Give up')+`<div class="log"><p>${esc(S.log[S.log.length-1]||'')}</p></div>`;return;}
+  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">Vesh alone</span><span class="cls">${esc(S.croom||IM.name)} · <span class="clk">${clockText()}</span></span></div>`+
+    (S.flags.sneakLearned?opt('sneak',S.sneak?'Sneaking':'Sneak',S.sneak?'on':'off',S.sneak?'Slow and silent':'Walk quietly past sleepers and guards',false,S.sneak?'armed':''):'')+
+    opt('party','Party','','Status and equipment')+opt('endnight','Return to bed','','End the night and wake the party at dawn')+
+    `<div class="log"><p>${esc(`Stolen goods: ${bag}${S.alert?' · the watch is on alert':''}`)}</p><p>${esc(S.log[S.log.length-1]||'')}</p></div>`;}
+
+/* locked doors */
+function tryHouse(dk){const id=`h_${IM.id}_${dk.replace(',','_')}`;if((S.flags.barred||{})[id]===S.flags.nightNo)return say('The door is barred from the inside now.');
+  const pins=IM.id==='highmere'?3:2;S.lock={target:id,pins,done:0,pos:0,dir:1,miss:0,speed:.9,zone:lockZone()};say('Vesh kneels at the lock and slides in a pick…');renderMenu();}
+function lockZone(){const w=.16+.05*((S.flags.picks||1)-1),a=.08+Math.random()*(.84-w);return[a,a+w];}
+function lockTick(dt){const L=S.lock;L.pos+=L.dir*L.speed*dt;if(L.pos>=1){L.pos=1;L.dir=-1;}if(L.pos<=0){L.pos=0;L.dir=1;}}
+function lockTap(){const L=S.lock;if(!L)return;if(L.pos>=L.zone[0]&&L.pos<=L.zone[1]){L.done++;if(L.done>=L.pins){S.lock=null;say('Click. The lock gives.');enterInterior(L.target);return;}
+    L.zone=lockZone();L.speed*=1.25;say(`Pin ${L.done} set.`);}
+  else{L.miss++;if(L.miss>=3){S.lock=null;const R=S.flags.barred||(S.flags.barred={});R[L.target]=S.flags.nightNo;say('Snap! The pick breaks in the lock. That door won’t open tonight.');renderMenu();return;}
+    say(`Clink… too loud. (${3-L.miss} tr${3-L.miss>1?'ies':'y'} left)`);}renderMenu();}
+function drawLock(){const L=S.lock;if(!L)return;const x=58,y=52,w=140;ctx.fillStyle='rgba(10,8,14,.88)';ctx.fillRect(x-8,y-14,w+16,46);ctx.strokeStyle='#5a4a3a';ctx.strokeRect(x-7.5,y-13.5,w+15,45);
+  ctx.fillStyle='#e8e8f0';ctx.font='7px monospace';ctx.fillText(`LOCK  pin ${L.done+1}/${L.pins}`,x,y-4);
+  ctx.fillStyle='#2a2a34';ctx.fillRect(x,y+2,w,10);ctx.fillStyle='#c8902a';ctx.fillRect(x+Math.round(w*L.zone[0]),y+2,Math.round(w*(L.zone[1]-L.zone[0])),10);ctx.fillStyle='#ffd34a';ctx.fillRect(x+Math.round(w*L.zone[0]),y+2,Math.round(w*(L.zone[1]-L.zone[0])),2);
+  const mx=x+Math.round(w*L.pos);ctx.fillStyle='#ffffff';ctx.fillRect(mx-1,y-1,2,16);ctx.fillStyle='#e84040';for(let i=0;i<L.miss;i++)ctx.fillRect(x+w-6-i*7,y-9,5,5);
+  ctx.fillStyle='#9a9aac';ctx.fillText('tap in the gold',x,y+24);}
+
+/* house interiors at night */
+const LOOT=[['Silver Candlestick',180],['Jeweled Ring',450],['Pouch of Coins',300],['Silk Scarf',220],['Pocket Watch',380],['Gilded Snuffbox',520],['Pearl Earrings',600],['Crystal Decanter',340],['Brass Spyglass',410],['Ivory Comb',260]];
+const QUEST_SPOT={'h_town_5_13':{q:1,item:'ledger',name:'Mayor’s Ledger'},'h_village_28_19':{q:2,item:'hammer',name:'Silver Hammer'},'h_highmere_4_14':{q:3,item:'scroll',name:'Moonlit Scroll'}};
+function makeHouse(id){const m=id.match(/^h_(\w+?)_(\d+)_(\d+)$/);if(!m)return null;const town=m[1],dx=+m[2],dy=+m[3],r=k=>((dx*73856093^dy*19349663^k*83492791)>>>0)%1000/1000;
+  const sleepers=r(1)<.5?1:2,folk=['man','woman','farmer','elder','woman2','mage'];
+  return{id,name:'A sleeping house',w:11,h:8,parent:town,parentPos:{x:dx*CT+8,y:(dy+1)*CT+8},entry:{x:5*CT+8,y:6*CT+8},hello:'Inside, someone snores softly in the dark.',light:town==='highmere'?1.5:1,dynamic:true,
+    books:[['Shelves of ledgers and old letters. Nothing worth the risk.']],
+    chests:{},onEnter(){for(const n of this.npcs)n.wake=0;},
+    build(){{const R=S.flags.robbed||(S.flags.robbed={}),day=S.flags.day||1;if(R[id]!=null&&R[id]+3<=day){for(const k in S.flags.chests)if(k.startsWith(id+':'))delete S.flags.chests[k];delete R[id];}}
+      const g=gridFill(this.w,this.h,'#'),set=(x,y,c)=>{g[y][x]=c;};for(let y=1;y<=6;y++)for(let x=1;x<=9;x++)set(x,y,'u');
+      set(2,1,'B');set(2,2,'b');if(sleepers>1){set(8,1,'B');set(8,2,'b');}set(5,3,'t');set(1,3,'Z');set(9,6,'p');set(5,7,'E');
+      const spots=[[1,5],[9,4],[6,1],[4,1]];for(const k in this.chests)delete this.chests[k];const nC=2+(r(2)<.5?1:0);for(let i=0;i<nC;i++){const[x,y]=spots[i];this.chests[x+','+y]={loot:true,v:Math.floor(r(10+i)*LOOT.length)};set(x,y,'c');}
+      const Q=QUEST_SPOT[id];if(Q&&S.flags.tq===Q.q&&S.flags.qitem!==Q.item){this.chests['3,5']={quest:Q.item,name:Q.name};set(3,5,'c');delete S.flags.chests[id+':3,5'];}
+      return g;},
+    npcs:[{x:2,y:1,spr:folk[Math.floor(r(3)*folk.length)],sleep:true,talk:()=>{noiseBurst(.6);return['Zzz… mmh… who…? …Zzz']}}].concat(sleepers>1?[{x:8,y:1,spr:folk[Math.floor(r(4)*folk.length)],sleep:true,talk:()=>{noiseBurst(.6);return['Zzz…']}}]:[])};}
+function openLootChest(C,ck){S.flags.chests[ck]=true;const R=S.flags.robbed||(S.flags.robbed={});if(R[IM.id]==null)R[IM.id]=S.flags.day||1;let msg;
+  if(C.quest){S.flags.qitem=C.quest;msg=`Found the ${C.name}! Take it to the guild master.`;}
+  else{const it=LOOT[(C.v+(S.flags.day||1))%LOOT.length],mul=IM.parent==='highmere'||IM.parent==='ironhold'?1.5:1;(S.flags.lootBag=S.flags.lootBag||[]).push({n:it[0],v:Math.round(it[1]*mul)});msg=`Pocketed: ${it[0]}.`;}
+  noiseBurst(.3);drawCastleTex();say(msg);renderMenu();saveGame();}
+
+/* the thieves' guilds */
+SHOPS.tguild={name:'Thieves’ Trainer',hello:'Rook: Every trick I teach costs gil, and every trick needs the rank to back it.',stock:['backstab','pickpocket','shuriken','shadowbind']};
+Object.assign(SK,{
+ backstab:{name:'Backstab',mp:0,t:'enemy',d:'A strike from the shadows. Always critical'},
+ pickpocket:{name:'Pickpocket',mp:0,t:'enemy',d:'A sure steal, plus a purse of gil'},
+ shuriken:{name:'Shuriken',mp:0,t:'enemy',all:true,d:'Throw stars at every enemy'},
+ shadowbind:{name:'Shadowbind',mp:0,t:'enemy',d:'Pin the target’s shadow and reset its turn'},
+ katon:{name:'Katon',mp:0,t:'enemy',all:true,d:'Ninjutsu: a blast of fire on all enemies'},
+ suiton:{name:'Suiton',mp:0,t:'enemy',all:true,d:'Ninjutsu: a crushing wave on all enemies'},
+ raiton:{name:'Raiton',mp:0,t:'enemy',all:true,d:'Ninjutsu: lightning on all enemies'}});
+Object.assign(SK_EL,{katon:'fire',suiton:'water',raiton:'thunder'});
+Object.assign(TOMES,{backstab:{who:'thief',price:6000,rank:1},pickpocket:{who:'thief',price:7000,rank:2},shuriken:{who:'thief',price:9000,rank:2},shadowbind:{who:'thief',price:12000,rank:3}});
+Object.assign(GEAR,{kotetsu:{name:'Kotetsu',slot:'weapon',who:['thief'],atk:78,str:6,spd:4,price:40000}});
+const RANK_NAME=['Recruit','Footpad','Cutpurse','Shadow','Ninja'],thiefRank=()=>S.flags.tq||0;
+Object.assign(NPCSPR,{rogue:{pal:VPAL({h:'#2a2a3a',t:'#3a2a4a',p:'#1e1e26'}),map:VMAP.man},rogue2:{pal:VPAL({h:'#a82a2a',d:'#2a2a3a'}),map:VMAP.woman},
+ rogue3:{pal:VPAL({h:'#6a6a7a',t:'#4a3a2a',p:'#2a2a2a'}),map:VMAP.man}});
+MON.hatch={name:'Trapdoor',hp:1,scale:1,weak:[],pal:{w:'#5a3a1e',W:'#7a5a34',k:'#2a1a10',r:'#9a9aac'},map:["kkkkkkkkkk","kWwWwWwWwk","kWwWwWwWwk","kWwWrrwWwk","kWwWrrwWwk","kWwWwWwWwk","kkkkkkkkkk"]};MON.hatch.h=7;MON.hatch.w=10;
+function fenceTalk(){const bag=S.flags.lootBag||[];if(!bag.length)return['Nim the Fence: Nothing to sell? Come back with something shiny.'];
+  const g=bag.reduce((a,b)=>a+b.v,0),n=bag.length;S.gil+=g;S.flags.fenced=(S.flags.fenced||0)+n;S.flags.lootBag=[];saveGame();renderMenu();
+  return[`Nim the Fence: ${n} piece${n>1?'s':''}… ${bag.slice(0,3).map(b=>b.n).join(', ')}${n>3?', and the rest':''}.`,`Nim the Fence: ${fmtG(g)}, and no questions asked.`];}
+function becomeNinja(){const v=thief();S.flags.ninja=true;for(const id of['katon','suiton','raiton'])if(!v.skills.includes(id))v.skills.push(id);S.bag.kotetsu=(S.bag.kotetsu||0)+1;recalc(v);}
+const GUILD_MASTERS={
+ village:{name:'Silk',spr:'rogue2',talk(){const f=S.flags;
+   if(!f.sneakLearned){f.sneakLearned=true;f.picks=f.picks||1;saveGame();return['Silk: Well, well. A new face finds my door on the first try. Not bad.','Silk: Welcome to the Valemont thieves’ guild. Lesson one: walk soft.','Vesh learned to Sneak! (Turn it on from the menu at night.)',
+     'Silk: Lesson two: every house in town has something worth more than its owner thinks. Pick the lock, slip inside, and don’t wake anyone.','Silk: Bring three pieces to Nim the Fence, then come see me.'];}
+   if((f.tq||0)===0){if((f.fenced||0)>=3){f.tq=1;saveGame();return['Silk: Three pieces fenced and not a whisper from the watch. You’re a Footpad now.','Silk: Rook will teach you to Backstab.','Silk: Next, see Old Mags in Thornwick. Her guild hides under a trapdoor by the east road.'];}
+     return[`Silk: Fenced so far: ${f.fenced||0} of 3. Houses are locked; pick them. Owners are asleep; don’t wake them.`];}
+   return[`Silk: ${RANK_NAME[thiefRank()]} ${thief().name}! The other guilds talk about you.`,thiefRank()<4?'Silk: Keep climbing. There’s a path at the top that few thieves ever walk.':'Silk: A Ninja. I always knew.'];}},
+ town:{name:'Old Mags',spr:'elder',talk(){const f=S.flags,q=f.tq||0;if(q<1)return['Old Mags: Who sent you? Get Silk’s mark in Valemont first, little mouse.'];
+   if(q===1){if(f.qitem==='ledger'){f.qitem=null;f.tq=2;f.picks=Math.max(f.picks||1,2);saveGame();return['Old Mags: The mayor’s ledger! Heh. Now we know who owes what to whom.','Old Mags: You’re a Cutpurse now. Have Master Lockpicks. Pins set easier.','Old Mags: Rook will teach you Shuriken and Pickpocket.','Old Mags: Next, Grubb Ironfingers in Ironhold. His door is in the southeast corner of the plaza.'];}
+     return['Old Mags: Thornwick’s mayor keeps his ledger at the farmer’s cottage on the west side. Don’t ask why.','Old Mags: Fetch it at night. The farmer snores, but his wife doesn’t.'];}
+   return['Old Mags: Heh. You’ve come a long way from Valemont’s gutters.'];}},
+ ironhold:{name:'Grubb Ironfingers',spr:'dwarf2',talk(){const f=S.flags,q=f.tq||0;if(q<2)return['Grubb Ironfingers: Not yet, surface rat. Earn your Cutpurse mark in Thornwick.'];
+   if(q===2){if(f.qitem==='hammer'){f.qitem=null;f.tq=3;f.picks=3;saveGame();return['Grubb Ironfingers: The Silver Hammer of the old smiths! Back where it belongs. Underground.','Grubb Ironfingers: You’re a Shadow now. Rook can teach you Shadowbind.','Grubb Ironfingers: There’s one last guild. Whisper, in Highmere. Few ever find it. Fewer come back.'];}
+     return['Grubb Ironfingers: A surface collector in Valemont Village stole our Silver Hammer. The quiet house, east side, with the cat.','Grubb Ironfingers: Steal it back at night. Steal from a thief, eh? Ha!'];}
+   return['Grubb Ironfingers: The forge sings your name, Shadow.'];}},
+ highmere:{name:'Whisper',spr:'rogue',talk(){const f=S.flags,q=f.tq||0;if(q<3)return['Whisper: …','(The figure in the corner does not even look up.)'];
+   if(q===3){if(f.qitem==='scroll'){f.qitem=null;f.tq=4;becomeNinja();saveGame();renderMenu();
+       return['Whisper: The Moonlit Scroll. Taken from a sleeping magus without a single spark of magic waking him.','Whisper: Then you are ready. Read it.','Vesh studies the scroll until dawn…',`${thief().name} became a Ninja! Learned Katon, Suiton and Raiton.`,'Received the Kotetsu!'];}
+     return['Whisper: The path of the Ninja is written in the Moonlit Scroll.','Whisper: A magus in Highmere keeps it in his cottage, west of the square. Magi sleep lightly. Sneak, or don’t bother.'];}
+   return['Whisper: Ninja. Walk where no one sees.'];}}};
+function makeThiefGuild(town,hatch){const G=GUILD_MASTERS[town];
+  return{id:'tg_'+town,name:`Thieves’ Guild of ${{village:'Valemont',town:'Thornwick',ironhold:'Ironhold',highmere:'Highmere'}[town]}`,w:14,h:10,parent:town,parentPos:{x:hatch[0]*CT+8,y:hatch[1]*CT+8},entry:{x:7*CT,y:8*CT+8},
+   hello:'A smoky cellar full of whispers. Every head turns, then turns away.',leave:'Climb out',books:[['Shelves of “borrowed” goods, each with a little paper tag.']],
+   onEnter(){(S.flags.tgFound||(S.flags.tgFound={}))[town]=true;},
+   build(){const g=gridFill(this.w,this.h,'u'),set=(x,y,c)=>{g[y][x]=c;};for(let x=0;x<this.w;x++){set(x,0,'#');set(x,this.h-1,'#');}for(let y=0;y<this.h;y++){set(0,y,'#');set(this.w-1,y,'#');}
+     for(let x=8;x<=11;x++)set(x,3,'x');for(const[x,y]of[[2,6],[3,6],[5,5]])set(x,y,'t');for(const x of[1,2,12])set(x,1,'Z');set(12,8,'p');set(6,this.h-1,'E');set(7,this.h-1,'E');return g;},
+   npcs:[{x:3,y:2,spr:G.spr,talk:()=>G.talk()},{x:10,y:2,spr:'rogue3',talk:fenceTalk},{x:11,y:6,spr:'rogue',talk:()=>{if(thiefRank()<1)return['Rook: No rank, no lessons. Prove yourself to a guild master first.'];openShop('tguild');return null;}},
+     {x:4,y:7,spr:'rogue2',wander:[1,7,12,8],talk:()=>[pick(['Pickpocket: Never steal from a sleeping dog. Or a sleeping magus.','Lookout: Guards carry lanterns. If you can see the light, they can see you.','Cutpurse: Sneak past sleepers. Walking wakes them faster than you think.'])]}]};}
+const GUILD_HATCH={village:[2,21],town:[22,8],ironhold:[31,23],highmere:[24,8]};
+for(const t in GUILD_HATCH)MAPS['tg_'+t]=makeThiefGuild(t,[GUILD_HATCH[t][0],GUILD_HATCH[t][1]-1]);
+const guard=(x,y,wander)=>({x,y,spr:'guard',guard:true,wander,talk:()=>null}),hatchNpc=t=>({x:GUILD_HATCH[t][0],y:GUILD_HATCH[t][1],mon:'hatch',talk:()=>{enterInterior('tg_'+t);return null;}});
+MAPS.village.night=[guard(10,7,[2,7,31,8]),guard(16,15,[13,9,20,22]),guard(26,21,[19,20,31,22]),hatchNpc('village')];
+MAPS.town.night=[guard(6,8,[1,7,22,8]),guard(12,13,[11,9,12,16]),hatchNpc('town')];
+MAPS.highmere.night=[guard(20,7,[1,7,24,8]),guard(12,13,[12,9,13,16]),hatchNpc('highmere')];
+MAPS.ironhold.night=[MAPS.ironhold.npcs[0],guard(10,14,[2,14,31,15]),guard(22,22,[18,21,30,23]),hatchNpc('ironhold')];
+
+/* thief battle skills and Ninjutsu */
+async function doHero4(h,id,tg){const d=S.dragon;
+  switch(id){
+    case 'backstab':{await tween(200,p=>{h.dx=-(h.x-DX-22)*p;h.dy=-Math.sin(p*Math.PI)*10;});slashFx(DX-6,DY,'#ee7ad6');await sleep(80);slashFx(DX,DY+6,'#ffffff');shake();
+      const keep=Math.random;Math.random=()=>0;strike(h,2.6,true);Math.random=keep;await sleep(220);await tween(220,p=>h.dx=-(h.x-DX-22)*(1-p));h.dy=0;break;}
+    case 'pickpocket':{await stepIn(h,22);await sleep(120);strike(h,.5);if(d.steals>0&&!d.dead)trySteal(h,1);const g=Math.round(rnd(80,200)*(1+thiefRank()*.5));S.gil+=g;pop(h.x,h.y-22,`+${g} G`,'lbl');say(`${h.name} lifts ${fmtG(g)} as well.`);await sleep(250);await stepOut(h,22);break;}
+    case 'shuriken':{await castPose(h,'#d8d8e8',200);for(const f of liveFoes()){const x0=h.x-8,y0=h.y-10;addFx(320,(c,p)=>{const x=x0+(f.ax-x0)*p,y=y0+(f.ay-y0)*p;c.fillStyle='#e8e8f0';c.fillRect(Math.round(x)-1,Math.round(y),3,1);c.fillRect(Math.round(x),Math.round(y)-1,1,3);});}
+      await sleep(330);eachFoe(f=>strike(h,.95,true));await sleep(250);break;}
+    case 'shadowbind':{await castPose(h,'#5a4a8a',300);await addFx(500,(c,p)=>{c.fillStyle=`rgba(40,20,70,${.6*(1-p)})`;c.beginPath();c.ellipse(DX,DY+20,26*(1-p*.4),5,0,0,7);c.fill();});strike(h,1.2,true);
+      if(!d.dead){d.atb=0;if(d.queued){d.queued=false;S.actQ=S.actQ.filter(a=>a.actor!==d);}pop(DX,DY-16,'Bound!','lbl');say(`${d.label||d.name}’s shadow is pinned!`);}await sleep(250);break;}
+    case 'katon':case 'suiton':case 'raiton':{const el=SK_EL[id],col={katon:'#ff7a2a',suiton:'#6fb3ff',raiton:'#ffe14a'}[id];await castPose(h,col,300);banner(SK[id].name);
+      if(id==='katon')for(const f of liveFoes())fireFx(f.ax,f.ay);else if(id==='raiton')for(const f of liveFoes()){boltFx(f.ax,f.ay);await sleep(120);}
+      else await addFx(800,(c,p)=>{c.fillStyle='rgba(30,100,190,.55)';c.fillRect(0,H-p*90,170,p*90);});
+      await sleep(400);hitAll(h.str*8.2*1.35,el);await sleep(300);break;}
+  }}
+
+addEventListener('keydown',e=>{if(!S||!S.lock||S.scene!=='castle')return;if(e.key===' '||e.key==='z'||e.key==='Z'){e.preventDefault();if(!e.repeat)lockTap();}},true);
+stage.addEventListener('pointerdown',e=>{if(S&&S.lock&&S.scene==='castle'&&!e.target.closest('.overlay,.dlg')&&e.target!==miniEl){e.preventDefault();lockTap();}});
 async function dungeonEncounter(form){
   S.battleReturn='castle';S.transIn=true;S.scene='trans';for(const k in keys)keys[k]=false;steer=null;S.world.moving=false;
   for(let i=0;i<2;i++){flash('#ffffff',140);await sleep(170);}
@@ -2869,7 +3050,7 @@ async function dungeonCamp(){
   await addFx(2000,(c,p)=>{const a=p<.25?p/.25:p>.8?(1-p)/.2:1;c.fillStyle=`rgba(6,6,24,${a*.8})`;c.fillRect(0,0,W,H);c.globalAlpha=a;
     const x=S.pScreen?S.pScreen.x:W/2,y=(S.pScreen?S.pScreen.y:H/2)+7;c.fillStyle='#c8a46a';c.beginPath();c.moveTo(x-12,y);c.lineTo(x-2,y-13);c.lineTo(x+8,y);c.closePath();c.fill();
     const fl=Math.sin(S.t*20);c.fillStyle='#ff7a2a';c.fillRect(x+11,y-4+fl,4,3);c.fillStyle='#ffd34a';c.fillRect(x+12,y-6+fl,2,3);c.globalAlpha=1;});
-  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}S.resting=false;say('Rested and ready. HP and MP fully restored.');renderMenu();saveGame();
+  for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}toMorning();S.resting=false;say('Rested and ready. HP and MP fully restored.');renderMenu();saveGame();
 }
 async function frostAct(d){
   if(d.charging){d.charging=false;d.lastInferno=d.turns;return breathAtk('Blizzard',900,1000,true,ICE,'ice');}
@@ -2891,7 +3072,7 @@ const STRATS={
 };
 const HABITS={
  fighter:{rage:'Always Rage Strike',fight:'Always Fight',pummel:'Always Pummel',earthslash:'Always Earth Slash',wavefist:'Always Wave Fist'},
- thief:{steal:'Always Steal',mug:'Always Mug',twinstrike:'Always Twin Strike',assassinate:'Always Assassinate'},
+ thief:{steal:'Always Steal',mug:'Always Mug',backstab:'Always Backstab',shuriken:'Always Shuriken',twinstrike:'Always Twin Strike',assassinate:'Always Assassinate'},
  white:{cure:'Always Cure',cura:'Always Cura',cureall:'Always Cure All',holy:'Always Holy'},
  black:{fire:'Always Fire',frost:'Always Ice',thunder:'Always Lightning'},
  summoner:{undine:'Always Undine',glacia:'Always Glacia',raijin:'Always Raijin',ifrit:'Always Ifrit',titan:'Always Titan',bahamut:'Always Bahamut',sylph:'Always Sylph'}
@@ -2983,6 +3164,8 @@ function aiChoose(h){
       if(kn('pummel')&&k!=='conserve')return{kind:'skill',id:'pummel'};
       return((k==='aggressive'&&pct(h)>.4)||(k==='balanced'&&pct(h)>.75))?{kind:'skill',id:'rage'}:{kind:'fight'};}
     case 'thief':{if(liveFoes().some(f=>f.steals>0))return{kind:'skill',id:k==='aggressive'?'mug':'steal'};const kn=id=>h.skills.includes(id);
+      {const nin=['katon','suiton','raiton'].filter(kn).map(id=>({id,v:liveFoes().reduce((a,f)=>a+Math.max(0,elemMult(SK_EL[id],f)),0)})).sort((a,b)=>b.v-a.v)[0];if(nin&&nin.v>=1.5)return{kind:'skill',id:nin.id};}
+      if(kn('shuriken')&&liveFoes().length>=3)return{kind:'skill',id:'shuriken'};if(kn('backstab'))return{kind:'skill',id:'backstab'};
       const big=liveFoes().slice().sort((a,b)=>b.hp-a.hp)[0];
       if(kn('venomedge')&&big&&!big.poison&&big.kind!=='wyrm'&&big.hp>big.max*.5&&k!=='aggressive')return{kind:'skill',id:'venomedge',foe:big};
       if(kn('assassinate'))return{kind:'skill',id:'assassinate'};if(kn('twinstrike'))return{kind:'skill',id:'twinstrike'};return{kind:'fight'};}
@@ -3045,13 +3228,14 @@ function showOver(win){
     t='Victory';p=`Gained ${ex} EXP and ${gl} G.`+(got.length?` Found ${got.join(', ')}.`:'')+(ups.length?' '+ups.join(' '):'')+extra;b='Continue';S.onContinue=ret;}
   else if(wy&&!d.variant){t='The party has fallen';p=`${d.phase===2?'The Molten Wyrm':'The Ember Wyrm'} still had ${d.hp.toLocaleString()} of ${d.max.toLocaleString()} HP.`;b='Fight again';S.onContinue=newGame;}
   else{const inC=S.battleReturn==='castle';t='The party has fallen';p=inC?(IM&&IM.dungeon?`The party collapses ${IM.id.startsWith('dd')?'in the depths':IM.id.startsWith('tw')?'in the tower':'on the mountain'}. You wake at the last save circle, fully rested.`:'The sentinel drove you out. You wake in the castle guest rooms, fully rested.'):`The monsters drove you off. You wake at camp, fully rested.`;b=inC?'Wake up':'Return to camp';
-    S.onContinue=()=>{for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}if(inC&&IM&&IM.dungeon){const fb=IM.id.startsWith('dd')?'dd1':IM.id.startsWith('tw')?'tw1':'mt1',ls=S.lastSave&&ensureMap(S.lastSave.map)?S.lastSave:{map:fb,x:ensureMap(fb).entry.x,y:ensureMap(fb).entry.y};toCastle();enterInterior(ls.map,{x:ls.x,y:ls.y});say('You wake at the save circle.');}else if(inC){S.cpos={x:5*CT+8,y:11*CT+8};toCastle('You wake in a guest bed.');}else toMap('You wake at camp, sore but alive.');};}
+    S.onContinue=()=>{for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}toMorning();if(inC&&IM&&IM.dungeon){const fb=IM.id.startsWith('dd')?'dd1':IM.id.startsWith('tw')?'tw1':'mt1',ls=S.lastSave&&ensureMap(S.lastSave.map)?S.lastSave:{map:fb,x:ensureMap(fb).entry.x,y:ensureMap(fb).entry.y};toCastle();enterInterior(ls.map,{x:ls.x,y:ls.y});say('You wake at the save circle.');}else if(inC){S.cpos={x:5*CT+8,y:11*CT+8};toCastle('You wake in a guest bed.');}else toMap('You wake at camp, sore but alive.');};}
   $('overT').textContent=t;$('overP').textContent=p;$('again').textContent=b;$('over').hidden=false;$('again').focus({preventScroll:true});
 }
 function update(dt){
+  if((S.scene==='map'||S.scene==='castle')&&!S.paused&&!S.dlg&&!S.cut&&!S.lock&&S.wyrmDone)tickClock(dt);
   if(S.scene==='map'){mapUpdate(dt);schoolsTick(dt);return;}
   if(S.scene==='fish'){fishUpdate(dt);return;}
-  if(S.scene==='castle'){castleUpdate(dt);return;}
+  if(S.scene==='castle'){if(S.lock)lockTick(dt);castleUpdate(dt);return;}
   if(S.scene!=='battle'||S.over)return;
   const flowing=!S.busy&&!S.paused&&!(S.mode==='wait'&&S.menu);
   if(!S.paused&&!(S.mode==='wait'&&S.menu)){for(const h of S.heroes)if(h.poison&&!h.ko&&!h.stone){h.ptick=(h.ptick||0)+dt;if(h.ptick>=4){h.ptick=0;poisonTick(h);}}
@@ -3189,7 +3373,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.9.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.0.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

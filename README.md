@@ -54,6 +54,8 @@ Five heroes take on a dragon in two phases:
 - **The thieves' sign**: the first time Vesh finds a guild, the doorman shows him a three-gesture sign. Every visit after, he must make it in order at the door, or he's thrown back out through the trapdoor.
 - **Sky window**: the top-left window shows the sun rising and setting across the sky, and at night the moon crossing it in its current phase (red under a Blood Moon). Tap it for the time, weather and moon.
 - **Fishing weather**: the fishing scene shows night, stars and the moon, clouds, rain and storms. Schools are bigger and more frequent, and fish chase the lure more eagerly, in the rain and in the nights around the full moon.
+- **Mine lift**: every level of Deepdelve Mine, and Ironhold, has a lift cage near its entrance. Walk into it to ride to any level you've already reached (Ironhold once Gravemaw is slain).
+- **Ironhold homes**: an Upper Ward of four houses flanks the airship bay, and another home sits on the south lane, all open to Vesh's night work.
 - **Class advancement**: each hero has a second class with a new look, stronger stats and a signature skill.
   - **Monk** (Garrick): learn three monk arts at Ironhold's Training Hall and reach level 18, then take Master Bryn's **Trial of the Fist** against his Iron Sparring Golem. +12 strength, +3 speed, +6 defense, a fighting gi, and **Hundred Fists** (six rapid blows).
   - **Ninja** (Vesh): via the thieves' guilds as before; now he wears a ninja outfit.

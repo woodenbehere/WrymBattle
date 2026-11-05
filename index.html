@@ -246,7 +246,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.6.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v2.7.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -258,6 +258,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
     <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Limit command appears.</p>
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
+<p><b>The hidden valley</b>: high in the island’s great mountain range lies a valley no road can reach. Fly the Aurora there to find Castle Arcanum and the village of Highmere, with the strongest spells, items and gear in the realm. The magi can raise the lost <b>Isle of Aether</b>, but its winds turn back the airship. King Aldous can build you a port and a ship: walk onto the dock to board, sail the open sea, and steer into any shore to land. The <b>Tower of Aether</b> has a hundred floors, guardians on floors 25, 50 and 75, waystones every tenth floor, and Zephyrion the Sky Wyrm at the top.</p>
 <p><b>Status ailments</b>: some monsters poison (HP drains over time), petrify (the hero is out of the fight until cured) or confuse (the hero attacks at random). Cure them with Antidotes, Gold Needles, Remedies, or the <b>Heal</b> spell. Ailments wear off when a battle ends. A <b>Ribbon</b> blocks them all. <b>Exit</b> warps the party out of a dungeon from the menu. In Ironhold, the <b>Rune Hall</b> sells Firaga, Bio and the summons Ifrit, Titan and Bahamut, and the <b>Training Hall</b> teaches the Fighter monk arts (learn three to become a Monk) and the Thief new tricks.</p>
 <p><b>Deepdelve Mine</b>: on the northern cape, sealed until you finish King Aldous’s Hill Ogre quest and defeat Frostfang. Then a mine shaft drops five levels to Ironhold, the dwarf city. Read the old tablets on the Sky Road, slay Gravemaw the Earth Wyrm to free the trapped dwarves, and their King and Queen can blast free the airship <b>Aurora</b>. Walk aboard to fly anywhere on the world map with no random battles; choose <b>Land</b> to set down on open ground.</p>
 <p><b>Castle Valemont</b>: walk in to meet the King and Queen, rest in the guest rooms, raid the armory, and earn your way into the royal vault. Walk into people to talk to them.</p>
@@ -469,9 +470,10 @@ let S=null, kb=false;
 function newGame(noBattle){
   const mode=S?S.mode:'wait';
   const auto=S?S.auto:{on:false,strat:'balanced',who:Object.fromEntries(ORDER.map(k=>[k,true])),habit:{}};
-  S={t:S?S.t:0,mode,auto,paused:false,scene:'battle',log:[],items:{potion:4,hipotion:0,ether:2,feather:2,elixir:0,tent:3,antidote:2,goldneedle:1,remedy:0},parts:[],fx:[],
+  S={t:S?S.t:0,mode,auto,paused:false,scene:'battle',log:[],items:{potion:4,hipotion:0,ether:2,feather:2,elixir:0,tent:3,antidote:2,goldneedle:1,remedy:0,xpotion:0,hiether:0,megalixir:0},parts:[],fx:[],
     heroes:ORDER.map((k,i)=>({key:k,...CL[k],maxhp:CL[k].hp,maxmp:CL[k].mp,i,atb:k==='thief'?94:rnd(15,65),ready:false,queued:false,ko:false,defend:false,guard:false,protect:0,dx:0,flash:0,cast:null,row:ROW0[k],limit:0,dy:0,x:0,y:58+i*18})),
     world:{x:WORLD.start.x,y:WORLD.start.y,danger:16,enc:true,face:-1,dist:0,walkT:0,steps:0,moving:false,camping:false,lastLand:'peak',place:''}};
+  if(WORLD&&((WORLD.isle&&WORLD.isle.up)||WORLD.portUp))buildWorld();
   for(const h of S.heroes)initHero(h);S.gil=300;S.bag={};S.wyrmDone=false;S.flags={chests:{}};S.quests={};S.kills={};S.dragon=makeEnemy('wyrm');S.foes=[S.dragon];
   buildParty();if(!noBattle)startBattle('wyrm');
 }
@@ -526,6 +528,7 @@ function drawDragon(t){
   const L2=d.look===2;
   let B=L2?'#4a1d1a':'#8e2b1f',D=L2?'#2a0e0d':'#5b1712',BEL=L2?'#ff9a3a':'#d9a24e',BEL2=L2?'#d8541c':'#a87634',MEM=L2?'#a3300f':'#4e1517',MEM2=L2?'#d9481a':'#742420',
     RIB=L2?'#ffcf6a':'#260808',RIB2=L2?'#ffb03a':'#3a0e0c',HORN=L2?'#3b2a24':'#e9dcbf',EYE=L2?'#9fe6ff':'#ffe14a',TOOTH=L2?'#ffe9c4':'#f2ead6',SP=L2?'#ff7a2a':'#5b1712';
+  if(d.look===5)({B,D,BEL,BEL2,MEM,MEM2,RIB,RIB2,HORN,EYE,TOOTH,SP}={B:'#e8e8f0',D:'#9aaac8',BEL:'#fff3c4',BEL2:'#e8c068',MEM:'#3a8ab8',MEM2:'#5ab8d8',RIB:'#ffffff',RIB2:'#e8f8ff',HORN:'#ffd34a',EYE:'#ff5a8a',TOOTH:'#ffffff',SP:'#86e0ff'});
   if(d.look===4)({B,D,BEL,BEL2,MEM,MEM2,RIB,RIB2,HORN,EYE,TOOTH,SP}={B:'#7a6040',D:'#4a3a24',BEL:'#c8b080',BEL2:'#a08858',MEM:'#5a4a30',MEM2:'#7a6a48',RIB:'#d8c8a0',RIB2:'#b8a880',HORN:'#e8dcc0',EYE:'#7aff5a',TOOTH:'#ffffff',SP:'#9a9a8a'});
   if(d.look===3)({B,D,BEL,BEL2,MEM,MEM2,RIB,RIB2,HORN,EYE,TOOTH,SP}={B:'#5a86b8',D:'#2a4a78',BEL:'#d8f0ff',BEL2:'#a8c8e8',MEM:'#2e4e80',MEM2:'#4a72b0',RIB:'#e8f8ff',RIB2:'#bfe0f8',HORN:'#ffffff',EYE:'#ff5a8a',TOOTH:'#ffffff',SP:'#bfe0f8'});
   // far wing
@@ -695,6 +698,9 @@ async function doHero(h,kind,id,tg){
     if(id==='antidote'){healFx(tg);cureStatus(tg,'poison');}
     if(id==='goldneedle'){healFx(tg);cureStatus(tg,'stone');}
     if(id==='remedy'){healFx(tg);cureStatus(tg);}
+    if(id==='xpotion'){healFx(tg);heal(tg,tg.maxhp);}
+    if(id==='hiether'){healFx(tg);tg.mp=Math.min(tg.maxmp,tg.mp+200);pop(tg.x,tg.y-12,'+200 MP','mpp');}
+    if(id==='megalixir'){for(const x of S.heroes)if(!x.ko){healFx(x);heal(x,x.maxhp);x.mp=x.maxmp;}}
     await sleep(500);return;
   }
   const sk=SK[id];
@@ -755,6 +761,7 @@ async function dragonAct(){
   const d=S.dragon;d.queued=false;d.atb=0;if(d.dead||!alive().length)return;d.turns++;
   if(d.variant==='frost')return frostAct(d);
   if(d.variant==='earth')return earthAct(d);
+  if(d.variant==='sky')return skyAct(d);
   const p2=d.phase===2;
   if(d.charging){d.charging=false;d.lastInferno=d.turns;return p2?breathAtk('Inferno',900,980,true):breathAtk('Inferno',820,900,true);}
   if((p2||d.hp<d.max*.5)&&d.turns-d.lastInferno>=(p2?4:5)){d.charging=true;banner('');say('The wyrm draws a long, rumbling breath…');await sleep(700);return;}
@@ -844,6 +851,7 @@ Object.assign(MON,{
 for(const k in MON){const m=MON[k];m.h=m.map.length;m.w=Math.max(...m.map.map(r=>r.length));}
 const SK_EL={flame:'fire',frost:'ice',thunder:'thunder',undine:'water'};
 function elemMult(elem,d=S.dragon){if(!elem||!d)return 1;
+  if(d.kind==='wyrm'&&d.variant==='sky'){if(elem==='thunder')return -1;if(elem==='earth')return 2;if(elem==='ice')return 1.5;if(elem==='water')return .5;return 1;}
   if(d.kind==='wyrm'&&d.variant==='earth'){if(elem==='earth')return -1;if(elem==='water')return 2;if(elem==='ice')return 1.5;if(elem==='thunder')return .5;return 1;}
   if(d.kind==='wyrm'&&d.variant==='frost'){if(elem==='ice')return -1;if(elem==='fire')return 2;if(elem==='water')return .5;return 1;}
   if(d.kind==='wyrm'){if(elem==='fire')return -1;const p2=d.phase===2;if(elem==='ice')return p2?.5:2;if(elem==='water')return p2?2:1.5;return 1;}
@@ -862,6 +870,7 @@ function layoutFoes(){
   S.foes.forEach((f,i)=>{const m=MON[f.kind];f.s=(m.big||n===1)?m.scale:3;f.bx=SL[i][0];f.by=SL[i][1];f.ax=f.bx;f.ay=Math.round(f.by-m.h*f.s/2);});
 }
 function makeEnemy(kind,n=1){
+  if(kind==='skywyrm')return{kind:'wyrm',variant:'sky',name:'Zephyrion',label:'Zephyrion',phase:1,look:5,hp:90000,max:90000,atb:rnd(0,20),queued:false,dx:0,flash:0,jaw:0,charging:false,lastInferno:0,turns:0,steals:3,alpha:1,dead:false,gone:false,mouth:{x:150,y:62}};
   if(kind==='earthwyrm')return{kind:'wyrm',variant:'earth',name:'Gravemaw',label:'Gravemaw',phase:1,look:4,hp:40000,max:40000,atb:rnd(0,20),queued:false,dx:0,flash:0,jaw:0,charging:false,lastInferno:0,turns:0,steals:3,alpha:1,dead:false,gone:false,mouth:{x:150,y:62}};
   if(kind==='frostwyrm')return{kind:'wyrm',variant:'frost',name:'Frostfang',label:'Frostfang',phase:1,look:3,hp:32000,max:32000,atb:rnd(0,20),queued:false,dx:0,flash:0,jaw:0,charging:false,lastInferno:0,turns:0,steals:3,alpha:1,dead:false,gone:false,mouth:{x:150,y:62}};
   if(kind==='wyrm')return{kind,name:'Ember Wyrm',phase:1,look:1,hp:16000,max:16000,atb:rnd(0,20),queued:false,dx:0,flash:0,jaw:0,charging:false,lastInferno:-99,turns:0,steals:4,alpha:1,dead:false,gone:false,mouth:{x:150,y:62}};
@@ -905,9 +914,10 @@ function makeFieldBg(theme){
 
 /* ---------- world map ---------- */
 const WT=96,HT=64,TS=16;
-const T_DEEP=0,T_SHAL=1,T_SAND=2,T_GRASS=3,T_FOREST=4,T_HILLS=5,T_MTN=6,T_DESERT=7,T_ASH=8,T_TOWN=9,T_CASTLE=10,T_PEAK=11,T_WALL=12,T_ROAD=13,T_HOUSE=14,T_LAWN=15,T_CAVE=16,T_DELVE=17;
+const T_DEEP=0,T_SHAL=1,T_SAND=2,T_GRASS=3,T_FOREST=4,T_HILLS=5,T_MTN=6,T_DESERT=7,T_ASH=8,T_TOWN=9,T_CASTLE=10,T_PEAK=11,T_WALL=12,T_ROAD=13,T_HOUSE=14,T_LAWN=15,T_CAVE=16,T_DELVE=17,T_TOWER=18,T_ARC=19,T_PORT=20;
 const BLOCKED=new Set([T_DEEP,T_SHAL,T_MTN,T_PEAK,T_WALL,T_HOUSE]);
-function genWorld(seed){
+const ENTRANCES=new Set([T_TOWN,T_CASTLE,T_CAVE,T_DELVE,T_TOWER,T_ARC]);
+function genWorld(seed,opt){opt=opt||{};
   const hash=(i,j,s)=>{let n=Math.imul(i,374761393)+Math.imul(j,668265263)+Math.imul(s,1442695041);n=Math.imul(n^(n>>>13),1274126177);n^=n>>>16;return (n>>>0)/4294967296;};
   const sm=t=>t*t*(3-2*t);
   const vnoise=(x,y,s)=>{const i=Math.floor(x),j=Math.floor(y),fx=sm(x-i),fy=sm(y-j);
@@ -968,8 +978,35 @@ function genWorld(seed){
   // Deepdelve Mine: the northernmost open tile you can walk to
   let delve=null;for(let y=1;y<HT-1&&!delve;y++){const row=[];for(let x=1;x<WT-1;x++){const k=y*WT+x;if(seen[k]&&[T_GRASS,T_SAND,T_FOREST,T_HILLS,T_DESERT].includes(tiles[k]))row.push(x);}if(row.length)delve={x:row[Math.floor(row.length/2)],y};}
   if(delve){tiles[delve.y*WT+delve.x]=T_DELVE;lands.push({id:'delve',name:'Deepdelve Mine',spr:'town',size:20,x:(delve.x+.5)*TS,y:(delve.y+.5)*TS,msg:'Deepdelve Mine. Warm air rises from a timbered shaft on the northern cape.'});}
+  // a hidden valley in the mountains, walled in by peaks so only an airship can reach it
+  let valley=null;{const bw=11,bh=9,cands=[];
+    for(let y=2;y<HT-bh-2;y++)for(let x=2;x<WT-bw-2;x++){let m=0,bad=false;for(let yy=y;yy<y+bh&&!bad;yy++)for(let xx=x;xx<x+bw;xx++){const t=tiles[yy*WT+xx];if(t===T_MTN)m++;else if(![T_HILLS,T_FOREST,T_GRASS,T_DESERT].includes(t)){bad=true;break;}}
+      if(!bad&&m>=bw*bh*.6&&(!cave||Math.max(Math.abs(cave.x-(x+5)),Math.abs(cave.y-(y+4)))>4))cands.push({x,y,m});}
+    cands.sort((a,b)=>b.m-a.m);
+    const flood=inB=>{const s2=new Uint8Array(WT*HT),q=[start.y*WT+start.x];s2[q[0]]=1;
+      while(q.length){const k=q.pop(),x=k%WT,y=(k/WT)|0;for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const X=x+dx,Y=y+dy;if(X<0||Y<0||X>=WT||Y>=HT||(inB&&inB(X,Y)))continue;const K=Y*WT+X;if(!s2[K]&&!BLOCKED.has(tiles[K])){s2[K]=1;q.push(K);}}}return s2;};
+    const base=flood(null),ok=(bx,by)=>{const inB=(x,y)=>x>=bx&&x<bx+bw&&y>=by&&y<by+bh,r=flood(inB);for(let k=0;k<WT*HT;k++)if(base[k]&&!r[k]&&!inB(k%WT,(k/WT)|0))return false;return true;};
+    for(const c of cands.slice(0,40))if(ok(c.x,c.y)){valley={x:c.x+5,y:c.y+4,bx:c.x,by:c.y};break;}
+    if(valley){for(let yy=valley.by;yy<valley.by+bh;yy++)for(let xx=valley.bx;xx<valley.bx+bw;xx++){const dx=(xx-valley.x)/3.6,dy=(yy-valley.y)/2.6;tiles[yy*WT+xx]=dx*dx+dy*dy<=1?T_GRASS:T_MTN;}
+      for(const[x,y]of[[2,1],[3,0],[-3,0]])set(valley.x+x,valley.y+y,T_FOREST);
+      set(valley.x,valley.y-1,T_ARC);set(valley.x-2,valley.y+1,T_TOWN);
+      lands.push({id:'arcanum',name:'Castle Arcanum',spr:'castle',size:30,x:(valley.x+.5)*TS,y:(valley.y-.3)*TS,msg:'Castle Arcanum. Violet spires rise from a valley no road can reach.'});
+      lands.push({id:'highmere',name:'Highmere',spr:'town',size:26,x:(valley.x-1.5)*TS,y:(valley.y+1.7)*TS,msg:'Highmere, the hidden village of the magi.'});}}
+  // the Isle of Aether, sunk in the northwestern sea until the magi raise it
+  let isle=null;{let best=null,bd=1e9;for(let y=6;y<HT/2;y++)for(let x=9;x<WT/2;x++){let ok=true;for(let yy=-6;yy<=6&&ok;yy++)for(let xx=-9;xx<=9;xx++){const X=x+xx,Y=y+yy;if(X<0||Y<0||X>=WT||Y>=HT||tiles[Y*WT+X]!==T_DEEP){ok=false;break;}}if(ok){const d=(x-10)**2+(y-8)**2;if(d<bd){bd=d;best={x,y};}}}
+    if(best){isle={cx:best.x,cy:best.y,set:new Set(),tiles:new Map(),up:!!opt.isle};
+      for(let yy=-4;yy<=4;yy++)for(let xx=-6;xx<=6;xx++){const r=Math.sqrt((xx/6.2)**2+(yy/4.2)**2)+(hash(xx+50,yy+50,seed+31)-.5)*.18;if(r>1)continue;const k=(best.y+yy)*WT+best.x+xx;
+        isle.set.add(k);isle.tiles.set(k,xx===0&&yy===0?T_TOWER:r>.76?T_SAND:(hash(xx+80,yy+80,seed+37)<.3&&r>.35?T_FOREST:T_GRASS));}
+      if(isle.up){for(const[k,t]of isle.tiles)tiles[k]=t;lands.push({id:'tower',name:'Tower of Aether',spr:'town',size:20,x:(best.x+.5)*TS,y:(best.y+.5)*TS,msg:'The Tower of Aether. Its top is lost in the clouds.'});}}}
+  // a port on the mainland coast nearest the isle, built later by Valemont's shipwrights
+  let port=null;if(isle){const isW=t=>t===T_DEEP||t===T_SHAL,wr=new Uint8Array(WT*HT),q=[];
+    for(const k of isle.set){const x=k%WT,y=(k/WT)|0;for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const K=(y+dy)*WT+x+dx;if(!isle.set.has(K)&&isW(tiles[K])&&!wr[K]){wr[K]=1;q.push(K);}}}
+    while(q.length){const k=q.shift(),x=k%WT,y=(k/WT)|0;for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const X=x+dx,Y=y+dy;if(X<0||Y<0||X>=WT||Y>=HT)continue;const K=Y*WT+X;if(!wr[K]&&!isle.set.has(K)&&isW(tiles[K])){wr[K]=1;q.push(K);}}}
+    let bd=1e9;for(let k=0;k<WT*HT;k++){if(!seen[k]||(tiles[k]!==T_SAND&&tiles[k]!==T_GRASS))continue;const x=k%WT,y=(k/WT)|0;let wn=null;
+      for(const[dx,dy]of[[0,-1],[-1,0],[1,0],[0,1]]){const X=x+dx,Y=y+dy;if(wr[Y*WT+X]){wn={x:X,y:Y};break;}}if(!wn)continue;const d=(x-isle.cx)**2+(y-isle.cy)**2;if(d<bd){bd=d;port={x,y,wx:wn.x,wy:wn.y};}}
+    if(port&&opt.port){tiles[port.y*WT+port.x]=T_PORT;lands.push({id:'port',name:'Western Port',spr:'town',size:16,x:(port.x+.5)*TS,y:(port.y+.5)*TS,msg:'The Western Port. Valemont’s new ship rocks at the dock.'});}}
   const counts={};for(const t of tiles)counts[t]=(counts[t]||0)+1;
-  return {tiles,at,start:{x:(start.x+.5)*TS,y:(start.y+.5)*TS},lands,reach,counts,town,castle,village,village2,cave,delve};
+  return {tiles,at,start:{x:(start.x+.5)*TS,y:(start.y+.5)*TS},lands,reach,counts,town,castle,village,village2,cave,delve,valley,isle,port,portUp:!!(port&&opt.port)};
 }
 
 const WSEED=16,PAD=160,PY=H/2+7;
@@ -981,11 +1018,12 @@ function drawMini(){
   mctx.imageSmoothingEnabled=false;mctx.drawImage(base,0,0);
   const on=Math.floor(S.t*4)%2===0,sc=castle?3:1,px=castle?S.cpos.x/CT:S.world.x/TS,py=castle?S.cpos.y/CT:S.world.y/TS;
   if(castle){mctx.fillStyle='#86b4f2';for(const n of NPCS){if(n.when&&!n.when())continue;mctx.fillRect(n.x*sc+1,n.y*sc+1,1,1);}}
-  else{for(const l of WORLD.lands){mctx.fillStyle=l.id==='peak'?'#ff7a2a':l.id==='castle'?'#ffffff':l.id==='mountain'?'#bfefff':l.id==='delve'?'#ffd34a':'#ff6a4a';mctx.fillRect(Math.floor(l.x/TS)-1,Math.floor(l.y/TS)-1,3,3);}
+  else{for(const l of WORLD.lands){mctx.fillStyle=l.id==='peak'?'#ff7a2a':l.id==='castle'?'#ffffff':l.id==='mountain'?'#bfefff':l.id==='delve'?'#ffd34a':l.id==='arcanum'?'#b48cff':l.id==='tower'?'#ffffff':l.id==='port'?'#c8a870':'#ff6a4a';mctx.fillRect(Math.floor(l.x/TS)-1,Math.floor(l.y/TS)-1,3,3);}
+    const bt=S.flags&&S.flags.boat;if(bt&&!bt.boarded&&bt.x!=null){mctx.fillStyle='#f0f0f0';mctx.fillRect(Math.floor(bt.x/TS)-1,Math.floor(bt.y/TS),2,2);}
     const sh=S.flags&&S.flags.ship;if(sh&&!sh.boarded&&sh.x!=null){mctx.fillStyle='#86e0ff';mctx.fillRect(Math.floor(sh.x/TS)-1,Math.floor(sh.y/TS),3,2);}}
   mctx.fillStyle=on?'#ffffff':'#ff3a3a';mctx.fillRect(Math.round(px*sc)-1,Math.round(py*sc)-1,castle?3:2,castle?3:2);
 }
-const TILE_NAME={[T_DELVE]:'Deepdelve Mine',[T_DEEP]:'Open Sea',[T_SHAL]:'Shallows',[T_MTN]:'Mountains',[T_WALL]:'Castle Wall',[T_HOUSE]:'Valemont Village',[T_CAVE]:'Frostfang Trail',[T_LAWN]:'Castle Grounds',[T_ROAD]:'Valemont Road',[T_SAND]:'Coast',[T_GRASS]:'Grasslands',[T_FOREST]:'Forest',[T_HILLS]:'Hills',[T_DESERT]:'Desert',[T_ASH]:'Ashlands',[T_TOWN]:'Thornwick',[T_CASTLE]:'Castle Valemont'};
+const TILE_NAME={[T_TOWER]:'Tower of Aether',[T_ARC]:'Castle Arcanum',[T_PORT]:'Western Port',[T_DELVE]:'Deepdelve Mine',[T_DEEP]:'Open Sea',[T_SHAL]:'Shallows',[T_MTN]:'Mountains',[T_WALL]:'Castle Wall',[T_HOUSE]:'Valemont Village',[T_CAVE]:'Frostfang Trail',[T_LAWN]:'Castle Grounds',[T_ROAD]:'Valemont Road',[T_SAND]:'Coast',[T_GRASS]:'Grasslands',[T_FOREST]:'Forest',[T_HILLS]:'Hills',[T_DESERT]:'Desert',[T_ASH]:'Ashlands',[T_TOWN]:'Thornwick',[T_CASTLE]:'Castle Valemont'};
 const ENC={
  [T_GRASS]:[['thornhare'],['thornhare','thornhare'],['goblin','goblin'],['goblin','thornhare','goblin'],['slime'],['goblin']],
  [T_FOREST]:[['wolf'],['wolf','wolf'],['mandrake','slime'],['bat','bat','bat'],['mandrake'],['wolf','mandrake']],
@@ -995,7 +1033,7 @@ const ENC={
  [T_ASH]:[['salamander'],['salamander','imp'],['imp','imp','imp'],['salamander','salamander']]};
 const RATE={[T_FOREST]:1.4,[T_DESERT]:1.2,[T_HILLS]:1.2,[T_ASH]:1.1};
 function buildWorld(){
-  WORLD=genWorld(WSEED);
+  WORLD=genWorld(WSEED,{isle:!!(S&&S.flags&&S.flags.islandUp),port:!!(S&&S.flags&&S.flags.port)});
   const P=PAD/TS,TW=WT+P*2,TH=HT+P*2;
   tex=document.createElement('canvas');tex.width=TW*TS;tex.height=TH*TS;
   const isWater=t=>t===T_DEEP||t===T_SHAL;
@@ -1028,6 +1066,8 @@ function buildWorld(){
         f('#5a3c20',4,9,1,3);f('#5a3c20',11,11,1,2);break;
       case T_DESERT:f('#e0bc68',0,0,16,16);for(let k=0;k<2;k++){const y=3+k*7+((r(k)*3)|0);for(let x=0;x<16;x++){const yy=y+Math.round(Math.sin((x+r(k+3)*8)*.5));f('#c49a48',x,yy);if(x%3===0)f('#f0d890',x,yy-1);}}break;
       case T_DELVE:f('#e8d090',0,0,16,16);f('#d0b070',2,13,3,1);f('#2a1e16',3,5,10,11);f('#120c08',4,6,8,10);f('#7a5a34',2,4,12,2);f('#7a5a34',2,4,2,12);f('#7a5a34',12,4,2,12);f('#a07a48',2,4,12,1);f('#5a3a1e',6,9,4,1);f('#5a3a1e',6,12,4,1);f(fr?'#fff3c4':'#ffd34a',7,1,2,2);f('#5a3a24',7,3,2,1);break;
+      case T_ARC:case T_TOWER:grass();break;
+      case T_PORT:f('#e8d090',0,0,16,16);f('#7a5a34',0,5,16,7);for(let x=1;x<16;x+=3)f('#a07a48',x,5,2,7);f('#5a3a1e',0,11,16,1);f('#5a3a1e',2,12,2,4);f('#5a3a1e',12,12,2,4);break;
       case T_LAWN:grass();break;
       case T_ROAD:f('#c8a870',0,0,16,16);for(let k=0;k<5;k++)f(k%2?'#a88a58':'#dcc08a',(r(k)*15)|0,(r(k+6)*15)|0,k%3?1:2,1);break;
       case T_WALL:{f('#7a7a8a',0,0,16,16);for(let row=0;row<4;row++){const y=row*4+3;f('#55556a',0,y,16,1);const off=row%2?4:0;f('#55556a',off+3,y-3,1,3);f('#55556a',off+11,y-3,1,3);}
@@ -1053,6 +1093,12 @@ function buildWorld(){
       for(const x of[0,24]){f('#3a3a48',x,5,8,27);f('#b8b8c8',x+1,6,6,25);f('#787888',x+5,6,2,25);f('#3858c0',x-1,1,10,5);f('#6888e8',x,1,4,2);f('#24348a',x-1,5,10,1);}
       f('#3a3a48',11,0,10,14);f('#b8b8c8',12,1,8,12);f('#3858c0',10,-1,12,3);f('#e84040',16,-6,1,5);f('#e84040',17,-6,3,2);
       f('#2a2a34',13,22,6,10);f('#5a4a3a',14,23,4,9);f('#ffd34a',15,5,2,3);});
+    if(WORLD.valley){const V=WORLD.valley;at((V.x+P)*TS-4,(V.y-1+P)*TS-14,f=>{f('#2a1a4a',2,10,20,20);f('#8a7ab8',3,11,18,18);f('#6a5a98',3,11,18,2);for(let x=3;x<21;x+=4)f('#8a7ab8',x,8,2,3);
+        for(const x of[0,16]){f('#2a1a4a',x,4,8,26);f('#a89ad8',x+1,5,6,24);f('#6a5a98',x+5,5,2,24);f('#6a48b0',x-1,0,10,5);f('#b48cff',x,0,4,2);}
+        f('#2a1a4a',9,-4,6,20);f('#c8b8f0',10,-3,4,18);f('#6a48b0',8,-8,8,5);f('#b48cff',9,-8,3,2);f(fr?'#fff3c4':'#ffd34a',11,-12,2,4);f('#1e1a2a',10,22,4,8);f('#86e0ff',11,2,2,3);});
+      at((V.x-2+P)*TS,(V.y+1+P)*TS,f=>{const house=(x,y,roof,dark)=>{f('#3a2418',x-1,y+2,9,6);f('#f0e0b8',x,y+3,7,5);f(roof,x-1,y,9,3);f(dark,x-1,y+2,9,1);f('#5a3a24',x+3,y+5,1,3);};house(1,1,'#6a48b0','#46286e');house(8,6,'#3a5ab0','#24348a');f(fr?'#fff3c4':'#ffd34a',12,1,2,2);});}
+    if(WORLD.isle&&WORLD.isle.up){const I=WORLD.isle;at((I.cx+P)*TS,(I.cy+P)*TS-44,f=>{f('#5a6a8a',1,6,14,54);f('#e8e8f0',2,6,12,54);f('#c8c8d8',10,6,4,54);for(let y=12;y<58;y+=9){f('#86e0ff',2,y,12,1);f('#3a4a6a',6,y+3,3,4);}
+        f('#5a6a8a',3,0,10,7);f('#ffffff',4,1,8,5);f(fr?'#fff6c0':'#ffe14a',7,-4,2,4);f('#1e1a2a',6,52,4,8);});}
   }
   const c=tex.getContext('2d');c.fillStyle='#2048b8';c.fillRect(0,0,tex.width,tex.height);
   for(let ty=-P;ty<HT+P;ty++)for(let tx=-P;tx<WT+P;tx++)drawTile(c,tx,ty,0);
@@ -1060,7 +1106,7 @@ function buildWorld(){
   tex2=document.createElement('canvas');tex2.width=tex.width;tex2.height=tex.height;const c2=tex2.getContext('2d');c2.drawImage(tex,0,0);
   for(let ty=-P;ty<HT+P;ty++)for(let tx=-P;tx<WT+P;tx++){const t=WORLD.at(tx,ty);if(isWater(t)||t===T_ASH||t===T_PEAK||t===T_DELVE)drawTile(c2,tx,ty,1);}
   drawLandmarks(c2,1);
-  const MC={[T_DEEP]:'#1a3a9a',[T_SHAL]:'#3068d8',[T_SAND]:'#e8d090',[T_GRASS]:'#48a838',[T_FOREST]:'#1d5a24',[T_HILLS]:'#7ab04a',[T_MTN]:'#8a6a48',[T_DESERT]:'#e0bc68',[T_ASH]:'#5a4640',[T_PEAK]:'#ff7a2a',[T_TOWN]:'#ff6a4a',[T_CASTLE]:'#ffffff',[T_WALL]:'#d0d0d8',[T_ROAD]:'#c8a870',[T_HOUSE]:'#c84a2a',[T_LAWN]:'#5ab848',[T_CAVE]:'#e8f0ff',[T_DELVE]:'#ffd34a'};
+  const MC={[T_DEEP]:'#1a3a9a',[T_SHAL]:'#3068d8',[T_SAND]:'#e8d090',[T_GRASS]:'#48a838',[T_FOREST]:'#1d5a24',[T_HILLS]:'#7ab04a',[T_MTN]:'#8a6a48',[T_DESERT]:'#e0bc68',[T_ASH]:'#5a4640',[T_PEAK]:'#ff7a2a',[T_TOWN]:'#ff6a4a',[T_CASTLE]:'#ffffff',[T_WALL]:'#d0d0d8',[T_ROAD]:'#c8a870',[T_HOUSE]:'#c84a2a',[T_LAWN]:'#5ab848',[T_CAVE]:'#e8f0ff',[T_DELVE]:'#ffd34a',[T_TOWER]:'#ffffff',[T_ARC]:'#b48cff',[T_PORT]:'#a07a48'};
   worldMini=document.createElement('canvas');worldMini.width=WT;worldMini.height=HT;const mc=worldMini.getContext('2d');
   for(let y=0;y<HT;y++)for(let x=0;x<WT;x++){mc.fillStyle=MC[WORLD.at(x,y)]||'#000';mc.fillRect(x,y,1,1);}
 }
@@ -1070,10 +1116,10 @@ function mapRender(dt){
   const w=S.world,T=Math.floor(S.t*1.6)%2?tex2:tex;
   ctx.fillStyle='#2048b8';ctx.fillRect(0,0,W,H);
   ctx.drawImage(T,Math.round(w.x-W/2)+PAD,Math.round(w.y-H/2)+PAD,W,H,0,0,W,H);
-  drawParkedShip();drawWalker();
+  drawParkedShip();drawParkedBoat();drawWalker();
 }
 function drawWalker(){
-  const w=S.world;if(w.camping)return;{const sh=S.flags&&S.flags.ship;if(sh&&sh.boarded){const b=Math.round(Math.sin(S.t*2.2)*1.5);ctx.fillStyle='rgba(0,0,0,.22)';ell(ctx,W/2,PY+3,11,2.2);drawShip(ctx,W/2,PY-9+b,1,w.face<0,true);return;}}const lead=S.heroes.find(h=>!h.ko)||S.heroes[0];
+  const w=S.world;if(w.camping||S.isleView)return;{const bt=S.flags&&S.flags.boat;if(bt&&bt.boarded){drawBoat(ctx,W/2,PY+3+Math.round(Math.sin(S.t*2)),w.face<0);return;}}{const sh=S.flags&&S.flags.ship;if(sh&&sh.boarded){const b=Math.round(Math.sin(S.t*2.2)*1.5);ctx.fillStyle='rgba(0,0,0,.22)';ell(ctx,W/2,PY+3,11,2.2);drawShip(ctx,W/2,PY-9+b,1,w.face<0,true);return;}}const lead=S.heroes.find(h=>!h.ko)||S.heroes[0];
   const bob=w.moving&&Math.floor(w.walkT*8)%2?1:0;
   ctx.fillStyle='rgba(0,0,0,.3)';ell(ctx,W/2,PY,5,1.5);
   drawSprite(ctx,SPR[lead.key],W/2,PY-bob,{flip:w.face>0});
@@ -1091,20 +1137,23 @@ stage.addEventListener('pointerup',endSteer);stage.addEventListener('pointercanc
 function nearLand(){const w=S.world;for(const l of WORLD.lands)if(Math.hypot(l.x-w.x,l.y-w.y)<(l.id==='peak'?40:22))return l;return null;}
 function placeName(){const l=nearLand();return l?l.name:(TILE_NAME[tileAt(S.world.x,S.world.y)]||'Wilds');}
 function mapUpdate(dt){
-  const w=S.world;if(w.camping||S.paused){w.moving=false;return;}
+  const w=S.world;if(w.camping||S.paused||S.cut){w.moving=false;return;}
   let vx=0,vy=0;
   if(keys.arrowleft||keys.a)vx-=1;if(keys.arrowright||keys.d)vx+=1;if(keys.arrowup||keys.w)vy-=1;if(keys.arrowdown||keys.s)vy+=1;
   if(steer){const L=Math.hypot(steer.x,steer.y);if(L>5){vx=steer.x/L;vy=steer.y/L;}}
   const L=Math.hypot(vx,vy);w.moving=L>0;if(!L)return;
-  vx/=L;vy/=L;const sh=S.flags&&S.flags.ship,fly=!!(sh&&sh.boarded),sp=(fly?150:72)*dt,ox=w.x,oy=w.y;
-  if(fly){w.x=Math.max(TS,Math.min(WT*TS-TS,w.x+vx*sp));w.y=Math.max(TS,Math.min(HT*TS-TS,w.y+vy*sp));}
+  vx/=L;vy/=L;const sh=S.flags&&S.flags.ship,fly=!!(sh&&sh.boarded),bt=S.flags&&S.flags.boat,sail=!!(bt&&bt.boarded&&!fly),sp=(fly?150:sail?110:72)*dt,ox=w.x,oy=w.y;
+  if(sail){const wet=(x,y)=>{const t=tileAt(x,y);return t===T_DEEP||t===T_SHAL;};if(wet(w.x+vx*sp,w.y))w.x+=vx*sp;if(wet(w.x,w.y+vy*sp))w.y+=vy*sp;if(Math.abs(vx)>.2)w.face=vx>0?1:-1;
+    if(w.x===ox&&w.y===oy){const ax=w.x+vx*12,ay=w.y+vy*12,t=tileAt(ax,ay);if(!BLOCKED.has(t)&&!ENTRANCES.has(t)){Object.assign(bt,{boarded:false,x:w.x,y:w.y,lock:true,flip:w.face<0});w.x=(Math.floor(ax/TS)+.5)*TS;w.y=(Math.floor(ay/TS)+.5)*TS;w.townLock=true;say('The party wades ashore. Walk back to the ship to set sail again.');renderMenu();saveGame();}w.moving=false;return;}}
+  else if(!fly&&bt&&bt.x!=null){if(bt.lock){if(Math.hypot(w.x-bt.x,w.y-bt.y)>20)bt.lock=false;}else if(Math.hypot(w.x+vx*10-bt.x,w.y+vy*10-bt.y)<12){bt.boarded=true;w.x=bt.x;w.y=bt.y;w.moving=false;say('All aboard! Sail the open sea, and steer into any shore to land.');renderMenu();saveGame();return;}}
+  if(sail){}else if(fly){w.x=Math.max(TS,Math.min(WT*TS-TS,w.x+vx*sp));w.y=Math.max(TS,Math.min(HT*TS-TS,w.y+vy*sp));}
   else{if(walkable(w.x+vx*sp,w.y))w.x+=vx*sp;if(walkable(w.x,w.y+vy*sp))w.y+=vy*sp;}
   if(Math.abs(vx)>.2)w.face=vx>0?1:-1;w.walkT+=dt;
   const moved=Math.hypot(w.x-ox,w.y-oy);if(!moved){w.moving=false;return;}
   w.dist+=moved;
-  if(fly){w.dist=0;saveT+=dt;if(saveT>8){saveT=0;saveGame();}const pn=placeName();if(pn!==w.place){w.place=pn;renderMenu();}return;}
+  if(fly||sail){w.dist=0;saveT+=dt;if(saveT>8){saveT=0;saveGame();}const pn=placeName();if(pn!==w.place){w.place=pn;renderMenu();}return;}
   if(sh&&sh.x!=null){const dd=Math.hypot(w.x-sh.x,w.y-sh.y);if(sh.lock){if(dd>14)sh.lock=false;}else if(dd<9){sh.boarded=true;w.x=sh.x;w.y=sh.y;w.moving=false;say('All aboard the Aurora! Fly anywhere, then choose Land to set down on open ground.');renderMenu();saveGame();return;}}
-  {const tx=Math.floor(w.x/TS),ty=Math.floor(w.y/TS);if(WORLD.at(tx,ty)===T_CASTLE){if(!w.townLock){enterCastle();return;}}else if(WORLD.at(tx,ty)===T_CAVE){if(!w.townLock){enterInterior('mt1');return;}}else if(WORLD.at(tx,ty)===T_DELVE){if(!w.townLock){w.townLock=true;if(delveOpen()){enterInterior('dd1');return;}showDialog(delveBarred());return;}}else if(WORLD.at(tx,ty)===T_TOWN){if(!w.townLock){const tl=WORLD.lands.find(q=>TOWNS[q.id]&&Math.floor(q.x/TS)===tx&&Math.floor(q.y/TS)===ty);if(tl){enterInterior(tl.id);return;}}}else w.townLock=false;}
+  {const tx=Math.floor(w.x/TS),ty=Math.floor(w.y/TS);if(WORLD.at(tx,ty)===T_CASTLE){if(!w.townLock){enterCastle();return;}}else if(WORLD.at(tx,ty)===T_CAVE){if(!w.townLock){enterInterior('mt1');return;}}else if(WORLD.at(tx,ty)===T_ARC){if(!w.townLock){enterInterior('arcanum');return;}}else if(WORLD.at(tx,ty)===T_TOWER){if(!w.townLock){enterInterior('tw1');return;}}else if(WORLD.at(tx,ty)===T_DELVE){if(!w.townLock){w.townLock=true;if(delveOpen()){enterInterior('dd1');return;}showDialog(delveBarred());return;}}else if(WORLD.at(tx,ty)===T_TOWN){if(!w.townLock){const tl=WORLD.lands.find(q=>TOWNS[q.id]&&Math.floor(q.x/TS)===tx&&Math.floor(q.y/TS)===ty);if(tl){enterInterior(tl.id);return;}}}else w.townLock=false;}
   saveT+=dt;if(saveT>8){saveT=0;saveGame();}
   const l=nearLand(),lid=l?l.id:null;if(lid!==w.lastLand){w.lastLand=lid;if(l)say(l.msg);renderMenu();}
   const pn=placeName();if(pn!==w.place){w.place=pn;renderMenu();}
@@ -1138,9 +1187,9 @@ function startBattle(kind){
   const kinds=Array.isArray(kind)?kind:[kind];S.foes=kinds.map(k=>makeEnemy(k,kinds.length));
   {const cnt={},seen={};for(const f of S.foes)cnt[f.name]=(cnt[f.name]||0)+1;for(const f of S.foes)if(cnt[f.name]>1){seen[f.name]=(seen[f.name]||0)+1;f.label=f.name+' '+'ABCD'[seen[f.name]-1];}}
   layoutFoes();setTarget(S.foes[0]);
-  S.log=[kinds[0]==='wyrm'?'The Ember Wyrm blocks the mountain pass.':kinds[0]==='frostwyrm'?'Frostfang, the Rime Wyrm, descends!':kinds[0]==='earthwyrm'?'Gravemaw, the Earth Wyrm, rises from the stone!':S.foes.length>1?`${S.foes.map(f=>f.label).join(', ')} attack!`:`A ${S.foes[0].name} appears!`];
+  S.log=[kinds[0]==='wyrm'?'The Ember Wyrm blocks the mountain pass.':kinds[0]==='frostwyrm'?'Frostfang, the Rime Wyrm, descends!':kinds[0]==='earthwyrm'?'Gravemaw, the Earth Wyrm, rises from the stone!':kinds[0]==='skywyrm'?'Zephyrion, the Sky Wyrm, descends from the storm!':S.foes.length>1?`${S.foes.map(f=>f.label).join(', ')} attack!`:`A ${S.foes[0].name} appears!`];
   for(const h of S.heroes){Object.assign(h,{atb:h.ko?0:rnd(10,60),ready:false,queued:false,defend:false,guard:false,protect:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,poison:false,stone:false,confuse:false,ptick:0});h.x=homeX(h);}
-  const bgk=kinds[0]==='earthwyrm'?'deep':kinds[0]==='frostwyrm'?'summit':kinds[0]==='wyrm'?null:MON[kinds[0]].bg;if(bgk)makeFieldBg(bgk);else makeBg();S.snow=bgk==='mtn'||bgk==='summit';$('bossBox').dataset.k='';
+  const bgk=kinds[0]==='skywyrm'?'storm':kinds[0]==='earthwyrm'?'deep':kinds[0]==='frostwyrm'?'summit':kinds[0]==='wyrm'?null:MON[kinds[0]].bg;if(bgk)makeFieldBg(bgk);else makeBg();S.snow=bgk==='mtn'||bgk==='summit';$('bossBox').dataset.k='';
   $('over').hidden=true;bannerEl.hidden=true;popsEl.innerHTML='';stage.classList.remove('map','town','castle');
   renderMenu();
 }
@@ -1309,9 +1358,9 @@ function renderTownMenu(){
 }
 function renderMapMenu(){
   const w=S.world;
-  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${S.flags.ship&&S.flags.ship.boarded?'Airship Aurora':'World map'}</span><span class="cls">${esc(w.place||placeName())} · ${fmtG(S.gil)}</span></div>`+
-    (S.flags.ship&&S.flags.ship.boarded?opt('land','Land','',canLand()?'Set the Aurora down here':'Fly over open ground to land',!canLand()):'')+
-    opt('camp','Camp','Tent ×'+(S.items.tent||0),w.camping?'Resting…':S.flags.ship&&S.flags.ship.boarded?'Land the airship first':(S.items.tent?'Use a Tent to restore all HP and MP':'Buy Tents at an item shop'),w.camping||S.scene!=='map'||!S.items.tent||!!(S.flags.ship&&S.flags.ship.boarded))+
+  cmdEl.innerHTML=`<div class="cmd-h"><span class="who">${S.flags.ship&&S.flags.ship.boarded?'Airship Aurora':S.flags.boat&&S.flags.boat.boarded?'At sea':'World map'}</span><span class="cls">${esc(w.place||placeName())} · ${fmtG(S.gil)}</span></div>`+
+    (S.flags.ship&&S.flags.ship.boarded?opt('land','Land','',canLand()?'Set the Aurora down here':overIsle()?'The tower’s winds won’t let her land':'Fly over open ground to land',!canLand()):'')+
+    opt('camp','Camp','Tent ×'+(S.items.tent||0),w.camping?'Resting…':S.flags.ship&&S.flags.ship.boarded?'Land the airship first':(S.items.tent?'Use a Tent to restore all HP and MP':'Buy Tents at an item shop'),w.camping||S.scene!=='map'||!S.items.tent||!!(S.flags.ship&&S.flags.ship.boarded)||!!(S.flags.boat&&S.flags.boat.boarded))+
     opt('party','Party','','Status and equipment')+
     opt('quests','Quests','','Guild bounties')+
     opt('enc','Encounters',w.enc?'on':'off',w.enc?'Random battles while walking':'Walk in peace')+
@@ -1324,7 +1373,7 @@ function mapCmd(a){
   if(S.scene==='castle'){if(a==='leave')return leaveCastle();if(a==='exit')return castExit();if(a==='camp')return dungeonCamp();return;}
   if(S.scene==='town'){if(a==='leave')return leaveTown();if(a==='inn')return innRest();if(a.startsWith('shop:'))return openShop(a.slice(5));return;}
   if(a==='land')return landShip();
-  if(a==='camp'){if(S.flags.ship&&S.flags.ship.boarded)return;if(!S.items.tent){say('You need a Tent to camp. Item shops sell them.');return;}S.items.tent--;camp().then(saveGame);return;}
+  if(a==='camp'){if((S.flags.ship&&S.flags.ship.boarded)||(S.flags.boat&&S.flags.boat.boarded))return;if(!S.items.tent){say('You need a Tent to camp. Item shops sell them.');return;}S.items.tent--;camp().then(saveGame);return;}
   if(a==='enc'){w.enc=!w.enc;say(w.enc?'Random encounters on.':'Random encounters off.');renderMenu();saveGame();}
 }
 
@@ -1412,10 +1461,10 @@ function saveGame(){try{if(!S||!S.wyrmDone||S.scene==='battle'||S.scene==='trans
     items:S.items,bag:S.bag,gil:S.gil,world:{x:S.world.x,y:S.world.y,enc:S.world.enc},town:S.scene==='town'?S.town:null,castle:S.scene==='castle'?{id:S.imap||'castle',x:S.cpos.x,y:S.cpos.y}:null,quests:S.quests,kills:S.kills,lastSave:S.lastSave||null,flags:S.flags,auto:S.auto,mode:S.mode};
   localStorage.setItem(SAVE_KEY,JSON.stringify(d));}catch(e){}}
 function loadGame(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');if(!d||d.v!==1)return false;
-  newGame(true);S.wyrmDone=true;S.gil=d.gil|0;Object.assign(S.items,d.items||{});S.bag=d.bag||{};if(d.auto)S.auto=d.auto;if(d.mode)setMode(d.mode);
+  newGame(true);if(d.flags&&(d.flags.islandUp||d.flags.port)){S.flags=Object.assign({chests:{}},d.flags);buildWorld();}S.wyrmDone=true;S.gil=d.gil|0;Object.assign(S.items,d.items||{});S.bag=d.bag||{};if(d.auto)S.auto=d.auto;if(d.mode)setMode(d.mode);
   for(const sv of d.heroes){const h=S.heroes.find(x=>x.key===sv.key);if(!h)continue;Object.assign(h,{lv:sv.lv,exp:sv.exp,row:sv.row||h.row,limit:sv.limit||0,skills:sv.skills,eq:Object.assign({acc:null,shield:null},sv.eq),ko:!!sv.ko});
     recalc(h);h.hp=Math.min(sv.hp,h.maxhp);h.mp=Math.min(sv.mp,h.maxmp);h.x=homeX(h);}
-  if(d.world&&d.flags&&d.flags.ship&&d.flags.ship.boarded){S.world.x=d.world.x;S.world.y=d.world.y;}else if(d.world){let ok=null;for(let r=0;r<=6*TS&&!ok;r+=TS)for(let a=0;a<8&&!ok;a++){const x=d.world.x+Math.round(Math.cos(a*Math.PI/4))*r,y=d.world.y+Math.round(Math.sin(a*Math.PI/4))*r;if(walkable(x,y))ok={x,y};}if(ok){S.world.x=ok.x;S.world.y=ok.y;}}S.world.enc=d.world?d.world.enc!==false:true;
+  if(d.world&&d.flags&&((d.flags.ship&&d.flags.ship.boarded)||(d.flags.boat&&d.flags.boat.boarded))){S.world.x=d.world.x;S.world.y=d.world.y;}else if(d.world){let ok=null;for(let r=0;r<=6*TS&&!ok;r+=TS)for(let a=0;a<8&&!ok;a++){const x=d.world.x+Math.round(Math.cos(a*Math.PI/4))*r,y=d.world.y+Math.round(Math.sin(a*Math.PI/4))*r;if(walkable(x,y))ok={x,y};}if(ok){S.world.x=ok.x;S.world.y=ok.y;}}S.world.enc=d.world?d.world.enc!==false:true;
   S.lastSave=d.lastSave||null;S.quests=d.quests||{};S.kills=d.kills||{};S.flags=Object.assign({chests:{}},d.flags||{});buildParty();toMap('Welcome back. Your journey continues.');if(d.town&&MAPS[d.town])enterInterior(d.town);else if(d.castle)enterInterior(d.castle.id||'castle',d.castle);return true;}catch(e){return false;}}
 
 
@@ -1434,6 +1483,8 @@ const CHESTS_C={'24,12':{gear:'ironhelm'},'31,12':{gear:'chainvest'},'31,8':{ite
  '25,2':{gil:3000},'30,2':{item:'elixir',n:2},'25,5':{gear:'sagestaff'},'30,5':{gear:'dragoncrest'},'28,1':{gear:'royalblade',grand:true}};
 const NPCS_C=[
  {x:15,y:2,spr:'king',talk:()=>{const f=S.flags;
+   if(f.islandUp&&!f.port){f.port=true;buildWorld();placeBoat();saveGame();return['King Aldous: An island risen from the sea in the northwest? I felt the whole castle shake!','King Aldous: And its winds turn away your airship… Then you need a ship of the sea. My shipwrights have been idle for years!','(Weeks pass as Valemont’s shipwrights work day and night…)','King Aldous: It is done! A port stands on the western coast, nearest the isle, with a sturdy ship tied at the dock.','King Aldous: Walk onto the dock to board her, and sail into any shore to land. Fair winds, heroes!'];}
+   if(f.port&&!f.skyWyrm&&f.sentinel)return['King Aldous: Your ship waits at the Western Port. Climb that tower, and bring the sky back to us.'];
    if(!f.ogre)return["King Aldous: So you are the heroes who slew the Ember Wyrm! Valemont is in your debt.","King Aldous: Yet another beast plagues us. A Hill Ogre raids the farms out in the hills.","King Aldous: Slay it, and I will open the royal vault to you."];
    if(!f.key){f.key=true;buildCastle();saveGame();return["King Aldous: The Hill Ogre is slain! The farmers sing your names.","King Aldous: As promised, take the Royal Key. The vault lies in the northeast of the castle.","Received the Royal Key!"];}
    if(!f.sentinel)return["King Aldous: An old sentinel guards the vault. My grandfather built it, and it knows no friend."].concat(f.wyrm2?[]:["King Aldous: And when you are ready, Frostfang, the Rime Wyrm, still nests atop the peak in the great mountain range."]);
@@ -1451,7 +1502,7 @@ const NPCS_C=[
  {x:28,y:4,spr:'sentinel',when:()=>!S.flags.sentinel,talk:()=>{vaultFight();return null;}}
 ];
 let ROOMS=ROOMS_C,CHESTS=CHESTS_C,NPCS=NPCS_C;
-const C_BLOCK=new Set(['#','w','n','T','B','b','Q','q','P','p','t','K','c','C','L','Y','W','H','d','f','x','J','v','l','F','R','I','j','e','G','M','X','O','V']);
+const C_BLOCK=new Set(['#','w','n','T','B','b','Q','q','P','p','t','K','c','C','L','Y','W','H','d','f','x','J','v','l','F','R','I','j','e','G','M','X','O','V','Z']);
 let CASTLE=null;const ctex=document.createElement('canvas');ctex.width=CW*CT;ctex.height=CH*CT;
 function buildCastle(){
   const g=[];for(let y=0;y<CH;y++)g.push(Array(CW).fill('#'));
@@ -1468,7 +1519,7 @@ function buildCastle(){
   MAPS.castle.grid=g;if(IM===MAPS.castle){CASTLE=g;drawCastleTex();}return g;
 }
 function drawCastleMini(){castleMini=castleMini||document.createElement('canvas');castleMini.width=CW*3;castleMini.height=CH*3;const c=castleMini.getContext('2d');
-  const MCC={R:'#5a5048',m:'#8a7a68',i:'#e8f0f8',I:'#a8d8f8',j:'#1a1820',U:'#ffd34a',N:'#ffd34a','*':'#86b4f2',z:'#e8f0f8',e:'#bfefff','#':'#3a3a46',w:'#3a3a46',n:'#3a3a46',r:'#a82a2a',T:'#a82a2a',D:'#8a6a3a',L:'#7a4a24',E:'#ffd34a',c:'#d8a840',C:'#d8a840','.':'#a89e8a',g:'#48a838',o:'#48a838',s:'#c8b890',a:'#c8a870',Y:'#1d5a24',W:'#d0d0d8',H:'#c84a2a',d:'#ffd34a',u:'#9a6a3a',F:'#4a88e0',f:'#8a6a3a',J:'#ffd34a',x:'#5a3418',v:'#c8b890',l:'#c8b890',k:'#7ab04a',y:'#5a5868',X:'#a8987a',O:'#e84a8a',V:'#ff7a2a',G:'#b48cff',M:'#86e0ff'};const P=IM&&IM.pal,col=t=>P&&t==='m'?P.f[0]:P&&(t==='R'||t==='M')?P.r[1]:P&&t==='G'?P.g[0]:MCC[t]||'#6a6a7a';
+  const MCC={R:'#5a5048',m:'#8a7a68',i:'#e8f0f8',I:'#a8d8f8',j:'#1a1820',U:'#ffd34a',N:'#ffd34a','*':'#86b4f2',z:'#e8f0f8',e:'#bfefff','#':'#3a3a46',w:'#3a3a46',n:'#3a3a46',r:'#a82a2a',T:'#a82a2a',D:'#8a6a3a',L:'#7a4a24',E:'#ffd34a',c:'#d8a840',C:'#d8a840','.':'#a89e8a',g:'#48a838',o:'#48a838',s:'#c8b890',a:'#c8a870',Y:'#1d5a24',W:'#d0d0d8',H:'#c84a2a',d:'#ffd34a',u:'#9a6a3a',F:'#4a88e0',f:'#8a6a3a',J:'#ffd34a',x:'#5a3418',v:'#c8b890',l:'#c8b890',k:'#7ab04a',Z:'#5a3418',A:'#b48cff',y:'#5a5868',X:'#a8987a',O:'#e84a8a',V:'#ff7a2a',G:'#b48cff',M:'#86e0ff'};const P=IM&&IM.pal,col=t=>P&&t==='m'?P.f[0]:P&&(t==='R'||t==='M')?P.r[1]:P&&t==='G'?P.g[0]:MCC[t]||'#6a6a7a';
   for(let y=0;y<CH;y++)for(let x=0;x<CW;x++){c.fillStyle=col(CASTLE[y][x]);c.fillRect(x*3,y*3,3,3);}}
 function drawCastleTex(){drawCastleMini();
   const c=ctex.getContext('2d'),g=CASTLE,opened=k=>S.flags&&S.flags.chests[k];
@@ -1531,7 +1582,7 @@ function castleUpdate(dt){
   // bump into something: talk, open, rest
   const ax=Math.abs(vx)>Math.abs(vy),tx=Math.floor((p.x+(ax?Math.sign(vx)*9:0))/CT),ty=Math.floor((p.y+(ax?0:Math.sign(vy)*9))/CT);
   const key=tx+','+ty;bumpT+=dt;
-  if(!(tx===Math.floor(p.x/CT)&&ty===Math.floor(p.y/CT))&&(npcAt(tx,ty)||'LcCBbQqKwdJMX'.includes(CASTLE[ty]&&CASTLE[ty][tx]))){if(key!==bumpKey||bumpT>1.4){bumpKey=key;bumpT=0;w.moving=false;interact(tx,ty);return;}}
+  if(!(tx===Math.floor(p.x/CT)&&ty===Math.floor(p.y/CT))&&(npcAt(tx,ty)||'LcCBbQqKwdJMXZ'.includes(CASTLE[ty]&&CASTLE[ty][tx]))){if(key!==bumpKey||bumpT>1.4){bumpKey=key;bumpT=0;w.moving=false;interact(tx,ty);return;}}
   else if(moved)bumpKey='';
   if(ctileAt(p.x,p.y)==='E'){leaveCastle();return;}
   {const ct=ctileAt(p.x,p.y),ptx=Math.floor(p.x/CT),pty=Math.floor(p.y/CT);
@@ -1547,6 +1598,7 @@ function interact(tx,ty){
   const t=CASTLE[ty][tx],k=tx+','+ty;
   if(t==='d'){const D=(IM.doors||{})[k];if(!D)return;if(D.shop)return openShop(D.shop);if(D.inn)return innRest();if(D.guild)return enterInterior('guild');if(D.to)return enterInterior(D.to);if(D.house)return showDialog(D.house);return;}
   if(t==='J')return openGuild(false);
+  if(t==='Z')return showDialog(pick(IM.books||[['Rows of dusty books.']]));
   if(t==='M')return showDialog((IM.lore||{})[k]||['Faded carvings cover the stone.']);
   if(t==='X')return showDialog(IM.rubble||['A wall of fused rubble blocks the way.']);
   if(t==='L')return showDialog(['The vault door is locked tight. The lock bears the royal crest.']);
@@ -1567,7 +1619,7 @@ function enterCastle(pos){enterInterior('castle',pos);}
 function leaveCastle(){if(IM&&IM.parent)return enterInterior(IM.parent,IM.parentPos);S.scene='map';stage.classList.remove('castle');stage.classList.add('map');S.world.townLock=true;
   {const tx=Math.floor(S.world.x/TS),ty=Math.floor(S.world.y/TS),opts=[[0,1],[-1,0],[1,0],[0,-1]];
    if(IM&&IM.id==='village'&&WORLD.castle)opts.sort((a,b)=>Math.abs(tx+a[0]-WORLD.castle.x)-Math.abs(tx+b[0]-WORLD.castle.x));
-   for(const[dx,dy]of opts){const t=WORLD.at(tx+dx,ty+dy);if(!BLOCKED.has(t)&&t!==T_TOWN&&t!==T_CASTLE&&t!==T_CAVE&&t!==T_DELVE){S.world.x=(tx+dx)*TS+TS/2;S.world.y=(ty+dy)*TS+TS/2;S.world.townLock=false;break;}}}say(IM&&IM.out||'You step back out into the fields.');renderMenu();saveGame();}
+   for(const[dx,dy]of opts){const t=WORLD.at(tx+dx,ty+dy);if(!BLOCKED.has(t)&&!ENTRANCES.has(t)&&t!==T_PORT){S.world.x=(tx+dx)*TS+TS/2;S.world.y=(ty+dy)*TS+TS/2;S.world.townLock=false;break;}}}say(IM&&IM.out||'You step back out into the fields.');renderMenu();saveGame();}
 function toCastle(msg){
   for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,poison:false,stone:false,confuse:false,ptick:0});
   Object.assign(S,{scene:'castle',over:false,busy:false,menu:null,actQ:[],readyQ:[],fx:[],parts:[],onContinue:null});
@@ -1715,7 +1767,7 @@ function wanderNPCs(dt){
   }
 }
 function enterInterior(id,pos){
-  const M=MAPS[id];IM=M;CW=M.w;CH=M.h;NPCS=M.npcs||[];CHESTS=M.chests||{};ROOMS=M.rooms||[];
+  const M=ensureMap(id);IM=M;CW=M.w;CH=M.h;NPCS=M.npcs||[];CHESTS=M.chests||{};ROOMS=M.rooms||[];
   if(!M.grid||M.dynamic)M.grid=M.build();CASTLE=M.grid;ctex.width=CW*CT;ctex.height=CH*CT;drawCastleTex();
   S.scene='castle';S.imap=id;S.cpos=pos?{x:pos.x,y:pos.y}:{...M.entry};S.world.townLock=true;S.world.moving=false;for(const k in keys)keys[k]=false;steer=null;S.croom=roomName();
   S.cam=null;stage.classList.remove('map','town');stage.classList.add('castle');S.parts=[];say(M.hello);if(M.onEnter)M.onEnter();renderMenu();saveGame();
@@ -1844,6 +1896,8 @@ function drawMtTile(t,tx,ty,f,ch){
     case 'I':floor();f('#5a8ab8',2,3,12,12);f('#a8d8f8',3,3,10,10);f('#e8f8ff',4,4,4,3);f('#86b4f2',10,9,3,3);break;
     case 'j':f('#1a1820',0,0,16,16);f('#2a2630',0,0,16,2);f('#3a3440',2,0,3,1);break;
     case 'e':floor();f('#5a8ab8',5,6,3,8);f('#bfefff',6,4,2,9);f('#86b4f2',9,8,3,6);f('#e8f8ff',10,7,1,5);break;
+    case 'Z':{f('#3a2418',0,0,16,16);f('#5a3418',1,1,14,14);for(const y of[2,7,12]){f('#3a2418',1,y+3,14,1);for(let x=2;x<14;x+=2)f(['#a82a2a','#3a5ab0','#3e8a46','#c8902a','#7a48b0'][(x+y+tx)%5],x,y,1+((x*ty)%2),3);}break;}
+    case 'A':{f('#b4ab98',0,0,16,16);f('#9a9282',0,0,16,1);f('#9a9282',0,0,1,16);const g=Math.floor(S.t*2)%2?'#b48cff':'#86e0ff';f(g,2,2,12,1);f(g,2,13,12,1);f(g,2,2,1,12);f(g,13,2,1,12);f(g,7,4,2,8);f(g,4,7,8,2);break;}
     case 'U':floor();for(let k=0;k<4;k++){f(RC[1],2,13-k*3,12,1);f(snow?'#d8e0e8':P?P.f[2]:'#a89a88',2,11-k*3,12,2);}f('#ffd34a',7,1,2,2);break;
     case 'N':floor();f('#1a1610',2,2,12,12);for(let k=0;k<3;k++)f(RC[0],3+k,4+k*3,10-k*2,2);f('#ffd34a',7,13,2,2);break;
     case '*':floor();{const g=['#86b4f2','#bfefff'];f(g[0],4,2,8,1);f(g[0],4,13,8,1);f(g[0],2,4,1,8);f(g[0],13,4,1,8);f(g[0],3,3,1,1);f(g[0],12,3,1,1);f(g[0],3,12,1,1);f(g[0],12,12,1,1);f(g[1],7,6,2,4);f(g[1],6,7,4,2);f('#ffffff',7,7,2,2);}break;
@@ -1882,8 +1936,8 @@ function caveGen(seed,w,h,o){
   const ring=(x,y,s=1)=>{for(let yy=-1;yy<=s;yy++)for(let xx=-1;xx<=s;xx++)if(!isF(x+xx,y+yy))return false;return true;};
   // stairs down: the farthest tile that has a neighbour to arrive on
   const far=tiles.filter(t=>t.y>1&&nb4(t.x,t.y)>=1&&!(Math.abs(t.x-sx)<3&&Math.abs(t.y-sy)<3)).sort((p,q)=>q.d-p.d)[0];
-  g[sy+1][sx]=o.exit?'E':'U';
-  g[far.y][far.x]='N';
+  g[sy+1][sx]=o.exit?'E':(o.tower?'N':'U');
+  g[far.y][far.x]=o.tower?'U':'N';
   // the tile beside the stairs down that leads back toward the start
   let back=null;for(const[dx,dy]of[[0,1],[1,0],[-1,0],[0,-1]]){const X=far.x+dx,Y=far.y+dy;if(isF(X,Y)&&D.get(X+','+Y)===far.d-1){back={x:X,y:Y};break;}}
   const used=new Set([sx+','+sy,far.x+','+far.y,back.x+','+back.y]);
@@ -1980,12 +2034,12 @@ function drawShip(c,cx,by,sc,flip,lit){
 }
 function drawParkedShip(){const sh=S.flags&&S.flags.ship;if(!sh||sh.boarded||sh.x==null)return;const w=S.world,sx=Math.round(sh.x-w.x+W/2),sy=Math.round(sh.y-w.y+PY);
   if(sx<-40||sx>W+40||sy<-30||sy>H+30)return;ctx.fillStyle='rgba(0,0,0,.28)';ell(ctx,sx,sy+1,12,2.5);drawShip(ctx,sx,sy-2+Math.round(Math.sin(S.t*1.6)),1,sh.flip,false);}
-const LAND_OK=t=>!BLOCKED.has(t)&&![T_TOWN,T_CASTLE,T_CAVE,T_DELVE].includes(t);
+const LAND_OK=t=>!BLOCKED.has(t)&&!ENTRANCES.has(t)&&t!==T_PORT;
 const delveOpen=()=>!!(S.flags.key&&S.flags.wyrm2);
 function delveBarred(){const f=S.flags,need=[];if(!f.key)need.push(f.ogre?'report the Hill Ogre’s defeat to King Aldous':'complete King Aldous’s quest: slay the Hill Ogre in the hills');if(!f.wyrm2)need.push('defeat Frostfang atop Frostfang Peak');
   return['Heavy timbers bar the mouth of Deepdelve Mine. A royal notice is nailed across them:','“Sealed by order of King Aldous. None may enter until the realm’s champions have proven themselves.”','Still to do: '+need.join(', and ')+'.'];}
-function canLand(){return LAND_OK(tileAt(S.world.x,S.world.y));}
-function landShip(){const w=S.world,sh=S.flags.ship;if(!sh||!sh.boarded)return;if(!canLand())return say('No open ground below. Fly over grass, sand, forest or hills to land.');
+
+function landShip(){const w=S.world,sh=S.flags.ship;if(!sh||!sh.boarded)return;if(!canLand())return say(overIsle()?'A howling wind off the Tower of Aether shoves the Aurora away. She cannot land on the isle.':'No open ground below. Fly over grass, sand, forest or hills to land.');
   w.x=(Math.floor(w.x/TS)+.5)*TS;w.y=(Math.floor(w.y/TS)+.5)*TS;Object.assign(sh,{boarded:false,x:w.x,y:w.y,lock:true,flip:w.face<0});
   w.danger=Math.max(w.danger,10);w.townLock=true;say('The Aurora settles gently onto the ground. Walk back aboard to fly again.');renderMenu();saveGame();}
 function placeShip(){const d=WORLD.delve,ok=t=>[T_GRASS,T_SAND,T_FOREST,T_HILLS,T_DESERT].includes(t);let best=null;
@@ -2225,6 +2279,7 @@ async function doHero2(h,id,tg){const d=S.dragon;
         if(p<.5){c.strokeStyle='#b48cff';for(let k=0;k<12;k++){const a=k/12*6.283+p*6,r=70*(1-p*2)+6;c.beginPath();c.moveTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r*.7);c.lineTo(cx,cy);c.stroke();}}
         else{const r=(p-.5)*2*120;c.globalAlpha=1-(p-.5)*1.6;c.fillStyle='#ffffff';c.beginPath();c.arc(cx,cy,r,0,7);c.fill();c.fillStyle='#b48cff';c.beginPath();c.arc(cx,cy,r*.6,0,7);c.fill();c.globalAlpha=1;}});
       flash('#ffffff',600);shake();hitAll(h.mag*POW.bahamut,null);await sleep(450);break;}
+    default:await doHero3(h,id,tg);
   }
 }
 
@@ -2281,6 +2336,218 @@ MAPS.ironhall={id:'ironhall',name:'Royal Hall of Ironhold',w:24,h:16,pal:DD_PAL.
   {x:14,y:12,spr:'dwarf',talk:()=>['Royal Guard: The King hasn’t smiled like that in forty years.']},
   {x:3,y:5,spr:'dwarfgirl',wander:[1,4,5,6],talk:()=>['Royal Maid: Their Majesties’ bedchamber. Mind the furs, they’re older than I am.']},
   {x:20,y:4,spr:'dwarfelder',talk:()=>['Royal Treasurer: The Queen says the treasury chests are yours. Don’t tell the King how much is in them.']}]};
+
+
+/* ---------- v2.7: Castle Arcanum, Highmere, the Isle of Aether and its tower ---------- */
+TOWNS.highmere={name:'Highmere',shops:[],castle:false,hello:'Highmere.'};
+const tintHex=(hex,to,a)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),A=p(hex),B=p(to);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*a).toString(16).padStart(2,'0')).join('');};
+// spells, items and gear of the magi
+Object.assign(SK,{
+ curaga:{name:'Curaga',mp:60,t:'party',d:'Heal the whole party greatly'},
+ arise:{name:'Arise',mp:80,t:'ko',d:'Revive an ally with full HP'},
+ flare:{name:'Flare',mp:70,t:'enemy',d:'Searing non-elemental blast'},
+ meteor:{name:'Meteor',mp:120,t:'enemy',all:true,d:'Call down meteors on every enemy'},
+ odin:{name:'Odin',mp:90,t:'enemy',all:true,d:'Zantetsuken: may cleave foes in two'},
+ phoenix:{name:'Phoenix',mp:100,t:'party',d:'Rebirth Flame: revive and heal the party'}});
+Object.assign(POW,{flare:60,meteor:48,odin:40});
+Object.assign(TOMES,{curaga:{who:'white',price:14000,lv:30},flare:{who:'black',price:16000,lv:32},odin:{who:'summoner',price:18000,lv:32},
+ arise:{who:'white',price:20000,lv:34},meteor:{who:'black',price:30000,lv:40},phoenix:{who:'summoner',price:26000,lv:36}});
+Object.assign(ITEMS,{xpotion:{name:'X-Potion',t:'ally',d:'Fully restore HP'},hiether:{name:'Hi-Ether',t:'mp',d:'Restore 200 MP'},megalixir:{name:'Megalixir',t:'ally',d:'Fully restore the whole party'}});
+Object.assign(ITEM_PRICE,{xpotion:1200,hiether:2500,megalixir:15000});
+Object.assign(GEAR,{
+ crystalsword:{name:'Crystal Sword',slot:'weapon',who:['fighter'],atk:86,str:8,price:38000},
+ sasuke:{name:'Sasuke Blade',slot:'weapon',who:['thief'],atk:62,spd:4,price:32000},
+ wizardrod:{name:'Wizard Rod',slot:'weapon',who:['black'],atk:6,mag:34,price:30000},
+ seraphstaff:{name:'Seraph Staff',slot:'weapon',who:['white','summoner'],atk:12,mag:30,price:30000},
+ crystalshield:{name:'Crystal Shield',slot:'shield',who:['fighter','thief'],def:30,mdef:14,price:22000},
+ crystalhelm:{name:'Crystal Helm',slot:'head',who:['fighter','thief'],def:22,mdef:10,price:18000},
+ sagecrown:{name:'Sage Crown',slot:'head',who:MAGES,def:14,mdef:22,mag:8,price:20000},
+ crystalmail:{name:'Crystal Mail',slot:'body',who:['fighter'],def:52,mdef:18,price:34000},
+ shadowgarb:{name:'Shadow Garb',slot:'body',who:['thief'],def:36,mdef:16,spd:3,price:28000},
+ arcanerobe:{name:'Arcane Robe',slot:'body',who:MAGES,def:28,mdef:36,mag:10,price:30000},
+ magusring:{name:'Magus Ring',slot:'acc',who:ALLC,mag:14,mdef:10,price:26000},
+ giantbelt:{name:'Giant’s Belt',slot:'acc',who:ALLC,str:14,def:6,price:26000},
+ genjihelm:{name:'Genji Helm',slot:'head',who:['fighter','thief'],def:28,mdef:18,spd:2,price:40000},
+ ultimaweapon:{name:'Ultima Weapon',slot:'weapon',who:['fighter'],atk:120,str:12,price:90000},
+ holyrobe:{name:'Holy Robe',slot:'body',who:MAGES,def:34,mdef:44,mag:14,price:60000},
+ heroring:{name:'Hero’s Ring',slot:'acc',who:ALLC,str:10,mag:10,spd:4,def:10,mdef:10,price:70000}});
+Object.assign(SHOPS,{
+ arcgear:{name:'Mythic Armory',hello:'Crystal-forged arms, enchanted by the magi of Arcanum.',stock:['crystalsword','sasuke','wizardrod','seraphstaff','crystalshield','crystalhelm','sagecrown','crystalmail','shadowgarb','arcanerobe','magusring','giantbelt']},
+ arcitem:{name:'Highmere Alchemist',hello:'Tinctures, elixirs, and one or two things that fizz.',stock:['potion','hipotion','xpotion','ether','hiether','feather','remedy','megalixir','tent']},
+ arcmagic:{name:'Highmere Spellhouse',hello:'Spells for those who have already mastered the basics.',stock:['curaga','flare','odin']},
+ arclib:{name:'Grand Library of Arcanum',hello:'The deepest secrets of the magi. Handle the tomes gently.',stock:['arise','meteor','phoenix','curaga','flare','odin']}});
+Object.assign(NPCSPR,{
+ archking:{pal:{...NPCSPR.king.pal,r:'#4a2a8a',R:'#b48cff'},map:NPCSPR.king.map},
+ archqueen:{pal:{...NPCSPR.queen.pal,p:'#2a5a8a',P:'#86e0ff'},map:NPCSPR.queen.map},
+ magus:{pal:VPAL({h:'#3a2a6a',t:'#4a3a9a',p:'#2a2a5a'}),map:VMAP.man},
+ magus2:{pal:VPAL({h:'#e8e8f0',t:'#a82a3a',p:'#3a2a2a'}),map:VMAP.man},
+ magus3:{pal:VPAL({h:'#2a2a3a',t:'#2a7a5a',p:'#1e3a2a'}),map:VMAP.man},
+ sorceress:{pal:VPAL({h:'#2a2a3a',d:'#3a6ab8'}),map:VMAP.woman},
+ sorceress2:{pal:VPAL({h:'#e8c068',d:'#a83a8a'}),map:VMAP.woman}});
+
+/* the sailing ship */
+const BOAT={pal:{r:'#e84040',m:'#5a3a24',W:'#f0f0f0',w:'#c8c8d8',h:'#3a2418',H:'#8a5a2a'},
+ map:[".......r........",".......mWW......",".......mWWW.....","......wmWWWW....",".....wwmWWWWW...","....wwwmWWWWWW..",".......m........","hhhhhhhhhhhhhhhh",".hHHHHHHHHHHHHh.","..hHHHHHHHHHHh..","...hhhhhhhhhh..."]};
+function drawBoat(c,cx,by,flip){const ox=Math.round(cx-8),oy=Math.round(by-BOAT.map.length);
+  for(let j=0;j<BOAT.map.length;j++){const row=BOAT.map[j];for(let i=0;i<16;i++){const ch=row[i];if(ch==='.')continue;c.fillStyle=BOAT.pal[ch];c.fillRect(ox+(flip?15-i:i),oy+j,1,1);}}
+  c.fillStyle='#e8f6ff';const t=Math.floor(S.t*4)%2;c.fillRect(ox-1+t,oy+BOAT.map.length,3,1);c.fillRect(ox+14-t,oy+BOAT.map.length,3,1);}
+function drawParkedBoat(){const bt=S.flags&&S.flags.boat;if(!bt||bt.boarded||bt.x==null)return;const w=S.world,sx=Math.round(bt.x-w.x+W/2),sy=Math.round(bt.y-w.y+PY);
+  if(sx<-20||sx>W+20||sy<-20||sy>H+20)return;drawBoat(ctx,sx,sy+3+Math.round(Math.sin(S.t*2)),bt.flip);}
+function placeBoat(){const P=WORLD.port;if(!P)return;S.flags.boat={x:(P.wx+.5)*TS,y:(P.wy+.5)*TS,boarded:false,lock:false,flip:false};}
+const overIsle=()=>{const w=S.world,I=WORLD.isle;return !!(I&&I.up&&I.set.has(Math.floor(w.y/TS)*WT+Math.floor(w.x/TS)));};
+function canLand(){return !overIsle()&&LAND_OK(tileAt(S.world.x,S.world.y));}
+
+/* Highmere, the hidden village */
+MAPS.highmere={id:'highmere',name:'Highmere',w:26,h:18,entry:{x:13*CT,y:16*CT+8},hello:'Highmere, the hidden village of the magi. Lanterns float in the air without strings.',leave:'Leave Highmere',out:'You step out into the hidden valley.',
+ build(){const g=gridFill(this.w,this.h,'g'),set=(x,y,c)=>{if(x>=0&&y>=0&&x<this.w&&y<this.h)g[y][x]=c;};
+  for(let x=0;x<this.w;x++){set(x,0,'f');set(x,this.h-1,'f');}for(let y=0;y<this.h;y++){set(0,y,'f');set(this.w-1,y,'f');}
+  for(let x=1;x<this.w-1;x++){set(x,7,'a');set(x,8,'a');}for(let y=7;y<this.h-1;y++){set(12,y,'a');set(13,y,'a');}
+  for(const[x,y]of[[2,16],[8,10],[9,15],[22,9],[24,16],[16,15],[7,12],[24,11]])set(x,y,'Y');for(const[x,y]of[[5,9],[10,9],[18,9],[23,10],[15,13],[9,13],[3,16],[19,16]])set(x,y,'o');
+  for(const[dx,dy]of[[0,0],[1,0],[0,1],[1,1]])set(16+dx,10+dy,'F');this.fountain={x:16,y:10};
+  this.buildings=[{x:1,y:2,w:5,h:5,door:3,roof:'#6a48b0',sign:'weapon'},{x:6,y:2,w:5,h:5,door:8,roof:'#3e8a46',sign:'item'},{x:15,y:2,w:5,h:5,door:17,roof:'#3a5ab0',sign:'magic'},
+   {x:20,y:2,w:5,h:5,door:22,roof:'#c8902a',sign:'inn'},{x:2,y:11,w:5,h:4,door:4,roof:'#8a4a8a'},{x:19,y:12,w:5,h:4,door:21,roof:'#5a7a8a'}];
+  for(const b of this.buildings){for(let y=b.y;y<b.y+b.h;y++)for(let x=b.x;x<b.x+b.w;x++)set(x,y,'H');set(b.door,b.y+b.h-1,'d');}
+  set(12,this.h-1,'E');set(13,this.h-1,'E');return g;},
+ doors:{'3,6':{shop:'arcgear'},'8,6':{shop:'arcitem'},'17,6':{shop:'arcmagic'},'22,6':{inn:true},
+  '4,14':{house:['A magus’s cottage. Books are stacked to the ceiling, and a teapot pours itself.']},'21,15':{house:['Someone inside is practicing Flare. You decide not to knock.']}},
+ npcs:[
+  {x:11,y:15,spr:'magus2',talk:()=>['Gatekeeper: No road reaches Highmere. You came by air? Then the Aurora has woken. The King will want to see you.']},
+  {x:7,y:9,spr:'sorceress',wander:[1,7,24,9],talk:()=>['Sorceress: Castle Arcanum is just north of the village. Every mage in the realm studied there once.']},
+  {x:18,y:13,spr:'magus3',wander:[14,12,18,16],talk:()=>['Old Magus: The Spellhouse sells Curaga, Flare and Odin. The Grand Library in the castle keeps the rarest tomes.']},
+  {x:9,y:12,spr:'kid',wander:[7,9,11,16],talk:()=>['Kid: I can make a spark with my fingers! …Ow.']},
+  {x:21,y:10,spr:'sorceress2',wander:[19,9,24,11],talk:()=>[S.flags.islandUp?'Sorceress: Did you see the light in the northwest? The magi did it. They raised a whole island!':'Sorceress: The magi whisper about a lost island under the northwestern sea.']}]};
+
+/* Castle Arcanum, home of the magi */
+const MAGI_CIRCLE=[[21,2],[23,2],[25,2],[21,4],[25,4],[21,6],[23,6],[25,6]];
+MAPS.arcanum={id:'arcanum',name:'Castle Arcanum',w:28,h:22,entry:{x:14*CT+8,y:19*CT+8},hello:'Castle Arcanum. Robed magi drift through halls that hum with old magic.',leave:'Leave the castle',out:'You step out into the hidden valley.',
+ rooms:[{n:'Grand Library',x0:1,y0:1,x1:6,y1:8},{n:'Throne Room',x0:8,y0:1,x1:19,y1:8},{n:'Circle of Magi',x0:21,y0:1,x1:26,y1:8},{n:'Great Hall',x0:1,y0:10,x1:26,y1:12},{n:'Entrance Hall',x0:11,y0:13,x1:16,y1:20}],
+ books:[['A tome titled “On the Four Wyrms”: Ember, Rime, Earth and Sky. Each sleeps where its element is strongest.'],['“The Isle of Aether sank in a single night when the Sky Wyrm tore the clouds apart.”'],['A spellbook full of margin notes: “Odin answers only the patient.”'],['“Flare: compress the heat of a star into a fist-sized sphere. Do NOT practice indoors.”']],
+ build(){const g=gridFill(this.w,this.h,'#'),set=(x,y,c)=>{g[y][x]=c;},rect=(x0,y0,x1,y1,c)=>{for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)set(x,y,c);};
+  rect(1,1,6,8,'.');rect(8,1,19,8,'.');rect(21,1,26,8,'.');rect(1,10,26,12,'.');rect(11,13,16,20,'.');
+  set(3,9,'D');set(14,9,'D');set(23,9,'D');
+  for(let y=2;y<=8;y++)set(14,y,'r');for(let y=10;y<=20;y++)set(14,y,'r');set(13,2,'T');set(15,2,'T');
+  for(const[x,y]of[[10,3],[18,3],[10,7],[18,7],[12,15],[16,15],[12,19],[16,19]])set(x,y,'P');
+  for(const x of[9,19])set(x,0,'n');for(const x of[11,17,3,23])set(x,0,'w');
+  for(let x=1;x<=6;x++)set(x,1,'Z');for(const x of[1,2,5,6]){set(x,4,'Z');set(x,7,'Z');}
+  for(let y=3;y<=5;y++)for(let x=22;x<=24;x++)set(x,y,'A');
+  for(const[x,y]of[[8,1],[19,1],[21,1],[26,1],[21,8],[26,8],[1,10],[26,10],[11,20],[16,20]])set(x,y,'p');
+  for(const x of[5,8,19,22])set(x,11,'t');set(14,21,'E');return g;},
+ npcs:[
+  {x:13,y:2,spr:'archking',talk:()=>{const f=S.flags;
+    if(!f.islandUp){showDialog(['King Corvin: Welcome to Castle Arcanum, travelers. Only those who ride the wind can reach us. You flew here aboard the Aurora?',
+      'Queen Elowen: Then the prophecy is true. Ember, Rime and Earth: three wyrms fallen by your hands.',
+      'King Corvin: There were four. The last, Zephyrion the Sky Wyrm, dragged the Isle of Aether beneath the northwestern sea a thousand years ago. It sleeps in the tower at the island’s heart.',
+      'King Corvin: With its kin dead, its sleep grows thin. If it wakes on its own, it will tear the sky apart. We must strike first.',
+      'Queen Elowen: The magi of Arcanum have waited centuries for this day. Together, we can raise the island.','King Corvin: Magi! To the Circle!'],raiseIsle);return null;}
+    if(!f.port)return['King Corvin: The Isle of Aether stands again, and the Tower of Aether with it. A hundred floors, with Zephyrion at the top.','King Corvin: The tower’s winds turn back anything that flies. You will need a ship of the sea.','King Corvin: King Aldous of Valemont has the finest shipwrights in the realm. Ask him to build you a port.'];
+    if(!f.skyWyrm)return['King Corvin: Your ship waits at the western port. Sail northwest to the isle and climb.','King Corvin: The Warden on the tower’s first floor and the waystones on every tenth floor will spare your legs.'];
+    return['King Corvin: Zephyrion is gone, and the sky is ours again. The magi will sing of you for a thousand years.'];}},
+  {x:15,y:2,spr:'archqueen',talk:()=>{const f=S.flags;if(!f.islandUp)return['Queen Elowen: Speak with my husband. The magi are ready when he is.'];
+    if(!f.arcGift){f.arcGift=true;S.items.megalixir=(S.items.megalixir||0)+2;saveGame();return['Queen Elowen: You will need more than courage in that tower. Take these.','Received 2 Megalixirs!'];}
+    return['Queen Elowen: Zephyrion breathes lightning and drinks it too. Don’t waste thunder on it. Stone and ice will serve you better.'];}},
+  {x:4,y:3,spr:'magus3',talk:()=>{openShop('arclib');return null;}},
+  {x:3,y:6,spr:'sorceress',wander:[3,5,4,8],talk:()=>['Librarian’s apprentice: Shh! The Grand Library sells only the rarest tomes. Talk to the Head Librarian by the shelves.']},
+  {x:10,y:5,spr:'magus2',talk:()=>['Court Magus: His Majesty sees all visitors. Approach the thrones.']},
+  {x:18,y:5,spr:'magus2',talk:()=>['Court Magus: Arcanum has not had guests in eighty years. You must forgive our staring.']},
+  ...MAGI_CIRCLE.map((c,i)=>({x:[22,24,22,24,4,10,17,24][i],y:[2,2,6,6,12,10,12,12][i],circle:c,spr:['magus','sorceress','magus3','sorceress2','magus','magus2','sorceress','magus3'][i],
+    wander:i<4?null:[1,10,26,12],talk:()=>[S.flags.islandUp?pick(['Magus: My hands are still tingling. We lifted an entire island!','Magus: The tower’s top floor touches the clouds. Be careful up there.','Magus: I can still hear the sea draining off the isle.']):pick(['Magus: The Circle has been ready for centuries. We only need the King’s word.','Magus: Ember, Rime, Earth… and Sky. The last wyrm sleeps beneath the sea.','Magus: Mind the runes. They bite.'])]})),
+  {x:13,y:17,spr:'magus',talk:()=>['Gate Magus: Welcome to Arcanum. The King and Queen hold court straight ahead.']},
+  {x:15,y:17,spr:'sorceress2',talk:()=>['Gate Magus: The Grand Library is in the west wing. The Circle of Magi is in the east.']}]};
+
+async function raiseIsle(){
+  const f=S.flags;S.cut=true;for(const k in keys)keys[k]=false;steer=null;
+  for(const n of NPCS)if(n.circle){n.x=n.circle[0];n.y=n.circle[1];n.wander=null;n.ox=n.oy=0;}
+  S.cpos={x:23*CT+8,y:7*CT+8};S.cam={x:23*CT+8,y:4*CT+8};say('Every mage in Castle Arcanum gathers in the Circle of Magi…');await sleep(900);
+  const scr=(x,y)=>({x:x-(S.camOff?S.camOff.x:0),y:y-(S.camOff?S.camOff.y:0)}),ctr=scr(23*CT+8,4*CT+8);
+  say('The magi raise their staves and begin to chant.');
+  await addFx(2600,(c,p)=>{for(const[x,y]of MAGI_CIRCLE){const a=scr(x*CT+8,y*CT+2);if(Math.random()<.5)part(a.x,a.y,{vx:(ctr.x-a.x)*1.6,vy:(ctr.y-a.y)*1.6,life:.6,c:pick(['#b48cff','#86e0ff','#ffffff'])});}
+    c.globalAlpha=.25+.25*Math.sin(p*20);c.strokeStyle='#b48cff';c.beginPath();c.arc(ctr.x,ctr.y,8+p*26,0,7);c.stroke();c.globalAlpha=1;});
+  flash('#ffffff',900);shake();await sleep(700);
+  f.islandUp=true;const keep={x:S.world.x,y:S.world.y};buildWorld();const I=WORLD.isle;
+  S.cam=null;S.scene='map';stage.classList.remove('castle');stage.classList.add('map');S.isleView=true;S.world.x=(I.cx+.5)*TS;S.world.y=(I.cy+.5)*TS+10;renderMenu();
+  flash('#bfefff',800);shake();say('Far to the northwest, a lost island bursts from the sea, and a white tower climbs into the clouds!');
+  await addFx(3200,(c,p)=>{if(Math.random()<.9)for(let k=0;k<4;k++){const a=Math.random()*6.283,r=rnd(30,70);part(W/2+Math.cos(a)*r*1.4,PY+Math.sin(a)*r*.7,{vx:Math.cos(a)*20,vy:rnd(-50,-20),g:60,life:rnd(.5,1),c:pick(['#e8f6ff','#90c8f8','#ffffff'])});}
+    if(p<.3)shake();});
+  S.world.x=keep.x;S.world.y=keep.y;S.isleView=false;
+  enterInterior('arcanum',{x:14*CT+8,y:4*CT+8});S.cut=false;saveGame();
+  showDialog(['King Corvin: It is done. The Isle of Aether stands again, and the Tower of Aether with it. A hundred floors, with Zephyrion at the top.',
+   'Queen Elowen: But beware. The tower’s winds turn back anything that flies. The Aurora cannot land on the isle.',
+   'King Corvin: You will need a ship of the sea. King Aldous of Valemont has the finest shipwrights in the realm. Ask him to build you a port.']);
+}
+
+/* the Tower of Aether */
+const TW_TIERS=[{p:'Cloud',c:'#e8f8ff',m:1,pal:{f:['#d8d8e4','#c4c4d4','#ececf4'],r:['#4a5a7a','#7a8aaa','#9aaac8','#aabad8','#3a4a6a'],g:['#86e0ff','#ffffff','#3a8ab8'],slab:true}},
+ {p:'Storm',c:'#6a7ab8',m:1.5,pal:{f:['#a8aab8','#9698a8','#bcbecc'],r:['#2a3048','#4a5470','#5e6888','#6a7494','#22283a'],g:['#ffe14a','#ffffff','#c8a020'],slab:true}},
+ {p:'Thunder',c:'#ffe14a',m:2.1,pal:{f:['#d8c890','#c4b47a','#ece0a8'],r:['#5a4a1e','#7a6a34','#9a8a4a','#aa9a5a','#4a3a14'],g:['#ffe14a','#fff6c0','#c8a020'],slab:true}},
+ {p:'Star',c:'#d8b8ff',m:2.8,pal:{f:['#b8a8d8','#a494c4','#ccbce8'],r:['#3a2a5a','#5a4a7a','#6e5e90','#7a6a9a','#2a1a4a'],g:['#ffffff','#e8d8ff','#b48cff'],slab:true}},
+ {p:'Void',c:'#2a1a3a',m:3.6,pal:{f:['#4a3a5a','#3e304e','#5a4a6a'],r:['#140c1e','#24182e','#30223e','#3a2a4a','#0a0610'],g:['#ff5a8a','#ffb8d8','#a82a5a'],slab:true}}];
+const TW_BASE=['harpy','wisp','golem','spider','shade','yeti','crag','slug'];
+Object.assign(BGS,{tower:{sky:['#3a5ab8','#c8e0f8'],far:'#e8f0f8',g:['#c8c8d8','#7a7a8a'],spk:['#ffffff','#9a9aac']},
+ storm:{sky:['#1a1e38','#5a6488'],far:'#2a3048',g:['#8a8a9a','#3a3a46'],spk:['#ffe14a','#9a9aac']}});
+TW_TIERS.forEach((T,t)=>{for(const b of TW_BASE){const m=MON[b],nm=m.name.split(' ').pop();
+  MON[`t${t}_${b}`]={...m,name:`${T.p} ${nm}`,hp:Math.round(m.hp*1.3*T.m),exp:Math.round(m.exp*2.2*T.m),gil:Math.round(m.gil*2*T.m),bg:t<2?'tower':'storm',
+   atk:m.atk.map(a=>({...a,lo:Math.round(a.lo*(.9+.35*T.m)),hi:Math.round(a.hi*(.9+.35*T.m))})),pal:Object.fromEntries(Object.entries(m.pal).map(([k,v])=>[k,tintHex(v,T.c,.4)]))};}});
+for(const[n,t]of[[25,1],[50,2],[75,3]]){const m=MON.yetiking,T=TW_TIERS[t];MON['tg'+n]={...m,name:`${T.p} Colossus`,towerBoss:n,hp:Math.round(m.hp*2.2*T.m),exp:Math.round(m.exp*3*T.m),gil:Math.round(m.gil*4*T.m),bg:'storm',
+  atk:m.atk.map(a=>({...a,lo:Math.round(a.lo*(.9+.35*T.m)),hi:Math.round(a.hi*(.9+.35*T.m))})),pal:Object.fromEntries(Object.entries(m.pal).map(([k,v])=>[k,tintHex(v,T.c,.5)]))};}
+MON.skyicon={...MON.frosticon,name:'Zephyrion',pal:{h:'#ffd34a',B:'#e8e8f0',b:'#fff3c4',e:'#ff5a8a',t:'#ffffff',m:'#5ab8d8',M:'#86e0ff'}};
+MON.waystone={name:'Waystone',hp:1,scale:1,weak:[],pal:{a:'#86e0ff',b:'#e8f8ff',c:'#3a8ab8',d:'#5a5a6a'},map:["...a...","..aba..",".aabaa.",".aabca.","..aca..","..aca..","..aca..",".ddddd.","ddddddd"]};
+for(const k of['waystone'])MON[k].h=MON[k].map.length,MON[k].w=7;
+const TW_GEAR={20:'genjihelm',40:'ultimaweapon',60:'holyrobe',80:'heroring'};
+const TWG={};
+function towerGen(n){if(!TWG[n])TWG[n]=caveGen(90001+n*131,22+(n*7)%9,16+(n*3)%5,{exit:n===1,tower:true,chests:n%10===0?2:1,saves:n===100?[.4,.9]:[.5],crystal:.05,rooms:5,alcoves:3,loops:1,fill:.3});return TWG[n];}
+function makeTowerFloor(n){const r=towerGen(n),tier=Math.min(4,Math.floor((n-1)/20)),T=TW_TIERS[tier],links={},chests={},npcs=[];
+  if(n>1){const p=towerGen(n-1);links[r.up.x+','+r.up.y]={to:'tw'+(n-1),x:p.back.x,y:p.back.y};}
+  if(n<100&&!(n%25===0)){const q=towerGen(n+1);links[r.down.x+','+r.down.y]={to:'tw'+(n+1),x:q.start.x,y:q.start.y};}
+  if(n%25===0&&n<100){const q=towerGen(n+1);links[r.down.x+','+r.down.y]={to:'tw'+(n+1),x:q.start.x,y:q.start.y};
+    npcs.push({x:r.down.x,y:r.down.y,mon:'tg'+n,when:()=>!S.flags['tg'+n],talk:()=>{bossFight([`A ${MON['tg'+n].name} stands guard over the stairs!`,'It raises fists the size of boulders.'],['tg'+n]);return null;}});}
+  if(n===100)npcs.push({x:r.down.x,y:r.down.y,mon:'skyicon',sc:2,when:()=>!S.flags.skyWyrm,talk:()=>{bossFight(['Wind screams across the summit. Lightning splits the clouds.','Zephyrion, the Sky Wyrm, wakes and descends on the heroes!'],['skywyrm']);return null;}});
+  const loot=[{item:'hipotion',n:3},{item:'ether',n:3},{gil:1500*(tier+1)},{item:'xpotion',n:2},{item:'hiether',n:2},{item:'elixir',n:1},{item:'remedy',n:2},{item:'megalixir',n:1}];
+  r.chests.forEach((k,j)=>{chests[k]=(j===0&&TW_GEAR[n])?{gear:TW_GEAR[n]}:loot[(n*7+j*3)%Math.min(loot.length,3+tier*2)];});
+  const sp=r.spots.slice(0,6);
+  if(n===1&&sp[0])npcs.push({x:sp[0].x,y:sp[0].y,spr:'magus',talk:()=>{const top=Math.min(90,Math.floor((S.flags.towerMax||1)/10)*10);
+    if(top<10)return['Tower Warden: A hundred floors stand above you. Touch the waystone on the tenth floor, and I can send you there directly.'];
+    showDialog([`Tower Warden: You have climbed as high as floor ${S.flags.towerMax}. I will send you to the waystone on floor ${top}.`],()=>{const g=towerGen(top);enterInterior('tw'+top,{x:g.start.x*CT+8,y:(g.start.y)*CT+8});});return null;}});
+  if(n%10===0&&n<100&&sp[0])npcs.push({x:sp[0].x,y:sp[0].y,mon:'waystone',talk:()=>{showDialog(['The waystone hums. Touch it to return to the tower’s first floor?','The world blurs into white light…'],()=>{const g=towerGen(1);enterInterior('tw1',{x:g.start.x*CT+8,y:(g.start.y-1)*CT+8});});return null;}});
+  const fr=k=>TW_BASE[(n*3+k*5)%8],id=k=>`t${tier}_${fr(k)}`;
+  return{id:'tw'+n,name:`Tower of Aether ${n}F`,dungeon:true,pal:T.pal,w:r.grid[0].length,h:r.grid.length,entry:{x:r.start.x*CT+8,y:r.start.y*CT+8},
+    hello:n===1?'The Tower of Aether. Wind howls through a hundred floors of white stone.':n===100?'The summit of the Tower of Aether. Storm clouds churn overhead.':n%10===0?`Floor ${n}. A waystone glows here.`:`Floor ${n} of the Tower of Aether.`,
+    build:()=>r.grid.map(row=>row.slice()),links,chests,npcs,enc:[[id(0)],[id(0),id(1)],[id(1),id(2),id(1)],[id(2),id(3)],[id(0),id(2),id(3)]],
+    onEnter(){S.flags.towerMax=Math.max(S.flags.towerMax||0,n);},...(n===1?{leave:'Leave the tower',out:'You step out onto the windswept isle.'}:{})};}
+function ensureMap(id){if(!MAPS[id]&&/^tw\d+$/.test(id)){const n=+id.slice(2);if(n>=1&&n<=100)MAPS[id]=makeTowerFloor(n);}return MAPS[id];}
+
+/* Zephyrion, the Sky Wyrm */
+const STORM=['#ffffff','#fff6c0','#ffe14a','#86e0ff','#bfefff'];
+async function cyclone(){banner('Cyclone');await addFx(1000,(c,p)=>{for(let k=0;k<4;k++){const a=p*20+k*1.6,r=30-p*10;part(212+Math.cos(a)*r,90+Math.sin(a)*r*1.4,{vx:-Math.sin(a)*40,vy:Math.cos(a)*40,life:.4,c:pick(STORM)});}});
+  shake();for(const h of alive())hurt(h,rnd(600,700),'mag');say('A cyclone tears through the party!');await sleep(400);}
+async function skyAct(d){
+  if(d.charging){d.charging=false;d.lastInferno=d.turns;return breathAtk('Tempest',1000,1100,true,STORM,'thunder');}
+  if(d.turns-d.lastInferno>=4){d.charging=true;banner('');say('Zephyrion spreads its wings. Thunderheads boil around the tower…');await sleep(700);return;}
+  const r=Math.random(),back=alive().filter(h=>h.row==='back');
+  if(r<.22)return single('Gale Talon',820,920,'#e8f8ff');
+  if(r<.38&&back.length)return dive(back);
+  if(r<.54)return statusAtk({name:'Siren Gale',lo:300,hi:360,all:true,type:'mag',col:'#bfefff',st:'confuse',ch:.25});
+  if(r<.76)return cyclone();
+  return breathAtk('Lightning Breath',560,640,false,STORM,'thunder');}
+
+/* the magi's spells */
+async function doHero3(h,id,tg){const d=S.dragon;
+  switch(id){
+    case 'curaga':{await castPose(h,'#9df29a');for(const a of alive()){healFx(a);heal(a,h.mag*22*rnd(.95,1.05));}await sleep(500);break;}
+    case 'arise':{await castPose(h,'#ffffff');flash('#fff8d8',300);healFx(tg);revive(tg,1);await sleep(450);break;}
+    case 'flare':{await castPose(h,'#ff9a3a',380);await addFx(700,(c,p)=>{const r=p*40;c.globalAlpha=1-p;c.fillStyle='#ffffff';c.beginPath();c.arc(DX,DY,r,0,7);c.fill();c.fillStyle='#ff7a2a';c.beginPath();c.arc(DX,DY,r*.6,0,7);c.fill();c.globalAlpha=1;});
+      flash('#ffffff',300);shake();hitDragon(h.mag*POW.flare*rnd(.95,1.05),null);await sleep(300);break;}
+    case 'meteor':{await castPose(h,'#ff7a2a',380);const tg2=liveFoes();
+      await addFx(1300,(c,p)=>{c.fillStyle=`rgba(40,10,10,${.4*Math.sin(p*Math.PI)})`;c.fillRect(0,0,W,H);for(let k=0;k<2;k++)part(rnd(0,170),-4,{vx:rnd(30,60),vy:rnd(150,210),life:.7,c:pick(FIRE),s:3});});
+      for(const f of tg2)fireFx(f.ax,f.ay);flash('#ffb03a',400);shake();hitAll(h.mag*POW.meteor,null);await sleep(400);break;}
+    case 'odin':{await castPose(h,'#c8c8d8',300);await summonIntro('#c8c8d8');banner('Odin · Zantetsuken');
+      await addFx(700,(c,p)=>{c.strokeStyle='#ffffff';c.lineWidth=2;c.beginPath();c.moveTo(0,40+p*60);c.lineTo(170*p,140-p*60);c.stroke();c.lineWidth=1;});flash('#ffffff',300);shake();
+      eachFoe(f=>{const boss=f.kind==='wyrm'||(MON[f.kind]&&MON[f.kind].boss);if(!boss&&Math.random()<.25){pop(f.ax,f.ay-16,'Cleaved!','lbl');hitDragon(f.hp,null,true);}else hitDragon(h.mag*POW.odin*rnd(.95,1.05),null);});
+      await sleep(400);break;}
+    case 'phoenix':{await castPose(h,'#ff7a2a',300);await summonIntro('#ff7a2a');banner('Phoenix · Rebirth Flame');
+      await addFx(1200,(c,p)=>{for(let k=0;k<3;k++)part(rnd(185,235),H,{vx:rnd(-10,10),vy:rnd(-110,-60),life:.9,c:pick(FIRE)});});
+      for(const x of S.heroes){if(x.ko)revive(x,.5);else if(!x.stone){healFx(x);heal(x,h.mag*10);}}say('The party rises from the flames!');await sleep(400);break;}
+  }
+}
 
 async function dungeonEncounter(form){
   S.battleReturn='castle';S.transIn=true;S.scene='trans';for(const k in keys)keys[k]=false;steer=null;S.world.moving=false;
@@ -2355,6 +2622,8 @@ function aiChoose(h){
   if(hb){const c=habitAct(h,hb);if(c)return c;}
   // raise the fallen
   if(ko.length){
+    if(h.key==='summoner'&&ko.length>=2&&can('phoenix'))return{kind:'skill',id:'phoenix'};
+    if(can('arise')&&!(k==='conserve'&&I.feather))return{kind:'skill',id:'arise',tg:ko[0]};
     if(can('revive')&&!(k==='conserve'&&I.feather))return{kind:'skill',id:'revive',tg:ko[0]};
     if(h.key==='fighter'&&h.skills.includes('phoenixpalm')&&!whiteRevives&&pct(h)>.4)return{kind:'skill',id:'phoenixpalm',tg:ko[0]};
     if(I.feather&&(h.key==='white'||!whiteRevives))return{kind:'item',id:'feather',tg:ko[0]};
@@ -2367,6 +2636,7 @@ function aiChoose(h){
        if(t.poison&&!t.stone&&!t.confuse&&pct(t)<.6&&I.antidote&&h.key!=='fighter')return{kind:'item',id:'antidote',tg:t};}}}
   // group healing
   if(hurt.length>=(k==='aggressive'?3:2)){
+    if(h.key==='white'&&hurt.length>=3&&(spare('curaga')||(crit&&can('curaga'))))return{kind:'skill',id:'curaga'};
     if(h.key==='white'&&(spare('cureall')||(crit&&can('cureall'))))return{kind:'skill',id:'cureall'};
     if(h.key==='summoner'&&!whiteHeals&&(spare('sylph')||(crit&&can('sylph'))))return{kind:'skill',id:'sylph'};
   }
@@ -2414,7 +2684,7 @@ function aiChoose(h){
       if(weak){const kill=off.filter(o=>!SK[o.id].all&&elemMult(SK_EL[o.id],weak)>0&&h.mag*POW[o.id]*elemMult(SK_EL[o.id],weak)*.9>=weak.hp).sort((a,b)=>SK[a.id].mp-SK[b.id].mp)[0];if(kill&&can(kill.id))return{kind:'skill',id:kill.id,foe:weak};}
       off.sort((a,b)=>b.s-a.s);for(const o of off)if(use(o.id))return{kind:'skill',id:o.id};}
       if(h.mp<10&&I.ether&&k!=='aggressive')return{kind:'item',id:'ether',tg:h};return{kind:'fight'};
-    case 'summoner':{const off=['undine','glacia','raijin','ifrit','titan','bahamut'].filter(id=>h.skills.includes(id)).map(id=>{const tot=liveFoes().reduce((a,f)=>a+elemMult(SK_EL[id],f),0);return{id,m:bestMult(SK_EL[id]),v:POW[id]*tot};}).filter(o=>o.v>0&&(k!=='conserve'||o.m>=2)).sort((a,b)=>b.v-a.v);for(const o of off)if(use(o.id))return{kind:'skill',id:o.id};return{kind:'fight'};}
+    case 'summoner':{const off=['undine','glacia','raijin','ifrit','titan','odin','bahamut'].filter(id=>h.skills.includes(id)).map(id=>{const tot=liveFoes().reduce((a,f)=>a+elemMult(SK_EL[id],f),0);return{id,m:bestMult(SK_EL[id]),v:POW[id]*tot};}).filter(o=>o.v>0&&(k!=='conserve'||o.m>=2)).sort((a,b)=>b.v-a.v);for(const o of off)if(use(o.id))return{kind:'skill',id:o.id};return{kind:'fight'};}
     case 'white':{if(h.skills.includes('holy')){const hm=bestMult('holy');if((k==='aggressive'||hm>1||(k==='balanced'&&h.mp>h.maxmp*.6))&&use('holy'))return{kind:'skill',id:'holy'};}return{kind:'fight'};}
   }
   return{kind:'fight'};
@@ -2452,20 +2722,22 @@ async function phaseTwo(){
 function fmt(s){s=Math.round(s);return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
 function showOver(win){
   const d=S.foes[0],wy=d.kind==='wyrm',ret=()=>S.battleReturn==='castle'?toCastle():toMap();let t,p,b;
-  if(win&&wy&&d.variant==='earth'){S.flags.worm=true;S.flags.heart=true;const ups=awardBattle(4000,6000);S.bag.wyrmscale=(S.bag.wyrmscale||0)+1;S.items.elixir=(S.items.elixir||0)+2;t='Victory';p='Gravemaw is defeated! Gained 4,000 EXP and 6,000 G. Found Wyrmscale Mail and 2 Elixirs. From the rubble of its body you pry loose the Earthheart, a stone that thrums like a forge.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toCastle('The tunnel ahead is clear. Far below, dwarven horns are sounding.');}
+  if(win&&wy&&d.variant==='sky'){S.flags.skyWyrm=true;const ups=awardBattle(30000,60000);t='Victory';p='Zephyrion, the Sky Wyrm, falls from the storm! Ember, Rime, Earth and Sky: all four wyrms are gone, and the realm is free. Gained 30,000 EXP and 60,000 G.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toCastle('The storm breaks, and sunlight pours over the Tower of Aether. Thank you for playing Ember Wyrm!');}
+  else if(win&&wy&&d.variant==='earth'){S.flags.worm=true;S.flags.heart=true;const ups=awardBattle(4000,6000);S.bag.wyrmscale=(S.bag.wyrmscale||0)+1;S.items.elixir=(S.items.elixir||0)+2;t='Victory';p='Gravemaw is defeated! Gained 4,000 EXP and 6,000 G. Found Wyrmscale Mail and 2 Elixirs. From the rubble of its body you pry loose the Earthheart, a stone that thrums like a forge.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toCastle('The tunnel ahead is clear. Far below, dwarven horns are sounding.');}
   else if(win&&wy&&d.variant==='frost'){S.flags.wyrm2=true;const ups=awardBattle(3000,5000);S.bag.frostbrand=(S.bag.frostbrand||0)+1;S.bag.rimecrown=(S.bag.rimecrown||0)+1;t='Victory';p='Frostfang is defeated! Gained 3,000 EXP and 5,000 G. Found the Frostbrand and the Rime Crown.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toCastle('The summit falls silent. Snow drifts down over the peak.');}
   else if(win&&wy){S.wyrmDone=true;const ups=awardBattle(800,1500);t='Victory';p=`Both forms felled in ${fmt(S.clock)}. Gained 800 EXP and 1,500 G.`+(ups.length?' '+ups.join(' '):'');b='Enter the world map';S.onContinue=()=>toMap('The pass is clear. The world opens up before you.');}
   else if(win){let ex=0,gl=0;const got=[];for(const f of S.foes){const m=MON[f.kind];ex+=m.exp;gl+=m.gil;got.push(...rollDrops(f));}
     for(const f of S.foes)S.kills[f.kind]=(S.kills[f.kind]||0)+1;const ups=awardBattle(ex,gl);let extra='';
     if(S.foes.some(f=>f.kind==='ogre')&&!S.flags.ogre){S.flags.ogre=true;extra=' The Hill Ogre is slain! King Aldous will want to hear of this.';}
+    for(const f of S.foes){const tm=MON[f.kind];if(tm&&tm.towerBoss&&!S.flags['tg'+tm.towerBoss]){S.flags['tg'+tm.towerBoss]=true;extra+=` The ${tm.name} falls! The stairs above are open.`;}}
     if(S.foes.some(f=>f.kind==='magmaworm')&&!S.flags.worm){S.flags.worm=true;S.flags.heart=true;extra+=' The Magma Worm is slain! From its molten core you take the Magma Heart, still glowing hot. The way down to Ironhold is open.';}
     if(S.foes.some(f=>f.kind==='yetiking')&&!S.flags.yeti){S.flags.yeti=true;extra+=' The Yeti Chieftain falls! The ledge is clear.';}
     if(S.foes.some(f=>f.kind==='sentinel')&&!S.flags.sentinel){S.flags.sentinel=true;extra=' The sentinel crumbles. The grand chest is unguarded.';}
     for(const n of questNotices())extra+=' '+n;
     t='Victory';p=`Gained ${ex} EXP and ${gl} G.`+(got.length?` Found ${got.join(', ')}.`:'')+(ups.length?' '+ups.join(' '):'')+extra;b='Continue';S.onContinue=ret;}
   else if(wy&&!d.variant){t='The party has fallen';p=`${d.phase===2?'The Molten Wyrm':'The Ember Wyrm'} still had ${d.hp.toLocaleString()} of ${d.max.toLocaleString()} HP.`;b='Fight again';S.onContinue=newGame;}
-  else{const inC=S.battleReturn==='castle';t='The party has fallen';p=inC?(IM&&IM.dungeon?`The party collapses ${IM.id.startsWith('dd')?'in the depths':'on the mountain'}. You wake at the last save circle, fully rested.`:'The sentinel drove you out. You wake in the castle guest rooms, fully rested.'):`The monsters drove you off. You wake at camp, fully rested.`;b=inC?'Wake up':'Return to camp';
-    S.onContinue=()=>{for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;}if(inC&&IM&&IM.dungeon){const fb=IM.id.startsWith('dd')?'dd1':'mt1',ls=S.lastSave&&MAPS[S.lastSave.map]?S.lastSave:{map:fb,x:MAPS[fb].entry.x,y:MAPS[fb].entry.y};toCastle();enterInterior(ls.map,{x:ls.x,y:ls.y});say('You wake at the save circle.');}else if(inC){S.cpos={x:5*CT+8,y:11*CT+8};toCastle('You wake in a guest bed.');}else toMap('You wake at camp, sore but alive.');};}
+  else{const inC=S.battleReturn==='castle';t='The party has fallen';p=inC?(IM&&IM.dungeon?`The party collapses ${IM.id.startsWith('dd')?'in the depths':IM.id.startsWith('tw')?'in the tower':'on the mountain'}. You wake at the last save circle, fully rested.`:'The sentinel drove you out. You wake in the castle guest rooms, fully rested.'):`The monsters drove you off. You wake at camp, fully rested.`;b=inC?'Wake up':'Return to camp';
+    S.onContinue=()=>{for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;}if(inC&&IM&&IM.dungeon){const fb=IM.id.startsWith('dd')?'dd1':IM.id.startsWith('tw')?'tw1':'mt1',ls=S.lastSave&&ensureMap(S.lastSave.map)?S.lastSave:{map:fb,x:ensureMap(fb).entry.x,y:ensureMap(fb).entry.y};toCastle();enterInterior(ls.map,{x:ls.x,y:ls.y});say('You wake at the save circle.');}else if(inC){S.cpos={x:5*CT+8,y:11*CT+8};toCastle('You wake in a guest bed.');}else toMap('You wake at camp, sore but alive.');};}
   $('overT').textContent=t;$('overP').textContent=p;$('again').textContent=b;$('over').hidden=false;$('again').focus({preventScroll:true});
 }
 function update(dt){
@@ -2607,7 +2879,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='2.6.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='2.7.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

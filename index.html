@@ -255,7 +255,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.12.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.12.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -3793,7 +3793,7 @@ function drawFarm(){const F=farm(),B=F.built,A=F.animals;$('fGil').textContent=f
     h=list.map(c=>{const C=CROPS[c];return row(C.n+' seeds',`${C.s}${C.s!==season()?' (greenhouse only now)':''} · ${C.days} days · sells for ${C.sell} G · have ${F.seeds[c]||0}`,btn(`×1 · ${C.seed} G`,`data-seed="${c}:1"`,S.gil<C.seed)+btn(`×6 · ${C.seed*6} G`,`data-seed="${c}:6"`,S.gil<C.seed*6));}).join('')+
       `<p class="tip">Next season (${SEASONS[(SEASONS.indexOf(season())+1)%4]}) brings: ${Object.values(CROPS).filter(C=>C.s===SEASONS[(SEASONS.indexOf(season())+1)%4]).map(C=>C.n).join(', ')}.</p>`;}
   else if(fTab==='animals'){h=Object.entries(ANIMALS).map(([k,a])=>{const home=B[a.home],cap=a.home==='coop'?6:4,used=a.home==='coop'?A.chicken:A.cow+A.sheep;
-      return row(a.n,`${home?`${A[k]} owned · ${GOODS[a.prod].n} ${a.every>1?'every other day':'daily'} (${GOODS[a.prod].sell} G)`:`Needs a ${BUILD[a.home].n}`}`,btn(`Buy · ${fmtG(a.cost)}`,`data-ani="${k}"`,!home||used>=cap||S.gil<a.cost));}).join('');}
+      return row(a.n,`${home?`${A[k]} owned · ${GOODS[a.prod].n} ${a.every>1?'every other day':'daily'} (${GOODS[a.prod].sell} G)`:`Needs a ${BUILD[a.home].n}`}`,btn(`Buy · ${fmtG(a.cost)}`,`data-ani="${k}"`,!home||used>=cap||S.gil<a.cost)+(A[k]>0?btn(`Sell · ${fmtG(Math.round(a.cost*.6))}`,`data-sellani="${k}"`):''));}).join('')+'<p class="tip">Old Hob buys animals back for 60% of what you paid.</p>';}
   else if(fTab==='build'){h=Object.entries(BUILD).map(([k,b])=>row(b.n,esc(b.d)+(b.need&&!B[b.need]?` (needs the ${BUILD[b.need].n} first)`:''),B[k]?'<span class="own">Built</span>':btn(fmtG(b.cost),`data-bld="${k}"`,S.gil<b.cost||(b.need&&!B[b.need])))).join('');}
   else{const ks=Object.keys(F.crates).filter(k=>F.crates[k]>0);const tot=ks.reduce((a,k)=>a+F.crates[k]*goodPrice(k),0);
     h=(ks.length?ks.map(k=>row(goodName(k),`×${F.crates[k]} · ${goodPrice(k)} G each`,'')).join('')+row('Ship everything',`${fmtG(tot)} in all`,btn('Sell','data-sellall="1"')):'<p class="tip">Nothing to sell yet. Harvest crops and keep animals.</p>')+`<p class="tip">Earned from the homestead so far: ${fmtG(F.earned||0)}.</p>`;}
@@ -3804,6 +3804,7 @@ fOv.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return
   if(b.dataset.ani){const k=b.dataset.ani,a=ANIMALS[k];if(S.gil<a.cost)return;S.gil-=a.cost;F.animals[k]++;fNote=`A new ${a.n.toLowerCase()} joins the homestead!`;if(IM&&IM.id==='farm')NPCS=MAPS.farm.npcs;}
   if(b.dataset.bld){const k=b.dataset.bld,B=BUILD[k];if(S.gil<B.cost)return;S.gil-=B.cost;F.built[k]=true;fNote=`${B.n} built!`;if(k==='gwell'){for(const q in F.plots)if(q.startsWith('g:')&&F.plots[q].st==='planted')F.plots[q].wet=true;fNote='Greenhouse Well built! It waters every bed each morning, starting now.';}
   if(k==='well'){for(const q in F.plots)if(!q.startsWith('g:')&&F.plots[q].st==='planted')F.plots[q].wet=true;fNote='Well built! It waters every plot each morning, starting now.';}if(IM&&(IM.id==='farm'||IM.id==='greenhouse')){IM.grid=IM.build();CASTLE=IM.grid;if(IM.id==='farm')NPCS=MAPS.farm.npcs;drawCastleTex();}}
+  if(b.dataset.sellani){const k=b.dataset.sellani,a=ANIMALS[k];if(!(F.animals[k]>0))return;F.animals[k]--;const g=Math.round(a.cost*.6);S.gil+=g;F.earned=(F.earned||0)+g;fNote=`Sold a ${a.n.toLowerCase()} to Old Hob for ${fmtG(g)}.`;if(IM&&IM.id==='farm')NPCS=MAPS.farm.npcs;}
   if(b.dataset.sellall){sellAll();fNote='Sold!';}
   saveGame();renderMenu();drawFarm();});
 $('fClose').onclick=()=>{fNote='';closeSheet(fOv);renderMenu();};
@@ -4435,7 +4436,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.12.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.12.1',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

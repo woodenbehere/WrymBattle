@@ -255,7 +255,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.9.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.9.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -3682,7 +3682,7 @@ let farmNpcCache=null,farmNpcKey='';
 function farmNpcs(){const F=S&&S.flags&&S.flags.farm?farm():null,A=F?F.animals:{},B=F?F.built:{},key=JSON.stringify([A,B.coop,B.barn]);if(farmNpcCache&&key===farmNpcKey)return farmNpcCache;farmNpcKey=key;
   const L=[{x:10,y:5,spr:'farmer',talk:()=>hobTalk()}];
   const spots=[];for(let y=11;y<=14;y++)for(let x=15;x<=22;x++)spots.push([x,y]);let i=0;
-  const add=(mon,n,talk)=>{for(let k=0;k<n;k++){const[x,y]=spots[(i++*7)%spots.length];L.push({x,y,mon,wander:[15,11,22,14],talk:()=>[talk]});}};
+  const add=(mon,n,talk)=>{for(let k=0;k<n;k++){const[x,y]=spots[(i++*7)%spots.length];L.push({x,y,mon,sc:mon==='cow'?4:1,wander:[15,11,22,14],talk:()=>[talk]});}};
   if(B.coop)add('chick',A.chicken||0,'Bawk. The chickens look well fed.');if(B.barn){add('cow',A.cow||0,'Mooo. The cow chews thoughtfully.');add('sheep',A.sheep||0,'Baa. Its wool is coming in thick.');}
   farmNpcCache=L;return L;}
 MAPS.farm={id:'farm',name:'Homestead',dynamic:true,w:26,h:18,entry:{x:12*CT+8,y:16*CT+8},leave:'Leave the homestead',
@@ -4272,7 +4272,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.9.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.9.2',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

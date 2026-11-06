@@ -67,6 +67,11 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .opt.reel,.opt.hook{touch-action:none;user-select:none;-webkit-user-select:none}
 #mini{position:absolute;top:6px;right:6px;width:clamp(64px,22%,230px);height:auto;image-rendering:pixelated;image-rendering:crisp-edges;border:2px solid #e8e8f0;box-shadow:0 0 0 2px #000;background:#000;display:none;cursor:zoom-in;z-index:4}
 #mini.big{width:min(62%,560px);cursor:zoom-out}
+.minix,.minim{position:absolute;z-index:5;display:none;font-family:var(--f-display);color:#e8e8f0;background:rgba(0,0,0,.75);border:2px solid #e8e8f0;cursor:pointer;padding:0;line-height:1}
+.minix{top:8px;right:8px;width:22px;height:22px;font-size:14px}
+.minim{top:6px;right:6px;width:30px;height:30px;border-radius:50%;font-size:13px;box-shadow:0 0 0 2px #000}
+.stage.map .minix,.stage.castle .minix,.stage.map .minim,.stage.castle .minim{display:block}
+.minix[hidden],.minim[hidden]{display:none!important}
 .stage.map #mini,.stage.castle #mini{display:block}
 .boss{gap:2px}.boss span{margin-top:2px}
 .dlg{position:absolute;left:6px;right:6px;bottom:6px;background:linear-gradient(#2c48b8,#121a62);border:2px solid #e8e8f0;box-shadow:0 0 0 2px #000;border-radius:3px;padding:.35em .7em 1em;color:#ffffff;font-size:clamp(14px,3.3cqw,30px);line-height:1.15;z-index:6;cursor:pointer}
@@ -328,7 +333,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.16.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.17.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -1118,12 +1123,13 @@ const WSEED=16,PAD=160,PY=H/2+7;
 let WORLD=null,tex=null,tex2=null,worldMini=null,castleMini=null;
 const miniEl=$('mini'),mctx=miniEl.getContext('2d');
 function drawMini(){
-  const solo=!!(S.flags&&S.flags.solo);if(miniEl.hidden!==solo)miniEl.hidden=solo;if(solo)return;
+  const solo=!!(S.flags&&S.flags.solo),hide=solo||miniOff;if(miniEl.hidden!==hide)miniEl.hidden=hide;if(miniX.hidden!==hide)miniX.hidden=hide;if(miniM.hidden!==(solo||!miniOff))miniM.hidden=solo||!miniOff;if(hide)return;
   const castle=S.scene==='castle',base=castle?castleMini:worldMini;if(!base)return;
   if(miniEl.width!==base.width||miniEl.height!==base.height){miniEl.width=base.width;miniEl.height=base.height;}
   mctx.imageSmoothingEnabled=false;mctx.drawImage(base,0,0);
   const on=Math.floor(S.t*4)%2===0,sc=castle?3:1,px=castle?S.cpos.x/CT:S.world.x/TS,py=castle?S.cpos.y/CT:S.world.y/TS;
-  if(castle){mctx.fillStyle='#86b4f2';for(const n of NPCS){if(n.when&&!n.when())continue;mctx.fillRect(n.x*sc+1,n.y*sc+1,1,1);}}
+  const fog=castle&&isFogMap();if(fog)mctx.drawImage(fogLayer(sc),0,0);
+  if(castle){mctx.fillStyle='#86b4f2';const ff=fog?fogArr(IM):null;for(const n of NPCS){if(n.when&&!n.when())continue;if(ff&&!fogHas(ff,n.x,n.y))continue;mctx.fillRect(n.x*sc+1,n.y*sc+1,1,1);}}
   else{for(const l of WORLD.lands){mctx.fillStyle=l.id==='peak'?'#ff7a2a':l.id==='castle'?'#ffffff':l.id==='mountain'?'#bfefff':l.id==='delve'?'#ffd34a':l.id==='arcanum'?'#b48cff':l.id==='tower'?'#ffffff':l.id==='port'?'#c8a870':'#ff6a4a';mctx.fillRect(Math.floor(l.x/TS)-1,Math.floor(l.y/TS)-1,3,3);}
     if(stormOn()){const I=WORLD.isle;mctx.fillStyle='rgba(90,96,120,.85)';for(let a=0;a<6.283;a+=.12){const x=Math.round(I.cx+.5+Math.cos(a+S.t*.1)*STX),y=Math.round(I.cy+.5+Math.sin(a+S.t*.1)*STY);mctx.fillRect(x,y,2,2);}}
     const bt=S.flags&&S.flags.boat;if(bt&&!bt.boarded&&bt.x!=null){mctx.fillStyle='#f0f0f0';mctx.fillRect(Math.floor(bt.x/TS)-1,Math.floor(bt.y/TS),2,2);}
@@ -4335,6 +4341,27 @@ function seaPool(){const sfx=SEA_TIERS[seaTier()][0];return(isNight()?SEA_NIGHT:
   S.seaDist=(S.seaDist||0)+mv;while(S.seaDist>=TS){S.seaDist-=TS;if(S.seaDanger==null)S.seaDanger=18+Math.floor(Math.random()*14);S.seaDanger-=isNight()?1.3:1;
     if(S.seaDanger<=0){S.seaDanger=18+Math.floor(Math.random()*14);S._sp=null;encounter(pick(seaPool()));return;}}};}
 
+/* ---------- v3.17: fog of war on dungeon minimaps, and a closable minimap ---------- */
+const FOG_R=4,fogCache={};
+const isFogMap=()=>!!(S.scene==='castle'&&IM&&IM.dungeon);
+function fogArr(M){const id=M.id;let f=fogCache[id];if(f&&f.w===M.w&&f.h===M.h)return f;const n=Math.ceil(M.w*M.h/8),a=new Uint8Array(n),s=(S.flags.fog||{})[id];
+  if(s){try{const bin=atob(s);for(let i=0;i<Math.min(n,bin.length);i++)a[i]=bin.charCodeAt(i);}catch(e){}}
+  f=fogCache[id]={a,w:M.w,h:M.h,ver:1,cv:null,drawn:0};return f;}
+const fogHas=(f,x,y)=>x>=0&&y>=0&&x<f.w&&y<f.h&&(f.a[(y*f.w+x)>>3]&(1<<((y*f.w+x)&7)));
+function fogReveal(){const M=IM,f=fogArr(M),cx=Math.floor(S.cpos.x/CT),cy=Math.floor(S.cpos.y/CT);let ch=false;
+  for(let y=cy-FOG_R;y<=cy+FOG_R;y++)for(let x=cx-FOG_R;x<=cx+FOG_R;x++){if(x<0||y<0||x>=f.w||y>=f.h||(x-cx)**2+(y-cy)**2>FOG_R*FOG_R+1)continue;const i=y*f.w+x;if(!(f.a[i>>3]&(1<<(i&7)))){f.a[i>>3]|=1<<(i&7);ch=true;}}
+  if(ch){f.ver++;let s='';for(let i=0;i<f.a.length;i++)s+=String.fromCharCode(f.a[i]);(S.flags.fog||(S.flags.fog={}))[M.id]=btoa(s);}}
+{const tc8=tickClock;tickClock=function(dt){tc8(dt);if(isFogMap()&&S.cpos){const k=IM.id+':'+Math.floor(S.cpos.x/CT)+','+Math.floor(S.cpos.y/CT);if(k!==S.fogKey){S.fogKey=k;fogReveal();}}};}
+{const ei3=enterInterior;enterInterior=function(id,pos){const r=ei3(id,pos);S.fogKey=null;if(isFogMap())fogReveal();return r;};}
+function fogLayer(sc){const f=fogArr(IM);if(f.cv&&f.drawn===f.ver&&f.cv.width===f.w*sc)return f.cv;const c=f.cv||(f.cv=document.createElement('canvas'));c.width=f.w*sc;c.height=f.h*sc;const x=c.getContext('2d');
+  x.fillStyle='#000';x.fillRect(0,0,c.width,c.height);for(let y=0;y<f.h;y++)for(let X=0;X<f.w;X++)if(fogHas(f,X,y))x.clearRect(X*sc,y*sc,sc,sc);f.drawn=f.ver;return c;}
+/* close and reopen the minimap */
+let miniOff=false;try{miniOff=localStorage.getItem('ew-mini-off')==='1';}catch(e){}
+const miniX=document.createElement('button');miniX.type='button';miniX.className='minix';miniX.textContent='×';miniX.setAttribute('aria-label','Close the minimap');stage.appendChild(miniX);
+const miniM=document.createElement('button');miniM.type='button';miniM.className='minim';miniM.textContent='M';miniM.setAttribute('aria-label','Show the minimap');stage.appendChild(miniM);
+function setMini(off){miniOff=off;try{localStorage.setItem('ew-mini-off',off?'1':'0');}catch(e){}if(off)miniEl.classList.remove('big');}
+miniX.onclick=()=>setMini(true);miniM.onclick=()=>setMini(false);
+
 async function dungeonEncounter(form){
   S.battleReturn='castle';S.transIn=true;S.scene='trans';for(const k in keys)keys[k]=false;steer=null;S.world.moving=false;
   for(let i=0;i<2;i++){flash('#ffffff',140);await sleep(170);}
@@ -4671,7 +4698,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.16.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.17.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

@@ -1,5 +1,5 @@
 // Ember Wyrm service worker: precaches the game shell, caches Google Fonts on first use.
-const VERSION = 'ember-wyrm-v3.16.0';
+const VERSION = 'ember-wyrm-v3.17.0';
 const SHELL = [
   './',
   './index.html',

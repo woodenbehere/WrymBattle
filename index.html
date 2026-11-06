@@ -333,7 +333,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.18.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.19.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -1213,8 +1213,7 @@ function buildWorld(){
         for(const x of[0,16]){f('#2a1a4a',x,4,8,26);f('#a89ad8',x+1,5,6,24);f('#6a5a98',x+5,5,2,24);f('#6a48b0',x-1,0,10,5);f('#b48cff',x,0,4,2);}
         f('#2a1a4a',9,-4,6,20);f('#c8b8f0',10,-3,4,18);f('#6a48b0',8,-8,8,5);f('#b48cff',9,-8,3,2);f(fr?'#fff3c4':'#ffd34a',11,-12,2,4);f('#1e1a2a',10,22,4,8);f('#86e0ff',11,2,2,3);});
       at((V.x-2+P)*TS,(V.y+1+P)*TS,f=>{const house=(x,y,roof,dark)=>{f('#3a2418',x-1,y+2,9,6);f('#f0e0b8',x,y+3,7,5);f(roof,x-1,y,9,3);f(dark,x-1,y+2,9,1);f('#5a3a24',x+3,y+5,1,3);};house(1,1,'#6a48b0','#46286e');house(8,6,'#3a5ab0','#24348a');f(fr?'#fff3c4':'#ffd34a',12,1,2,2);});}
-    if(WORLD.isle&&WORLD.isle.up){const I=WORLD.isle;at((I.cx+P)*TS,(I.cy+P)*TS-44,f=>{f('#5a6a8a',1,6,14,54);f('#e8e8f0',2,6,12,54);f('#c8c8d8',10,6,4,54);for(let y=12;y<58;y+=9){f('#86e0ff',2,y,12,1);f('#3a4a6a',6,y+3,3,4);}
-        f('#5a6a8a',3,0,10,7);f('#ffffff',4,1,8,5);f(fr?'#fff6c0':'#ffe14a',7,-4,2,4);f('#1e1a2a',6,52,4,8);});}
+    if(WORLD.isle&&WORLD.isle.up){const I=WORLD.isle;at((I.cx+P)*TS,(I.cy+P)*TS-44,f=>towerArt(f,fr));}
   }
   const c=tex.getContext('2d');c.fillStyle='#2048b8';c.fillRect(0,0,tex.width,tex.height);
   for(let ty=-P;ty<HT+P;ty++)for(let tx=-P;tx<WT+P;tx++)drawTile(c,tx,ty,0);
@@ -1232,8 +1231,16 @@ function mapRender(dt){
   const w=S.world,T=Math.floor(S.t*1.6)%2?tex2:tex;
   const Z=S.zoom||1;ctx.fillStyle='#2048b8';ctx.fillRect(W/2-Z*W/2,H/2-Z*H/2,W*Z,H*Z);
   ctx.drawImage(T,Math.round(w.x-Z*W/2)+PAD,Math.round(w.y-Z*H/2)+PAD,W*Z,H*Z,W/2-Z*W/2,H/2-Z*H/2,W*Z,H*Z);
-  drawSchools();drawParkedShip();drawParkedBoat();drawStorm(dt,false);drawWalker();drawStorm(dt,true);
+  drawSchools();drawParkedShip();drawParkedBoat();drawStorm(dt,false);drawWalker();drawTowerFront();drawStorm(dt,true);
 }
+function towerArt(f,fr){f('#5a6a8a',1,6,14,54);f('#e8e8f0',2,6,12,54);f('#c8c8d8',10,6,4,54);for(let y=12;y<58;y+=9){f('#86e0ff',2,y,12,1);f('#3a4a6a',6,y+3,3,4);}
+  f('#5a6a8a',3,0,10,7);f('#ffffff',4,1,8,5);f(fr?'#fff6c0':'#ffe14a',7,-4,2,4);f('#1e1a2a',6,52,4,8);}
+const TOWER_SPR=[0,1].map(fr=>{const c=document.createElement('canvas');c.width=16;c.height=64;const x=c.getContext('2d');towerArt((col,a,b,w=1,h=1)=>{x.fillStyle=col;x.fillRect(a,b+4,w,h);},fr);return c;});
+function drawTowerFront(){const I=WORLD&&WORLD.isle,w=S.world;if(!I||!I.up||w.camping||S.isleView)return;
+  if(w.y>=I.cy*TS+4||Math.abs(w.x-(I.cx+.5)*TS)>TS*1.5||w.y<I.cy*TS-70)return;
+  if((S.flags.ship&&S.flags.ship.boarded)||(S.flags.boat&&S.flags.boat.boarded))return;
+  ctx.drawImage(TOWER_SPR[Math.floor(S.t*1.6)%2],Math.round(I.cx*TS-w.x+W/2),Math.round(I.cy*TS-48-w.y+H/2));
+  const lead=S.heroes.find(h=>!h.ko)||S.heroes[0],bob=w.moving&&Math.floor(w.walkT*8)%2?1:0;ctx.globalAlpha=.35;drawSprite(ctx,heroSpr(lead),W/2,PY-bob,{flip:w.face>0});ctx.globalAlpha=1;}
 function drawWalker(){
   const w=S.world;if(w.camping||S.isleView)return;{const bt=S.flags&&S.flags.boat;if(bt&&bt.boarded){drawBoat(ctx,W/2,PY+3+Math.round(Math.sin(S.t*2)),w.face<0);return;}}{const sh=S.flags&&S.flags.ship;if(sh&&sh.boarded){const b=Math.round(Math.sin(S.t*2.2)*1.5);ctx.fillStyle='rgba(0,0,0,.22)';ell(ctx,W/2,PY+3,11,2.2);drawShip(ctx,W/2,PY-9+b,1,w.face<0,true);return;}}const lead=S.heroes.find(h=>!h.ko)||S.heroes[0];
   const bob=w.moving&&Math.floor(w.walkT*8)%2?1:0;
@@ -1754,6 +1761,8 @@ function castleRender(){
   const lead=S.flags.solo?thief():S.heroes.find(h=>!h.ko)||S.heroes[0],w=S.world,bob=w.moving&&Math.floor(w.walkT*8)%2?1:0,px=Math.round(p.x-cx),py=Math.round(p.y-cy)+7;
   ctx.fillStyle='rgba(0,0,0,.3)';ell(ctx,px,py,5,1.5);drawSprite(ctx,heroSpr(lead),px,py-bob,{flip:w.face>0});
   S.pScreen={x:px,y:py-7};
+  for(const b of IM.buildings||[]){const X=b.x*CT,Y=b.y*CT,w=b.w*CT,rh=Math.round(b.h*CT*.46);if(X-cx>W||X+w-cx<0||Y-cy>H||Y+14-cy<0)continue;
+    for(let y=0;y<Math.min(14,rh);y++){const ins=Math.round((rh-1-y)*.3);ctx.drawImage(ctex,X+ins,Y+y,w-2*ins,1,X+ins-cx,Y+y-cy,w-2*ins,1);}}
 }
 let bumpKey='',bumpT=0;
 function castleUpdate(dt){
@@ -4722,7 +4731,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.18.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.19.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

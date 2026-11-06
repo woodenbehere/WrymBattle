@@ -255,7 +255,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.9.3</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.9.4</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -3662,7 +3662,7 @@ const isPlot=(x,y)=>x>=12&&x<=23&&FIELD_ROWS().includes(y);
 function farmDay(d,last){const F=farm(),B=F.built,rain=last&&wxRainy(),news=[];
   for(const k in F.plots){const p=F.plots[k];if(p.st!=='planted')continue;const C=CROPS[p.c];
     if(!B.greenhouse&&seasonAt(d)!==C.s){p.st='dead';news.push(`${C.n} withered as the season turned.`);continue;}
-    if(p.wet||B.well||rain){p.g=(p.g||0)+1;if(p.g>=C.days)p.st='ready';}p.wet=false;}
+    if(p.wet||B.well||rain){p.g=(p.g||0)+1;if(p.g>=C.days)p.st='ready';}p.wet=!!B.well;}
   if(!B.scarecrow){const pl=Object.keys(F.plots).filter(k=>F.plots[k].st==='planted');if(pl.length&&Math.random()<.25){const k=pick(pl);news.push(`Crows got into the field and ate a ${CROPS[F.plots[k].c].n}.`);F.plots[k]={st:'tilled'};}}
   const A=F.animals;if(B.coop&&A.chicken)F.crates.egg=(F.crates.egg||0)+A.chicken;if(B.barn&&A.cow)F.crates.milk=(F.crates.milk||0)+A.cow;if(B.barn&&A.sheep&&d%2===0)F.crates.wool=(F.crates.wool||0)+A.sheep;
   F.news=(F.news||[]).concat(news).slice(-6);}
@@ -3695,7 +3695,7 @@ MAPS.farm={id:'farm',name:'Homestead',dynamic:true,w:26,h:18,entry:{x:12*CT+8,y:
    for(let x=0;x<this.w;x++){set(x,0,'9');set(x,this.h-1,'9');}for(let y=0;y<this.h;y++){set(0,y,'9');set(this.w-1,y,'9');}
    for(let y=8;y<=16;y++)set(12,y,'s');for(let x=4;x<=12;x++)set(x,6,'s');set(4,5,'s');for(let x=12;x<=13;x++)set(x,this.h-1,'E');
    for(const y of FIELD_ROWS())for(let x=12;x<=23;x++)set(x,y,'1');
-   set(9,4,'0');if(B.well)set(9,8,'7');if(B.scarecrow)set(11,3,'8');
+   set(9,4,'0');if(B.well)set(17,Math.max(...FIELD_ROWS())+1,'7');if(B.scarecrow)set(11,3,'8');
    for(let x=14;x<=23;x++){set(x,10,'9');set(x,15,'9');}for(let y=10;y<=15;y++){set(14,y,'9');set(23,y,'9');}set(14,13,'g');
    this.buildings=[{x:2,y:1,w:6,h:4,door:4,roof:'#a83a2a',wall:'#e8d8b0'}];
    if(B.coop)this.buildings.push({x:2,y:9,w:4,h:3,door:3,roof:'#c8902a',wall:'#d8c8a0'});
@@ -3724,7 +3724,7 @@ const seedOk=c=>farm().built.greenhouse||CROPS[c].s===season();
 function farmMenuOpts(){const F=farm(),k=curPlot(),p=k&&F.plots[k],o=[];
   if(k){if(!p)o.push(opt('fp:till','Till this plot','','Break the ground'));
     else if(p.st==='tilled')o.push(opt('fp:plant','Plant…','',Object.keys(F.seeds).some(c=>F.seeds[c]>0)?'Choose seeds':'No seeds. Buy some from Old Hob',!Object.keys(F.seeds).some(c=>F.seeds[c]>0)));
-    else if(p.st==='planted')o.push(opt('fp:water',p.wet?'Watered':'Water','',`${CROPS[p.c].n} · ${p.g||0} of ${CROPS[p.c].days} days`,!!p.wet));
+    else if(p.st==='planted')o.push(opt('fp:water',p.wet||F.built.well?'Watered':'Water','',`${CROPS[p.c].n} · ${p.g||0} of ${CROPS[p.c].days} days${F.built.well?' · the well waters it':''}`,!!(p.wet||F.built.well)));
     else if(p.st==='ready')o.push(opt('fp:harvest','Harvest','',CROPS[p.c].n+' is ready!'));
     else if(p.st==='dead')o.push(opt('fp:clear','Clear','','Pull the withered plants'));}
   const un=plotsWhere(p=>!p).length,til=plotsWhere(p=>p&&p.st==='tilled').length,dry=plotsWhere(p=>p&&p.st==='planted'&&!p.wet).length,rdy=plotsWhere(p=>p&&p.st==='ready').length,dead=plotsWhere(p=>p&&p.st==='dead').length;
@@ -3737,7 +3737,7 @@ function farmMenuOpts(){const F=farm(),k=curPlot(),p=k&&F.plots[k],o=[];
 {const rc0=renderCastleMenu;renderCastleMenu=function(){rc0();if(!(IM&&IM.id==='farm')||S.flags.solo)return;const h=cmdEl.querySelector('.cmd-h');if(h)h.insertAdjacentHTML('afterend',farmMenuOpts());};}
 function pickSeed(n){const F=farm(),have=Object.keys(F.seeds).filter(c=>F.seeds[c]>0);if(!have.length){say('No seeds. Old Hob sells them.');return Promise.resolve(null);}
   return askChoice(`Plant which seeds?${n>1?` (${n} plots)`:''}`,[...have.map(c=>`${CROPS[c].n} ×${F.seeds[c]}${seedOk(c)?'':' (out of season)'}`),'Cancel']).then(i=>i<have.length?have[i]:null);}
-function plantAt(k,c){const F=farm();if(!seedOk(c)){say(`${CROPS[c].n} seeds won’t sprout in ${season()}. They grow in ${CROPS[c].s}.`);return false;}if(!(F.seeds[c]>0))return false;F.seeds[c]--;F.plots[k]={st:'planted',c,g:0,wet:wxRainy()};return true;}
+function plantAt(k,c){const F=farm();if(!seedOk(c)){say(`${CROPS[c].n} seeds won’t sprout in ${season()}. They grow in ${CROPS[c].s}.`);return false;}if(!(F.seeds[c]>0))return false;F.seeds[c]--;F.plots[k]={st:'planted',c,g:0,wet:wxRainy()||!!F.built.well};return true;}
 function harvestAt(k){const F=farm(),p=F.plots[k],n=1+(Math.random()<.3?1:0);F.crates[p.c]=(F.crates[p.c]||0)+n;F.plots[k]={st:'tilled'};return n;}
 function farmRefresh(msg){if(msg)say(msg);drawCastleTex();renderMenu();saveGame();}
 async function farmCmd(a){const F=farm(),k=curPlot();
@@ -3790,7 +3790,7 @@ fOv.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return
   if(b.dataset.ft){fTab=b.dataset.ft;fNote='';return drawFarm();}
   if(b.dataset.seed){const[c,n]=b.dataset.seed.split(':'),cost=CROPS[c].seed*+n;if(S.gil<cost)return;S.gil-=cost;F.seeds[c]=(F.seeds[c]||0)+ +n;fNote=`Bought ${n} ${CROPS[c].n} seed${+n>1?'s':''}.`;}
   if(b.dataset.ani){const k=b.dataset.ani,a=ANIMALS[k];if(S.gil<a.cost)return;S.gil-=a.cost;F.animals[k]++;fNote=`A new ${a.n.toLowerCase()} joins the homestead!`;if(IM&&IM.id==='farm')NPCS=MAPS.farm.npcs;}
-  if(b.dataset.bld){const k=b.dataset.bld,B=BUILD[k];if(S.gil<B.cost)return;S.gil-=B.cost;F.built[k]=true;fNote=`${B.n} built!`;if(IM&&IM.id==='farm'){IM.grid=IM.build();CASTLE=IM.grid;NPCS=MAPS.farm.npcs;drawCastleTex();}}
+  if(b.dataset.bld){const k=b.dataset.bld,B=BUILD[k];if(S.gil<B.cost)return;S.gil-=B.cost;F.built[k]=true;fNote=`${B.n} built!`;if(k==='well'){for(const q in F.plots)if(F.plots[q].st==='planted')F.plots[q].wet=true;fNote='Well built! It waters every plot each morning, starting now.';}if(IM&&IM.id==='farm'){IM.grid=IM.build();CASTLE=IM.grid;NPCS=MAPS.farm.npcs;drawCastleTex();}}
   if(b.dataset.sellall){sellAll();fNote='Sold!';}
   saveGame();renderMenu();drawFarm();});
 $('fClose').onclick=()=>{fNote='';closeSheet(fOv);renderMenu();};
@@ -4272,7 +4272,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.9.3',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.9.4',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

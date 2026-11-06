@@ -64,7 +64,7 @@ Five heroes take on a dragon in two phases:
   - **Growing**: crops grow one day for each day they're watered (rain counts). Each has a season, and planted crops wither when the season turns. Crows eat a crop now and then unless you build a scarecrow.
   - **Crops**: Spring turnip, potato and strawberry; Summer tomato, corn and melon; Fall carrot, wheat and pumpkin; Winter snowroot and frostberry.
   - **Animals**: a Chicken Coop houses up to 6 chickens (eggs daily); a Barn houses up to 4 cows (milk daily) or sheep (wool every other day). Their goods appear in your crates each morning.
-  - **Buildings**: Coop, Barn, Well (waters every plot each morning), Scarecrow, two rounds of land clearing, and a Greenhouse (any seed grows in any season, and nothing withers).
+  - **Buildings**: Coop, Barn, Well (sits just below the field and waters every planted plot each morning, and anything you plant, automatically), Scarecrow, two rounds of land clearing, and a Greenhouse (any seed grows in any season, and nothing withers).
   - **Selling**: drop goods in the shipping bin, or use the Sell tab of the Homestead menu. The farmhouse bed is a free rest.
 - **Mine lift**: every level of Deepdelve Mine, and Ironhold, has a lift cage near its entrance. Walk into it to ride to any level you've already reached (Ironhold once Gravemaw is slain).
 - **Ironhold homes**: an Upper Ward of four houses flanks the airship bay, and another home sits on the south lane, all open to Vesh's night work.

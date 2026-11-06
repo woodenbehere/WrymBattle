@@ -134,12 +134,59 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .ffm-side{display:grid;gap:8px;align-content:start;min-width:110px}
 .ffm-box{background:var(--panel-2);border:2px solid var(--line-hi);padding:8px 10px;display:grid;gap:2px}
 .ffm-box .ffc{font-family:var(--f-display);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
-.ffm-box b{font-family:var(--f-body);font-size:20px;font-weight:normal;text-align:right;color:var(--text)}
+.ffm-box>b{font-family:var(--f-body);font-size:20px;font-weight:normal;text-align:right;color:var(--text)}
 .ffm-cmd{background:none;border:0;color:var(--text);font-family:var(--f-display);font-size:14px;letter-spacing:.06em;text-align:left;padding:6px 4px 6px 18px;cursor:pointer;position:relative}
 .ffm-cmd:hover,.ffm-cmd:focus-visible{color:var(--gold);outline:none}
 .ffm-cmd:hover::before,.ffm-cmd:focus-visible::before{content:"\25B6";position:absolute;left:2px;font-size:9px;top:9px;color:var(--gold)}
 .ffm-cmd:disabled{color:var(--dim);cursor:default}
-@media (max-width:520px){.ffm-stats{grid-template-columns:2em minmax(0,1fr);gap:0 6px}.ffm-name{font-size:11px}.ffm-name em{display:block;margin-left:0;font-size:14px}.ffm{gap:6px}.ffm-side{min-width:92px}.ffm-row{padding:5px 6px;gap:6px}.ffm-row img{width:32px;height:34px}.ffm-num b,.ffm-box b{font-size:17px}}
+
+.ffm-cmd[aria-pressed="true"]{color:var(--gold)}
+.ffm-cmd[aria-pressed="true"]::before{content:"\25B6";position:absolute;left:2px;font-size:9px;top:9px;color:var(--gold)}
+.ffj{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;max-width:min(100%,760px)}
+.ffj-main{min-width:0;display:grid;gap:8px;align-content:start}
+.ffj-head .shop-h{margin:0}.ffj-body{gap:8px;min-height:240px}
+.ffj-tabs{display:grid}
+.ffj-body .slist{gap:0}.ffj-body .srow{border:0;background:none;padding:4px 2px;border-bottom:1px solid var(--line);align-items:baseline}.ffj-body .srow .sinfo>b{font-family:var(--f-display);font-size:11px;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;font-weight:normal}.ffj-body .srow .sinfo>span{color:var(--muted)}.ffj-body .own{font-family:var(--f-body);font-size:20px;color:var(--text);text-align:right}
+.ffs{display:grid;gap:8px;max-width:min(100%,760px)}
+.ffs .ffc{font-family:var(--f-display);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.ffs-top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px}
+.ffs-title{align-content:center}.ffs-title b{font-family:var(--f-display);font-size:14px;font-weight:normal;letter-spacing:.08em;color:var(--gold);text-transform:uppercase}
+.ffs-tabs{display:flex;flex-wrap:wrap;gap:0 14px;align-items:center}
+.ffs-desc{position:relative;min-height:64px;align-content:start}
+.ffs-desc p{margin:0;padding-right:44px;font-family:var(--f-body);font-size:20px;color:var(--text)}
+.ffs-desc .btn,.ffs-desc .own{justify-self:start;margin-top:6px}
+.ffs-count{position:absolute;right:10px;bottom:6px;font-family:var(--f-body);font-size:22px;color:var(--text)}
+.ffs-targets{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+.ffs-tg{background:var(--panel);border:2px solid var(--line);color:var(--text);font-family:var(--f-body);font-size:18px;padding:3px 8px;cursor:pointer}
+.ffs-tg em{font-style:normal;color:var(--muted)}
+.ffs-list{min-height:120px;align-content:start}
+.ffs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 16px}
+.ffs-it{display:flex;justify-content:space-between;gap:8px;background:none;border:0;color:var(--text);font-family:var(--f-body);font-size:20px;text-align:left;padding:3px 4px 3px 18px;cursor:pointer;position:relative;width:100%}
+.ffs-it.dim{color:var(--dim)}
+.ffs-it[aria-pressed="true"]{color:var(--gold)}
+.ffs-it[aria-pressed="true"]::before,.ffs-slot[aria-pressed="true"]::before{content:"\25B6";position:absolute;left:2px;top:8px;font-size:9px;color:var(--gold)}
+.ffs-it b{font-weight:normal;white-space:pre}
+.ffs-row2{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.ffs-mp{min-width:90px;align-content:center}.ffs-mp b{font-family:var(--f-body);font-size:22px;font-weight:normal;text-align:right;color:var(--mp)}
+.ffs-hero{display:flex;align-items:center;gap:12px}
+.ffs-hero img{width:48px;height:51px;image-rendering:pixelated}.ffs-hero img.big{width:72px;height:77px}
+.ffs-arr{background:none;border:0;color:var(--gold);font-size:14px;cursor:pointer;padding:6px}
+.ffs-slots{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+.ffs-slotlist{display:grid;gap:2px}
+.ffs-slot{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:8px;align-items:baseline;background:none;border:0;color:var(--text);font-family:var(--f-body);font-size:20px;text-align:left;cursor:pointer;padding:2px 4px 2px 18px;position:relative}
+.ffs-slot:disabled{color:var(--dim);cursor:default}.ffs-slot:disabled .ffc{color:var(--dim)}
+.ffs-cands{display:grid;gap:2px}
+.ffs-statgrid{display:grid;grid-template-columns:auto auto auto;gap:2px 12px;align-items:baseline;justify-content:start}
+.ffs-statgrid b{font-family:var(--f-body);font-size:20px;font-weight:normal;text-align:right;color:var(--text)}
+.ffs-statgrid i{font-style:normal;font-family:var(--f-body);font-size:20px;color:var(--muted)}
+.ffs-statgrid i.up{color:var(--heal)}.ffs-statgrid i.down{color:var(--hp-crit)}
+.ffs-two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ffs-exp{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:baseline;margin-top:8px}
+.ffs-exp b{font-family:var(--f-body);font-size:20px;font-weight:normal;text-align:right;color:var(--text)}
+.ffs-cmdlist{align-content:center;min-width:120px;gap:6px}.ffs-title>b,.ffs-cmdlist>b{text-align:left}.ffs-cmdlist b{font-family:var(--f-display);font-size:13px;font-weight:normal;letter-spacing:.06em;color:var(--text)}
+.ffs-eqline{font-family:var(--f-body);font-size:18px;color:var(--text)}
+@media (max-width:520px){.ffs-grid,.ffs-two,.ffs-slots,.ffs-row2,.ffs-top{grid-template-columns:1fr}.ffj{grid-template-columns:1fr}.ffj .ffm-side{order:-1}.ffj-tabs{display:flex;flex-wrap:wrap}.ffs-hero img.big{width:48px;height:51px}.ffs-slot{grid-template-columns:6em minmax(0,1fr)}}
+@media (max-width:520px){.ffm-stats{grid-template-columns:2em minmax(0,1fr);gap:0 6px}.ffm-name{font-size:11px}.ffm-name em{display:block;margin-left:0;font-size:14px}.ffm{gap:6px}.ffm-side{min-width:92px}.ffm-row{padding:5px 6px;gap:6px}.ffm-row img{width:32px;height:34px}.ffm-num b,.ffm-box>b{font-size:17px}}
 
 body.bigmap::before{content:'';position:fixed;inset:0;background:#000;z-index:30}
 body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100vw,calc(100vh * 16 / 9));max-width:none;margin:0;border:0}
@@ -281,7 +328,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.14.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.15.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -3470,7 +3517,7 @@ function installTrack(){if(!S)return;
 
 /* the Journal */
 const jOv=document.createElement('div');jOv.className='sheet';jOv.id='jOv';jOv.setAttribute('role','dialog');jOv.setAttribute('aria-modal','true');jOv.setAttribute('aria-label','Journal');jOv.hidden=true;
-jOv.innerHTML='<div class="card help"><div class="shop-h"><h2>Journal</h2><span class="gil" id="jSub"></span></div><div class="chips" id="jTabs"></div><div id="jBody"></div><div class="arow"><button class="btn" id="jClose" type="button">Close</button></div></div>';
+jOv.innerHTML='<div class="card ffj"><div class="ffj-main"><div class="ffm-box ffj-head"><div class="shop-h"><h2>Journal</h2><span class="gil" id="jSub"></span></div></div><div class="ffm-box ffj-body" id="jBody"></div></div><div class="ffm-side"><div class="ffm-box ffm-cmds"><div id="jTabs" class="ffj-tabs"></div><button class="ffm-cmd" id="jClose" type="button">Close</button></div></div></div>';
 $('shopOv').parentNode.appendChild(jOv);
 let jTab='stats';
 const hm=sec=>{sec=Math.floor(sec||0);const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60);return h?`${h} h ${m} min`:`${m} min`;};
@@ -3478,7 +3525,7 @@ const jRow=(a,b)=>`<div class="srow"><div class="sinfo"><b>${esc(a)}</b></div><d
 const jName=id=>ITEMS[id]?ITEMS[id].name:GEAR[id]?GEAR[id].name:id;
 function drawJournal(){const st=stObj(),f=S.flags;
   $('jSub').textContent=`Day ${f.day||1} · ${hm(st.play)} played`;
-  $('jTabs').innerHTML=[['stats','Stats'],['farm','Homestead'],['beasts','Bestiary'],['items','Items'],['fish','Fish Book'],['notes','Notes']].map(([k,n])=>`<button type="button" class="chip" data-jt="${k}" aria-pressed="${k===jTab}">${n}</button>`).join('');
+  $('jTabs').innerHTML=[['stats','Stats'],['farm','Homestead'],['beasts','Bestiary'],['items','Items'],['fish','Fish Book'],['notes','Notes']].map(([k,n])=>`<button type="button" class="ffm-cmd" data-jt="${k}" aria-pressed="${k===jTab}">${n}</button>`).join('');
   let h='';
   if(jTab==='stats'){const kills=Object.values(S.kills).reduce((a,b)=>a+(b||0),0),fb=typeof fbook==='function'?fbook():{},nf=Object.keys(fb).length,big=Object.entries(fb).sort((a,b)=>b[1].best-a[1].best)[0];
     const lv=S.heroes.map(x=>`${x.name} ${x.lv}`).join(', ');
@@ -4157,10 +4204,88 @@ mOv.addEventListener('click',e=>{const r=e.target.closest('[data-hk]');if(r){ffm
   if(k==='close'){closeSheet(mOv);renderMenu();return;}
   closeSheet(mOv);ffmBack=true;
   if(k==='journal')return openJournal();if(k==='save')return openSaves();
-  partyKey=ffmSel;openPartyRaw();});
+  partyKey=ffmSel;ffmBack=false;ffsOpen({item:'item',skills:'magic',equip:'equip',status:'status'}[k]);});
 const openPartyRaw=openParty;openParty=function(){openMain();};
 for(const id of['partyClose','jClose','svClose'])$(id).addEventListener('click',ffmReturn);
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!mOv.hidden){closeSheet(mOv);renderMenu();}});
+
+
+/* ---------- v3.15: Item, Magic, Equip and Status screens in the classic layout ---------- */
+const sOv=document.createElement('div');sOv.className='sheet';sOv.id='sOv';sOv.setAttribute('role','dialog');sOv.setAttribute('aria-modal','true');sOv.setAttribute('aria-label','Menu');sOv.hidden=true;
+sOv.innerHTML='<div class="card ffs" id="ffsCard"></div>';$('shopOv').parentNode.appendChild(sOv);
+const FS={mode:'item',sel:null,pend:null,note:'',slot:null,eqMode:'equip',tab:'use'};
+const curHero=()=>S.heroes.find(x=>x.key===partyKey)||S.heroes[0];
+function fsBox(cls,inner){return`<div class="ffm-box ${cls}">${inner}</div>`;}
+function fsHeroBox(h,big){return`<div class="ffs-hero">${S.heroes.length>1?'<button type="button" class="ffs-arr" data-hero="-1" aria-label="Previous hero">◀</button>':''}<img alt="" src="${ffmPortrait(h)}" class="${big?'big':''}"><span class="ffm-info"><span class="ffm-name">${esc(h.name)}<em>${esc(h.cls)}</em></span><span class="ffm-stats">
+  <span class="ffm-num"><span class="ffc">LV</span><b>${h.lv}</b></span><span class="ffm-num"><span class="ffc">HP</span><b class="${h.hp<=h.maxhp/4?'low':''}">${h.hp}/${h.maxhp}</b></span>${h.maxmp?`<span class="ffm-num"><span class="ffc">MP</span><b>${h.mp}/${h.maxmp}</b></span>`:''}</span></span>${S.heroes.length>1?'<button type="button" class="ffs-arr" data-hero="1" aria-label="Next hero">▶</button>':''}</div>`;}
+function fsTargets(){const p=FS.pend;if(!p)return'';const t=p.kind==='sk'?skType(p.id):itType(p.id),list=t==='hpmp'?S.heroes.filter(fieldOk):fieldTargets(t);
+  return`<div class="ffs-targets"><span class="ffc">Use on</span>${list.map(x=>`<button type="button" class="ffs-tg" data-tg="${x.i}">${esc(x.name)} <em>${x.ko?'KO':x.stone?'Stone':t==='mp'?`MP ${x.mp}/${x.maxmp}`:`${x.hp}/${x.maxhp}`}</em></button>`).join('')}<button type="button" class="ffs-tg" data-tg="-1">Cancel</button></div>`;}
+function fsTop(title,tabs){return`<div class="ffs-top">${fsBox('ffs-title',`<b>${title}</b>`)}${fsBox('ffs-tabs',tabs.map(([k,n,on])=>`<button type="button" class="ffm-cmd" data-tab="${k}" aria-pressed="${!!on}">${n}</button>`).join('')+'<button type="button" class="ffm-cmd" data-tab="back">Back</button>')}</div>`;}
+const itemSort=()=>S.flags.itemSort||'type';
+function itemNeed(id){if(!FIELD_IT.includes(id))return'Use in battle';if(S.scene==='battle')return'Use in battle';const t=itType(id);
+  const need=t==='party'||t==='hpmp'?S.heroes.some(x=>fieldOk(x)&&(x.hp<x.maxhp||x.mp<x.maxmp)):fieldTargets(t).length;return need?'':'No one needs it';}
+function skWhy(h,id){const sk=SK[id],k=FIELD_SK[id];if(!k)return'Battle only';if(!fieldOk(h))return h.ko?'Knocked out':'Turned to stone';if(h.mp<sk.mp)return'Not enough MP';
+  if(k==='exit'&&!exitOk())return'Only indoors';if(k==='phoenix'&&!S.heroes.some(x=>x.ko)&&!fieldTargets('hp').length)return'No one needs it';if(k!=='exit'&&k!=='phoenix'&&!fieldTargets(skType(id)).length)return'No one needs it';return'';}
+function eqPreview(h,slot,id){const keep={hp:h.hp,mp:h.mp},old=h.eq[slot];h.eq[slot]=id;recalc(h);const r={str:h.str,mag:h.mag,spd:h.spd,def:h.def,mdef:h.mdef,maxhp:h.maxhp,maxmp:h.maxmp};h.eq[slot]=old;recalc(h);h.hp=keep.hp;h.mp=keep.mp;return r;}
+function drawFfs(){const h=curHero(),m=FS.mode;let html='';
+  if(m==='item'){const sort=itemSort(),gear=FS.tab==='gear';
+    let ids=gear?Object.keys(S.bag).filter(k=>S.bag[k]>0&&GEAR[k]):Object.keys(ITEMS).filter(k=>S.items[k]>0);
+    if(sort==='name')ids.sort((a,b)=>(gear?GEAR:ITEMS)[a].name.localeCompare((gear?GEAR:ITEMS)[b].name));else if(sort==='count')ids.sort((a,b)=>(gear?S.bag:S.items)[b]-(gear?S.bag:S.items)[a]);
+    const sel=ids.includes(FS.sel)?FS.sel:null,D=sel&&(gear?GEAR[sel]:ITEMS[sel]);
+    html+=fsTop('Item',[['use','Use',!gear],['arrange',`Arrange · ${({type:'Type',name:'A–Z',count:'Most'})[sort]}`],['gear','Gear',gear]]);
+    let desc=FS.note?esc(FS.note):D?esc(gear?gearLine(D)||'Equipment':D.d):gear?'Spare equipment in the bag. Equip it from the Equip screen.':'Tap an item to read it. Tap again to use it.';
+    let act='';if(sel&&!gear&&!FS.pend){const why=itemNeed(sel);act=why?`<span class="own">${why}</span>`:`<button type="button" class="btn sm" data-use="${sel}">Use</button>`;}
+    html+=fsBox('ffs-desc',`<p>${desc}</p><span class="ffs-count">${sel?(gear?S.bag[sel]:S.items[sel]):''}</span>${act}${fsTargets()}`);
+    html+=fsBox('ffs-list',ids.length?`<div class="ffs-grid">${ids.map(k=>{const dim=!gear&&!!itemNeed(k);return`<button type="button" class="ffs-it${dim?' dim':''}" data-it="${k}" aria-pressed="${k===sel}"><span>${esc((gear?GEAR:ITEMS)[k].name)}</span><b>:${String(gear?S.bag[k]:S.items[k]).padStart(2,' ')}</b></button>`;}).join('')}</div>`:'<p class="tip">Nothing here yet.</p>');}
+  else if(m==='magic'){const sel=h.skills.includes(FS.sel)?FS.sel:null,sk=sel&&SK[sel];
+    html+=fsTop(esc(h.spLabel||'Skills'),[]);
+    let act='';if(sel&&!FS.pend){const why=skWhy(h,sel);act=why?`<span class="own">${why}</span>`:`<button type="button" class="btn sm${sel==='exit'&&exitArmed()?' armed':''}" data-cast="${sel}">${sel==='exit'&&exitArmed()?'Tap again':'Cast'}</button>`;}
+    html+=`<div class="ffs-row2">${fsBox('ffs-desc',`<p>${FS.note?esc(FS.note):sk?esc(sel==='exit'?'Warp out of any dungeon, castle or town to the world map':sk.d):'Tap a skill to read it. Bright ones can be used outside battle.'}</p>${act}${fsTargets()}`)}${fsBox('ffs-mp',`<span class="ffc">MP</span><b>${sk?sk.mp:'—'}</b>`)}</div>`;
+    html+=fsBox('ffs-herobox',fsHeroBox(h,true));
+    html+=fsBox('ffs-list',h.skills.length?`<div class="ffs-grid">${h.skills.map(id=>`<button type="button" class="ffs-it${skWhy(h,id)?' dim':''}" data-sk="${id}" aria-pressed="${id===sel}"><span>${esc(SK[id].name)}</span><b>${SK[id].mp||''}</b></button>`).join('')}</div>`:'<p class="tip">No skills yet.</p>');}
+  else if(m==='equip'){const em=FS.eqMode,slot=FS.slot;
+    html+=fsTop('Equip',[['equip','Equip',em==='equip'],['optimum','Optimum'],['remove','Remove',em==='remove'],['empty','Empty']]);
+    html+=fsBox('ffs-slots',`<div class="ffs-slotlist">${SLOTS.map(s=>{const it=GEAR[h.eq[s]],can=Object.keys(GEAR).some(id=>GEAR[id].slot===s&&GEAR[id].who.includes(h.key));return`<button type="button" class="ffs-slot" data-slot="${s}" aria-pressed="${s===slot}"${can?'':' disabled'}><span class="ffc">${SLOT_NAME[s]}</span><span>${it?esc(it.name):'—'}</span></button>`;}).join('')}</div>${fsHeroBox(h,false)}`);
+    let left='',prev=null;
+    if(FS.note)left+=`<p class="tip">${esc(FS.note)}</p>`;
+    if(slot&&em==='equip'){const opts=Object.keys(S.bag).filter(id=>S.bag[id]>0&&GEAR[id]&&GEAR[id].slot===slot&&GEAR[id].who.includes(h.key));
+      left+=opts.length?opts.map(id=>`<button type="button" class="ffs-it" data-eq="${id}" aria-pressed="${FS.sel===id}"><span>${esc(GEAR[id].name)}</span><b>:${S.bag[id]}</b></button>`).join(''):`<p class="tip">No spare ${SLOT_NAME[slot].toLowerCase()} gear for ${esc(h.name)}.</p>`;
+      if(FS.sel&&opts.includes(FS.sel))prev=eqPreview(h,slot,FS.sel);}
+    else if(!FS.note)left+=`<p class="tip">${em==='remove'?'Tap a slot to take that piece off.':'Tap a slot, then a piece to compare it. Tap the piece again to equip it.'}</p>`;
+    const rows=[['Attack','str'],['Magic','mag'],['Speed','spd'],['Defense','def'],['Magic def.','mdef'],['Max HP','maxhp'],['Max MP','maxmp']];
+    const stats=rows.map(([n,k])=>{const v=h[k],p=prev?prev[k]:null,cls=p==null||p===v?'':p>v?'up':'down';return`<span class="ffc">${n}</span><b>${v}</b><i class="${cls}">${p==null?'':'→ '+p}</i>`;}).join('');
+    html+=`<div class="ffs-row2">${fsBox('ffs-list ffs-cands',left)}${fsBox('ffs-stats',`<div class="ffs-statgrid">${stats}</div>`)}</div>`;}
+  else if(m==='status'){const nxt=h.lv>=MAX_LV?'—':(expAt(h.lv+1)-h.exp).toLocaleString(),stt=[h.ko&&'KO',h.stone&&'Stone',h.poison&&'Poison',h.confuse&&'Confused'].filter(Boolean).join(', ')||'Normal';
+    html+=fsTop('Status',[]);
+    html+=`<div class="ffs-row2">${fsBox('ffs-herobox',fsHeroBox(h,true)+`<div class="ffs-exp"><span class="ffc">Your EXP</span><b>${h.exp.toLocaleString()}</b><span class="ffc">For level up</span><b>${nxt}</b><span class="ffc">Condition</span><b>${stt}</b></div>`)}${fsBox('ffs-cmdlist',['Fight',h.spLabel||'Skills','Item','Defend'].map(c=>`<b>${esc(c)}</b>`).join(''))}</div>`;
+    const L=[['Strength',h.bstr],['Attack',h.str],['Magic',h.mag],['Speed',h.spd]],R=[['Defense',h.def],['Magic def.',h.mdef],['Skills known',h.skills.length],['Class',esc(h.cls)]];
+    html+=fsBox('ffs-stats',`<div class="ffs-two"><div class="ffs-statgrid">${L.map(([n,v])=>`<span class="ffc">${n}</span><b>${v}</b><i></i>`).join('')}</div><div class="ffs-statgrid">${R.map(([n,v])=>`<span class="ffc">${n}</span><b>${v}</b><i></i>`).join('')}</div></div>`)+
+      fsBox('ffs-list',`<span class="ffc">Equipment</span><div class="ffs-grid">${SLOTS.map(s=>`<span class="ffs-eqline"><span class="ffc">${SLOT_NAME[s]}</span> ${h.eq[s]&&GEAR[h.eq[s]]?esc(GEAR[h.eq[s]].name):'—'}</span>`).join('')}</div>`);}
+  $('ffsCard').innerHTML=html;}
+function ffsOpen(mode){FS.mode=mode;FS.sel=null;FS.pend=null;FS.note='';FS.slot=null;FS.eqMode='equip';FS.tab='use';drawFfs();openSheet(sOv,sOv.querySelector('button'));}
+function ffsBack(){closeSheet(sOv);drawMain();openSheet(mOv,mOv.querySelector('.ffm-cmd'));}
+sOv.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const h=curHero(),d=b.dataset;
+  if(d.tab){const t=d.tab;FS.note='';
+    if(t==='back')return ffsBack();
+    if(t==='use'){FS.tab='use';FS.sel=null;}else if(t==='gear'){FS.tab='gear';FS.sel=null;FS.pend=null;}
+    else if(t==='arrange'){const o=['type','name','count'];S.flags.itemSort=o[(o.indexOf(itemSort())+1)%3];}
+    else if(t==='equip'){FS.eqMode='equip';}else if(t==='remove'){FS.eqMode='remove';FS.slot=null;FS.sel=null;}
+    else if(t==='empty'){for(const s of SLOTS)if(h.eq[s])equipItem(h,s,null);FS.note=`${h.name} takes off all equipment.`;FS.slot=null;saveGame();}
+    else if(t==='optimum'){for(const s of SLOTS){const cands=Object.keys(S.bag).filter(id=>S.bag[id]>0&&GEAR[id]&&GEAR[id].slot===s&&GEAR[id].who.includes(h.key));let best=h.eq[s],bs=gearScore(GEAR[best],h);for(const id of cands){const sc=gearScore(GEAR[id],h);if(sc>bs){bs=sc;best=id;}}if(best!==h.eq[s])equipItem(h,s,best);}FS.note=`${h.name} is equipped with the best gear on hand.`;FS.slot=null;saveGame();}
+    return drawFfs();}
+  if(d.hero){const i=S.heroes.findIndex(x=>x.key===partyKey);partyKey=S.heroes[(i+ +d.hero+S.heroes.length)%S.heroes.length].key;ffmSel=partyKey;FS.sel=null;FS.pend=null;FS.note='';FS.slot=null;return drawFfs();}
+  if(d.it){FS.note='';FS.pend=null;if(FS.sel===d.it&&FS.tab!=='gear'&&!itemNeed(d.it)){startUse(d.it);}else FS.sel=d.it;return drawFfs();}
+  if(d.use){startUse(d.use);return drawFfs();}
+  if(d.sk){FS.note='';FS.pend=null;if(FS.sel===d.sk&&!skWhy(h,d.sk))return startCast(h,d.sk);FS.sel=d.sk;return drawFfs();}
+  if(d.cast)return startCast(h,d.cast);
+  if(d.tg){const i=+d.tg,p=FS.pend;FS.pend=null;if(i>=0&&p){const tg=S.heroes[i];FS.note=p.kind==='sk'?castField(curHero(),p.id,tg):useField(p.id,tg);renderMenu();saveGame();}return drawFfs();}
+  if(d.slot){if(FS.eqMode==='remove'){if(h.eq[d.slot]){const n=GEAR[h.eq[d.slot]].name;equipItem(h,d.slot,null);FS.note=`Took off the ${n}.`;saveGame();}return drawFfs();}FS.slot=FS.slot===d.slot?null:d.slot;FS.sel=null;FS.note='';return drawFfs();}
+  if(d.eq){if(FS.sel===d.eq){equipItem(h,FS.slot,d.eq);FS.note=`${h.name} equips the ${GEAR[d.eq].name}.`;FS.sel=null;FS.slot=null;saveGame();}else FS.sel=d.eq;return drawFfs();}});
+function startUse(id){if(itType(id)==='party'){FS.note=useField(id);renderMenu();saveGame();}else FS.pend={kind:'it',id};}
+function startCast(h,id){const k=FIELD_SK[id];FS.note='';
+  if(k==='exit'){if(!exitArmed()){armExit();drawFfs();setTimeout(()=>{if(!sOv.hidden)drawFfs();},3100);return;}closeSheet(sOv);ffmBack=false;castExit();return;}
+  if(k==='all'||k==='phoenix'){FS.note=castField(h,id);renderMenu();saveGame();}else FS.pend={kind:'sk',id};drawFfs();}
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!sOv.hidden)ffsBack();});
 
 async function dungeonEncounter(form){
   S.battleReturn='castle';S.transIn=true;S.scene='trans';for(const k in keys)keys[k]=false;steer=null;S.world.moving=false;
@@ -4498,7 +4623,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.14.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.15.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

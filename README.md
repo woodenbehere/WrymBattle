@@ -51,6 +51,7 @@ Five heroes take on a dragon in two phases:
 - **The airship Aurora**: after the royal audience, Forgemaster Brannoc blasts the old Sky Road open with powder ground from Gravemaw's Earthheart. The Aurora rises to the surface beside the mine. Walk aboard to fly anywhere on the world map, over sea and mountains, with no random battles; choose **Land** to set down on open ground.
 - **Resting**: inns, guest beds, tents and the Aurora's bunks offer sleep until morning or until nightfall. Nobody can sleep under a Blood Moon.
 - **Town hours**: shops close at dusk (19:00) and reopen at dawn (6:00); the townsfolk of Valemont, Thornwick, Ironhold and Highmere head home, leaving only the guards. The thieves' trainer and the Aurora's stores keep night hours.
+- **Night work**: while Vesh is out alone at night, the minimap is hidden. He has to learn the streets by eye.
 - **The thieves' sign**: the first time Vesh finds a guild, the doorman shows him a three-gesture sign. Every visit after, he must make it in order at the door, or he's thrown back out through the trapdoor.
 - **Sky window**: the top-left window shows the sun rising and setting across the sky, and at night the moon crossing it in its current phase (red under a Blood Moon). Tap it for the time, weather and moon.
 - **Fishing weather**: the fishing scene shows night, stars and the moon, clouds, rain and storms. Schools are bigger and more frequent, and fish chase the lure more eagerly, in the rain and in the nights around the full moon.

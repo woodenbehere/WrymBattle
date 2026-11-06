@@ -256,7 +256,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.13.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.13.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -1046,6 +1046,7 @@ const WSEED=16,PAD=160,PY=H/2+7;
 let WORLD=null,tex=null,tex2=null,worldMini=null,castleMini=null;
 const miniEl=$('mini'),mctx=miniEl.getContext('2d');
 function drawMini(){
+  const solo=!!(S.flags&&S.flags.solo);if(miniEl.hidden!==solo)miniEl.hidden=solo;if(solo)return;
   const castle=S.scene==='castle',base=castle?castleMini:worldMini;if(!base)return;
   if(miniEl.width!==base.width||miniEl.height!==base.height){miniEl.width=base.width;miniEl.height=base.height;}
   mctx.imageSmoothingEnabled=false;mctx.drawImage(base,0,0);
@@ -4443,7 +4444,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.13.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.13.1',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

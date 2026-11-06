@@ -333,7 +333,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.18.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.18.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -2731,7 +2731,7 @@ function makeTowerFloor(n){const r=towerGen(n),tier=Math.min(4,Math.floor((n-1)/
   if(n===1&&sp[0])npcs.push({x:sp[0].x,y:sp[0].y,spr:'magus',talk:()=>{const top=Math.min(90,Math.floor((S.flags.towerMax||1)/10)*10);
     if(top<10)return['Tower Warden: A hundred floors stand above you. Touch the waystone on the tenth floor, and I can send you there directly.'];
     showDialog([`Tower Warden: You have climbed as high as floor ${S.flags.towerMax}. I will send you to the waystone on floor ${top}.`],()=>{const g=towerGen(top);enterInterior('tw'+top,{x:g.start.x*CT+8,y:(g.start.y)*CT+8});});return null;}});
-  if(n%10===0&&n<100&&sp[0])npcs.push({x:sp[0].x,y:sp[0].y,mon:'waystone',talk:function(){return wsTap(this);}});
+  if(n%10===0&&n<100&&sp[0])npcs.push({x:sp[0].x,y:sp[0].y,mon:'waystone',talk:function(){return wsBump(this);}});
   const fr=k=>TW_BASE[(n*3+k*5)%8],id=k=>`t${tier}_${fr(k)}`;
   return{id:'tw'+n,name:`Tower of Aether ${n}F`,dungeon:true,pal:T.pal,w:r.grid[0].length,h:r.grid.length,entry:{x:r.start.x*CT+8,y:r.start.y*CT+8},
     hello:n===1?'The Tower of Aether. Wind howls through a hundred floors of white stone.':n===100?'The summit of the Tower of Aether. Storm clouds churn overhead.':n%10===0?`Floor ${n}. A waystone glows here.`:`Floor ${n} of the Tower of Aether.`,
@@ -4375,6 +4375,12 @@ function wsCharge(n){if(n.wsAt&&!n.wsGo&&performance.now()-n.wsAt>2500)n.ws=0;re
 function wsGlow(n,sx,sy){const c=wsCharge(n),go=n.wsGo?Math.min(1,(performance.now()-n.wsGo)/700):0;const k=go?3+go*2:c;if(!k)return;
   const r=8+k*6,pul=.75+.25*Math.sin(S.t*8),cy=sy-5,g=ctx.createRadialGradient(sx,cy,1,sx,cy,r);
   g.addColorStop(0,`rgba(214,150,255,${Math.min(.95,(.25+k*.17)*pul)})`);g.addColorStop(1,'rgba(150,70,255,0)');ctx.fillStyle=g;ctx.fillRect(sx-r,cy-r,r*2,r*2);}
+function wsBump(n){if(!n.wsGo&&!wsCharge(n))say('A waystone hums softly. Tap it three times to return to the first floor.');return null;}
+stage.addEventListener('pointerdown',e=>{if(!S||S.scene!=='castle'||S.paused||S.dlg||S.cut||!S.camOff||e.target.closest('button,.overlay,.dlg,.sheet')||e.target===miniEl)return;
+  const r=cv.getBoundingClientRect(),gx=(e.clientX-r.left)/r.width*W+S.camOff.x,gy=(e.clientY-r.top)/r.height*H+S.camOff.y;
+  const n=NPCS.find(o=>o.mon==='waystone'&&Math.abs(gx-(o.x*CT+8))<=12&&gy>=o.y*CT-10&&gy<=o.y*CT+20);if(!n)return;
+  e.preventDefault();e.stopImmediatePropagation();steer=null;
+  if(Math.hypot(S.cpos.x-(n.x*CT+8),S.cpos.y-(n.y*CT+8))>CT*3.2){say('Step closer to the waystone, then tap it.');return;}wsTap(n);},true);
 function wsTap(n){if(n.wsGo)return null;const c=wsCharge(n)+1;n.ws=c;n.wsAt=performance.now();
   if(c===1){say('The waystone stirs with a faint violet light. (Tap it three times to return to the first floor.)');return null;}
   if(c===2){say('The waystone glows brighter…');return null;}
@@ -4716,7 +4722,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.18.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.18.1',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

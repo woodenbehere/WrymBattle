@@ -123,4 +123,4 @@ To run locally, serve the folder over HTTP (for example `python3 -m http.server`
 
 ## Rows
 
-Outside battle, double-tap a party member in the party list to move them between the front row and the back row. Front-row heroes sit to the left in the list, back-row heroes to the right, matching where they stand in battle. Back-row heroes take and deal half physical damage. During a battle, use the Row command instead.
+Open the main menu and double-tap a hero to move them between the front row and the back row. Back-row heroes' portraits shift to the right and say "Back row", the way Final Fantasy VI shows it. Back-row heroes take and deal half physical damage. During a battle, use the Row command instead.

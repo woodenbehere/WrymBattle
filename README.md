@@ -120,3 +120,7 @@ Open the play link on a phone or in Chrome/Edge, then use **Add to Home Screen**
 - `icons/`: app icons
 
 To run locally, serve the folder over HTTP (for example `python3 -m http.server`) and open `http://localhost:8000`. Service workers don't run from `file://`.
+
+## Rows
+
+Outside battle, double-tap a party member in the party list to move them between the front row and the back row. Front-row heroes sit to the left in the list, back-row heroes to the right, matching where they stand in battle. Back-row heroes take and deal half physical damage. During a battle, use the Row command instead.

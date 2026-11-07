@@ -334,7 +334,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.25.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.25.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -1268,7 +1268,9 @@ function mapUpdate(dt){
   if(steer){const L=Math.hypot(steer.x,steer.y);if(L>5){vx=steer.x/L;vy=steer.y/L;}}
   const L=Math.hypot(vx,vy);w.moving=L>0;if(!L)return;
   vx/=L;vy/=L;const sh=S.flags&&S.flags.ship,fly=!!(sh&&sh.boarded),bt=S.flags&&S.flags.boat,sail=!!(bt&&bt.boarded&&!fly),sp=(fly?150:sail?110:72)*dt,ox=w.x,oy=w.y;
-  if(sail){const wet=(x,y)=>{const t=tileAt(x,y);return t===T_DEEP||t===T_SHAL;};if(wet(w.x+vx*sp,w.y))w.x+=vx*sp;if(wet(w.x,w.y+vy*sp))w.y+=vy*sp;if(Math.abs(vx)>.2)w.face=vx>0?1:-1;
+  if(sail){const wet=(x,y)=>{const t=tileAt(x,y);return t===T_DEEP||t===T_SHAL;};for(const[px,py,c]of[[w.x+vx*12,w.y,vx],[w.x,w.y+vy*12,vy]])if(Math.abs(c)>.15&&tileAt(px,py)===T_PORT){Object.assign(bt,{boarded:false,x:(Math.floor(w.x/TS)+.5)*TS,y:(Math.floor(w.y/TS)+.5)*TS,lock:true,flip:w.face<0});w.x=(Math.floor(px/TS)+.5)*TS;w.y=(Math.floor(py/TS)+.5)*TS;w.townLock=true;w.moving=false;say('The ship ties up at the pier. Walk back aboard to set sail again.');renderMenu();saveGame();return;}if(wet(w.x+vx*sp,w.y))w.x+=vx*sp;if(wet(w.x,w.y+vy*sp))w.y+=vy*sp;if(Math.abs(vx)>.2)w.face=vx>0?1:-1;{const bx=Math.abs(vx)>.15&&w.x===ox,by=Math.abs(vy)>.15&&w.y===oy;if(bx||by){const cx=Math.floor(w.x/TS),cy=Math.floor(w.y/TS);let pb=null;
+      for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;if(WORLD.at(cx+dx,cy+dy)!==T_PORT)continue;const d=Math.hypot((cx+dx+.5)*TS-w.x,(cy+dy+.5)*TS-w.y);if(d<=TS*1.6&&(!pb||d<pb.d))pb={x:cx+dx,y:cy+dy,d};}
+      if(pb){Object.assign(bt,{boarded:false,x:(cx+.5)*TS,y:(cy+.5)*TS,lock:true,flip:w.face<0});w.x=(pb.x+.5)*TS;w.y=(pb.y+.5)*TS;w.townLock=true;w.moving=false;say('The ship ties up at the pier. Walk back aboard to set sail again.');renderMenu();saveGame();return;}}}
     if(w.x===ox&&w.y===oy){const ax=w.x+vx*12,ay=w.y+vy*12,t=tileAt(ax,ay);const onIsle=(WORLD.isle&&WORLD.isle.set.has(Math.floor(ay/TS)*WT+Math.floor(ax/TS)))||newIsleAt(Math.floor(ay/TS)*WT+Math.floor(ax/TS));if(!BLOCKED.has(t)&&!ENTRANCES.has(t)&&!(t===T_PORT||onIsle)){if(performance.now()-(S.dockSayT||0)>2500){S.dockSayT=performance.now();say('No place to tie up here. On the main island the ship can only dock at the Eastern Port pier.');}}
     else if(!BLOCKED.has(t)&&!ENTRANCES.has(t)){Object.assign(bt,{boarded:false,x:(Math.floor(w.x/TS)+.5)*TS,y:(Math.floor(w.y/TS)+.5)*TS,lock:true,flip:w.face<0});w.x=(Math.floor(ax/TS)+.5)*TS;w.y=(Math.floor(ay/TS)+.5)*TS;w.townLock=true;say(t===T_PORT?'The ship ties up at the pier. Walk back aboard to set sail again.':'The party wades ashore. Walk back to the ship to set sail again.');renderMenu();saveGame();}w.moving=false;return;}}
   else if(!fly&&bt&&bt.x!=null){if(bt.lock){if(Math.hypot(w.x-bt.x,w.y-bt.y)>20)bt.lock=false;}else if(Math.hypot(w.x+vx*10-bt.x,w.y+vy*10-bt.y)<12){bt.boarded=true;w.x=bt.x;w.y=bt.y;w.moving=false;say('All aboard! Steer into the isle’s beaches to land, or back into the pier to dock.');renderMenu();saveGame();return;}}
@@ -5147,7 +5149,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.25.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.25.2',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

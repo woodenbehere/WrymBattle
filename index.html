@@ -396,7 +396,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.35.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.35.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -3087,7 +3087,7 @@ function endSolo(msg){const s=S.flags.solo;if(!s)return;S.flags.solo=null;S.lock
 function caughtByGuard(){const n=(S.flags.lootBag||[]).length;S.flags.lootBag=[];
   endSolo(`Guard: Halt! Thief!`+(n?` (Vesh drops ${n} stolen item${n>1?'s':''} as he runs.)`:' (Vesh bolts back to the inn empty-handed.)'));}
 function soloTick(dt){const p=S.cpos,mv=S.soloLast?Math.hypot(p.x-S.soloLast.x,p.y-S.soloLast.y):0;S.soloLast={x:p.x,y:p.y};const px=p.x/CT,py=p.y/CT;
-  for(const n of NPCS)if(n.guard&&Math.hypot(n.x+.5-px,n.y+.5-py)<(S.sneak?1.25:2.3)*(S.alert?1.3:1)){caughtByGuard();return true;}
+  if(!(S.soloGrace>0))for(const n of NPCS)if(n.guard&&Math.hypot(n.x+.5-px,n.y+.5-py)<(S.sneak?1.25:2.3)*(S.alert?1.3:1)){caughtByGuard();return true;}
   for(const n of NPCS)if(n.sleep){const d=Math.hypot(n.x+.5-px,n.y+.5-py);if(mv>0&&d<3.4)n.wake=(n.wake||0)+(S.sneak?.11:.85)*(IM.light||1)*((3.4-d)/3.4+.15)*dt;else n.wake=Math.max(0,(n.wake||0)-.05*dt);
     if(n.wake>=1){n.wake=0;const R=S.flags.barred||(S.flags.barred={});R[IM.id]=S.flags.nightNo;S.alert=true;const back=IM.parentPos;enterInterior(IM.parent,back);
       showDialog(['“Who’s there?! THIEF!”','Vesh dives out of the window and rolls into the street. That house is barred for the night, and the watch is on alert.']);return true;}}
@@ -5230,7 +5230,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.35.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.35.2',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5407,6 +5407,17 @@ function syncTZoom(force){const onMap=TUI.on&&S&&S.scene==='map';tZoom.classList
   if(TUI.on&&!document.body.classList.contains('bigmap')){const want=onMap?TUI.z:1;if((S.zoom||1)!==want||force)setZoom(want);}}
 {const tf=touchFrame;touchFrame=function(){tf();try{syncTZoom();}catch(e){}};}
 {const su=setUI;setUI=function(on){su(on);if(!on&&!document.body.classList.contains('bigmap'))setZoom(1);syncTZoom(true);};}
+/* ---------- v3.35.2: guards keep their distance when Vesh steps outside ---------- */
+/* when Vesh comes out of the inn, a house or the guild onto a night street, any guard near him is sent to the far side of
+   their beat, and the guards can't spot him for a moment while he gets his bearings */
+function clearGuards(){if(!S.flags.solo||!IM)return;const p=S.cpos,px=p.x/CT,py=p.y/CT;
+  for(const n of NPCS){if(!n.guard||!n.wander||Math.hypot(n.x+.5-px,n.y+.5-py)>=6)continue;const[x0,y0,x1,y1]=n.wander,far=[];let best=null;
+    for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){const c=CASTLE[y]&&CASTLE[y][x];if(!c||C_BLOCK.has(c)||c==='E'||NPCS.some(o=>o!==n&&o.x===x&&o.y===y))continue;
+      const d=Math.hypot(x+.5-px,y+.5-py);if(d>=7)far.push({x,y});if(!best||d>best.d)best={x,y,d};}
+    const t=far.length?pick(far):best;if(t){n.x=t.x;n.y=t.y;n.ox=n.oy=0;n.wt=rnd(2.5,4);}}
+  S.soloGrace=2.5;}
+{const ei=enterInterior;enterInterior=function(...a){const r=ei.apply(this,a);try{if(S.flags.solo&&IM&&MAPS[IM.id]&&MAPS[IM.id].night)clearGuards();}catch(e){}return r;};}
+{const st=soloTick;soloTick=function(dt){if(!S.soloLast)clearGuards();if(S.soloGrace>0)S.soloGrace-=dt;return st(dt);};}
 /* ---------- v3.31: the title screen ---------- */
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!titleOv.hidden){e.preventDefault();e.stopImmediatePropagation();}},true);
 const titleOv=document.createElement('div');titleOv.id='titleOv';titleOv.className='sheet';titleOv.setAttribute('role','dialog');titleOv.setAttribute('aria-modal','true');titleOv.setAttribute('aria-label','Ember Wyrm');

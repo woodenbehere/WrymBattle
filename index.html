@@ -310,6 +310,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
 .opts .seg button[aria-pressed="true"]{background:var(--line);color:var(--gold)}
 .opts .strats{margin-top:2px}.opts .arow{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
 @media (max-width:520px){.opts .orow{grid-template-columns:1fr}}
+.opts .abv{font-size:16px;padding:8px 12px;margin:0;border:2px solid var(--line-hi);min-height:38px;justify-self:end}.opts .about a.btn{text-decoration:none}.opts .abdon{color:var(--gold)}.opts .about{display:grid;gap:4px}
 /* ---------- touch-optimized interface ---------- */
 body.touchui{padding:0}
 body.touchui::after{content:'';position:fixed;inset:0;background:#000;z-index:9}
@@ -371,7 +372,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.27.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.28.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -381,7 +382,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
     <p>When a hero's gold gauge fills, their menu opens. Tap any glowing name to switch who acts. <b>Wait</b> pauses the gauges while you choose; <b>Active</b> doesn't.</p>
     <p>The <b>back row</b> halves physical damage dealt and taken. Magic ignores rows.</p>
     <p><b>Options</b>: open the menu (Party) and choose <b>Options</b> to switch between manual and auto battle, pick the auto strategy, choose which heroes fight on auto and their habits, set Wait or Active, turn random encounters and the mini map on or off, and switch between the Classic and Touch interfaces. Your battle settings are remembered.</p>
-    <p><b>Touch view</b>: tap <b>Touch UI</b> at the top to hide the menus and fill the screen with the game. Hold anywhere on the left side and drag to walk with the thumb stick; tap the right side for a ring of actions (Party, Journal and whatever you can do where you are, plus Full screen, Help and <b>Classic view</b> to switch back). In battle, the hero whose turn it is gets a ring of commands; Magic, Item and target lists open in a panel on the left. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active. Bars under each hero show HP (green), MP (blue), Limit (pink) and the turn gauge (gold).</p>
+    <p><b>Touch view</b>: the game starts in touch view, which hides the menus and fills the screen with the game (switch to Classic in Options or the action ring). Hold anywhere on the left side and drag to walk with the thumb stick; tap the right side for a ring of actions (Party, Journal and whatever you can do where you are, plus Full screen, Help and <b>Classic view</b> to switch back). In battle, the hero whose turn it is gets a ring of commands; Magic, Item and target lists open in a panel on the left. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active. Bars under each hero show HP (green), MP (blue), Limit (pink) and the turn gauge (gold).</p>
     <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Limit command appears.</p>
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
@@ -5191,7 +5192,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.27.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.28.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5274,7 +5275,7 @@ function touchFrame(){if(!TUI.on){return;}
   if(TUI.ring&&TUI.ring.kind==='hero'){const p=heroScreen(TUI.ring.h),hub=tRing.querySelector('.hub');if(hub){hub.style.left=p.x+'px';hub.style.top=p.y+'px';}}}
 {const tl=()=>{try{touchFrame();}catch(e){}requestAnimationFrame(tl);};requestAnimationFrame(tl);}
 addEventListener('resize',()=>{if(TUI.on&&TUI.ring&&TUI.ring.kind==='hero')touchSync();else if(TUI.ring)closeRing();});
-try{if(localStorage.getItem('ew-ui')==='touch'){TUI.on=true;document.body.classList.add('touchui');}}catch(e){}
+{let ui=null;try{ui=localStorage.getItem('ew-ui');}catch(e){}if(ui!=='classic'){TUI.on=true;document.body.classList.add('touchui');}}
 /* ---------- v3.27: the Options menu ---------- */
 const optOv=$('optOv');let optBack=false;
 function saveOpts(){try{localStorage.setItem('ew-opts',JSON.stringify({auto:S.auto,mode:S.mode}));}catch(e){}}
@@ -5286,7 +5287,7 @@ function optRow(t,d,ctl){return`<div class="orow"><span><b>${t}</b><small>${d}</
 let oTab='battle';
 function drawOptions(){const enc=S.world&&S.world.enc!==false,who=S.heroes.filter(h=>S.auto.who[h.key]).map(h=>h.name);
   $('optSub').textContent=`${S.auto.on?'Auto · '+STRATS[S.auto.strat].name:'Manual'} · ${S.mode==='wait'?'Wait':'Active'}`;
-  $('optTabs').innerHTML=[['battle','Battle'],['play','Gameplay'],['display','Display']].map(([k,n])=>`<button type="button" class="ffm-cmd" data-o="tab" data-v="${k}" aria-pressed="${k===oTab}">${n}</button>`).join('');
+  $('optTabs').innerHTML=[['battle','Battle'],['play','Gameplay'],['display','Display'],['about','About']].map(([k,n])=>`<button type="button" class="ffm-cmd" data-o="tab" data-v="${k}" aria-pressed="${k===oTab}">${n}</button>`).join('');
   let h='';
   if(oTab==='battle')h=`${optRow('Battle control',S.auto.on?`Auto battle is on for ${who.length?esc(who.join(', ')):'no one'}.`:'You choose every command.',optSeg('auto',S.auto.on?1:0,[[0,'Manual'],[1,'Auto']]))}
   <p class="lab">Auto strategy</p>
@@ -5295,6 +5296,13 @@ function drawOptions(){const enc=S.world&&S.world.enc!==false,who=S.heroes.filte
   ${optRow('Battle mode',S.mode==='wait'?'Wait: gauges pause while you pick a command.':'Active: gauges keep filling while you pick.',optSeg('mode',S.mode,[['wait','Wait'],['active','Active']]))}`;
   else if(oTab==='play')h=`${optRow('Random encounters',enc?'Battles can start while you walk.':'Walk in peace. Bosses and set battles still happen.',optSeg('enc',enc?1:0,[[1,'On'],[0,'Off']]))}
   ${optRow('Mini map','The small map in the corner of the screen.',optSeg('mini',miniOff?0:1,[[1,'Show'],[0,'Hide']]))}`;
+  else if(oTab==='about')h=`<div class="about">
+    <p class="lab">Ember Wyrm</p>
+    ${optRow('Version','Tap the version twice to check for and install the latest update.',`<button type="button" class="ver abv${verBtn.classList.contains('armed')?' armed':''}" data-o="ver"${verBtn.disabled?' disabled':''}>${esc(verBtn.textContent)}</button>`)}
+    ${optRow('Made by','Parden Web Apps 2026','')}
+    ${optRow('Contact','Questions, bugs or ideas? Send an email.','<a class="btn sm" href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm">Email</a>')}
+    ${optRow('Support','Enjoying the game? Donations through Venmo (@James-Parden) are appreciated.','<a class="btn sm abdon" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener">&#9829; Donate</a>')}
+  </div>`;
   else h=`${optRow('Interface',TUI.on?'Touch: full-screen view, thumb stick and action rings.':'Classic: menus and party list below the game.',optSeg('ui',TUI.on?'touch':'classic',[['classic','Classic'],['touch','Touch']]))}
   ${fsBtn.hidden?'':optRow('Full screen','Hide the browser bars.',optSeg('fs',fsEl()?1:0,[[0,'Off'],[1,'On']]))}`;
   $('optCard').innerHTML=h;}
@@ -5303,6 +5311,7 @@ optOv.addEventListener('click',e=>{const b=e.target.closest('[data-o]');if(!b){i
   if(o==='close'){closeSheet(optOv);renderMenu();ffmReturn();return;}
   if(o==='tab'){oTab=v;drawOptions();const t=optOv.querySelector(`[data-o="tab"][data-v="${v}"]`);if(t)t.focus({preventScroll:true});return;}
   if(o==='auto'){if(v==='1'&&!Object.values(S.auto.who).some(Boolean))S.auto.who=Object.fromEntries(S.heroes.map(h=>[h.key,true]));S.auto.on=v==='1';if(S.menu&&S.auto.on&&isAuto(S.menu.hero))S.menu=null;syncAuto();saveOpts();}
+  else if(o==='ver'){verBtn.click();const sync=()=>{const a=optOv.querySelector('.abv');if(!a||optOv.hidden)return;a.textContent=verBtn.textContent;a.classList.toggle('armed',verBtn.classList.contains('armed'));a.disabled=verBtn.disabled;if(verBtn.classList.contains('armed')||verBtn.disabled)setTimeout(sync,250);};sync();return;}
   else if(o==='strat'){S.auto.strat=v;saveOpts();}
   else if(o==='habits'){closeSheet(optOv);optBack=true;autoBtn.click();return;}
   else if(o==='mode')setMode(v);

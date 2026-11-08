@@ -127,7 +127,7 @@ Open the main menu and double-tap a hero to move them between the front row and 
 
 ## Touch view
 
-Tap **Touch UI** at the top to switch from the classic layout to a full-screen view made for phones (turn the phone sideways for the biggest picture). The menus and party list are hidden and your choice is remembered.
+The game starts in a full-screen touch view made for phones (turn the phone sideways for the biggest picture). The menus and party list are hidden. Switch to the classic layout under Options → Display, or with **Classic view** in the action ring; your choice is remembered.
 
 - **Walking:** hold anywhere on the left half of the screen and drag. A faint thumb stick appears under your thumb.
 - **Actions:** tap the right half for a ring of actions: Party, Journal and whatever applies where you are (Leave, Camp, Fish, Land and so on), plus Full screen, Help and **Classic view** to switch back. Menus open as usual and closing them returns to the touch view.
@@ -141,4 +141,5 @@ Open the menu (Party) and choose **Options**:
 - **Battle:** Manual or Auto control, the auto strategy (All-out Attack, Balanced, Protect Allies, Save MP), which heroes fight on auto and each one's habit, and Wait or Active mode. These are remembered between visits.
 - **Gameplay:** random encounters on or off, and show or hide the mini map.
 - **Display:** Classic or Touch interface, and full screen where the browser supports it.
+- **About:** the version (tap it twice to update), Parden Web Apps, and email and donate links.
 

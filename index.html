@@ -390,7 +390,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.31.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.31.3</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -5191,7 +5191,9 @@ function openSheet(el,f){S.paused=true;el.hidden=false;if(f)f.focus({preventScro
 function closeSheet(el){if(el.contains(document.activeElement))document.activeElement.blur();el.hidden=true;S.paused=[...document.querySelectorAll('.sheet')].some(x=>!x.hidden);}
 $('helpBtn').onclick=()=>openSheet(helpOv,$('helpClose'));
 $('helpClose').onclick=()=>closeSheet(helpOv);
-let ngArm=0;$('newGameBtn').onclick=()=>{const b=$('newGameBtn');if(!ngArm){b.textContent='Tap again to erase your save';ngArm=setTimeout(()=>{ngArm=0;b.textContent='Start a new game';},3500);return;}
+let ngArm=0;$('newGameBtn').onclick=()=>{const b=$('newGameBtn'),free=[1,2,3].find(n=>!slotInfo(n));
+  if(free){clearTimeout(ngArm);ngArm=0;saveGame();useSlot(free);closeSheet(helpOv);stage.classList.remove('town','map','castle');newGame();say(`New game started in empty slot ${free}. Your other saves are untouched.`);renderMenu();return;}
+  if(!ngArm){b.textContent=`All slots are full. Tap again to erase slot ${curSlot}`;ngArm=setTimeout(()=>{ngArm=0;b.textContent='Start a new game';},3500);return;}
   clearTimeout(ngArm);ngArm=0;b.textContent='Start a new game';try{localStorage.removeItem(SAVE_KEY);}catch(e){}closeSheet(helpOv);stage.classList.remove('town','map');newGame();};
 let pickStrat='balanced',pickWho={},pickHabit={};
 function drawAuto(){
@@ -5215,7 +5217,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.31.2',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.31.3',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

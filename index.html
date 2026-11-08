@@ -394,7 +394,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.33.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.33.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -2685,21 +2685,21 @@ function stormHit(ox,oy){if(!stormOn())return false;const w=S.world,a=stormNorm(
 const STORM_PUFFS=Array.from({length:70},(_,i)=>({a:i/70*6.283+Math.sin(i*7.1)*.05,r:.82+((i*37)%29)/29*.36,s:9+((i*13)%11),o:(i*53)%7}));
 function drawStorm(dt,top){
   if(!stormOn())return;const w=S.world,I=WORLD.isle,cx=Math.round((I.cx+.5)*TS-w.x+W/2),cy=Math.round((I.cy+.5)*TS-w.y+PY),RX=STX*TS,RY=STY*TS;
-  if(cx+RX*1.3<0||cx-RX*1.3>W||cy+RY*1.3<0||cy-RY*1.3>H)return;
+  {const zo=((S.zoom||1)-1)/2;if(cx+RX*1.3<-W*zo||cx-RX*1.3>W*(1+zo)||cy+RY*1.3<-H*zo||cy-RY*1.3>H*(1+zo))return;}
   const t=S.t*.05,inside=stormNorm(w.x,w.y).n;
   if(!top){ // shadows and clouds, under the ship
     ctx.fillStyle='rgba(20,24,40,.22)';for(const p of STORM_PUFFS){const x=cx+Math.cos(p.a+t)*RX*p.r,y=cy+Math.sin(p.a+t)*RY*p.r;ctx.beginPath();ctx.arc(x+4,y+10,p.s*1.2,0,7);ctx.fill();}
-  for(const p of STORM_PUFFS){const x=Math.round(cx+Math.cos(p.a+t)*RX*p.r),y=Math.round(cy+Math.sin(p.a+t)*RY*p.r);if(x<-30||x>W+30||y<-30||y>H+30)continue;
+  for(const p of STORM_PUFFS){const x=Math.round(cx+Math.cos(p.a+t)*RX*p.r),y=Math.round(cy+Math.sin(p.a+t)*RY*p.r);{const zo=((S.zoom||1)-1)/2;if(x<-30-W*zo||x>W+30+W*zo||y<-30-H*zo||y>H+30+H*zo)continue;}
     ctx.fillStyle='rgba(58,62,80,.78)';ctx.beginPath();ctx.arc(x,y,p.s,0,7);ctx.fill();ctx.fillStyle='rgba(96,102,124,.7)';ctx.beginPath();ctx.arc(x-p.s*.3,y-p.s*.35,p.s*.7,0,7);ctx.fill();
     ctx.fillStyle='rgba(140,146,168,.45)';ctx.beginPath();ctx.arc(x-p.s*.45,y-p.s*.55,p.s*.35,0,7);ctx.fill();}
     return;}
   // rain and lightning, over everything
     ctx.strokeStyle='rgba(170,195,235,.55)';ctx.beginPath();
-    for(let k=0;k<120;k++){const a=Math.random()*6.283,r=.72+Math.random()*.6,x=cx+Math.cos(a)*RX*r,y=cy+Math.sin(a)*RY*r;if(x<-4||x>W+4||y<-4||y>H+4)continue;ctx.moveTo(x+.5,y);ctx.lineTo(x-1.5,y+5);}ctx.stroke();
+    for(let k=0;k<120;k++){const a=Math.random()*6.283,r=.72+Math.random()*.6,x=cx+Math.cos(a)*RX*r,y=cy+Math.sin(a)*RY*r;{const zo=((S.zoom||1)-1)/2;if(x<-4-W*zo||x>W+4+W*zo||y<-4-H*zo||y>H+4+H*zo)continue;}ctx.moveTo(x+.5,y);ctx.lineTo(x-1.5,y+5);}ctx.stroke();
   if(Math.random()<dt*.9&&!S.bolt){const a=Math.random()*6.283;S.bolt={x:cx+Math.cos(a)*RX*.95,y0:cy+Math.sin(a)*RY*.95,t:.25};}
   if(S.bolt){S.bolt.t-=dt;const bx=S.bolt.x,by=S.bolt.y0!=null?S.bolt.y0:PY;if(S.bolt.t<=0)S.bolt=null;else{
     ctx.strokeStyle=S.bolt.t>.12?'#ffffff':'#ffe14a';ctx.lineWidth=2;ctx.beginPath();let px=bx,py=by-46;ctx.moveTo(px,py);while(py<by){py+=rnd(5,10);px=bx+rnd(-6,6);ctx.lineTo(px,Math.min(py,by));}ctx.stroke();ctx.lineWidth=1;
-    if(S.bolt.t>.15){ctx.fillStyle=`rgba(255,255,240,${inside<1.4?.18:.08})`;ctx.fillRect(0,0,W,H);}}}
+    if(S.bolt.t>.15){const zo=((S.zoom||1)-1)/2+.05;ctx.fillStyle=`rgba(255,255,240,${inside<1.4?.18:.08})`;ctx.fillRect(-W*zo,-H*zo,W*(1+2*zo),H*(1+2*zo));}}}
 }
 function canLand(){return !overIsle()&&LAND_OK(tileAt(S.world.x,S.world.y));}
 
@@ -5228,7 +5228,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.33.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.33.2',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

@@ -326,6 +326,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
 #tring .hub{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:2px solid rgba(242,181,68,.85);background:rgba(14,11,16,.55);pointer-events:none}
 #tring.hero .hub{width:40px;height:40px;margin:-20px 0 0 -20px;background:none;box-shadow:0 0 10px rgba(242,181,68,.6)}
 #tring button{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;font-family:var(--f-display);font-size:11px;line-height:1;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;color:var(--text);background:rgba(22,17,26,.92);border:2px solid var(--line-hi);border-radius:999px;padding:9px 13px;min-height:36px;cursor:pointer;animation:tpop .14s ease-out both}
+#tring .thint{position:absolute;left:50%;top:max(10px,env(safe-area-inset-top,0px));transform:translateX(-50%);font-family:var(--f-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:rgba(14,11,16,.85);border:2px solid var(--line-hi);padding:8px 14px;pointer-events:none;white-space:nowrap}
 #tring button.lim{border-color:var(--limit);color:var(--limit)}
 #tring button.sys{border-color:var(--line);color:var(--muted)}
 #tring button:active{background:var(--line)}
@@ -372,7 +373,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.28.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.29.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -382,7 +383,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
     <p>When a hero's gold gauge fills, their menu opens. Tap any glowing name to switch who acts. <b>Wait</b> pauses the gauges while you choose; <b>Active</b> doesn't.</p>
     <p>The <b>back row</b> halves physical damage dealt and taken. Magic ignores rows.</p>
     <p><b>Options</b>: open the menu (Party) and choose <b>Options</b> to switch between manual and auto battle, pick the auto strategy, choose which heroes fight on auto and their habits, set Wait or Active, turn random encounters and the mini map on or off, and switch between the Classic and Touch interfaces. Your battle settings are remembered.</p>
-    <p><b>Touch view</b>: the game starts in touch view, which hides the menus and fills the screen with the game (switch to Classic in Options or the action ring). Hold anywhere on the left side and drag to walk with the thumb stick; tap the right side for a ring of actions (Party, Journal and whatever you can do where you are, plus Full screen, Help and <b>Classic view</b> to switch back). In battle, the hero whose turn it is gets a ring of commands; Magic, Item and target lists open in a panel on the left. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active. Bars under each hero show HP (green), MP (blue), Limit (pink) and the turn gauge (gold).</p>
+    <p><b>Touch view</b>: the game starts in touch view, which hides the menus and fills the screen with the game (switch to Classic in Options or the action ring). Hold anywhere on the left side and drag to walk with the thumb stick; tap the right side for a ring of actions (Party, Journal and whatever you can do where you are, plus Full screen, Help and <b>Classic view</b> to switch back). In battle, the hero whose turn it is gets a ring of commands; Magic, Item and ally lists open in a panel on the left; to pick an enemy, just tap it. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active. Bars under each hero show HP (green), MP (blue), Limit (pink) and the turn gauge (gold).</p>
     <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Limit command appears.</p>
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
@@ -5192,7 +5193,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.28.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.29.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5240,15 +5241,22 @@ tRing.addEventListener('pointerdown',e=>{if(e.target===tRing&&TUI.ring&&TUI.ring
 function heroScreen(h){const r=cv.getBoundingClientRect(),Z=S.zoom||1;return{x:r.left+(h.x+h.dx)/W*r.width,y:r.top+(h.y-8)/H*r.height,r};}
 function touchSync(){if(!TUI.on){document.body.classList.remove('tsub');tBars.hidden=true;if(TUI.ring)closeRing();return;}
   const m=S.scene==='battle'&&!S.over?S.menu:null;
-  document.body.classList.toggle('tsub',!!(m&&m.view!=='root'));
-  if(m&&m.view==='root'){const items=optList(),p=heroScreen(m.hero);TUI.ring={kind:'hero',h:m.hero,n:items.length};tRing.className='hero';layRing(p.x,p.y,items,true);}
+  document.body.classList.toggle('tsub',!!(m&&m.view!=='root'&&m.view!=='foe'));
+  if(m&&(m.view==='root'||m.view==='foe')){const foe=m.view==='foe',items=foe?optList().filter(o=>o.a==='back'):optList(),p=heroScreen(m.hero);TUI.ring={kind:'hero',h:m.hero,n:items.length};tRing.className='hero';layRing(p.x,p.y,items,true);
+    if(foe){const t=document.createElement('div');t.className='thint';t.textContent='Tap an enemy to target it';tRing.appendChild(t);}}
   else if(TUI.ring&&TUI.ring.kind==='hero')closeRing();}
 {const rmT=renderMenu;renderMenu=function(f){rmT(f);try{touchSync();}catch(e){console.warn(e);}};}
+function foeAt(x,y){let best=null;S.foes.forEach((f,i)=>{if(f.dead||f.gone)return;const m=f.kind==='wyrm'?null:MON[f.kind];
+    const hw=m?m.w*f.s/2:70,hh=m?m.h*f.s/2:65,cx=m?f.ax:70+(f.dx||0),cy=m?f.ay:70,dx=Math.max(0,Math.abs(x-cx)-hw),dy=Math.max(0,Math.abs(y-cy)-hh),d=Math.hypot(dx,dy);
+    if(d<=10&&(!best||d<best.d||(d===best.d&&Math.hypot(x-cx,y-cy)<best.c)))best={i,d,c:Math.hypot(x-cx,y-cy)};});return best?best.i:-1;}
+function tapFoe(e){if(!S.menu||S.menu.view!=='foe'||S.over)return false;const{fx,fy}=stageXY(e),i=foeAt(fx*W,fy*H);if(i<0)return false;
+  S.menu.hl=i;const b=cmdEl.querySelector(`button.opt[data-a="fo:${i}"]`);if(b&&!b.disabled){b.click();return true;}return false;}
+stage.addEventListener('pointerdown',e=>{if(TUI.on||!S||S.scene!=='battle'||e.target.closest('button,.overlay,.sheet'))return;if(tapFoe(e)){e.preventDefault();e.stopImmediatePropagation();}},true);
 function endJoy(){if(TUI.joy){TUI.joy=null;steer=null;}tJoy.hidden=true;}
 stage.addEventListener('pointerdown',e=>{if(!TUI.on||!S)return;if(e.target.closest('button,.overlay,.sheet')||e.target===miniEl)return;
   if(S.dlg){e.preventDefault();e.stopImmediatePropagation();advanceDlg();return;}
   const{fx,fy}=stageXY(e);
-  if(S.scene==='battle'){e.stopImmediatePropagation();if(S.over)return;const x=fx*W,y=fy*H;
+  if(S.scene==='battle'){e.stopImmediatePropagation();if(S.over)return;if(tapFoe(e))return;const x=fx*W,y=fy*H;
     const h=S.heroes.find(q=>Math.abs(x-(q.x+q.dx))<=11&&y>=q.y-20&&y<=q.y+4);
     if(h&&h.ready&&!h.ko&&!h.stone){S.readyQ=[h,...S.readyQ.filter(q=>q!==h)];openMenu(h);return;}
     if(!S.menu)openSysRing(e.clientX,e.clientY);return;}

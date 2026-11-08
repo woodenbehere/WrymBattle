@@ -131,7 +131,7 @@ The game starts in a full-screen touch view made for phones (turn the phone side
 
 - **Walking:** hold anywhere on the left half of the screen and drag. A faint thumb stick appears under your thumb.
 - **Actions:** tap the right half for a ring of actions: Party, Journal and whatever applies where you are (Leave, Camp, Fish, Land and so on), plus Full screen, Help and **Classic view** to switch back. Menus open as usual and closing them returns to the touch view.
-- **Battles:** when a hero's turn comes, a ring of commands opens around them. Magic, Item and target lists open in a panel on the left. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active.
+- **Battles:** when a hero's turn comes, a ring of commands opens around them. Magic, Item and ally lists open in a panel on the left. To choose which enemy to hit, tap the enemy. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active.
 - **Bars:** under each hero, HP (green, turning yellow and red), MP (blue), Limit (pink, pulsing when ready) and the turn gauge (gold).
 
 ## Options

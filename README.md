@@ -143,3 +143,10 @@ Open the menu (Party) and choose **Options**:
 - **Display:** Classic or Touch interface, and full screen where the browser supports it.
 - **About:** the version (tap it twice to update), How to play, Parden Web Apps, and email and donate links.
 
+## Title screen
+
+The game opens on a title screen: two dragons face each other above the name on a black background, with **Start** and **Continue** below and Parden Web Apps 2026 at the bottom.
+
+- **Start** begins a new game in the first empty save slot. If all three slots are full, tap it twice; the slot you were playing is replaced once you beat the wyrm.
+- **Continue** loads your most recently saved game and shows its slot, level and location. It is greyed out until you have a save.
+

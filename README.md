@@ -141,5 +141,5 @@ Open the menu (Party) and choose **Options**:
 - **Battle:** Manual or Auto control, the auto strategy (All-out Attack, Balanced, Protect Allies, Save MP), which heroes fight on auto and each one's habit, and Wait or Active mode. These are remembered between visits.
 - **Gameplay:** random encounters on or off, and show or hide the mini map.
 - **Display:** Classic or Touch interface, and full screen where the browser supports it.
-- **About:** the version (tap it twice to update), Parden Web Apps, and email and donate links.
+- **About:** the version (tap it twice to update), How to play, Parden Web Apps, and email and donate links.
 

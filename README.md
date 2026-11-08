@@ -150,3 +150,7 @@ The game opens on a title screen: two dragons face each other above the name on 
 - **Start** begins a new game in the first empty save slot. If all three slots are full, tap it twice; the slot you were playing is replaced once you beat the wyrm.
 - **Continue** loads your most recently saved game and shows its slot, level and location. It is greyed out until you have a save.
 
+## Clearing a save
+
+In **Save & Load**, each saved slot has a **Clear** button. To make sure it never happens by accident, it takes three taps: the first warns you, the second asks once more, and the third deletes the slot. Waiting four seconds or tapping anything else cancels. Clearing the slot you are playing returns you to the title screen.
+

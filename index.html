@@ -374,7 +374,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.30.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.30.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -1284,8 +1284,13 @@ function drawTowerFront(){const I=WORLD&&WORLD.isle,w=S.world;if(!I||!I.up||w.ca
 function drawWalker(){
   const w=S.world;if(w.camping||S.isleView)return;{const bt=S.flags&&S.flags.boat;if(bt&&bt.boarded){drawBoat(ctx,W/2,PY+3+Math.round(Math.sin(S.t*2)),w.face<0);return;}}{const sh=S.flags&&S.flags.ship;if(sh&&sh.boarded){const b=Math.round(Math.sin(S.t*2.2)*1.5);ctx.fillStyle='rgba(0,0,0,.22)';ell(ctx,W/2,PY+3,11,2.2);drawShip(ctx,W/2,PY-9+b,1,w.face<0,true);return;}}const lead=S.heroes.find(h=>!h.ko)||S.heroes[0];
   const bob=w.moving&&Math.floor(w.walkT*8)%2?1:0;
-  ctx.fillStyle='rgba(0,0,0,.3)';ell(ctx,W/2,PY,5,1.5);
-  drawSprite(ctx,heroSpr(lead),W/2,PY-bob,{flip:w.face>0});
+  if(tileAt(w.x,w.y)===T_FOREST){/* deep in the trees: only head and shoulders show above the canopy */
+    const cut=PY-6;ctx.save();ctx.beginPath();ctx.rect(W/2-14,cut-30,28,30);ctx.clip();drawSprite(ctx,heroSpr(lead),W/2,PY-bob,{flip:w.face>0});ctx.restore();
+    const sw=w.moving?Math.round(Math.sin(w.walkT*9)):0,L=[1,2,1,2,2,1,0,1,2,1,0,1,2,2,1,2,1];
+    for(let i=0;i<17;i++){const x=W/2-8+i+(i%3===0?sw:0),hgt=L[i];ctx.fillStyle='#174d1e';ctx.fillRect(x,cut,1,2);if(hgt){ctx.fillStyle=i%4===1?'#4aa040':'#2a7a2e';ctx.fillRect(x,cut-hgt,1,hgt);}}
+    ctx.fillStyle='#4aa040';for(const i of[1,4,12,15])ctx.fillRect(W/2-8+i+(i%2?sw:0),cut-L[i]-1,1,1);}
+  else{ctx.fillStyle='rgba(0,0,0,.3)';ell(ctx,W/2,PY,5,1.5);
+  drawSprite(ctx,heroSpr(lead),W/2,PY-bob,{flip:w.face>0});}
 }
 const keys={};let steer=null,steerId=null;
 const MOVE_KEYS=['arrowup','arrowdown','arrowleft','arrowright','w','a','s','d'];
@@ -5194,7 +5199,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.30.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.30.1',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';

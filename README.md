@@ -124,3 +124,13 @@ To run locally, serve the folder over HTTP (for example `python3 -m http.server`
 ## Rows
 
 Open the main menu and double-tap a hero to move them between the front row and the back row. Back-row heroes' portraits shift to the right and say "Back row", the way Final Fantasy VI shows it. Back-row heroes take and deal half physical damage. During a battle, use the Row command instead.
+
+## Touch view
+
+Tap **Touch UI** at the top to switch from the classic layout to a full-screen view made for phones (turn the phone sideways for the biggest picture). The menus and party list are hidden and your choice is remembered.
+
+- **Walking:** hold anywhere on the left half of the screen and drag. A faint thumb stick appears under your thumb.
+- **Actions:** tap the right half for a ring of actions: Party, Journal and whatever applies where you are (Leave, Camp, Fish, Land and so on), plus Full screen, Help and **Classic view** to switch back. Menus open as usual and closing them returns to the touch view.
+- **Battles:** when a hero's turn comes, a ring of commands opens around them. Magic, Item and target lists open in a panel on the left. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active.
+- **Bars:** under each hero, HP (green, turning yellow and red), MP (blue), Limit (pink, pulsing when ready) and the turn gauge (gold).
+

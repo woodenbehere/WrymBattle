@@ -394,7 +394,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.33.3</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.34.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -404,7 +404,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
     <p>When a hero's gold gauge fills, their menu opens. Tap any glowing name to switch who acts. <b>Wait</b> pauses the gauges while you choose; <b>Active</b> doesn't.</p>
     <p>The <b>back row</b> halves physical damage dealt and taken. Magic ignores rows.</p>
     <p><b>Options</b>: open the menu (Party) and choose <b>Options</b> to switch between manual and auto battle, pick the auto strategy, choose which heroes fight on auto and their habits, set Wait or Active, turn random encounters and the mini map on or off, and switch between the Classic and Touch interfaces. Your battle settings are remembered.</p>
-    <p><b>Touch view</b>: the game starts in touch view, which hides the menus and fills the screen with the game (switch to Classic in Options or the action ring). Hold anywhere on the left side and drag to walk with the thumb stick; tap the right side for a ring of actions (Party, Journal and whatever you can do where you are, plus Full screen, Help and <b>Classic view</b> to switch back). In battle, the hero whose turn it is gets a ring of commands; Magic and Item lists open in a panel on the left; to pick who a spell or item is for, just tap that enemy or hero. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active. Bars under each hero show HP (green), MP (blue), Limit (pink) and the turn gauge (gold).</p>
+    <p><b>Touch view</b>: the game starts in touch view, which hides the menus and fills the screen with the game (switch to Classic in Options or the action ring). Hold anywhere on the left side and drag to walk with the thumb stick; tap the right side for a ring of actions (Party, Journal and whatever you can do where you are, plus Full screen, Help and <b>Classic view</b> to switch back). In battle, the hero whose turn it is gets a ring of commands; Magic and Item lists open in a panel on the left; to pick who a spell or item is for, just tap that enemy or hero. With a single-target attack spell, triple-tap empty space to spread it across every enemy, splitting the damage between them. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active. Bars under each hero show HP (green), MP (blue), Limit (pink) and the turn gauge (gold).</p>
     <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Limit command appears.</p>
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
@@ -5228,7 +5228,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.33.3',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.34.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5278,7 +5278,7 @@ function touchSync(){if(!TUI.on){document.body.classList.remove('tsub');tBars.hi
   const m=S.scene==='battle'&&!S.over?S.menu:null;
   document.body.classList.toggle('tsub',!!(m&&m.view!=='root'&&m.view!=='foe'&&m.view!=='target'));
   if(m&&(m.view==='root'||m.view==='foe'||m.view==='target')){const foe=m.view!=='root',items=foe?optList().filter(o=>o.a==='back'):optList(),p=heroScreen(m.hero);TUI.ring={kind:'hero',h:m.hero,n:items.length};tRing.className='hero';layRing(p.x,p.y,items,true);
-    if(foe){const t=document.createElement('div');t.className='thint';t.textContent=m.view==='target'?(m.pending.kind==='item'?'Tap a hero to use '+ITEMS[m.pending.id].name+' on':'Tap a hero to cast '+SK[m.pending.id].name+' on'):'Tap an enemy to target it';tRing.appendChild(t);}}
+    if(foe){const t=document.createElement('div');t.className='thint';t.textContent=canSpread(m)?'Tap an enemy · triple-tap empty space to hit all':m.view==='target'?(m.pending.kind==='item'?'Tap a hero to use '+ITEMS[m.pending.id].name+' on':'Tap a hero to cast '+SK[m.pending.id].name+' on'):'Tap an enemy to target it';tRing.appendChild(t);}}
   else if(TUI.ring&&TUI.ring.kind==='hero')closeRing();}
 {const rmT=renderMenu;renderMenu=function(f){rmT(f);try{touchSync();}catch(e){console.warn(e);}};}
 function foeAt(x,y){let best=null;S.foes.forEach((f,i)=>{if(f.dead||f.gone)return;const m=f.kind==='wyrm'?null:MON[f.kind];
@@ -5288,14 +5288,24 @@ function heroAt(x,y){const m=S.menu;if(!m||m.view!=='target')return -1;const tt=
   for(const h of S.heroes){if(!validTarget(tt,h))continue;const cx=h.x+h.dx,cy=h.y-8,d=Math.hypot((x-cx)*.8,y-cy);if(d<=16&&(!best||d<best.d))best={i:h.i,d};}return best?best.i:-1;}
 function tapHero(e){if(!S.menu||S.menu.view!=='target'||S.over)return false;const{fx,fy}=stageXY(e),i=heroAt(fx*W,fy*H);if(i<0)return false;
   const b=cmdEl.querySelector(`button.opt[data-a="tg:${i}"]`);if(b&&!b.disabled){b.click();return true;}return false;}
+/* triple-tap empty space while aiming a single-target offensive spell: it hits every enemy, damage split between them */
+const canSpread=m=>!!(m&&m.view==='foe'&&m.pending&&m.pending.kind==='skill'&&SK[m.pending.id]&&SK[m.pending.id].t==='enemy'&&!SK[m.pending.id].all&&(SK[m.pending.id].mp||0)>0&&liveFoes().length>1);
+let spT={n:0,t:0};
+function spreadTap(){const m=S.menu;if(!canSpread(m))return false;const now=performance.now();spT=now-spT.t<650?{n:spT.n+1,t:now}:{n:1,t:now};
+  const hint=tRing.querySelector('.thint');
+  if(spT.n<3){const msg=spT.n===1?'Tap twice more to hit every enemy':'Once more: hit every enemy';if(hint)hint.textContent=msg;else say(msg+' (damage is split).');return true;}
+  spT={n:0,t:0};const h=m.hero,pd=m.pending,n=liveFoes().length;h._spread=true;say(`${h.name} spreads ${SK[pd.id].name} across all ${n} enemies. The damage is split.`);queueHero(h,pd.kind,pd.id,pd.tg,liveFoes()[0]);return true;}
+{const dh=doHero;doHero=async function(h,...a){if(!h._spread)return dh(h,...a);h._spread=false;S.spread=liveFoes();try{return await dh(h,...a);}finally{S.spread=null;}};}
+{const hd=hitDragon;let inSp=false;hitDragon=function(v,elem,crit){if(!S.spread||inSp)return hd(v,elem,crit);const L=S.spread.filter(f=>!f.dead);if(!L.length)return hd(v,elem,crit);const keep=S.dragon;inSp=true;
+  try{for(const f of L){setTarget(f);hd(v/L.length,elem,crit);}}finally{inSp=false;setTarget(keep&&!keep.dead?keep:(L.find(f=>!f.dead)||keep));}};}
 function tapFoe(e){if(!S.menu||S.menu.view!=='foe'||S.over)return false;const{fx,fy}=stageXY(e),i=foeAt(fx*W,fy*H);if(i<0)return false;
   S.menu.hl=i;const b=cmdEl.querySelector(`button.opt[data-a="fo:${i}"]`);if(b&&!b.disabled){b.click();return true;}return false;}
-stage.addEventListener('pointerdown',e=>{if(TUI.on||!S||S.scene!=='battle'||e.target.closest('button,.overlay,.sheet'))return;if(tapFoe(e)||tapHero(e)){e.preventDefault();e.stopImmediatePropagation();}},true);
+stage.addEventListener('pointerdown',e=>{if(TUI.on||!S||S.scene!=='battle'||e.target.closest('button,.overlay,.sheet'))return;if(tapFoe(e)||tapHero(e)||spreadTap()){e.preventDefault();e.stopImmediatePropagation();}},true);
 function endJoy(){if(TUI.joy){TUI.joy=null;steer=null;}tJoy.hidden=true;}
 stage.addEventListener('pointerdown',e=>{if(!TUI.on||!S)return;if(e.target.closest('button,.overlay,.sheet')||e.target===miniEl)return;
   if(S.dlg){e.preventDefault();e.stopImmediatePropagation();advanceDlg();return;}
   const{fx,fy}=stageXY(e);
-  if(S.scene==='battle'){e.stopImmediatePropagation();if(S.over)return;if(tapFoe(e)||tapHero(e))return;if(S.menu&&S.menu.view==='target')return;const x=fx*W,y=fy*H;
+  if(S.scene==='battle'){e.stopImmediatePropagation();if(S.over)return;if(tapFoe(e)||tapHero(e))return;if(S.menu&&S.menu.view==='target')return;if(S.menu&&S.menu.view==='foe'){spreadTap();return;}const x=fx*W,y=fy*H;
     const h=S.heroes.find(q=>Math.abs(x-(q.x+q.dx))<=11&&y>=q.y-20&&y<=q.y+4);
     if(h&&h.ready&&!h.ko&&!h.stone){S.readyQ=[h,...S.readyQ.filter(q=>q!==h)];openMenu(h);return;}
     if(!S.menu)openSysRing(e.clientX,e.clientY);return;}

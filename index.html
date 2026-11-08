@@ -339,6 +339,8 @@ body.touchui .stage{position:fixed;z-index:10;left:50%;top:50%;transform:transla
 body.touchui.tsub .hud{display:block;position:fixed;z-index:14;left:max(8px,env(safe-area-inset-left,0px));top:max(8px,env(safe-area-inset-top,0px));bottom:max(8px,env(safe-area-inset-bottom,0px));width:min(46vw,360px);--fs:16px;font-size:16px;pointer-events:none}
 body.touchui.tsub .hud #party{display:none}
 body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;background:rgba(22,17,26,.94)}
+body>#over{position:fixed;inset:0;z-index:15;padding:max(12px,env(safe-area-inset-top,0px)) 12px max(12px,env(safe-area-inset-bottom,0px))}
+body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560px)}
 #tjoy{position:fixed;z-index:12;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.2);pointer-events:none}
 #tjoy i{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.32)}
 #tring{position:fixed;inset:0;z-index:13}
@@ -394,7 +396,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.35.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.35.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -5228,7 +5230,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.35.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.35.1',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5247,7 +5249,9 @@ try{const u=new URL(location.href);if(u.searchParams.has('u')){u.searchParams.de
 const TUI={on:false,joy:null,ring:null};
 const uiBtn=$('uiBtn'),tJoy=document.createElement('div'),tRing=document.createElement('div'),tBars=document.createElement('div');
 tJoy.id='tjoy';tJoy.hidden=true;tJoy.innerHTML='<i></i>';tRing.id='tring';tRing.hidden=true;tBars.id='tbars';tBars.hidden=true;document.body.append(tJoy,tRing,tBars);
-function setUI(on){TUI.on=on;try{localStorage.setItem('ew-ui',on?'touch':'classic');}catch(e){}if(on&&document.body.classList.contains('bigmap'))setBig(false);
+/* in touch view the battle-result card lives on the page itself, so it can use the whole screen instead of the small game band */
+const overEl=$('over'),overHome=overEl.parentNode;function placeOver(on){if(on&&overEl.parentNode!==document.body)document.body.appendChild(overEl);else if(!on&&overEl.parentNode!==overHome)overHome.appendChild(overEl);}
+function setUI(on){TUI.on=on;placeOver(on);try{localStorage.setItem('ew-ui',on?'touch':'classic');}catch(e){}if(on&&document.body.classList.contains('bigmap'))setBig(false);
   document.body.classList.toggle('touchui',on);closeRing();endJoy();if(on)say(innerHeight>innerWidth?'Touch view: turn your phone sideways for the biggest view. Hold the left side to walk, tap the right side for actions.':'Touch view: hold the left side to walk, tap the right side for actions.');renderMenu();}
 uiBtn.onclick=()=>setUI(true);
 const stageXY=e=>{const r=cv.getBoundingClientRect();return{fx:(e.clientX-r.left)/r.width,fy:(e.clientY-r.top)/r.height,r};};
@@ -5328,7 +5332,7 @@ const joyEnd=e=>{if(TUI.joy&&e.pointerId===TUI.joy.id)endJoy();};addEventListene
 /* the battle bars under each hero: HP, MP, Limit and the ATB gauge */
 function touchFrame(){if(!TUI.on){return;}
   if(TUI.joy&&(S.scene!=='map'&&S.scene!=='castle'||S.dlg||S.cut))endJoy();else if(TUI.joy&&!steer)steer={x:0,y:0};
-  const bt=S.scene==='battle';tBars.hidden=!bt;if(TUI.ring&&!bt&&TUI.ring.kind==='hero')closeRing();if(TUI.ring&&TUI.ring.kind==='sys'&&S.scene!=='battle'&&S.scene!=='map'&&S.scene!=='castle')closeRing();
+  const bt=S.scene==='battle';tBars.hidden=!bt||!!S.over;if(TUI.ring&&!bt&&TUI.ring.kind==='hero')closeRing();if(TUI.ring&&TUI.ring.kind==='sys'&&S.scene!=='battle'&&S.scene!=='map'&&S.scene!=='castle')closeRing();
   if(!bt)return;
   if(tBars.childElementCount!==S.heroes.length)tBars.innerHTML=S.heroes.map(h=>`<div class="tbar"><span class="xh"><i></i></span><span class="xm"><i></i></span><span class="xl"><i></i></span><span class="xa"><i></i></span></div>`).join('');
   const r=cv.getBoundingClientRect(),k=r.width/W,mm=S.menu,pk=mm&&mm.view==='target'?S.heroes.filter(x=>validTarget(mm.pending.kind==='item'?ITEMS[mm.pending.id].t:SK[mm.pending.id].t,x)):[];
@@ -5340,7 +5344,7 @@ function touchFrame(){if(!TUI.on){return;}
   if(TUI.ring&&TUI.ring.kind==='hero'){const p=heroScreen(TUI.ring.h),hub=tRing.querySelector('.hub');if(hub){hub.style.left=p.x+'px';hub.style.top=p.y+'px';}}}
 {const tl=()=>{try{touchFrame();}catch(e){}requestAnimationFrame(tl);};requestAnimationFrame(tl);}
 addEventListener('resize',()=>{if(TUI.on&&TUI.ring&&TUI.ring.kind==='hero')touchSync();else if(TUI.ring)closeRing();});
-{let ui=null;try{ui=localStorage.getItem('ew-ui');}catch(e){}if(ui!=='classic'){TUI.on=true;document.body.classList.add('touchui');}}
+{let ui=null;try{ui=localStorage.getItem('ew-ui');}catch(e){}if(ui!=='classic'){TUI.on=true;document.body.classList.add('touchui');placeOver(true);}}
 /* ---------- v3.27: the Options menu ---------- */
 const optOv=$('optOv');let optBack=false,helpBack=false;
 $('helpClose').addEventListener('click',()=>{if(helpBack){helpBack=false;setTimeout(openOptions,0);}});

@@ -134,3 +134,11 @@ Tap **Touch UI** at the top to switch from the classic layout to a full-screen v
 - **Battles:** when a hero's turn comes, a ring of commands opens around them. Magic, Item and target lists open in a panel on the left. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active.
 - **Bars:** under each hero, HP (green, turning yellow and red), MP (blue), Limit (pink, pulsing when ready) and the turn gauge (gold).
 
+## Options
+
+Open the menu (Party) and choose **Options**:
+
+- **Battle:** Manual or Auto control, the auto strategy (All-out Attack, Balanced, Protect Allies, Save MP), which heroes fight on auto and each one's habit, and Wait or Active mode. These are remembered between visits.
+- **Gameplay:** random encounters on or off, and show or hide the mini map.
+- **Display:** Classic or Touch interface, and full screen where the browser supports it.
+

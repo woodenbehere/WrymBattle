@@ -325,6 +325,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
 #titleOv .tbtns button:disabled{opacity:.35;cursor:default}
 #titleOv .tbtns button small{display:block;margin-top:5px;font-family:var(--f-body);font-size:16px;letter-spacing:0;text-transform:none;color:var(--muted)}
 #titleOv .tbtns button.armed{border-color:var(--hp-crit);color:var(--hp-crit)}
+#titleOv .tver{font-family:var(--f-display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);background:none;border:0;border-bottom:1px dotted var(--dim);padding:4px 2px;cursor:pointer;margin-top:-4px}#titleOv .tver.armed{color:var(--gold);border-bottom-color:var(--gold)}#titleOv .tver:disabled{opacity:.6}
 #titleOv .tfoot{font-family:var(--f-display);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 /* ---------- touch-optimized interface ---------- */
 body.touchui{padding:0}
@@ -389,7 +390,7 @@ body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;ba
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.31.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.31.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -5214,7 +5215,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.31.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.31.2',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5361,7 +5362,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&!optOv.hidden){closeSheet(op
 /* ---------- v3.31: the title screen ---------- */
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!titleOv.hidden){e.preventDefault();e.stopImmediatePropagation();}},true);
 const titleOv=document.createElement('div');titleOv.id='titleOv';titleOv.className='sheet';titleOv.setAttribute('role','dialog');titleOv.setAttribute('aria-modal','true');titleOv.setAttribute('aria-label','Ember Wyrm');
-titleOv.innerHTML='<div class="tin"><canvas id="titleCv" width="380" height="144" aria-hidden="true"></canvas><div class="ttl" role="heading" aria-level="1">Ember Wyrm</div><div class="tbtns"><button type="button" id="tStart">Start</button><button type="button" id="tCont">Continue</button></div><div class="tfoot">Parden Web Apps 2026</div></div>';
+titleOv.innerHTML='<div class="tin"><canvas id="titleCv" width="380" height="144" aria-hidden="true"></canvas><div class="ttl" role="heading" aria-level="1">Ember Wyrm</div><div class="tbtns"><button type="button" id="tStart">Start</button><button type="button" id="tCont">Continue</button></div><div class="tfoot">Parden Web Apps 2026</div><button type="button" class="tver" id="tVer"></button></div>';
 document.body.appendChild(titleOv);
 const titleCv=$('titleCv'),tctx=titleCv.getContext('2d');tctx.imageSmoothingEnabled=false;let tArm=0;
 function latestSlot(){let best=null;for(const n of[1,2,3]){const i=slotInfo(n);if(i&&(!best||(i.at||0)>(best.i.at||0)))best={n,i};}return best;}
@@ -5372,7 +5373,10 @@ function drawTitleArt(ms){if(titleOv.hidden)return;const t=ms/1000*.45,sv=S.drag
 function drawTitle(){const L=latestSlot(),c=$('tCont');c.disabled=!L;
   c.innerHTML='Continue'+(L?`<small>Slot ${L.n} · Lv ${L.i.lv} · ${esc(L.i.where)}</small>`:'<small>No saved game yet</small>');
   $('tStart').innerHTML=tArm?`Start<small>Tap again: slot ${curSlot} will be replaced once you beat the wyrm</small>`:'Start';$('tStart').classList.toggle('armed',!!tArm);}
-function openTitle(){tArm=0;closeRing&&closeRing();drawTitle();openSheet(titleOv,$(latestSlot()?'tCont':'tStart'));requestAnimationFrame(drawTitleArt);}
+const tVer=$('tVer');
+function syncTVer(){tVer.textContent=verBtn.classList.contains('armed')?'Tap again to update':verBtn.textContent.replace(/^Ember Wyrm\s*/i,'');tVer.title='Tap twice to check for and install the latest update';tVer.classList.toggle('armed',verBtn.classList.contains('armed'));tVer.disabled=verBtn.disabled;}
+tVer.onclick=()=>{verBtn.click();const loop=()=>{if(titleOv.hidden)return;syncTVer();if(verBtn.classList.contains('armed')||verBtn.disabled)setTimeout(loop,250);};loop();};
+function openTitle(){tArm=0;syncTVer();closeRing&&closeRing();drawTitle();openSheet(titleOv,$(latestSlot()?'tCont':'tStart'));requestAnimationFrame(drawTitleArt);}
 function leaveTitle(){closeSheet(titleOv);renderMenu();}
 $('tStart').onclick=()=>{const free=[1,2,3].find(n=>!slotInfo(n));
   if(!free&&!tArm){tArm=1;drawTitle();return;}

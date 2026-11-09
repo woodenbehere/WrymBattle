@@ -199,3 +199,6 @@ Saves live in the phone's browser storage, so uninstalling the app or clearing i
 
 ## The name (v3.50)
 The game is now **Drakes of Dusk and Dawn**, and the five wyrms are dragons: the Ember Dragon (Molten Dragon), Frostfang the Rime Dragon, Gravemaw the Earth Dragon, Maelstrom the Water Dragon and Zephyrion the Sky Dragon. Save files, the web address and the repo name are unchanged.
+
+## The opening (v3.51)
+Starting a new game plays the chronicle of **Orren Vael**, archivist of Castle Arcanum: eleven parchment-toned scenes with typed narration. The Dawn Ballad says Sir Kael and the Knights of the Dawn slew the five dragons and ended the Long Dusk; Orren sets down what really happened (the Sky Folk fleet, the dragons waking, the five forgotten heroes) and the last scene fades into color at the foot of Ember Peak before the Ember Dragon fight. Tap to advance (it also advances on its own), or Skip. Watch it again from Options › About › The opening.

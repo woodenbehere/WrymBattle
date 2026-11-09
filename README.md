@@ -157,3 +157,7 @@ The game opens on a title screen: two dragons face each other above the name on 
 
 In **Save & Load**, each saved slot has a **Clear** button. To make sure it never happens by accident, it takes three taps: the first warns you, the second asks once more, and the third deletes the slot. Waiting four seconds or tapping anything else cancels. Clearing the slot you are playing returns you to the title screen.
 
+## Summon entrances
+
+When Senna summons, the screen darkens and the summon itself appears before its attack: Undine rises from a whirlpool, Sylph flutters in, Golem drops from the sky, Glacia forms out of snow, Raijin arrives in a lightning flash, Ifrit bursts from flame, Titan breaks out of the ground, Odin gallops in, Phoenix and Bahamut swoop down, Alexander rises over the horizon, and Leviathan (Senna's Limit) breaches from the waves. Attack summons appear over the enemies; Sylph, Golem and Phoenix appear on the party's side. The full entrance (about 1.5 seconds) plays the first time each summon is called in a battle, then a quick flash after that. Tap to skip.
+

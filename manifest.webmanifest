@@ -1,7 +1,7 @@
 {
-  "name": "Ember Wyrm",
-  "short_name": "Ember Wyrm",
-  "description": "A 16-bit style ATB battle: Fighter, Thief, White Mage, Black Mage and Summoner against a two-phase dragon.",
+  "name": "Drakes of Dusk and Dawn",
+  "short_name": "Dusk & Dawn",
+  "description": "A 16-bit style RPG: five heroes, five dragons, a world that changes from dusk to dawn, and a homestead to come home to.",
   "id": "./",
   "start_url": "./",
   "scope": "./",

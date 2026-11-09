@@ -26,6 +26,9 @@ RULES = [
  # classes
  (r"\bWhite Mage\b", "Cleric"), (r"\bWhite Wizards\b", "High Clerics"), (r"\bWhite Wizard\b", "High Cleric"), (r"\bBlack Mage\b", "Sorcerer"),
  (r"\bBlack Wizard:", "Sorcerer:"), (r"\bBlack Wizard\b", "Archmage"), (r"\bblack wizards\b", "sorcerers"), (r"\bblack wizard\b", "sorcerer"),
+ # v3.50: wyrms are dragons
+ (r"\bWyrmscale\b", "Dragonscale"), (r"\bWyrmbone\b", "Dragonbone"), (r"\bWyrms\b", "Dragons"), (r"\bWyrm\b", "Dragon"),
+ (r"(?<![\w'.\-/`$])wyrms\b", "dragons"), (r"(?<![\w'.\-/`$])wyrm\b(?![\w'(=:\-.\[])", "dragon"),
  # night-monster spells added in v3.47 (FSPELL names)
  (r"name:'Fire',mp:5", "name:'Flame',mp:5"), (r"name:'Blizzard',mp:5", "name:'Frost',mp:5"), (r"name:'Aqua',mp:5", "name:'Torrent',mp:5"),
  (r"cast basic spells: Fire, Blizzard, Thunder, Aqua", "cast basic spells: Flame, Frost, Thunder, Torrent"),

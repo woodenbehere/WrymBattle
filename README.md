@@ -205,3 +205,6 @@ Starting a new game plays the chronicle of **Orren Vael**, archivist of Castle A
 
 ## Auto battle: spread spells (v3.54)
 The auto-battle settings have **Cast attack spells on all enemies**: Never, 3 or more enemies, or 2 or more enemies. When it applies, a hero on auto casts single-target attack spells (Flame, Blaze, Thunder and the like) on every enemy at once with the damage split between them, the same as triple-tapping empty space by hand. Healing and support spells are unaffected. The choice is saved with your other auto settings.
+
+## Quest tracker (v3.55)
+On the world map, a **Quests** panel sits under the sun/moon icon. Tap the **−/+** to collapse or expand it (the game remembers). It lists the main-story goal (from the Ember Dragon to Zephyrion) and every active guild bounty with its count, like "Goblin Trouble 3/5", or a green **Turn in** once it's done. Tap a bounty to open the Quests list. It hides in battles, menus, towns and while camping.

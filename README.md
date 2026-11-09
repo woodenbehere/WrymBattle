@@ -183,3 +183,5 @@ Pitching a Tent (on the world map or at a dungeon save circle) plays a 5½-secon
 - **Song**: Vesh strums a lute by the fire, with notes drifting up and fireflies around.
 - **Night watch**: the others sleep in bedrolls while Garrick walks the camp with a lantern and an owl watches.
 - **Sparring**: Garrick and Vesh spar by the firelight; Ilse cheers, Morrow reads a glowing tome and Senna's wisps circle her.
+
+In touch view, the world map's action ring has a **Camp** button showing how many Tents you carry (it's hidden while aboard a ship or airship). In dungeons it appears while you stand on a save circle.

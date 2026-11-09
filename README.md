@@ -202,3 +202,6 @@ The game is now **Drakes of Dusk and Dawn**, and the five wyrms are dragons: the
 
 ## The opening (v3.51)
 Starting a new game plays the chronicle of **Orren Vael**, archivist of Castle Arcanum: eleven parchment-toned scenes with typed narration. The Dawn Ballad says Sir Kael and the Knights of the Dawn slew the five dragons and ended the Long Dusk; Orren sets down what really happened (the Sky Folk fleet, the dragons waking, the five forgotten heroes) and the last scene fades into color at the foot of Ember Peak before the Ember Dragon fight. Tap to advance (it also advances on its own), or Skip. Watch it again from Options › About › The opening.
+
+## Auto battle: spread spells (v3.54)
+The auto-battle settings have **Cast attack spells on all enemies**: Never, 3 or more enemies, or 2 or more enemies. When it applies, a hero on auto casts single-target attack spells (Flame, Blaze, Thunder, summons and the rest) on every enemy at once with the damage split between them, the same as triple-tapping empty space by hand. Healing and support spells are unaffected. The choice is saved with your other auto settings.

@@ -414,7 +414,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.41.4</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.42.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -5252,7 +5252,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.41.4',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.42.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5469,12 +5469,15 @@ function clearGuards(){if(!S.flags.solo||!IM)return;const p=S.cpos,px=p.x/CT,py=
 {const ei=enterInterior;enterInterior=function(...a){const r=ei.apply(this,a);try{if(S.flags.solo&&IM&&MAPS[IM.id]&&MAPS[IM.id].night)clearGuards();}catch(e){}return r;};}
 {const st=soloTick;soloTick=function(dt){if(!S.soloLast)clearGuards();if(S.soloGrace>0)S.soloGrace-=dt;return st(dt);};}
 /* ---------- v3.37: Wait/Active and Auto in the battle's top-right corner (touch view) ---------- */
-const tBtl=document.createElement('div');tBtl.id='tbtl';
+let tbAutoT=0;const tBtl=document.createElement('div');tBtl.id='tbtl';
 tBtl.innerHTML='<span class="seg" role="group" aria-label="Battle mode"><button type="button" data-m="wait">Wait</button><button type="button" data-m="active">Active</button></span><button type="button" id="tbAuto">Auto</button>';
 stage.appendChild(tBtl);tBtl.addEventListener('pointerdown',e=>e.stopPropagation(),true);
 tBtl.addEventListener('click',e=>{e.stopPropagation();const b=e.target.closest('button');if(!b)return;
   if(b.dataset.m){if(S.mode!==b.dataset.m){setMode(b.dataset.m);say(b.dataset.m==='wait'?'Wait mode: gauges pause while you choose.':'Active mode: gauges keep filling while you choose.');}syncTBtl();return;}
-  if(b.id==='tbAuto')autoBtn.click();});
+  if(b.id==='tbAuto'){if(tbAutoT){clearTimeout(tbAutoT);tbAutoT=0;autoBtn.click();return;}
+    tbAutoT=setTimeout(()=>{tbAutoT=0;const on=!S.auto.on;if(on&&!Object.values(S.auto.who).some(Boolean))S.auto.who=Object.fromEntries(S.heroes.map(h=>[h.key,true]));S.auto.on=on;
+      if(on&&S.menu&&isAuto(S.menu.hero))S.menu=null;syncAuto();if(typeof saveOpts==='function')saveOpts();renderMenu();syncTBtl();
+      say(on?`Auto battle on (${STRATS[S.auto.strat].name}). Double-tap Auto for settings.`:'Manual: you choose every command. Double-tap Auto for settings.');},300);}});
 function syncTBtl(){const on=TUI.on&&S&&S.scene==='battle'&&!S.over;tBtl.classList.toggle('on',on);if(!on)return;
   for(const b of tBtl.querySelectorAll('[data-m]'))b.setAttribute('aria-pressed',String(S.mode===b.dataset.m));
   const a=$('tbAuto'),n=S.heroes.filter(h=>S.auto.who[h.key]).length;a.textContent=S.auto.on&&n?`Auto · ${n}`:'Auto';a.classList.toggle('on',!!(S.auto.on&&n));}

@@ -261,7 +261,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
 .nm{grid-area:nm;font-size:1em;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .nm em{font-style:normal;color:var(--muted);font-size:.74em;margin-left:.3em}
 .tag{font-family:var(--f-display);font-size:.36em;letter-spacing:.08em;border:1px solid currentColor;padding:0 .3em;margin-left:.5em;vertical-align:.5em;color:var(--mp)}
-.tag.hst{color:#ffe14a} .tag.shl{color:var(--mp)} .tag.psn{color:#a8f05a} .tag.stn{color:#b8b0a8} .tag.cnf{color:#ee7ad6} .pop.psn{color:#a8f05a}
+.tag.hst{color:#ffe14a} .tag.rgn{color:var(--heal)} .tag.shl{color:var(--mp)} .tag.psn{color:#a8f05a} .tag.stn{color:#b8b0a8} .tag.cnf{color:#ee7ad6} .pop.psn{color:#a8f05a}
 .tag.au{color:var(--heal)} .tag.ko{color:var(--hp-crit)} .tag.def{color:var(--gold)} .tag.lim{color:var(--limit)} .tag.bk{color:var(--muted)}
 .hp{grid-area:hp;font-size:1em;line-height:1.1;font-variant-numeric:tabular-nums;text-align:right}
 .hp small{font-size:.7em;color:var(--muted)}
@@ -323,6 +323,12 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
 .nm .nrow input{font-family:var(--f-body);font-size:22px;color:var(--text);background:var(--bg);border:2px solid var(--line-hi);padding:4px 8px;width:100%;min-width:0;text-transform:none}
 .nm .nrow input:focus{outline:2px solid var(--gold);outline-offset:1px}
 .nm .nrow .btn{white-space:nowrap}
+#fbars{position:absolute;inset:0;pointer-events:none;z-index:4}
+#fbars .fb{position:absolute;transform:translateX(-50%);display:grid;gap:1px;justify-items:center}
+#fbars .fb small{font-family:var(--f-display);font-size:calc(clamp(7px,1.5cqw,12px) * var(--t-info,1));letter-spacing:.08em;text-transform:uppercase;color:#e8e2d4;text-shadow:1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000;white-space:nowrap;line-height:1}
+#fbars .fb span{display:block;width:100%;height:max(3px,.7cqw);background:rgba(0,0,0,.75);outline:1px solid rgba(0,0,0,.6)}
+#fbars .fb span i{display:block;height:100%;background:var(--hp-crit);transition:width .25s}
+#fbars .fb span.fm i{background:var(--mp)}
 /* ---------- title screen ---------- */
 #titleOv{position:fixed;inset:0;z-index:60;background:#000;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px));overflow:auto}
 #titleOv[hidden]{display:none}
@@ -414,7 +420,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.43.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.44.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -619,12 +625,14 @@ const SK={
  cure:{name:'Cure',mp:10,t:'ally',d:'Heal one ally'},
  cureall:{name:'Cure All',mp:28,t:'party',d:'Heal the whole party'},
  protect:{name:'Protect',mp:16,t:'ally',d:'Cut damage taken for a while'},
+ shell:{name:'Shell',mp:16,t:'ally',d:'Cut magic damage taken for a while'},
+ regen:{name:'Regen',mp:22,t:'ally',d:'Slowly restore HP for a while'},
  revive:{name:'Revive',mp:32,t:'ko',d:'Raise a fallen ally'},
  flame:{name:'Flame',mp:10,t:'enemy',d:'Fire damage'},
  frost:{name:'Frost',mp:18,t:'enemy',d:'Ice damage'},
  thunder:{name:'Thunder',mp:12,t:'enemy',d:'Lightning damage'},
  undine:{name:'Undine',mp:56,t:'enemy',d:'Tidal Surge, water damage'},
- sylph:{name:'Sylph',mp:44,t:'party',d:'Cure, Haste and Shell for all'},
+ sylph:{name:'Sylph',mp:44,t:'party',d:'Cure, Haste, Shell and Regen for all'},
  golem:{name:'Golem',mp:40,t:'party',d:'Earthen Wall: Protect all'},
  cura:{name:'Cura',mp:22,t:'ally',d:'Heal one ally greatly'},
  holy:{name:'Holy',mp:40,t:'enemy',d:'Searing holy light'},
@@ -806,7 +814,7 @@ function hurt(h,n,type,elem){
   if(h.hp===0){knockOut(h);for(const a of alive())gainLimit(a,12);}else gainLimit(h,v/h.maxhp*95);
 }
 function gainLimit(h,n){if(h.ko||h.limit>=100)return;h.limit=Math.min(100,h.limit+n);if(h.limit>=100){pop(h.x,h.y-22,'Limit!','lim');say(`${h.name}'s limit gauge is full!`);if(S.menu&&S.menu.hero===h&&S.menu.view==='root')renderMenu(true);}}
-function knockOut(h){h.ko=true;h.poison=h.stone=h.confuse=false;h.hp=0;h.atb=0;h.ready=false;h.queued=false;h.defend=h.guard=false;h.protect=0;h.haste=0;h.shell=0;h.cast=null;
+function knockOut(h){h.ko=true;h.poison=h.stone=h.confuse=false;h.hp=0;h.atb=0;h.ready=false;h.queued=false;h.defend=h.guard=false;h.protect=0;h.haste=0;h.shell=0;h.regen=0;h.cast=null;
   S.readyQ=S.readyQ.filter(x=>x!==h);S.actQ=S.actQ.filter(a=>a.actor!==h);if(S.menu&&S.menu.hero===h)S.menu=null;say(`${h.name} falls!`);renderMenu();}
 function heal(h,n){if(h.ko)return;const v=Math.min(Math.round(n),h.maxhp-h.hp);h.hp+=v;pop(h.x,h.y-12,Math.round(n),'heal');}
 function revive(h,f){if(!h.ko)return;h.ko=false;h.hp=Math.max(1,Math.round(h.maxhp*f));h.atb=0;h.ready=false;h.queued=false;pop(h.x,h.y-12,h.hp,'heal');say(`${h.name} is back on their feet.`);}
@@ -905,6 +913,8 @@ async function doHero(h,kind,id,tg){
     case 'cure':{await castPose(h,'#9df29a');healFx(tg);heal(tg,h.mag*15*rnd(.95,1.05));await sleep(450);break;}
     case 'cureall':{await castPose(h,'#9df29a');for(const a of alive()){healFx(a);heal(a,h.mag*9*rnd(.95,1.05));}await sleep(500);break;}
     case 'protect':{await castPose(h,'#86b4f2');protectFx(tg);tg.protect=30;pop(tg.x,tg.y-12,'Protect','lbl');await sleep(450);break;}
+    case 'shell':{await castPose(h,'#86b4f2');shellFx(tg);tg.shell=30;pop(tg.x,tg.y-12,'Shell','mpp');await sleep(450);break;}
+    case 'regen':{await castPose(h,'#9df29a');healFx(tg);tg.regen=30;tg.rtick=0;pop(tg.x,tg.y-12,'Regen','heal');await sleep(450);break;}
     case 'revive':{await castPose(h,'#ffffff');healFx(tg);revive(tg,.25);await sleep(450);break;}
     case 'flame':{await castPose(h,'#ff8a2a');await fireFx(DX,DY);hitDragon(h.mag*13*rnd(.92,1.08),'fire');await sleep(250);break;}
     case 'frost':{await castPose(h,'#9fe6ff');await frostFx(DX,DY);hitDragon(h.mag*13*rnd(.92,1.08),'ice');await sleep(300);break;}
@@ -922,11 +932,12 @@ async function doHero(h,kind,id,tg){
     case 'undine':{await castPose(h,'#6fb3ff',300);await summonIntro('#6fb3ff');banner('Undine · Tidal Surge');shake();
       await addFx(1150,(c,p)=>{const f=196-p*270;c.fillStyle='rgba(30,100,190,.6)';c.fillRect(f,40,64,104);c.fillStyle='rgba(120,190,255,.5)';c.fillRect(f,40,8,104);c.fillStyle='#dff3ff';for(let y=40;y<H;y+=4)c.fillRect(Math.round(f+Math.sin(y*.3+p*20)*3),y,3,2);if(Math.random()<.7)part(f,rnd(40,H),{vx:rnd(-40,10),vy:rnd(-40,0),life:.4,c:'#cfeaff'});});
       hitAll(h.mag*22,'water');await sleep(350);break;}
-    case 'sylph':{await castPose(h,'#9df29a',300);await summonIntro('#9df29a');banner('Sylph · Cure, Haste, Shell');
+    case 'sylph':{await castPose(h,'#9df29a',300);await summonIntro('#9df29a');banner('Sylph · Cure, Haste, Shell, Regen');
       await addFx(1000,(c,p)=>{for(let k=0;k<20;k++){const a=k*.9+p*10,x=212+Math.cos(a)*(10+k*.6),y=40+((k*13+p*150)%96);c.fillStyle=k%3?'#9df29a':'#e6ffd8';c.fillRect(x|0,y|0,2,1);}});
       for(const a of alive()){healFx(a);heal(a,h.mag*11*rnd(.95,1.05));}await sleep(350);
       for(const a of alive()){a.haste=30;pop(a.x+(a.mx||0),a.y+(a.my||0)-20,'Haste','lbl');for(let k=0;k<6;k++)part(a.x,a.y-6,{vx:rnd(-40,-10),vy:rnd(-8,8),life:.4,c:'#ffe14a',s:1});}await sleep(350);
-      for(const a of alive()){a.shell=30;pop(a.x+(a.mx||0),a.y+(a.my||0)-20,'Shell','mpp');shellFx(a);}await sleep(400);break;}
+      for(const a of alive()){a.shell=30;pop(a.x+(a.mx||0),a.y+(a.my||0)-20,'Shell','mpp');shellFx(a);}await sleep(350);
+      for(const a of alive()){a.regen=30;a.rtick=0;pop(a.x+(a.mx||0),a.y+(a.my||0)-20,'Regen','heal');healFx(a);}await sleep(400);break;}
     case 'golem':{await castPose(h,'#c9a074',300);await summonIntro('#c9a074');banner('Golem · Earthen Wall');shake();
       await addFx(1100,(c,p)=>{const k2=p<.6?p/.6:1-(p-.6)/.4;for(let k=0;k<5;k++){const x=188+(k%2)*6,by=60+k*18,hh=Math.round(17*k2);c.fillStyle='#6a5240';c.fillRect(x,by-hh,7,hh);c.fillStyle='#9a7e5e';c.fillRect(x,by-hh,7,2);}});
       for(const a of alive()){a.protect=30;protectFx(a);}say('Stone guards the party.');await sleep(300);break;}
@@ -1405,14 +1416,14 @@ function startBattle(kind){for(const h of S.heroes)h.y=55+h.i*19;
   {const cnt={},seen={};for(const f of S.foes)cnt[f.name]=(cnt[f.name]||0)+1;for(const f of S.foes)if(cnt[f.name]>1){seen[f.name]=(seen[f.name]||0)+1;f.label=f.name+' '+'ABCD'[seen[f.name]-1];}}
   layoutFoes();setTarget(S.foes[0]);
   S.log=[kinds[0]==='wyrm'?'The Ember Wyrm blocks the mountain pass.':kinds[0]==='frostwyrm'?'Frostfang, the Rime Wyrm, descends!':kinds[0]==='earthwyrm'?'Gravemaw, the Earth Wyrm, rises from the stone!':kinds[0]==='tidewyrm'?'Maelstrom, the Water Wyrm, rises from the whirlpool!':kinds[0]==='skywyrm'?'Zephyrion, the Sky Wyrm, descends from the storm!':S.foes.length>1?`${S.foes.map(f=>f.label).join(', ')} attack!`:`A ${S.foes[0].name} appears!`];
-  for(const h of S.heroes){Object.assign(h,{atb:h.ko?0:rnd(10,60),ready:false,queued:false,defend:false,guard:false,protect:0,haste:0,shell:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});h.x=homeX(h);}
+  for(const h of S.heroes){Object.assign(h,{atb:h.ko?0:rnd(10,60),ready:false,queued:false,defend:false,guard:false,protect:0,haste:0,shell:0,regen:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});h.x=homeX(h);}
   const bgk=kinds[0]==='tidewyrm'?'storm':kinds[0]==='skywyrm'?'storm':kinds[0]==='earthwyrm'?'deep':kinds[0]==='frostwyrm'?'summit':kinds[0]==='wyrm'?null:MON[kinds[0]].bg;if(bgk)makeFieldBg(bgk);else makeBg();S.snow=bgk==='mtn'||bgk==='summit';S.rain=S.battleReturn==='map'&&!!S.wyrmDone&&wxRainy();
   if(S.battleReturn==='map'&&S.wyrmDone&&bgk){const b2=bg.getContext('2d');if(isNight()){b2.fillStyle=isBloodMoon()?'rgba(120,10,24,.55)':'rgba(10,14,40,.45)';b2.fillRect(0,0,W,H);if(isBloodMoon()){b2.save();b2.globalCompositeOperation='source-over';b2.fillStyle='rgba(255,60,50,.25)';b2.beginPath();b2.arc(206,16,11,0,7);b2.fill();b2.fillStyle='#e8403a';b2.beginPath();b2.arc(206,16,7,0,7);b2.fill();b2.fillStyle='#b81c24';b2.fillRect(203,14,2,2);b2.fillRect(208,18,2,1);b2.restore();}}else if(wxType()!=='clear'){b2.fillStyle='rgba(40,44,60,.22)';b2.fillRect(0,0,W,H);}}$('bossBox').dataset.k='';
   $('over').hidden=true;bannerEl.hidden=true;popsEl.innerHTML='';stage.classList.remove('map','town','castle');
   renderMenu();
 }
 function toMap(msg){
-  for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,haste:0,shell:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});
+  for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,haste:0,shell:0,regen:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});
   Object.assign(S,{scene:'map',over:false,busy:false,menu:null,actQ:[],readyQ:[],fx:[],parts:[],onContinue:null});
   S.world.danger=Math.max(S.world.danger,8);S.world.place=placeName();
   $('over').hidden=true;bannerEl.hidden=true;popsEl.innerHTML='';stage.classList.add('map');
@@ -1503,7 +1514,8 @@ const fmtG=n=>Number(n).toLocaleString()+' G';
 const POW={flame:13,frost:13,thunder:13,fira:24,blizzara:24,thundara:24,holy:28,undine:22,glacia:30,raijin:30};
 Object.assign(SK_EL,{fira:'fire',blizzara:'ice',thundara:'thunder',glacia:'ice',raijin:'thunder',holy:'holy'});
 const TOMES={cura:{who:'white',price:900},holy:{who:'white',price:3200,lv:14},fira:{who:'black',price:1000},blizzara:{who:'black',price:1000},
- thundara:{who:'black',price:1000},glacia:{who:'summoner',price:1800,lv:12},raijin:{who:'summoner',price:1800,lv:12}};
+ thundara:{who:'black',price:1000},glacia:{who:'summoner',price:1800,lv:12},raijin:{who:'summoner',price:1800,lv:12},
+ shell:{who:'white',price:1500,lv:12},regen:{who:'white',price:2600,lv:18}};
 const ITEM_PRICE={potion:50,hipotion:300,ether:500,feather:300,tent:120,elixir:5000};
 
 /* ---------- towns and shops ---------- */
@@ -1915,7 +1927,7 @@ function leaveCastle(){if(IM&&IM.parent)return enterInterior(IM.parent,IM.parent
    if(IM&&IM.id==='village'&&WORLD.castle)opts.sort((a,b)=>Math.abs(tx+a[0]-WORLD.castle.x)-Math.abs(tx+b[0]-WORLD.castle.x));
    for(const[dx,dy]of opts){const t=WORLD.at(tx+dx,ty+dy);if(!BLOCKED.has(t)&&!ENTRANCES.has(t)&&t!==T_PORT){S.world.x=(tx+dx)*TS+TS/2;S.world.y=(ty+dy)*TS+TS/2;S.world.townLock=false;break;}}}say(IM&&IM.out||'You step back out into the fields.');renderMenu();saveGame();}
 function toCastle(msg){
-  for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,haste:0,shell:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});
+  for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,haste:0,shell:0,regen:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});
   Object.assign(S,{scene:'castle',over:false,busy:false,menu:null,actQ:[],readyQ:[],fx:[],parts:[],onContinue:null});
   $('over').hidden=true;bannerEl.hidden=true;popsEl.innerHTML='';stage.classList.remove('map','town');stage.classList.add('castle');drawCastleTex();
   if(msg)say(msg);renderMenu();saveGame();
@@ -2488,7 +2500,7 @@ Object.assign(ITEM_PRICE,{antidote:60,goldneedle:250,remedy:1000});
 Object.assign(GEAR,{ribbon:{name:'Ribbon',slot:'acc',who:ALLC,def:6,mdef:12,immune:true,price:20000},
  tigerfang:{name:'Tiger Fangs',slot:'weapon',who:['fighter'],atk:58,str:12,spd:2,price:17000}});
 SHOPS.magic.stock.push('heal','exit');SHOPS.item.stock.push('antidote','goldneedle','remedy');SHOPS.dwarfarmor.stock.push('ribbon');SHOPS.dwarfweapon.stock.push('tigerfang');
-Object.assign(SHOPS,{runehall:{name:'Rune Hall',hello:'Spells carved in dwarven runes. Old magic, and strong.',stock:['heal','exit','bio','firaga','blizzaga','thundaga','ifrit','titan','bahamut']},
+Object.assign(SHOPS,{runehall:{name:'Rune Hall',hello:'Spells carved in dwarven runes. Old magic, and strong.',stock:['shell','heal','exit','bio','firaga','blizzaga','thundaga','ifrit','titan','bahamut']},
  dojo:{name:'Training Hall',hello:'Master Bryn: Steel is only half of it. Let me teach your fists and your feet the rest.',stock:['chakra','pummel','wavefist','purify','phoenixpalm','earthslash','smokebomb','twinstrike','venomedge','assassinate']}});
 // monsters that inflict status
 MON.slime.atk.push({name:'Toxic Ooze',lo:120,hi:160,w:1,type:'mag',col:'#7ad05a',st:'poison',ch:.7});
@@ -2677,7 +2689,7 @@ Object.assign(GEAR,{
 Object.assign(SHOPS,{
  arcgear:{name:'Mythic Armory',hello:'Crystal-forged arms, enchanted by the magi of Arcanum.',stock:['crystalsword','sasuke','wizardrod','seraphstaff','crystalshield','crystalhelm','sagecrown','crystalmail','shadowgarb','arcanerobe','magusring','giantbelt']},
  arcitem:{name:'Highmere Alchemist',hello:'Tinctures, elixirs, and one or two things that fizz.',stock:['potion','hipotion','xpotion','ether','hiether','feather','remedy','megalixir','tent']},
- arcmagic:{name:'Highmere Spellhouse',hello:'Spells for those who have already mastered the basics.',stock:['curaga','flare','odin']},
+ arcmagic:{name:'Highmere Spellhouse',hello:'Spells for those who have already mastered the basics.',stock:['regen','shell','curaga','flare','odin']},
  arclib:{name:'Grand Library of Arcanum',hello:'The deepest secrets of the magi. Handle the tomes gently.',stock:['arise','meteor','phoenix','curaga','flare','odin']}});
 Object.assign(NPCSPR,{
  archking:{pal:{...NPCSPR.king.pal,r:'#4a2a8a',R:'#b48cff'},map:NPCSPR.king.map},
@@ -4093,11 +4105,11 @@ Object.assign(SHOPS,{
  cweapon:{name:'Coralhaven Arms',hello:'Blades grown from living coral. Harder than steel, and twice as pretty.',stock:['coralblade','coralkris','tidestaff','crystalsword','sasuke','seraphstaff','wizardrod']},
  carmor:{name:'Coralhaven Armory',hello:'Shells, scales and stout mail for the reef.',stock:['coralmail','nautilushelm','crystalshield','crystalmail','arcanerobe','shadowgarb','magusring']},
  citem:{name:'Coralhaven Stores',hello:'Salt-cured supplies. You’ll want plenty out here.',stock:['xpotion','hiether','megalixir','elixir','remedy','feather','tent']},
- cmagic:{name:'Reef Library',hello:'Tomes recovered from sunken ships. Mostly dry.',stock:['curaga','arise','flare','meteor','firaga','blizzaga','thundaga']},
+ cmagic:{name:'Reef Library',hello:'Tomes recovered from sunken ships. Mostly dry.',stock:['regen','shell','curaga','arise','flare','meteor','firaga','blizzaga','thundaga']},
  sweapon:{name:'Stormhaven Forge',hello:'Lightning-tempered steel. Mind the sparks.',stock:['stormedge','stormrod','galewhip','crystalsword','kotetsu','seraphstaff']},
  sarmor:{name:'Stormhaven Outfitter',hello:'Gear for people who walk into storms on purpose.',stock:['thundershield','stormcrown','galecape','crystalhelm','crystalmail','arcanerobe','shadowgarb']},
  sitem:{name:'Stormhaven Stores',hello:'Dry goods, mostly. We try.',stock:['xpotion','hiether','megalixir','elixir','remedy','feather','tent']},
- smagic:{name:'Thunder Spire',hello:'The magi of the north sell what they don’t need. Which is a lot.',stock:['curaga','arise','flare','meteor','bahamut','odin','phoenix']}});
+ smagic:{name:'Thunder Spire',hello:'The magi of the north sell what they don’t need. Which is a lot.',stock:['regen','shell','curaga','arise','flare','meteor','bahamut','odin','phoenix']}});
 
 /* the island towns */
 function makeIsleTown(id,o){return{id,name:o.name,w:30,h:18,entry:{x:15*CT,y:16*CT+8},hello:o.hello,leave:'Leave '+o.name,
@@ -5121,7 +5133,7 @@ function update(dt){
     for(const d of S.foes)if(d.poison&&!d.dead){d.ptick=(d.ptick||0)+dt;if(d.ptick>=4){d.ptick=0;foePoisonTick(d);}}}
   if(flowing){
     S.clock+=dt;
-    for(const h of S.heroes){if(h.ko||h.stone)continue;if(h.protect>0)h.protect=Math.max(0,h.protect-dt);if(h.haste>0)h.haste=Math.max(0,h.haste-dt);if(h.shell>0)h.shell=Math.max(0,h.shell-dt);
+    for(const h of S.heroes){if(h.ko||h.stone)continue;if(h.protect>0)h.protect=Math.max(0,h.protect-dt);if(h.haste>0)h.haste=Math.max(0,h.haste-dt);if(h.shell>0)h.shell=Math.max(0,h.shell-dt);if(h.regen>0){h.regen=Math.max(0,h.regen-dt);h.rtick=(h.rtick||0)+dt;if(h.rtick>=2&&h.hp<h.maxhp){h.rtick=0;heal(h,Math.max(1,Math.round(h.maxhp*.04)));}}
       if(!h.ready&&!h.queued){h.atb+=(h.spd+22)*dt*1.35*(h.haste>0?1.5:1);if(h.atb>=100){h.atb=100;h.ready=true;h.defend=false;h.guard=false;S.readyQ.push(h);}}}
     for(const d of S.foes){const wy=d.kind==='wyrm';if(d.dead||d.queued)continue;d.atb+=36*dt*(wy?(d.phase===2?1.2:1)*(d.hp<d.max*.3?1.35:1):MON[d.kind].spd);if(d.atb>=100){d.atb=100;d.queued=true;S.actQ.push({actor:d,run:()=>{setTarget(d);return wy?dragonAct():monsterAct();}});}}
   }
@@ -5203,14 +5215,14 @@ partyEl.addEventListener('click',e=>{const r=e.target.closest('.row');if(!r||S.o
 function updateHud(){
   S.heroes.forEach((h,i)=>{const r=rows[i];if(!r)return;
     r.bar.style.width=(h.ko?0:h.atb)+'%';r.lim.style.width=h.limit+'%';
-    const tg=(h.ko?'<span class="tag ko">KO</span>':'')+(h.stone&&!h.ko?'<span class="tag stn">STONE</span>':'')+(h.poison&&!h.ko?'<span class="tag psn">PSN</span>':'')+(h.confuse&&!h.ko?'<span class="tag cnf">CNF</span>':'')+(h.haste>0&&!h.ko?'<span class="tag hst">HASTE</span>':'')+(h.shell>0&&!h.ko?'<span class="tag shl">SHELL</span>':'')+(h.limit>=100&&!h.ko?'<span class="tag lim">LIMIT</span>':'')+(h.row==='back'?'<span class="tag bk">BACK</span>':'')+(isAuto(h)&&!h.ko?'<span class="tag au">AUTO</span>':'')+(h.defend?'<span class="tag def">DEF</span>':'')+(h.guard?'<span class="tag def">GRD</span>':'')+(h.protect>0&&!h.ko?'<span class="tag">PRT</span>':'');
+    const tg=(h.ko?'<span class="tag ko">KO</span>':'')+(h.stone&&!h.ko?'<span class="tag stn">STONE</span>':'')+(h.poison&&!h.ko?'<span class="tag psn">PSN</span>':'')+(h.confuse&&!h.ko?'<span class="tag cnf">CNF</span>':'')+(h.haste>0&&!h.ko?'<span class="tag hst">HASTE</span>':'')+(h.shell>0&&!h.ko?'<span class="tag shl">SHELL</span>':'')+(h.regen>0&&!h.ko?'<span class="tag rgn">REGEN</span>':'')+(h.limit>=100&&!h.ko?'<span class="tag lim">LIMIT</span>':'')+(h.row==='back'?'<span class="tag bk">BACK</span>':'')+(isAuto(h)&&!h.ko?'<span class="tag au">AUTO</span>':'')+(h.defend?'<span class="tag def">DEF</span>':'')+(h.guard?'<span class="tag def">GRD</span>':'')+(h.protect>0&&!h.ko?'<span class="tag">PRT</span>':'');
     const key=[h.hp,h.mp,h.maxhp,h.lv,h.ready,h.ko,tg,S.menu&&S.menu.hero===h].join('|');if(key===r.k)return;r.k=key;r.em.textContent='Lv'+h.lv+' '+h.cls;r.mx.textContent='/'+h.maxhp;
     r.b.textContent=h.hp;r.mp.textContent=h.maxmp?`MP ${h.mp}`:'—';r.tags.innerHTML=tg;
     r.hp.className='hp'+(h.hp<h.maxhp*.25?' crit':h.hp<h.maxhp*.5?' warn':'');
     r.el.classList.toggle('ready',h.ready&&!h.ko);r.el.classList.toggle('ko',h.ko);r.el.classList.toggle('lb',h.limit>=100&&!h.ko);r.el.classList.toggle('active',!!(S.menu&&S.menu.hero===h));
   });
-  {const box=$('bossBox'),F=(S.foes||[]).filter(f=>!f.gone),key=F.map(f=>f.label+':'+Math.round(f.hp/f.max*100)+(f.bar||'')).join('|');
-   if(box.dataset.k!==key){box.dataset.k=key;box.innerHTML=F.map(f=>`<span>${esc(f.label)}</span><div class="bossbar"><i style="width:${f.hp/f.max*100}%${f.bar?';background:'+f.bar:''}"></i></div>`).join('');}}
+  {const box=$('bossBox'),F=(S.foes||[]).filter(f=>!f.gone&&(f.kind==='wyrm'||!MON[f.kind])),key='k:'+F.map(f=>(f.label||f.name)+':'+Math.round(f.hp/f.max*100)+(f.bar||'')).join('|');
+   if(box.dataset.k!==key){box.dataset.k=key;box.innerHTML=F.map(f=>`<span>${esc(f.label||f.name||'Ember Wyrm')}</span><div class="bossbar"><i style="width:${f.hp/f.max*100}%${f.bar?';background:'+f.bar:''}"></i></div>`).join('');}}
 }
 
 /* ---------- mode + restart ---------- */
@@ -5254,7 +5266,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.43.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.44.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5615,6 +5627,15 @@ function fitStage(){const vw=innerWidth,vh=(window.visualViewport&&visualViewpor
   r.setProperty('--sw',w+'px');r.setProperty('--sl',Math.floor((vw-w)/2)+'px');r.setProperty('--st',Math.max(0,Math.floor((vh-h)/2))+'px');}
 fitStage();addEventListener('resize',fitStage);if(window.visualViewport)visualViewport.addEventListener('resize',fitStage);addEventListener('orientationchange',()=>setTimeout(fitStage,200));
 function shellFx(a){addFx(700,(c,p)=>{c.save();c.globalAlpha=(1-p)*.8;c.strokeStyle='#86b4f2';c.lineWidth=1;c.beginPath();c.ellipse(a.x+(a.mx||0),a.y+(a.my||0)-8,9+p*4,11+p*4,0,0,7);c.stroke();c.restore();});}
+/* ---------- v3.44: enemy HP bars under each enemy ---------- */
+const fBars=document.createElement('div');fBars.id='fbars';stage.appendChild(fBars);
+function foeBarsFrame(){const on=S&&S.scene==='battle'&&!S.over;fBars.hidden=!on;if(!on)return;
+  const L=S.foes.filter(f=>!f.gone&&f.kind!=='wyrm'&&MON[f.kind]);if(fBars.childElementCount!==L.length||fBars.dataset.k!==L.map(f=>f.label).join('|')){fBars.dataset.k=L.map(f=>f.label).join('|');
+    fBars.innerHTML=L.map(f=>`<div class="fb"><small>${esc(f.label)}</small><span class="fh"><i></i></span>${f.maxmp?'<span class="fm"><i></i></span>':''}</div>`).join('');}
+  L.forEach((f,i)=>{const el=fBars.children[i],m=MON[f.kind],w=Math.max(22,Math.min(64,m.w*f.s*.8));el.hidden=!!f.dead;
+    el.style.left=((f.ax+(f.dx||0))/W*100)+'%';el.style.top=((Math.min(f.by+2,H-9))/H*100)+'%';el.style.width=(w/W*100)+'%';
+    el.querySelector('.fh i').style.width=Math.max(0,f.hp/f.max*100)+'%';const mp=el.querySelector('.fm i');if(mp)mp.style.width=Math.max(0,(f.mp||0)/f.maxmp*100)+'%';});}
+{const ff=()=>{try{foeBarsFrame();}catch(e){}requestAnimationFrame(ff);};requestAnimationFrame(ff);}
 /* ---------- v3.31: the title screen ---------- */
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!titleOv.hidden){e.preventDefault();e.stopImmediatePropagation();}},true);
 const titleOv=document.createElement('div');titleOv.id='titleOv';titleOv.className='sheet';titleOv.setAttribute('role','dialog');titleOv.setAttribute('aria-modal','true');titleOv.setAttribute('aria-label','Ember Wyrm');

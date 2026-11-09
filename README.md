@@ -167,5 +167,11 @@ Inkwell, a little scribe in a navy robe with an ink-pot hat, round spectacles an
 
 ## Sylph
 
-Senna's Sylph casts three spells on the whole party: **Cure** (heals HP), **Haste** (turn gauges fill 50% faster for 30 seconds) and **Shell** (magic damage taken is cut by 40% for 30 seconds). Haste and Shell show as HASTE and SHELL tags in the party list and end if a hero is knocked out.
+Senna's Sylph casts four spells on the whole party: **Cure** (heals HP), **Haste** (turn gauges fill 50% faster for 30 seconds), **Shell** (magic damage taken is cut by 40% for 30 seconds) and **Regen** (restores 4% of max HP every 2 seconds for 30 seconds). They show as HASTE, SHELL and REGEN tags in the party list and end if a hero is knocked out.
+
+Ilse can also learn **Shell** (16 MP, one ally; from Lv 12, 1,500 G) and **Regen** (22 MP, one ally; from Lv 18, 2,600 G). Shell is sold at Ironhold's Rune Hall, Highmere's Spellhouse, Coralhaven's Reef Library and Stormhaven's Thunder Spire; Regen at the last three.
+
+## Enemy bars
+
+Each enemy's name and HP bar sit right under it in battle. The big wyrm bosses keep their bar in the top-left corner.
 

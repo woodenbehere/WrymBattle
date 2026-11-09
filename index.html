@@ -414,7 +414,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.41.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.41.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -5252,7 +5252,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.41.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.41.2',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5574,7 +5574,7 @@ function inkSpot(){if(INK_SPOT[IM.id])return INK_SPOT[IM.id];const G=CASTLE,H=G.
   return null;}
 const INK_LINES=['Inkwell: Names are ink, friend, and ink can be scraped and written fresh.','Inkwell: Every hero deserves a name that fits. Shall I amend the record?','Inkwell: Careful with the quill. I only just cleaned it.'];
 {const ei2=enterInterior;enterInterior=function(...a){const r=ei2.apply(this,a);try{if(IM&&INK_TOWNS.includes(IM.id)&&!NPCS.some(n=>n.inkwell)){const p=inkSpot();
-    if(p)NPCS.push({x:p[0],y:p[1],spr:'inkwell',inkwell:true,talk:()=>{showDialog([pick(INK_LINES)],()=>openNames());return null;}});}}catch(e){console.warn(e);}return r;};}
+    if(p)NPCS.push({x:p[0],y:p[1],spr:'inkwell',inkwell:true,when:()=>!homeTime(),talk:()=>{showDialog([pick(INK_LINES)],()=>openNames());return null;}});}}catch(e){console.warn(e);}return r;};}
 /* every line of text on screen uses the heroes' chosen names: the story was written with the originals, so they are swapped as text appears */
 const nameDone=new WeakMap();let nameRe=null,nameMap=null;
 function nameSetup(){const N=(S&&S.flags&&S.flags.names)||{};nameMap={};for(const k in N)if(CL[k]&&N[k]&&N[k]!==CL[k].name)nameMap[CL[k].name]=N[k];

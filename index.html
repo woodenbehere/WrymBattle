@@ -316,6 +316,13 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
 .opts .abv{font-size:16px;padding:8px 12px;margin:0;border:2px solid var(--line-hi);min-height:38px;justify-self:end}.opts .about a.btn{text-decoration:none}.opts .abdon{color:var(--gold)}.opts .about{display:grid;gap:4px}
 
 .btn.sm.del{background:transparent;border-color:var(--line-hi);color:var(--hp-crit)}.btn.sm.del.armed{border-color:var(--hp-crit);color:var(--hp-crit);background:rgba(236,90,67,.12)}
+.card.nm{width:min(560px,94vw);text-align:left;display:grid;gap:8px;grid-template-columns:minmax(0,1fr)}.nm .tip{white-space:normal}.nm .narow{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}.nm #nameList{display:grid}
+.nm .nrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.nm .nrow canvas{width:36px;height:39px;image-rendering:pixelated}
+.nm .nrow label{display:grid;gap:3px}.nm .nrow label b{font-family:var(--f-display);font-size:11px;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;font-weight:normal}
+.nm .nrow input{font-family:var(--f-body);font-size:22px;color:var(--text);background:var(--bg);border:2px solid var(--line-hi);padding:4px 8px;width:100%;min-width:0;text-transform:none}
+.nm .nrow input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.nm .nrow .btn{white-space:nowrap}
 /* ---------- title screen ---------- */
 #titleOv{position:fixed;inset:0;z-index:60;background:#000;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px));overflow:auto}
 #titleOv[hidden]{display:none}
@@ -406,7 +413,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.39.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.40.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -467,6 +474,9 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
 </div>
 <div class="sheet" id="guildOv" role="dialog" aria-modal="true" aria-label="Adventurers' Guild" hidden>
   <div class="card ffj"><div class="ffj-main"><div class="ffm-box ffj-head"><div class="shop-h"><h2>Adventurers&rsquo; Guild</h2><span class="gil" id="guildGil"></span></div><div class="tip" id="guildRank"></div></div><div class="ffm-box ffj-body" style="align-content:start"><div class="tip" id="guildMsg"></div><div class="slist" id="guildList"></div></div></div><div class="ffm-side"><div class="ffm-box ffm-cmds"><div id="gTabs" class="ffj-tabs"></div><button class="ffm-cmd" id="guildClose" type="button">Close</button></div></div></div>
+</div>
+<div class="sheet" id="nameOv" role="dialog" aria-modal="true" aria-label="Rename heroes" hidden>
+  <div class="card nm"><div class="shop-h"><h2>Inkwell</h2><span class="gil">Names</span></div><p class="tip" id="nameTip">Give your heroes new names, up to 8 letters each.</p><div id="nameList"></div><div class="narow"><button class="btn" id="nameSave" type="button">Save names</button><button class="btn ghost" id="nameClose" type="button">Close</button></div></div>
 </div>
 <div class="sheet" id="optOv" role="dialog" aria-modal="true" aria-label="Options" hidden>
   <div class="card ffj opts"><div class="ffj-main"><div class="ffm-box ffj-head"><div class="shop-h"><h2>Options</h2><span class="gil" id="optSub"></span></div></div><div class="ffm-box ffj-body" id="optCard"></div></div><div class="ffm-side"><div class="ffm-box ffm-cmds"><div id="optTabs" class="ffj-tabs"></div><button class="ffm-cmd" data-o="close" type="button">Close</button></div></div></div>
@@ -1742,6 +1752,7 @@ function loadGame(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY)||'null
 /* ---------- Castle Valemont interior ---------- */
 let CW=33,CH=24;const CT=16;
 const NPCSPR={
+ inkwell:{pal:{f:'#f0f0f0',k:'#1a1a2a',K:'#3a4a8a',s:'#eabf98',o:'#d8b040',b:'#2a3a7a',B:'#3a5ab0',i:'#0a0a14'},map:["......ff....",".....ff.....","...kkKkk....","..kkkkkkk...","..kKkkkkk...","...sssss....","..koeoeok...","...sssss....","..bbBbbb.f..",".bbbBibbbf..",".bbiBbbbsf..","..bbbbbib...","...kk..kk..."]},
  king:{pal:{g:'#ffd34a',s:'#eabf98',e:'#1b1012',w:'#f0f0f0',r:'#c8323c',R:'#f8f0e0',k:'#5a3a24'},map:["...g.g.g....","...ggggg....","...sssss....","...seses....","...wwsww....","...wwwww....","..rrrwrrr...",".rrrrwrrrr..",".rrRrwrRrr..",".rrRrrrRrr..","..rRrrrRr...","..rrrrrrr...","...kk..kk..."]},
  queen:{pal:{g:'#ffd34a',h:'#8a4a24',s:'#eabf98',e:'#1b1012',p:'#7a48b0',P:'#b48cff',k:'#3a2418'},map:["...g.g.g....","...ggggg....","..hhhhhhh...","..hseseh....","..hsssssh...","..h.sss.h...","...ppPpp....","..pppPppp...","..ppPPPpp...",".pppPPPppp..",".ppppppppp..",".pppppppppp.",".pppppppppp."]},
  guard:{pal:{h:'#a8a8b8',H:'#6a6a7a',s:'#eabf98',e:'#1b1012',t:'#3858c0',T:'#ffd34a',p:'#c8c8d8',w:'#6e4a2a',k:'#3a2418'},map:["..HHHH....p.",".HhhhhH..ppp",".HsesH....w.",".HsssH....w.","..ttttt...w.",".sttTtts..w.",".tttTtttt.w.","..ttTtt...w.","..ttttt...w.","..HH.HH...w.","..HH.HH.....",".kkk.kkk...."]},
@@ -5240,7 +5251,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.39.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.40.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5537,6 +5548,30 @@ function summonShow(id){const F=SUMMON_FX[id];if(!F)return Promise.resolve();con
 {const sb=startBattle;startBattle=function(...a){S.sumSeen={};for(const h of S.heroes){h.mx=h.my=0;}return sb.apply(this,a);};}
 {const su2=setUI;setUI=function(on){if(!on&&S)for(const h of S.heroes){h.mx=h.my=0;}return su2(on);};}
 addEventListener('pointerdown',e=>{if(sumSkip&&S.scene==='battle'&&!e.target.closest('.sheet')){e.preventDefault();e.stopImmediatePropagation();sumSkip();}},true);
+/* ---------- v3.40: Inkwell, the name-keeper in every town ---------- */
+const INK_TOWNS=['village','town','ironhold','highmere','coralhaven','stormhaven','umbra'],INK_SPOT={};
+const heroDefault=h=>CL[h.key].name;
+function applyNames(){const N=(S.flags&&S.flags.names)||{};for(const h of S.heroes){h.name=N[h.key]||heroDefault(h);}}
+{const lg=loadGame;loadGame=function(...a){const r=lg.apply(this,a);try{applyNames();buildParty();renderMenu();}catch(e){}return r;};}
+function inkSpot(){if(INK_SPOT[IM.id])return INK_SPOT[IM.id];const G=CASTLE,H=G.length,Wd=G[0].length,ok=(x,y)=>x>0&&y>0&&x<Wd-1&&y<H-1&&!C_BLOCK.has(G[y][x])&&G[y][x]!=='E'&&!NPCS.some(n=>n.x===x&&n.y===y);
+  const e=IM.entry||{x:Wd/2*CT,y:(H-2)*CT},sx=Math.floor(e.x/CT),sy=Math.floor(e.y/CT),seen=new Set([sx+','+sy]),q=[[sx,sy,0]];
+  while(q.length){const[x,y,d]=q.shift();if(d>=3&&ok(x,y)&&[[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]].every(([a,b])=>ok(x+a,y+b)))return INK_SPOT[IM.id]=[x,y];
+    for(const[a,b]of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+a,ny=y+b,k=nx+','+ny;if(seen.has(k)||!G[ny]||G[ny][nx]==null||C_BLOCK.has(G[ny][nx]))continue;seen.add(k);q.push([nx,ny,d+1]);}}
+  return null;}
+const INK_LINES=['Inkwell: Names are ink, friend, and ink can be scraped and written fresh.','Inkwell: Every hero deserves a name that fits. Shall I amend the record?','Inkwell: Careful with the quill. I only just cleaned it.'];
+{const ei2=enterInterior;enterInterior=function(...a){const r=ei2.apply(this,a);try{if(IM&&INK_TOWNS.includes(IM.id)&&!NPCS.some(n=>n.inkwell)){const p=inkSpot();
+    if(p)NPCS.push({x:p[0],y:p[1],spr:'inkwell',inkwell:true,talk:()=>{showDialog([pick(INK_LINES)],()=>openNames());return null;}});}}catch(e){console.warn(e);}return r;};}
+const nameOv=$('nameOv');
+function openNames(){const L=$('nameList');L.innerHTML=S.heroes.map(h=>`<div class="nrow"><canvas width="12" height="13" data-k="${h.key}"></canvas><label><b>${esc(h.cls)}</b><input type="text" maxlength="8" autocomplete="off" autocapitalize="words" spellcheck="false" data-k="${h.key}" value="${esc(h.name)}" aria-label="Name for the ${esc(h.cls)}"></label><button type="button" class="btn sm" data-def="${h.key}">${esc(heroDefault(h))}</button></div>`).join('');
+  for(const c of L.querySelectorAll('canvas')){const h=S.heroes.find(x=>x.key===c.dataset.k),g=c.getContext('2d');g.imageSmoothingEnabled=false;try{drawSprite(g,heroSpr(h),6,13,{});}catch(e){}}
+  $('nameTip').textContent='Give your heroes new names, up to 8 letters each. Tap a hero’s original name to restore it.';openSheet(nameOv,L.querySelector('input'));}
+const cleanName=v=>v.replace(/[^A-Za-z0-9 '\-]/g,'').replace(/\s+/g,' ').trim().slice(0,8);
+nameOv.addEventListener('click',e=>{const d=e.target.closest('[data-def]');if(d){const i=nameOv.querySelector(`input[data-k="${d.dataset.def}"]`);i.value=CL[d.dataset.def].name;i.focus();return;}if(e.target===nameOv){closeSheet(nameOv);renderMenu();}});
+$('nameClose').onclick=()=>{closeSheet(nameOv);renderMenu();};
+$('nameSave').onclick=()=>{const N=S.flags.names||(S.flags.names={}),changed=[];
+  for(const i of nameOv.querySelectorAll('input')){const h=S.heroes.find(x=>x.key===i.dataset.k),v=cleanName(i.value)||heroDefault(h);if(v!==h.name)changed.push(`${h.name} → ${v}`);h.name=v;if(v===heroDefault(h))delete N[h.key];else N[h.key]=v;}
+  closeSheet(nameOv);buildParty();renderMenu();saveGame();showDialog([changed.length?'Inkwell: There. '+changed.join(', ')+'. Written and dried.':'Inkwell: No changes? The ink keeps, then.']);};
+nameOv.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();$('nameSave').click();}});
 /* ---------- v3.31: the title screen ---------- */
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!titleOv.hidden){e.preventDefault();e.stopImmediatePropagation();}},true);
 const titleOv=document.createElement('div');titleOv.id='titleOv';titleOv.className='sheet';titleOv.setAttribute('role','dialog');titleOv.setAttribute('aria-modal','true');titleOv.setAttribute('aria-label','Ember Wyrm');

@@ -161,3 +161,7 @@ In **Save & Load**, each saved slot has a **Clear** button. To make sure it neve
 
 When Senna summons, the screen darkens and the summon itself appears before its attack: Undine rises from a whirlpool, Sylph flutters in, Golem drops from the sky, Glacia forms out of snow, Raijin arrives in a lightning flash, Ifrit bursts from flame, Titan breaks out of the ground, Odin gallops in, Phoenix and Bahamut swoop down, Alexander rises over the horizon, and Leviathan (Senna's Limit) breaches from the waves. Attack summons appear over the enemies; Sylph, Golem and Phoenix appear on the party's side. The full entrance (about 1.5 seconds) plays the first time each summon is called in a battle, then a quick flash after that. Tap to skip.
 
+## Inkwell
+
+Inkwell, a little scribe in a navy robe with an ink-pot hat, round spectacles and a quill, stands near the entrance of every town: Valemont Village, the port town, Ironhold, Highmere, Coralhaven, Stormhaven and Gloamhollow. Talk to him to rename any hero (up to 8 letters, numbers, spaces, hyphens or apostrophes). Tap a hero's original name to restore it. New names show in battle, menus and the party list and are kept in that save slot; story dialogue still uses the heroes' original names.
+

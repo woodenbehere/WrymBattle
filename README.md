@@ -208,3 +208,6 @@ The auto-battle settings have **Cast attack spells on all enemies**: Never, 3 or
 
 ## Quest tracker (v3.55)
 On the world map, a **Quests** panel sits under the sun/moon icon. Tap the **−/+** to collapse or expand it (the game remembers). It lists the main-story goal (from the Ember Dragon to Zephyrion) and every active guild bounty with its count, like "Goblin Trouble 3/5", or a green **Turn in** once it's done. Tap a bounty to open the Quests list. It hides in battles, menus, towns and while camping.
+
+## Spell groups (v3.56, touch view)
+In battle, Ilse's and Morrow's magic opens in two steps. Tapping White Magic shows a ring of **Healing** (Mend, Mend All, Revive, Renew, Rebirth…), **Attack** (Radiance, Mana Siphon) and **Status** (Bulwark, Spellguard, Heal, Wall); Morrow's Black Magic shows **Fire**, **Ice**, **Lightning** and **Arcane** (Blight, Sunburst, Skyfall, Oblivion, Mana Siphon, Wall). Each group shows how many spells it holds; tap one for its spells, or ‹ Back to return to the groups. Groups with no spells yet don't appear, and if a hero knows spells from only one group the step is skipped.

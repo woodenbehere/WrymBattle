@@ -185,3 +185,6 @@ Pitching a Tent (on the world map or at a dungeon save circle) plays a 5½-secon
 - **Sparring**: Garrick and Vesh spar by the firelight; Ilse cheers, Morrow reads a glowing tome and Senna's wisps circle her.
 
 In touch view, the world map's action ring has a **Camp** button showing how many Tents you carry (it's hidden while aboard a ship or airship). In dungeons it appears while you stand on a save circle.
+
+## Change log
+Options › About › **Change log** lists every version, newest first, with the date and time and a short description. The list is built from the git history: before each release run `python3 tools/changelog.py vX.Y.Z "what changed"` to rebuild it with the new entry.

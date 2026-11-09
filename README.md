@@ -175,3 +175,11 @@ Ilse can also learn **Shell** (16 MP, one ally; from Lv 12, 1,500 G) and **Regen
 
 Each enemy's name and HP bar sit right under it in battle. The big wyrm bosses keep their bar in the top-left corner.
 
+
+## Camping
+Pitching a Tent (on the world map or at a dungeon save circle) plays a 5½-second campfire scene, one of five picked at random:
+- **Supper**: the party gathers around the campfire while Garrick turns a boar on a spit over a cooking fire with Vesh waiting nearby, and Morrow launches magical fireworks.
+- **Stargazing**: the party lies back to watch falling stars while Senna traces a constellation.
+- **Song**: Vesh strums a lute by the fire, with notes drifting up and fireflies around.
+- **Night watch**: the others sleep in bedrolls while Garrick walks the camp with a lantern and an owl watches.
+- **Sparring**: Garrick and Vesh spar by the firelight; Ilse cheers, Morrow reads a glowing tome and Senna's wisps circle her.

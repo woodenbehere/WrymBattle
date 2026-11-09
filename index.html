@@ -420,7 +420,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.44.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.45.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -1399,14 +1399,7 @@ async function encounter(kind){
 async function camp(){
   const w=S.world;if(w.camping||S.scene!=='map')return;const rw=await restWhen('The tent is up.');if(!rw){S.items.tent=(S.items.tent||0)+1;renderMenu();return;}w.camping=true;w.moving=false;renderMenu();
   say(rw==='night'?'The party naps until dark…':'The party pitches camp for the night…');
-  await addFx(2600,(c,p)=>{const a=p<.25?p/.25:p>.8?(1-p)/.2:1;
-    c.fillStyle=`rgba(8,8,32,${a*.72})`;c.fillRect(0,0,W,H);
-    c.globalAlpha=a;c.fillStyle='#fff8d8';for(let k=0;k<14;k++)c.fillRect((k*37)%W,(k*13)%(H-4),1,1);
-    const x=W/2,y=PY;c.fillStyle='#c8a46a';c.beginPath();c.moveTo(x-16,y);c.lineTo(x-6,y-14);c.lineTo(x+4,y);c.closePath();c.fill();
-    c.fillStyle='#8a6a3a';c.beginPath();c.moveTo(x-6,y-14);c.lineTo(x-1,y);c.lineTo(x+4,y);c.closePath();c.fill();
-    c.fillStyle='#3a2a1a';c.fillRect(x-8,y-5,3,5);
-    const fl=Math.sin(S.t*20)*1.2;c.fillStyle='#5a3a24';c.fillRect(x+8,y-1,7,1);c.fillStyle='#ff7a2a';c.fillRect(x+9,y-4+fl,5,3);c.fillStyle='#ffd34a';c.fillRect(x+10,y-6+fl,3,3);c.fillStyle='#fff3c4';c.fillRect(x+11,y-5+fl,1,2);
-    c.globalAlpha=1;});
+  await campScene(5600);
   for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}if(rw==='morning')toMorning();else toNightfall();
   w.camping=false;w.danger=Math.max(w.danger,10);say(rw==='night'?'Nightfall. Everyone is rested: HP and MP fully restored.':'Morning. Everyone is rested: HP and MP fully restored.');renderMenu();
 }
@@ -4935,9 +4928,7 @@ async function dungeonEncounter(form){
 async function dungeonCamp(){
   if(!onSave())return say('You can only camp on a save circle.');if(!S.items.tent)return say('You need a Tent. Item shops sell them.');
   S.items.tent--;S.resting=true;renderMenu();say('The party pitches a tent inside the save circle…');
-  await addFx(2000,(c,p)=>{const a=p<.25?p/.25:p>.8?(1-p)/.2:1;c.fillStyle=`rgba(6,6,24,${a*.8})`;c.fillRect(0,0,W,H);c.globalAlpha=a;
-    const x=S.pScreen?S.pScreen.x:W/2,y=(S.pScreen?S.pScreen.y:H/2)+7;c.fillStyle='#c8a46a';c.beginPath();c.moveTo(x-12,y);c.lineTo(x-2,y-13);c.lineTo(x+8,y);c.closePath();c.fill();
-    const fl=Math.sin(S.t*20);c.fillStyle='#ff7a2a';c.fillRect(x+11,y-4+fl,4,3);c.fillStyle='#ffd34a';c.fillRect(x+12,y-6+fl,2,3);c.globalAlpha=1;});
+  await campScene(5600);
   for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}toMorning();S.resting=false;say('Rested and ready. HP and MP fully restored.');renderMenu();saveGame();
 }
 async function frostAct(d){
@@ -5636,6 +5627,66 @@ function foeBarsFrame(){const on=S&&S.scene==='battle'&&!S.over;fBars.hidden=!on
     el.style.left=((f.ax+(f.dx||0))/W*100)+'%';el.style.top=((Math.min(f.by+2,H-9))/H*100)+'%';el.style.width=(w/W*100)+'%';
     el.querySelector('.fh i').style.width=Math.max(0,f.hp/f.max*100)+'%';const mp=el.querySelector('.fm i');if(mp)mp.style.width=Math.max(0,(f.mp||0)/f.maxmp*100)+'%';});}
 {const ff=()=>{try{foeBarsFrame();}catch(e){}requestAnimationFrame(ff);};requestAnimationFrame(ff);}
+/* ---------- v3.45: campfire scenes when the party rests (5.5 s, one of five at random) ---------- */
+const CAMP_SCENES=['feast','stars','song','watch','spar'];
+const cRand=k=>{const v=Math.sin(k*127.1+311.7)*43758.5453;return v-Math.floor(v);};
+function campHero(key){return S.heroes.find(h=>h.key===key);}
+function campSpr(c,key,x,y,o){const h=campHero(key);if(h)drawSprite(c,heroSpr(h),Math.round(x),Math.round(y),o||{});}
+function campFire(c,x,y,t,big){const s=big?1:.7;c.fillStyle='#4a2a14';c.fillRect(x-7*s,y-1,14*s,2);c.fillStyle='#6a3a1a';c.fillRect(x-5*s,y-2,4*s,2);c.fillRect(x+1*s,y-2,4*s,2);
+  const g=c.createRadialGradient(x,y-4,1,x,y-4,big?42:26);g.addColorStop(0,'rgba(255,170,60,.38)');g.addColorStop(1,'rgba(255,120,40,0)');c.fillStyle=g;c.fillRect(x-50,y-50,100,70);
+  for(let k=0;k<5;k++){const f=Math.sin(t*14+k*1.7),h=(big?9:6)+f*2-Math.abs(k-2)*2;c.fillStyle=k%2?'#ff7a2a':'#ffb43a';c.fillRect(Math.round(x-5*s+k*2.2*s),Math.round(y-2-h),2,Math.max(1,Math.round(h)));}
+  c.fillStyle='#fff3c4';c.fillRect(Math.round(x-1),Math.round(y-5+Math.sin(t*17)),2,3);
+  for(let k=0;k<4;k++){const ph=(t*.9+k*.25)%1;c.fillStyle=`rgba(255,200,90,${1-ph})`;c.fillRect(Math.round(x-3+k*2+Math.sin(t*3+k)*3),Math.round(y-8-ph*22),1,1);}}
+function campBackdrop(c,t,a){const sky=c.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#070a22');sky.addColorStop(.62,'#18204a');sky.addColorStop(.63,'#0f2414');sky.addColorStop(1,'#0a1a0e');c.fillStyle=sky;c.fillRect(0,0,W,H);
+  for(let k=0;k<46;k++){const tw=.5+.5*Math.sin(t*2+k*1.3);c.fillStyle=`rgba(255,248,216,${.35+.65*tw})`;c.fillRect(Math.round(cRand(k)*W),Math.round(cRand(k+99)*80),1,1);}
+  c.fillStyle='#fff3c4';c.beginPath();c.arc(60,20,9,0,7);c.fill();c.fillStyle="#070a22";c.beginPath();c.arc(65,17,8,0,7);c.fill();
+  c.fillStyle='#0b1a10';for(let x=-6;x<W+10;x+=13){const h=18+cRand(x)*14;c.beginPath();c.moveTo(x,92);c.lineTo(x+7,92-h);c.lineTo(x+14,92);c.fill();}
+  c.fillStyle='#132a18';c.fillRect(0,91,W,3);
+  c.fillStyle='#c8a46a';c.beginPath();c.moveTo(14,120);c.lineTo(32,96);c.lineTo(50,120);c.closePath();c.fill();c.fillStyle='#8a6a3a';c.beginPath();c.moveTo(32,96);c.lineTo(38,120);c.lineTo(50,120);c.closePath();c.fill();c.fillStyle='#2a1a0e';c.fillRect(29,110,5,10);}
+const CAMP_DRAW={
+ feast(c,t){campFire(c,124,118,t,true);
+  campSpr(c,'white',106,118,{});campSpr(c,'summoner',142,118,{flip:true});campSpr(c,'black',86,112,{});
+  /* side cooking fire: a boar on a spit, Garrick turning it and Vesh waiting with a plate */
+  const fx=204,fy=120;campFire(c,fx,fy,t+1.3,false);c.fillStyle='#5a3a1e';c.fillRect(fx-13,fy-18,2,18);c.fillRect(fx+11,fy-18,2,18);c.fillRect(fx-14,fy-17,28,1);
+  const turn=Math.sin(t*3);c.fillStyle='#7a4a24';c.beginPath();c.ellipse(fx,fy-16,8,4.5,0,0,7);c.fill();c.fillStyle=turn>0?'#a86a34':'#8a5428';c.beginPath();c.ellipse(fx,fy-17+turn*.6,7,3,0,0,7);c.fill();
+  c.fillStyle='#5a3418';c.fillRect(fx-9,fy-15,3,2);c.fillRect(fx+6,fy-15,3,2);c.fillRect(fx+7,fy-18,3,3);c.fillStyle='#e8e2d4';c.fillRect(fx+9,fy-17,1,1);
+  for(let k=0;k<3;k++){const ph=(t*1.2+k/3)%1;c.fillStyle=`rgba(255,220,120,${1-ph})`;c.fillRect(fx-4+k*4,Math.round(fy-12+ph*8),1,1);}
+  for(let k=0;k<3;k++){const ph=(t*.5+k/3)%1;c.fillStyle=`rgba(200,200,210,${.5*(1-ph)})`;c.fillRect(Math.round(fx-2+k*2+Math.sin(t+k)*3),Math.round(fy-22-ph*26),2,2);}
+  campSpr(c,'fighter',fx-20,fy,{});campSpr(c,'thief',fx+22,fy,{flip:true});c.fillStyle='#d8d8e0';c.fillRect(fx+16,fy-7,5,1);
+  /* Morrow's fireworks */
+  const hx=90,hy=101;c.fillStyle='#b48cff';c.fillRect(hx,hy-1+Math.round(Math.sin(t*8)),2,2);
+  for(let k=0;k<14;k++){const st=k*.62-.6,e=t-st;if(e<0||e>1.9)continue;const tx=40+cRand(k)*150,ty=18+cRand(k+7)*38,col=['#ff6a8a','#ffe14a','#86e0ff','#9df29a','#ff9a3a','#e0b4ff'][k%6];
+   if(e<.55){const q=e/.55,x=hx+(tx-hx)*q,y=hy+(ty-hy)*(1-(1-q)*(1-q));c.fillStyle='#fff3c4';c.fillRect(Math.round(x),Math.round(y),1,2);c.fillStyle='rgba(255,220,150,.5)';c.fillRect(Math.round(x-(tx-hx)*.04),Math.round(y+3),1,2);}
+   else{const q=(e-.55)/1.35,r=3+q*17,n=12;c.fillStyle=col;c.globalAlpha=Math.max(0,1-q);for(let j=0;j<n;j++){const a=j/n*6.283+k;c.fillRect(Math.round(tx+Math.cos(a)*r),Math.round(ty+Math.sin(a)*r+q*q*6),j%3?1:2,1);}
+     if(q<.15){c.fillStyle='#ffffff';c.fillRect(Math.round(tx-1),Math.round(ty-1),3,3);}c.globalAlpha=1;}}},
+ stars(c,t){campFire(c,128,126,t,false);
+  for(const[k,x,f]of[['fighter',78,0],['thief',108,0],['white',150,1],['black',178,1]])campSpr(c,k,x,121,{lie:true,flip:f});
+  campSpr(c,'summoner',128,116,{});c.fillStyle='#f2d0b0';c.fillRect(132,104,1,4);c.fillRect(133,102,1,2);
+  for(let k=0;k<5;k++){const st=k*1.05+.3,e=t-st;if(e<0||e>.7)continue;const q=e/.7,x0=60+cRand(k+3)*170,y0=8+cRand(k+11)*20,x=x0-q*60,y=y0+q*26;
+   const g=c.createLinearGradient(x,y,x+18,y-8);g.addColorStop(0,'rgba(255,255,240,.95)');g.addColorStop(1,'rgba(255,255,240,0)');c.strokeStyle=g;c.lineWidth=1;c.beginPath();c.moveTo(x,y);c.lineTo(x+18,y-8);c.stroke();}
+  const pts=[[150,30],[162,24],[176,28],[184,40],[172,48],[160,44]],sh=Math.min(1,Math.max(0,(t-2)/2));c.strokeStyle=`rgba(180,200,255,${.6*sh})`;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.stroke();
+  for(const[x,y]of pts){c.fillStyle=`rgba(255,255,255,${.5+.5*sh})`;c.fillRect(x,y,2,2);}},
+ song(c,t){campFire(c,128,118,t,true);const sw=k=>Math.round(Math.sin(t*4+k)*1.2);
+  campSpr(c,'fighter',96,118+sw(0)*0,{});campSpr(c,'white',108,124,{});campSpr(c,'black',150,124,{flip:true});campSpr(c,'summoner',162,118,{flip:true});
+  const vx=128+Math.round(Math.sin(t*2)*2),vy=103;campSpr(c,'thief',vx,vy,{});c.fillStyle='#a8703a';c.beginPath();c.ellipse(vx+4,vy-5,3,2,0,0,7);c.fill();c.fillStyle='#5a3a1e';c.fillRect(vx+5,vy-11,1,6);
+  for(let k=0;k<8;k++){const ph=(t*.45+k/8)%1;const x=vx+6+ph*24*(k%2?1:-.6)+Math.sin(t*3+k)*4,y=vy-12-ph*44;c.fillStyle=`rgba(255,240,200,${1-ph})`;c.fillRect(Math.round(x),Math.round(y),2,2);c.fillRect(Math.round(x+1),Math.round(y-4),1,4);if(k%2)c.fillRect(Math.round(x+2),Math.round(y-4),2,1);}
+  for(let k=0;k<12;k++){const x=40+cRand(k)*180+Math.sin(t*1.3+k)*8,y=70+cRand(k+5)*40+Math.cos(t*1.1+k)*5,b=.5+.5*Math.sin(t*5+k*2);c.fillStyle=`rgba(200,255,120,${b})`;c.fillRect(Math.round(x),Math.round(y),1,1);}},
+ watch(c,t){campFire(c,118,124,t,false);
+  for(const[k,x]of[['thief',84],['white',100],['black',140],['summoner',156]]){c.fillStyle='#3a4a8a';c.fillRect(x-8,118,16,6);campSpr(c,k,x,123,{lie:true});}
+  for(let k=0;k<6;k++){const ph=(t*.4+k/6)%1,x=[84,100,140,156][k%4]+ph*8,y=110-ph*24;c.fillStyle=`rgba(232,232,255,${1-ph})`;c.font='6px monospace';c.fillText('z',Math.round(x),Math.round(y));}
+  const gx=190+Math.sin(t*.8)*18,gy=118,fl=Math.cos(t*.8)<0;campSpr(c,'fighter',gx,gy,{flip:fl});const lx=gx+(fl?-6:6);
+  const g=c.createRadialGradient(lx,gy-6,1,lx,gy-6,22);g.addColorStop(0,'rgba(255,220,120,.4)');g.addColorStop(1,'rgba(255,200,90,0)');c.fillStyle=g;c.fillRect(lx-24,gy-30,48,48);c.fillStyle='#ffe14a';c.fillRect(Math.round(lx-1),gy-8,3,3);c.fillStyle='#5a3a1e';c.fillRect(Math.round(lx),gy-10,1,2);
+  c.fillStyle='#1a120a';c.fillRect(234,62,3,30);c.fillRect(226,70,14,2);c.fillStyle='#4a3a2a';c.beginPath();c.ellipse(233,66,4,5,0,0,7);c.fill();const bl=(t%2.3)<.12;c.fillStyle=bl?'#4a3a2a':'#ffe14a';c.fillRect(231,64,1,1);c.fillRect(234,64,1,1);},
+ spar(c,t){campFire(c,64,124,t,false);const cyc=t*1.6,ph=cyc%1,lunge=Math.sin(ph*Math.PI),who=Math.floor(cyc)%2;
+  const gx=124-(who===0?lunge*8:0),vx=150+(who===1?-lunge*8:0);campSpr(c,'fighter',gx,118,{});campSpr(c,'thief',vx,118,{flip:true});
+  c.fillStyle='#c8985a';c.fillRect(Math.round(gx+4),109,7,1);c.fillRect(Math.round(vx-11),110,7,1);
+  if(ph>.42&&ph<.6){c.fillStyle='#fff3c4';for(let k=0;k<5;k++)c.fillRect(Math.round((gx+vx)/2+Math.cos(k*1.3)*(ph-.4)*30),Math.round(110+Math.sin(k*1.3)*(ph-.4)*20),1,1);}
+  campSpr(c,'white',96,124-Math.abs(Math.round(Math.sin(t*6)*2)),{});campSpr(c,'black',196,122,{flip:true});c.fillStyle='#86b4f2';c.fillRect(186,113,6,4);c.fillStyle=`rgba(134,180,242,${.4+.3*Math.sin(t*4)})`;c.fillRect(184,108,10,4);
+  campSpr(c,'summoner',222,120,{flip:true});for(let k=0;k<3;k++){const a=t*2+k*2.1,x=222+Math.cos(a)*10,y=104+Math.sin(a*1.3)*5;c.fillStyle=['#9df29a','#86e0ff','#ffe14a'][k];c.fillRect(Math.round(x),Math.round(y),2,2);c.fillStyle='rgba(255,255,255,.35)';c.fillRect(Math.round(x)-1,Math.round(y)-1,4,4);}}
+};
+function campCaption(kind){return{feast:'Supper by the fire. Garrick turns a boar on the spit while Morrow shows off.',stars:'The party lies back and counts falling stars.',song:'Vesh strums a tune; the fire crackles along.',watch:'Garrick keeps watch while the others sleep.',spar:'Garrick and Vesh spar by the firelight.'}[kind];}
+function campScene(ms){const kind=pick(CAMP_SCENES),T0=S.t;say(campCaption(kind));
+  return addFx(ms||5600,(c,p)=>{const a=p<.1?p/.1:p>.9?(1-p)/.1:1,t=S.t-T0;c.save();zOver();c.globalAlpha=a;campBackdrop(c,t,a);try{CAMP_DRAW[kind](c,t);}catch(e){}c.globalAlpha=1;c.restore();});}
 /* ---------- v3.31: the title screen ---------- */
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!titleOv.hidden){e.preventDefault();e.stopImmediatePropagation();}},true);
 const titleOv=document.createElement('div');titleOv.id='titleOv';titleOv.className='sheet';titleOv.setAttribute('role','dialog');titleOv.setAttribute('aria-modal','true');titleOv.setAttribute('aria-label','Ember Wyrm');

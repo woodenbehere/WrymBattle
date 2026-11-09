@@ -413,7 +413,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.40.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.40.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -423,7 +423,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <p>When a hero's gold gauge fills, their menu opens. Tap any glowing name to switch who acts. <b>Wait</b> pauses the gauges while you choose; <b>Active</b> doesn't.</p>
     <p>The <b>back row</b> halves physical damage dealt and taken. Magic ignores rows.</p>
     <p><b>Options</b>: open the menu (Party) and choose <b>Options</b> to switch between manual and auto battle, pick the auto strategy, choose which heroes fight on auto and their habits, set Wait or Active, turn random encounters and the mini map on or off, and switch between the Classic and Touch interfaces. Your battle settings are remembered.</p>
-    <p><b>Touch view</b>: the game starts in touch view, which hides the menus and fills the screen with the game (switch to Classic in Options or the action ring). Hold anywhere on the left side and drag to walk with the thumb stick; tap the right side for a ring of actions (Party, Journal and whatever you can do where you are, plus Full screen, Help and <b>Classic view</b> to switch back). In battle, the hero whose turn it is gets a ring of commands (or just tap an enemy to Fight it); Magic and Item lists open in a panel on the left; to pick who a spell or item is for, just tap that enemy or hero. With a single-target attack spell, triple-tap empty space to spread it across every enemy, splitting the damage between them. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active. Bars under each hero show HP (green), MP (blue), Limit (pink) and the turn gauge (gold).</p>
+    <p><b>Touch view</b>: the game starts in touch view, which hides the menus and fills the screen with the game (switch to Classic in Options or the action ring). Hold anywhere on the left side and drag to walk with the thumb stick; tap the right side for a ring of actions (Party, Journal and whatever you can do where you are, plus Full screen, Help and <b>Classic view</b> to switch back). In battle, the hero whose turn it is gets a ring of commands (or just tap an enemy to Fight it); Magic and Item lists open in a panel on the left; to pick who a spell or item is for, just tap that enemy or hero. With a single-target attack spell, triple-tap empty space to spread it across every enemy, splitting the damage between them. Tap another glowing hero to switch who acts; Wait/Active and Auto are in the top-right corner. Bars under each hero show HP (green), MP (blue), Limit (pink) and the turn gauge (gold).</p>
     <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Limit command appears.</p>
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
@@ -5251,7 +5251,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.40.1',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.40.2',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5342,7 +5342,7 @@ stage.addEventListener('pointerdown',e=>{if(!TUI.on||!S)return;if(e.target.close
   if(S.scene==='battle'){e.stopImmediatePropagation();if(S.over)return;if(tapFoe(e)||tapHero(e))return;if(S.menu&&S.menu.view==='target')return;if(S.menu&&S.menu.view==='foe'){spreadTap();return;}const x=fx*W,y=fy*H;
     const h=S.heroes.find(q=>Math.abs(x-(q.x+q.dx+(q.mx||0)))<=11&&y>=q.y+(q.my||0)-20&&y<=q.y+(q.my||0)+4);
     if(h&&h.ready&&!h.ko&&!h.stone){S.readyQ=[h,...S.readyQ.filter(q=>q!==h)];openMenu(h);return;}
-    if(!S.menu)openSysRing(e.clientX,e.clientY);return;}
+    return;}
   if((S.scene!=='map'&&S.scene!=='castle')||S.lock||S.cut||S.paused)return;
   e.preventDefault();e.stopImmediatePropagation();
   if(fx<.5){closeRing();TUI.joy={id:e.pointerId,x:e.clientX,y:e.clientY};tJoy.style.left=e.clientX+'px';tJoy.style.top=e.clientY+'px';tJoy.firstChild.style.transform='';tJoy.hidden=false;steer={x:0,y:0};

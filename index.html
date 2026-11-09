@@ -53,7 +53,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .stage{position:relative;aspect-ratio:16/9;width:min(100cqw,calc(100cqh * 16 / 9));max-width:100%;container-type:inline-size;background:#000;border:2px solid var(--line);box-shadow:0 0 0 2px #000,0 12px 30px rgba(0,0,0,.5);overflow:hidden}
 #cv{width:100%;height:100%;display:block;image-rendering:crisp-edges;image-rendering:pixelated}
 .stage.shake{animation:shake .45s linear}
-@keyframes shake{0%,100%{transform:none}20%{transform:translate(-3px,2px)}40%{transform:translate(3px,-2px)}60%{transform:translate(-2px,-1px)}80%{transform:translate(2px,1px)}}
+@keyframes shake{0%,100%{translate:0 0}20%{translate:-3px 2px}40%{translate:3px -2px}60%{translate:-2px -1px}80%{translate:2px 1px}}
 .banner{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-family:var(--f-display);font-size:calc(clamp(11px,2.6cqw,28px) * var(--t-info,1));letter-spacing:.06em;background:var(--panel);color:var(--text);border:2px solid var(--line-hi);box-shadow:0 0 0 2px #000;padding:4px 14px;white-space:nowrap}
 .note{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);max-width:calc(100% - 24px);font-size:calc(clamp(15px,3cqw,32px) * var(--t-msg,1));background:rgba(14,11,16,.88);border:1px solid var(--line);padding:3px 10px;text-align:center}
 .boss{position:absolute;left:8px;top:8px;display:grid;gap:3px;font-family:var(--f-display);font-size:9px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
@@ -352,7 +352,7 @@ body.touchui #tzoom.on{display:inline-flex}
 body.touchui{padding:0}
 body.touchui::after{content:'';position:fixed;inset:0;background:#000;z-index:9}
 body.touchui .top,body.touchui .credits,body.touchui .hud{display:none}
-body.touchui .stage{position:fixed;z-index:10;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100vw,calc(100dvh * 16 / 9));max-width:none;margin:0;border:0;box-shadow:none;touch-action:none;user-select:none;-webkit-user-select:none}
+body.touchui .stage{position:fixed;z-index:10;left:var(--sl,0px);top:var(--st,0px);transform:none;width:var(--sw,100vw);max-width:none;margin:0;border:0;box-shadow:none;touch-action:none;user-select:none;-webkit-user-select:none}
 body.touchui.tsub .hud{display:block;position:fixed;z-index:14;left:max(8px,env(safe-area-inset-left,0px));top:max(8px,env(safe-area-inset-top,0px));bottom:max(8px,env(safe-area-inset-bottom,0px));width:min(58vw,calc(360px * var(--t-cmd,1)));--fs:calc(16px * var(--t-cmd,1));font-size:var(--fs);pointer-events:none}
 body.touchui.tsub .hud #party{display:none}
 body.touchui.tsub .hud #cmd{pointer-events:auto;max-height:100%;overflow:auto;background:rgba(22,17,26,.94)}
@@ -414,7 +414,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.41.2</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.41.3</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -5252,7 +5252,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.41.2',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.41.3',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5605,6 +5605,10 @@ nameOv.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='IN
   if(g&&IM&&S.scene==='castle'){const[hx,hy]=g,ok=(x,y)=>CASTLE[y]&&CASTLE[y][x]!=null&&!C_BLOCK.has(CASTLE[y][x])&&CASTLE[y][x]!=='E'&&!NPCS.some(n=>n.x===x&&n.y===y&&!n.ko);
     for(const[dx,dy]of[[0,1],[1,1],[-1,1],[0,2],[1,0],[-1,0],[0,-1]])if(ok(hx+dx,hy+dy)){S.cpos.x=(hx+dx)*CT+8;S.cpos.y=(hy+dy)*CT+8;S.cpos.face='down';S.cpos.tx=S.cpos.x;S.cpos.ty=S.cpos.y;break;}}
   return r;};}
+/* touch view: place the game on whole screen pixels (no half-pixel centering), so the scaled pixel art never shows seams */
+function fitStage(){const vw=innerWidth,vh=(window.visualViewport&&visualViewport.height)||innerHeight,w=Math.floor(Math.min(vw,vh*16/9)),h=Math.round(w*9/16),r=document.documentElement.style;
+  r.setProperty('--sw',w+'px');r.setProperty('--sl',Math.floor((vw-w)/2)+'px');r.setProperty('--st',Math.max(0,Math.floor((vh-h)/2))+'px');}
+fitStage();addEventListener('resize',fitStage);if(window.visualViewport)visualViewport.addEventListener('resize',fitStage);addEventListener('orientationchange',()=>setTimeout(fitStage,200));
 /* ---------- v3.31: the title screen ---------- */
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!titleOv.hidden){e.preventDefault();e.stopImmediatePropagation();}},true);
 const titleOv=document.createElement('div');titleOv.id='titleOv';titleOv.className='sheet';titleOv.setAttribute('role','dialog');titleOv.setAttribute('aria-modal','true');titleOv.setAttribute('aria-label','Ember Wyrm');

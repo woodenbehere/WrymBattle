@@ -133,6 +133,7 @@ The game starts in a full-screen touch view made for phones (turn the phone side
 - **Actions:** tap the right half for a ring of actions: Party, Journal and whatever applies where you are (Leave, Camp, Fish, Land and so on), plus Full screen, Help and **Classic view** to switch back. Menus open as usual and closing them returns to the touch view.
 - **Battles:** when a hero's turn comes, a ring of commands opens around them. To simply attack, skip the ring and tap an enemy: that hero uses Fight on it. Magic and Item lists open in a panel on the left. To choose who an attack, spell or item is for, tap that enemy or hero. With a single-target attack spell (Flame, Frost, Thunder, Bio and the like), triple-tap empty space instead to spread it across every enemy; the damage is split evenly between them. Tap another glowing hero to switch who acts, or tap empty space for Auto and Wait/Active.
 - **Zoom:** on the world map, a magnifying glass sits under the mini map. Tap it to cycle the view through 1×, 1.5×, 2× and 3× zoomed out; your choice is remembered and towns, dungeons and battles stay at normal size.
+- **Battle corner:** in the top-right of every battle, a **Wait / Active** switch and an **Auto** button that opens the auto-battle settings (it shows how many heroes are on auto).
 - **Bars:** under each hero, HP (green, turning yellow and red), MP (blue), Limit (pink, pulsing when ready) and the turn gauge (gold).
 
 ## Options

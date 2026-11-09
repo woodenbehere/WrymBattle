@@ -331,6 +331,13 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
 #titleOv .tbtns button.armed{border-color:var(--hp-crit);color:var(--hp-crit)}
 #titleOv .tver{font-family:var(--f-display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);background:none;border:0;border-bottom:1px dotted var(--dim);padding:4px 2px;cursor:pointer;margin-top:-4px}#titleOv .tver.armed{color:var(--gold);border-bottom-color:var(--gold)}#titleOv .tver:disabled{opacity:.6}
 #titleOv .tfoot{font-family:var(--f-display);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+#tbtl{position:absolute;top:6px;right:6px;z-index:6;display:none;gap:6px}
+body.touchui #tbtl.on{display:flex}
+#tbtl button{font-family:var(--f-display);font-size:calc(11px * var(--t-cmd,1));letter-spacing:.08em;text-transform:uppercase;color:#e8e8f0;background:rgba(14,11,16,.78);border:2px solid #e8e8f0;box-shadow:0 0 0 2px #000;padding:6px 10px;min-height:34px;cursor:pointer}
+#tbtl .seg{display:inline-flex;box-shadow:0 0 0 2px #000;border:2px solid #e8e8f0}
+#tbtl .seg button{border:0;box-shadow:none;background:rgba(14,11,16,.78);color:#9b8d80}
+#tbtl .seg button[aria-pressed="true"]{background:#e8e8f0;color:#16111a}
+#tbtl #tbAuto.on{border-color:var(--gold);color:var(--gold)}
 #tzoom{position:absolute;right:6px;z-index:6;display:none;align-items:center;gap:4px;font-family:var(--f-display);font-size:11px;letter-spacing:.06em;color:#e8e8f0;background:rgba(14,11,16,.72);border:2px solid #e8e8f0;box-shadow:0 0 0 2px #000;padding:5px 8px 5px 6px;min-height:34px;cursor:pointer}
 body.touchui #tzoom.on{display:inline-flex}
 #tzoom svg{width:18px;height:18px;display:block}
@@ -399,7 +406,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.36.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.37.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -5233,7 +5240,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.36.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.37.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5432,6 +5439,17 @@ function clearGuards(){if(!S.flags.solo||!IM)return;const p=S.cpos,px=p.x/CT,py=
   S.soloGrace=2.5;}
 {const ei=enterInterior;enterInterior=function(...a){const r=ei.apply(this,a);try{if(S.flags.solo&&IM&&MAPS[IM.id]&&MAPS[IM.id].night)clearGuards();}catch(e){}return r;};}
 {const st=soloTick;soloTick=function(dt){if(!S.soloLast)clearGuards();if(S.soloGrace>0)S.soloGrace-=dt;return st(dt);};}
+/* ---------- v3.37: Wait/Active and Auto in the battle's top-right corner (touch view) ---------- */
+const tBtl=document.createElement('div');tBtl.id='tbtl';
+tBtl.innerHTML='<span class="seg" role="group" aria-label="Battle mode"><button type="button" data-m="wait">Wait</button><button type="button" data-m="active">Active</button></span><button type="button" id="tbAuto">Auto</button>';
+stage.appendChild(tBtl);tBtl.addEventListener('pointerdown',e=>e.stopPropagation(),true);
+tBtl.addEventListener('click',e=>{e.stopPropagation();const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.m){if(S.mode!==b.dataset.m){setMode(b.dataset.m);say(b.dataset.m==='wait'?'Wait mode: gauges pause while you choose.':'Active mode: gauges keep filling while you choose.');}syncTBtl();return;}
+  if(b.id==='tbAuto')autoBtn.click();});
+function syncTBtl(){const on=TUI.on&&S&&S.scene==='battle'&&!S.over;tBtl.classList.toggle('on',on);if(!on)return;
+  for(const b of tBtl.querySelectorAll('[data-m]'))b.setAttribute('aria-pressed',String(S.mode===b.dataset.m));
+  const a=$('tbAuto'),n=S.heroes.filter(h=>S.auto.who[h.key]).length;a.textContent=S.auto.on&&n?`Auto · ${n}`:'Auto';a.classList.toggle('on',!!(S.auto.on&&n));}
+{const tf2=touchFrame;touchFrame=function(){tf2();try{syncTBtl();}catch(e){}};}
 /* ---------- v3.31: the title screen ---------- */
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!titleOv.hidden){e.preventDefault();e.stopImmediatePropagation();}},true);
 const titleOv=document.createElement('div');titleOv.id='titleOv';titleOv.className='sheet';titleOv.setAttribute('role','dialog');titleOv.setAttribute('aria-modal','true');titleOv.setAttribute('aria-label','Ember Wyrm');

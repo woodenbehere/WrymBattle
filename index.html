@@ -413,7 +413,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.40.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.40.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -475,7 +475,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
 <div class="sheet" id="guildOv" role="dialog" aria-modal="true" aria-label="Adventurers' Guild" hidden>
   <div class="card ffj"><div class="ffj-main"><div class="ffm-box ffj-head"><div class="shop-h"><h2>Adventurers&rsquo; Guild</h2><span class="gil" id="guildGil"></span></div><div class="tip" id="guildRank"></div></div><div class="ffm-box ffj-body" style="align-content:start"><div class="tip" id="guildMsg"></div><div class="slist" id="guildList"></div></div></div><div class="ffm-side"><div class="ffm-box ffm-cmds"><div id="gTabs" class="ffj-tabs"></div><button class="ffm-cmd" id="guildClose" type="button">Close</button></div></div></div>
 </div>
-<div class="sheet" id="nameOv" role="dialog" aria-modal="true" aria-label="Rename heroes" hidden>
+<div class="sheet" id="nameOv" data-keepname role="dialog" aria-modal="true" aria-label="Rename heroes" hidden>
   <div class="card nm"><div class="shop-h"><h2>Inkwell</h2><span class="gil">Names</span></div><p class="tip" id="nameTip">Give your heroes new names, up to 8 letters each.</p><div id="nameList"></div><div class="narow"><button class="btn" id="nameSave" type="button">Save names</button><button class="btn ghost" id="nameClose" type="button">Close</button></div></div>
 </div>
 <div class="sheet" id="optOv" role="dialog" aria-modal="true" aria-label="Options" hidden>
@@ -5251,7 +5251,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.40.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.40.1',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5561,6 +5561,17 @@ function inkSpot(){if(INK_SPOT[IM.id])return INK_SPOT[IM.id];const G=CASTLE,H=G.
 const INK_LINES=['Inkwell: Names are ink, friend, and ink can be scraped and written fresh.','Inkwell: Every hero deserves a name that fits. Shall I amend the record?','Inkwell: Careful with the quill. I only just cleaned it.'];
 {const ei2=enterInterior;enterInterior=function(...a){const r=ei2.apply(this,a);try{if(IM&&INK_TOWNS.includes(IM.id)&&!NPCS.some(n=>n.inkwell)){const p=inkSpot();
     if(p)NPCS.push({x:p[0],y:p[1],spr:'inkwell',inkwell:true,talk:()=>{showDialog([pick(INK_LINES)],()=>openNames());return null;}});}}catch(e){console.warn(e);}return r;};}
+/* every line of text on screen uses the heroes' chosen names: the story was written with the originals, so they are swapped as text appears */
+const nameDone=new WeakMap();let nameRe=null,nameMap=null;
+function nameSetup(){const N=(S&&S.flags&&S.flags.names)||{};nameMap={};for(const k in N)if(CL[k]&&N[k]&&N[k]!==CL[k].name)nameMap[CL[k].name]=N[k];
+  const ks=Object.keys(nameMap);nameRe=ks.length?new RegExp('\\b('+ks.join('|')+')\\b','g'):null;}
+function fixNode(t){if(!nameRe||nameDone.get(t)===t.data)return;const el=t.parentElement;if(!el||el.closest('[data-keepname],script,style,textarea,input'))return;
+  const v=t.data.replace(nameRe,m=>nameMap[m]||m);if(v!==t.data)t.data=v;nameDone.set(t,t.data);}
+function fixTree(n){if(!nameRe)return;if(n.nodeType===3)return fixNode(n);if(n.nodeType!==1)return;const w=document.createTreeWalker(n,NodeFilter.SHOW_TEXT);let t;while((t=w.nextNode()))fixNode(t);}
+new MutationObserver(ms=>{if(!nameRe)return;for(const m of ms){if(m.type==='characterData')fixNode(m.target);else for(const a of m.addedNodes)fixTree(a);}}).observe(document.body,{subtree:true,childList:true,characterData:true});
+function refreshNames(){nameSetup();fixTree(document.body);}
+{const an=applyNames;applyNames=function(){an();refreshNames();};}
+{const ng=newGame;newGame=function(...a){const r=ng.apply(this,a);try{refreshNames();}catch(e){}return r;};}
 const nameOv=$('nameOv');
 function openNames(){const L=$('nameList');L.innerHTML=S.heroes.map(h=>`<div class="nrow"><canvas width="12" height="13" data-k="${h.key}"></canvas><label><b>${esc(h.cls)}</b><input type="text" maxlength="8" autocomplete="off" autocapitalize="words" spellcheck="false" data-k="${h.key}" value="${esc(h.name)}" aria-label="Name for the ${esc(h.cls)}"></label><button type="button" class="btn sm" data-def="${h.key}">${esc(heroDefault(h))}</button></div>`).join('');
   for(const c of L.querySelectorAll('canvas')){const h=S.heroes.find(x=>x.key===c.dataset.k),g=c.getContext('2d');g.imageSmoothingEnabled=false;try{drawSprite(g,heroSpr(h),6,13,{});}catch(e){}}
@@ -5568,9 +5579,12 @@ function openNames(){const L=$('nameList');L.innerHTML=S.heroes.map(h=>`<div cla
 const cleanName=v=>v.replace(/[^A-Za-z0-9 '\-]/g,'').replace(/\s+/g,' ').trim().slice(0,8);
 nameOv.addEventListener('click',e=>{const d=e.target.closest('[data-def]');if(d){const i=nameOv.querySelector(`input[data-k="${d.dataset.def}"]`);i.value=CL[d.dataset.def].name;i.focus();return;}if(e.target===nameOv){closeSheet(nameOv);renderMenu();}});
 $('nameClose').onclick=()=>{closeSheet(nameOv);renderMenu();};
-$('nameSave').onclick=()=>{const N=S.flags.names||(S.flags.names={}),changed=[];
-  for(const i of nameOv.querySelectorAll('input')){const h=S.heroes.find(x=>x.key===i.dataset.k),v=cleanName(i.value)||heroDefault(h);if(v!==h.name)changed.push(`${h.name} → ${v}`);h.name=v;if(v===heroDefault(h))delete N[h.key];else N[h.key]=v;}
-  closeSheet(nameOv);buildParty();renderMenu();saveGame();showDialog([changed.length?'Inkwell: There. '+changed.join(', ')+'. Written and dried.':'Inkwell: No changes? The ink keeps, then.']);};
+$('nameSave').onclick=()=>{const want={};for(const i of nameOv.querySelectorAll('input')){const h=S.heroes.find(x=>x.key===i.dataset.k);want[h.key]=cleanName(i.value)||heroDefault(h);}
+  for(const h of S.heroes){const v=want[h.key],o=S.heroes.find(x=>x!==h&&(CL[x.key].name.toLowerCase()===v.toLowerCase()||want[x.key].toLowerCase()===v.toLowerCase()));
+    if(o){$('nameTip').textContent=`Inkwell: “${v}” is taken by another hero${CL[o.key].name.toLowerCase()===v.toLowerCase()&&want[o.key]!==v?' (it is their original name)':''}. Pick something else.`;const i=nameOv.querySelector(`input[data-k="${h.key}"]`);i.focus();i.select();return;}}
+  const N=S.flags.names||(S.flags.names={}),changed=[];
+  for(const i of nameOv.querySelectorAll('input')){const h=S.heroes.find(x=>x.key===i.dataset.k),v=cleanName(i.value)||heroDefault(h);if(v!==h.name)changed.push(`the ${h.cls.toLowerCase()} is now ${v}`);h.name=v;if(v===heroDefault(h))delete N[h.key];else N[h.key]=v;}
+  closeSheet(nameOv);refreshNames();buildParty();renderMenu();saveGame();showDialog([changed.length?'Inkwell: There. '+changed.join(', ').replace(/^t/,'T')+'. Written and dried.':'Inkwell: No changes? The ink keeps, then.']);};
 nameOv.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();$('nameSave').click();}});
 /* ---------- v3.31: the title screen ---------- */
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!titleOv.hidden){e.preventDefault();e.stopImmediatePropagation();}},true);

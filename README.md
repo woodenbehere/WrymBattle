@@ -163,5 +163,5 @@ When Senna summons, the screen darkens and the summon itself appears before its 
 
 ## Inkwell
 
-Inkwell, a little scribe in a navy robe with an ink-pot hat, round spectacles and a quill, stands near the entrance of every town: Valemont Village, the port town, Ironhold, Highmere, Coralhaven, Stormhaven and Gloamhollow. Talk to him to rename any hero (up to 8 letters, numbers, spaces, hyphens or apostrophes). Tap a hero's original name to restore it. New names show in battle, menus and the party list and are kept in that save slot; story dialogue still uses the heroes' original names.
+Inkwell, a little scribe in a navy robe with an ink-pot hat, round spectacles and a quill, stands near the entrance of every town: Valemont Village, the port town, Ironhold, Highmere, Coralhaven, Stormhaven and Gloamhollow. Talk to him to rename any hero (up to 8 letters, numbers, spaces, hyphens or apostrophes). Tap a hero's original name to restore it. New names are kept in that save slot and are used everywhere: battle, menus, the party list, and all story dialogue, messages and help text. Two heroes can't share a name, and a hero can't take another hero's original name.
 

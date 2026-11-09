@@ -261,7 +261,7 @@ body.bigmap .stage{position:fixed;z-index:31;left:50%;top:50%;transform:translat
 .nm{grid-area:nm;font-size:1em;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .nm em{font-style:normal;color:var(--muted);font-size:.74em;margin-left:.3em}
 .tag{font-family:var(--f-display);font-size:.36em;letter-spacing:.08em;border:1px solid currentColor;padding:0 .3em;margin-left:.5em;vertical-align:.5em;color:var(--mp)}
-.tag.psn{color:#a8f05a} .tag.stn{color:#b8b0a8} .tag.cnf{color:#ee7ad6} .pop.psn{color:#a8f05a}
+.tag.hst{color:#ffe14a} .tag.shl{color:var(--mp)} .tag.psn{color:#a8f05a} .tag.stn{color:#b8b0a8} .tag.cnf{color:#ee7ad6} .pop.psn{color:#a8f05a}
 .tag.au{color:var(--heal)} .tag.ko{color:var(--hp-crit)} .tag.def{color:var(--gold)} .tag.lim{color:var(--limit)} .tag.bk{color:var(--muted)}
 .hp{grid-area:hp;font-size:1em;line-height:1.1;font-variant-numeric:tabular-nums;text-align:right}
 .hp small{font-size:.7em;color:var(--muted)}
@@ -414,7 +414,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.42.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.43.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -624,7 +624,7 @@ const SK={
  frost:{name:'Frost',mp:18,t:'enemy',d:'Ice damage'},
  thunder:{name:'Thunder',mp:12,t:'enemy',d:'Lightning damage'},
  undine:{name:'Undine',mp:56,t:'enemy',d:'Tidal Surge, water damage'},
- sylph:{name:'Sylph',mp:44,t:'party',d:'Healing Wind for all'},
+ sylph:{name:'Sylph',mp:44,t:'party',d:'Cure, Haste and Shell for all'},
  golem:{name:'Golem',mp:40,t:'party',d:'Earthen Wall: Protect all'},
  cura:{name:'Cura',mp:22,t:'ally',d:'Heal one ally greatly'},
  holy:{name:'Holy',mp:40,t:'enemy',d:'Searing holy light'},
@@ -799,14 +799,14 @@ function battleRender(dt){
 /* ---------- combat math ---------- */
 const alive=()=>S.heroes.filter(h=>!h.ko&&!h.stone);
 function hurt(h,n,type,elem){
-  if(h.ko||h.stone)return;let m=1;if(h.defend)m*=.5;if(h.protect>0)m*=.6;if(type==='phys'){m*=(h.phys||1);if(h.row==='back')m*=.5;}if(type==='pierce')m*=(h.phys||1);if(h.coverHit){m*=.5;h.coverHit=false;}
+  if(h.ko||h.stone)return;let m=1;if(h.defend)m*=.5;if(h.protect>0)m*=.6;if(type==='phys'){m*=(h.phys||1);if(h.row==='back')m*=.5;}if(type==='pierce')m*=(h.phys||1);if(h.coverHit){m*=.5;h.coverHit=false;}if(h.shell>0&&type==='mag')m*=.6;
   m*=type==='mag'?100/(100+(h.mdef||0)*1.6):100/(100+(h.def||0)*1.6);if(elem&&h.res&&h.res.includes(elem))m*=.5;
   const v=Math.max(1,Math.round(n*m));h.hp=Math.max(0,h.hp-v);h.flash=.3;pop(h.x,h.y-12,v,'');
   if(h.confuse&&h.hp>0&&(type==='phys'||type==='pierce')&&Math.random()<.5){h.confuse=false;pop(h.x,h.y-22,'Snapped out','lbl');}
   if(h.hp===0){knockOut(h);for(const a of alive())gainLimit(a,12);}else gainLimit(h,v/h.maxhp*95);
 }
 function gainLimit(h,n){if(h.ko||h.limit>=100)return;h.limit=Math.min(100,h.limit+n);if(h.limit>=100){pop(h.x,h.y-22,'Limit!','lim');say(`${h.name}'s limit gauge is full!`);if(S.menu&&S.menu.hero===h&&S.menu.view==='root')renderMenu(true);}}
-function knockOut(h){h.ko=true;h.poison=h.stone=h.confuse=false;h.hp=0;h.atb=0;h.ready=false;h.queued=false;h.defend=h.guard=false;h.protect=0;h.cast=null;
+function knockOut(h){h.ko=true;h.poison=h.stone=h.confuse=false;h.hp=0;h.atb=0;h.ready=false;h.queued=false;h.defend=h.guard=false;h.protect=0;h.haste=0;h.shell=0;h.cast=null;
   S.readyQ=S.readyQ.filter(x=>x!==h);S.actQ=S.actQ.filter(a=>a.actor!==h);if(S.menu&&S.menu.hero===h)S.menu=null;say(`${h.name} falls!`);renderMenu();}
 function heal(h,n){if(h.ko)return;const v=Math.min(Math.round(n),h.maxhp-h.hp);h.hp+=v;pop(h.x,h.y-12,Math.round(n),'heal');}
 function revive(h,f){if(!h.ko)return;h.ko=false;h.hp=Math.max(1,Math.round(h.maxhp*f));h.atb=0;h.ready=false;h.queued=false;pop(h.x,h.y-12,h.hp,'heal');say(`${h.name} is back on their feet.`);}
@@ -922,9 +922,11 @@ async function doHero(h,kind,id,tg){
     case 'undine':{await castPose(h,'#6fb3ff',300);await summonIntro('#6fb3ff');banner('Undine · Tidal Surge');shake();
       await addFx(1150,(c,p)=>{const f=196-p*270;c.fillStyle='rgba(30,100,190,.6)';c.fillRect(f,40,64,104);c.fillStyle='rgba(120,190,255,.5)';c.fillRect(f,40,8,104);c.fillStyle='#dff3ff';for(let y=40;y<H;y+=4)c.fillRect(Math.round(f+Math.sin(y*.3+p*20)*3),y,3,2);if(Math.random()<.7)part(f,rnd(40,H),{vx:rnd(-40,10),vy:rnd(-40,0),life:.4,c:'#cfeaff'});});
       hitAll(h.mag*22,'water');await sleep(350);break;}
-    case 'sylph':{await castPose(h,'#9df29a',300);await summonIntro('#9df29a');banner('Sylph · Healing Wind');
+    case 'sylph':{await castPose(h,'#9df29a',300);await summonIntro('#9df29a');banner('Sylph · Cure, Haste, Shell');
       await addFx(1000,(c,p)=>{for(let k=0;k<20;k++){const a=k*.9+p*10,x=212+Math.cos(a)*(10+k*.6),y=40+((k*13+p*150)%96);c.fillStyle=k%3?'#9df29a':'#e6ffd8';c.fillRect(x|0,y|0,2,1);}});
-      for(const a of alive()){healFx(a);heal(a,h.mag*11*rnd(.95,1.05));}await sleep(400);break;}
+      for(const a of alive()){healFx(a);heal(a,h.mag*11*rnd(.95,1.05));}await sleep(350);
+      for(const a of alive()){a.haste=30;pop(a.x+(a.mx||0),a.y+(a.my||0)-20,'Haste','lbl');for(let k=0;k<6;k++)part(a.x,a.y-6,{vx:rnd(-40,-10),vy:rnd(-8,8),life:.4,c:'#ffe14a',s:1});}await sleep(350);
+      for(const a of alive()){a.shell=30;pop(a.x+(a.mx||0),a.y+(a.my||0)-20,'Shell','mpp');shellFx(a);}await sleep(400);break;}
     case 'golem':{await castPose(h,'#c9a074',300);await summonIntro('#c9a074');banner('Golem · Earthen Wall');shake();
       await addFx(1100,(c,p)=>{const k2=p<.6?p/.6:1-(p-.6)/.4;for(let k=0;k<5;k++){const x=188+(k%2)*6,by=60+k*18,hh=Math.round(17*k2);c.fillStyle='#6a5240';c.fillRect(x,by-hh,7,hh);c.fillStyle='#9a7e5e';c.fillRect(x,by-hh,7,2);}});
       for(const a of alive()){a.protect=30;protectFx(a);}say('Stone guards the party.');await sleep(300);break;}
@@ -1403,14 +1405,14 @@ function startBattle(kind){for(const h of S.heroes)h.y=55+h.i*19;
   {const cnt={},seen={};for(const f of S.foes)cnt[f.name]=(cnt[f.name]||0)+1;for(const f of S.foes)if(cnt[f.name]>1){seen[f.name]=(seen[f.name]||0)+1;f.label=f.name+' '+'ABCD'[seen[f.name]-1];}}
   layoutFoes();setTarget(S.foes[0]);
   S.log=[kinds[0]==='wyrm'?'The Ember Wyrm blocks the mountain pass.':kinds[0]==='frostwyrm'?'Frostfang, the Rime Wyrm, descends!':kinds[0]==='earthwyrm'?'Gravemaw, the Earth Wyrm, rises from the stone!':kinds[0]==='tidewyrm'?'Maelstrom, the Water Wyrm, rises from the whirlpool!':kinds[0]==='skywyrm'?'Zephyrion, the Sky Wyrm, descends from the storm!':S.foes.length>1?`${S.foes.map(f=>f.label).join(', ')} attack!`:`A ${S.foes[0].name} appears!`];
-  for(const h of S.heroes){Object.assign(h,{atb:h.ko?0:rnd(10,60),ready:false,queued:false,defend:false,guard:false,protect:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});h.x=homeX(h);}
+  for(const h of S.heroes){Object.assign(h,{atb:h.ko?0:rnd(10,60),ready:false,queued:false,defend:false,guard:false,protect:0,haste:0,shell:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});h.x=homeX(h);}
   const bgk=kinds[0]==='tidewyrm'?'storm':kinds[0]==='skywyrm'?'storm':kinds[0]==='earthwyrm'?'deep':kinds[0]==='frostwyrm'?'summit':kinds[0]==='wyrm'?null:MON[kinds[0]].bg;if(bgk)makeFieldBg(bgk);else makeBg();S.snow=bgk==='mtn'||bgk==='summit';S.rain=S.battleReturn==='map'&&!!S.wyrmDone&&wxRainy();
   if(S.battleReturn==='map'&&S.wyrmDone&&bgk){const b2=bg.getContext('2d');if(isNight()){b2.fillStyle=isBloodMoon()?'rgba(120,10,24,.55)':'rgba(10,14,40,.45)';b2.fillRect(0,0,W,H);if(isBloodMoon()){b2.save();b2.globalCompositeOperation='source-over';b2.fillStyle='rgba(255,60,50,.25)';b2.beginPath();b2.arc(206,16,11,0,7);b2.fill();b2.fillStyle='#e8403a';b2.beginPath();b2.arc(206,16,7,0,7);b2.fill();b2.fillStyle='#b81c24';b2.fillRect(203,14,2,2);b2.fillRect(208,18,2,1);b2.restore();}}else if(wxType()!=='clear'){b2.fillStyle='rgba(40,44,60,.22)';b2.fillRect(0,0,W,H);}}$('bossBox').dataset.k='';
   $('over').hidden=true;bannerEl.hidden=true;popsEl.innerHTML='';stage.classList.remove('map','town','castle');
   renderMenu();
 }
 function toMap(msg){
-  for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});
+  for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,haste:0,shell:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});
   Object.assign(S,{scene:'map',over:false,busy:false,menu:null,actQ:[],readyQ:[],fx:[],parts:[],onContinue:null});
   S.world.danger=Math.max(S.world.danger,8);S.world.place=placeName();
   $('over').hidden=true;bannerEl.hidden=true;popsEl.innerHTML='';stage.classList.add('map');
@@ -1913,7 +1915,7 @@ function leaveCastle(){if(IM&&IM.parent)return enterInterior(IM.parent,IM.parent
    if(IM&&IM.id==='village'&&WORLD.castle)opts.sort((a,b)=>Math.abs(tx+a[0]-WORLD.castle.x)-Math.abs(tx+b[0]-WORLD.castle.x));
    for(const[dx,dy]of opts){const t=WORLD.at(tx+dx,ty+dy);if(!BLOCKED.has(t)&&!ENTRANCES.has(t)&&t!==T_PORT){S.world.x=(tx+dx)*TS+TS/2;S.world.y=(ty+dy)*TS+TS/2;S.world.townLock=false;break;}}}say(IM&&IM.out||'You step back out into the fields.');renderMenu();saveGame();}
 function toCastle(msg){
-  for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});
+  for(const h of S.heroes)Object.assign(h,{atb:0,ready:false,queued:false,defend:false,guard:false,protect:0,haste:0,shell:0,dx:0,dy:0,flash:0,cast:null,coverHit:false,confuse:false,ptick:0});
   Object.assign(S,{scene:'castle',over:false,busy:false,menu:null,actQ:[],readyQ:[],fx:[],parts:[],onContinue:null});
   $('over').hidden=true;bannerEl.hidden=true;popsEl.innerHTML='';stage.classList.remove('map','town');stage.classList.add('castle');drawCastleTex();
   if(msg)say(msg);renderMenu();saveGame();
@@ -5119,8 +5121,8 @@ function update(dt){
     for(const d of S.foes)if(d.poison&&!d.dead){d.ptick=(d.ptick||0)+dt;if(d.ptick>=4){d.ptick=0;foePoisonTick(d);}}}
   if(flowing){
     S.clock+=dt;
-    for(const h of S.heroes){if(h.ko||h.stone)continue;if(h.protect>0)h.protect=Math.max(0,h.protect-dt);
-      if(!h.ready&&!h.queued){h.atb+=(h.spd+22)*dt*1.35;if(h.atb>=100){h.atb=100;h.ready=true;h.defend=false;h.guard=false;S.readyQ.push(h);}}}
+    for(const h of S.heroes){if(h.ko||h.stone)continue;if(h.protect>0)h.protect=Math.max(0,h.protect-dt);if(h.haste>0)h.haste=Math.max(0,h.haste-dt);if(h.shell>0)h.shell=Math.max(0,h.shell-dt);
+      if(!h.ready&&!h.queued){h.atb+=(h.spd+22)*dt*1.35*(h.haste>0?1.5:1);if(h.atb>=100){h.atb=100;h.ready=true;h.defend=false;h.guard=false;S.readyQ.push(h);}}}
     for(const d of S.foes){const wy=d.kind==='wyrm';if(d.dead||d.queued)continue;d.atb+=36*dt*(wy?(d.phase===2?1.2:1)*(d.hp<d.max*.3?1.35:1):MON[d.kind].spd);if(d.atb>=100){d.atb=100;d.queued=true;S.actQ.push({actor:d,run:()=>{setTarget(d);return wy?dragonAct():monsterAct();}});}}
   }
   if(!S.busy&&!S.paused&&S.actQ.length){const a=S.actQ.shift();S.busy=true;(async()=>{try{await a.run();}catch(e){console.error(e);}S.busy=false;afterAction();})();}
@@ -5201,7 +5203,7 @@ partyEl.addEventListener('click',e=>{const r=e.target.closest('.row');if(!r||S.o
 function updateHud(){
   S.heroes.forEach((h,i)=>{const r=rows[i];if(!r)return;
     r.bar.style.width=(h.ko?0:h.atb)+'%';r.lim.style.width=h.limit+'%';
-    const tg=(h.ko?'<span class="tag ko">KO</span>':'')+(h.stone&&!h.ko?'<span class="tag stn">STONE</span>':'')+(h.poison&&!h.ko?'<span class="tag psn">PSN</span>':'')+(h.confuse&&!h.ko?'<span class="tag cnf">CNF</span>':'')+(h.limit>=100&&!h.ko?'<span class="tag lim">LIMIT</span>':'')+(h.row==='back'?'<span class="tag bk">BACK</span>':'')+(isAuto(h)&&!h.ko?'<span class="tag au">AUTO</span>':'')+(h.defend?'<span class="tag def">DEF</span>':'')+(h.guard?'<span class="tag def">GRD</span>':'')+(h.protect>0&&!h.ko?'<span class="tag">PRT</span>':'');
+    const tg=(h.ko?'<span class="tag ko">KO</span>':'')+(h.stone&&!h.ko?'<span class="tag stn">STONE</span>':'')+(h.poison&&!h.ko?'<span class="tag psn">PSN</span>':'')+(h.confuse&&!h.ko?'<span class="tag cnf">CNF</span>':'')+(h.haste>0&&!h.ko?'<span class="tag hst">HASTE</span>':'')+(h.shell>0&&!h.ko?'<span class="tag shl">SHELL</span>':'')+(h.limit>=100&&!h.ko?'<span class="tag lim">LIMIT</span>':'')+(h.row==='back'?'<span class="tag bk">BACK</span>':'')+(isAuto(h)&&!h.ko?'<span class="tag au">AUTO</span>':'')+(h.defend?'<span class="tag def">DEF</span>':'')+(h.guard?'<span class="tag def">GRD</span>':'')+(h.protect>0&&!h.ko?'<span class="tag">PRT</span>':'');
     const key=[h.hp,h.mp,h.maxhp,h.lv,h.ready,h.ko,tg,S.menu&&S.menu.hero===h].join('|');if(key===r.k)return;r.k=key;r.em.textContent='Lv'+h.lv+' '+h.cls;r.mx.textContent='/'+h.maxhp;
     r.b.textContent=h.hp;r.mp.textContent=h.maxmp?`MP ${h.mp}`:'—';r.tags.innerHTML=tg;
     r.hp.className='hp'+(h.hp<h.maxhp*.25?' crit':h.hp<h.maxhp*.5?' warn':'');
@@ -5252,7 +5254,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.42.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.43.0',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5612,6 +5614,7 @@ nameOv.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='IN
 function fitStage(){const vw=innerWidth,vh=(window.visualViewport&&visualViewport.height)||innerHeight,w=Math.floor(Math.min(vw,vh*16/9)),h=Math.round(w*9/16),r=document.documentElement.style;
   r.setProperty('--sw',w+'px');r.setProperty('--sl',Math.floor((vw-w)/2)+'px');r.setProperty('--st',Math.max(0,Math.floor((vh-h)/2))+'px');}
 fitStage();addEventListener('resize',fitStage);if(window.visualViewport)visualViewport.addEventListener('resize',fitStage);addEventListener('orientationchange',()=>setTimeout(fitStage,200));
+function shellFx(a){addFx(700,(c,p)=>{c.save();c.globalAlpha=(1-p)*.8;c.strokeStyle='#86b4f2';c.lineWidth=1;c.beginPath();c.ellipse(a.x+(a.mx||0),a.y+(a.my||0)-8,9+p*4,11+p*4,0,0,7);c.stroke();c.restore();});}
 /* ---------- v3.31: the title screen ---------- */
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!titleOv.hidden){e.preventDefault();e.stopImmediatePropagation();}},true);
 const titleOv=document.createElement('div');titleOv.id='titleOv';titleOv.className='sheet';titleOv.setAttribute('role','dialog');titleOv.setAttribute('aria-modal','true');titleOv.setAttribute('aria-label','Ember Wyrm');

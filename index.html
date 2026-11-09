@@ -363,7 +363,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
 #tring button.sys{border-color:var(--line);color:var(--muted)}
 #tring button:active{background:var(--line)}
 @keyframes tpop{from{opacity:0;transform:translate(-50%,-50%) scale(.6)}}
-#tbars .tbar{position:fixed;z-index:11;pointer-events:none;display:grid;grid-template-columns:1fr;gap:1px;transform:translateX(-50%)}
+#tbars .tbar{position:fixed;z-index:11;pointer-events:none;display:grid;grid-template-columns:1fr;gap:1px}
 #tbars .tbar span{display:block;height:3px;background:rgba(0,0,0,.75);outline:1px solid rgba(0,0,0,.6)}
 #tbars .tbar span i{display:block;height:100%;width:0}
 #tbars .tbar .xh i{background:var(--heal)} #tbars .tbar .xh.warn i{background:var(--hp-warn)} #tbars .tbar .xh.crit i{background:var(--hp-crit)}
@@ -406,7 +406,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.37.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.37.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -633,7 +633,7 @@ const ITEMS={
 };
 const ORDER=['fighter','thief','white','black','summoner'];
 const ROW0={fighter:'front',thief:'front',white:'back',black:'back',summoner:'back'};
-const homeX=h=>(h.row==='front'?196:220)+(h.i%2)*6;
+const homeX=h=>(h.row==='front'?192:216)+(h.i%2)*8;
 const LB={
  fighter:{name:'Meteor Cleave',d:'Leap and cleave for massive damage'},
  thief:{name:'Shadow Flurry',d:'Six quick strikes and a sure steal'},
@@ -647,7 +647,7 @@ function newGame(noBattle){
   const mode=S?S.mode:'wait';
   const auto=S?S.auto:{on:false,strat:'balanced',who:Object.fromEntries(ORDER.map(k=>[k,true])),habit:{}};
   S={t:S?S.t:0,mode,auto,paused:false,scene:'battle',log:[],items:{potion:4,hipotion:0,ether:2,feather:2,elixir:0,tent:3,antidote:2,goldneedle:1,remedy:0,xpotion:0,hiether:0,megalixir:0},parts:[],fx:[],
-    heroes:ORDER.map((k,i)=>({key:k,...CL[k],maxhp:CL[k].hp,maxmp:CL[k].mp,i,atb:k==='thief'?94:rnd(15,65),ready:false,queued:false,ko:false,defend:false,guard:false,protect:0,dx:0,flash:0,cast:null,row:ROW0[k],limit:0,dy:0,x:0,y:58+i*18})),
+    heroes:ORDER.map((k,i)=>({key:k,...CL[k],maxhp:CL[k].hp,maxmp:CL[k].mp,i,atb:k==='thief'?94:rnd(15,65),ready:false,queued:false,ko:false,defend:false,guard:false,protect:0,dx:0,flash:0,cast:null,row:ROW0[k],limit:0,dy:0,x:0,y:55+i*19})),
     world:{x:WORLD.start.x,y:WORLD.start.y,danger:16,enc:true,face:-1,dist:0,walkT:0,steps:0,moving:false,camping:false,lastLand:'peak',place:''}};
   if(WORLD&&((WORLD.isle&&WORLD.isle.up)||WORLD.portUp))buildWorld();
   for(const h of S.heroes)initHero(h);S.gil=300;S.bag={};S.wyrmDone=false;S.flags={chests:{}};S.quests={};S.kills={};S.dragon=makeEnemy('wyrm');S.foes=[S.dragon];
@@ -1386,7 +1386,7 @@ async function camp(){
   for(const h of S.heroes){h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}if(rw==='morning')toMorning();else toNightfall();
   w.camping=false;w.danger=Math.max(w.danger,10);say(rw==='night'?'Nightfall. Everyone is rested: HP and MP fully restored.':'Morning. Everyone is rested: HP and MP fully restored.');renderMenu();
 }
-function startBattle(kind){
+function startBattle(kind){for(const h of S.heroes)h.y=55+h.i*19;
   Object.assign(S,{scene:'battle',clock:0,busy:false,over:false,actQ:[],readyQ:[],menu:null,turns:0,stolen:0,noted:{},parts:[],fx:[],escaped:false,onContinue:null});
   const kinds=Array.isArray(kind)?kind:[kind];S.foes=kinds.map(k=>makeEnemy(k,kinds.length));
   {const cnt={},seen={};for(const f of S.foes)cnt[f.name]=(cnt[f.name]||0)+1;for(const f of S.foes)if(cnt[f.name]>1){seen[f.name]=(seen[f.name]||0)+1;f.label=f.name+' '+'ABCD'[seen[f.name]-1];}}
@@ -5240,7 +5240,7 @@ addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...documen
 $('again').onclick=async()=>{while(S.busy)await sleep(50);const f=S.onContinue||newGame;S.onContinue=null;f();};
 
 /* ---------- version + forced update ---------- */
-const APP_VERSION='3.37.0',verBtn=$('verBtn');let verArm=0;
+const APP_VERSION='3.37.1',verBtn=$('verBtn');let verArm=0;
 verBtn.textContent='v'+APP_VERSION;
 verBtn.onclick=async()=>{
   if(!verArm){verBtn.classList.add('armed');verBtn.textContent='Tap again to update';
@@ -5346,7 +5346,7 @@ function touchFrame(){if(!TUI.on){return;}
   if(!bt)return;
   if(tBars.childElementCount!==S.heroes.length)tBars.innerHTML=S.heroes.map(h=>`<div class="tbar"><span class="xh"><i></i></span><span class="xm"><i></i></span><span class="xl"><i></i></span><span class="xa"><i></i></span></div>`).join('');
   const r=cv.getBoundingClientRect(),k=r.width/W,mm=S.menu,pk=mm&&mm.view==='target'?S.heroes.filter(x=>validTarget(mm.pending.kind==='item'?ITEMS[mm.pending.id].t:SK[mm.pending.id].t,x)):[];
-  S.heroes.forEach((h,i)=>{const el=tBars.children[i],sp=el.children,hp=h.ko?0:h.hp/h.maxhp;el.style.left=(r.left+(h.x+h.dx)*k)+'px';el.style.top=(r.top+(h.y+1.5)*k)+'px';el.style.width=Math.max(26,18*k)+'px';
+  S.heroes.forEach((h,i)=>{const el=tBars.children[i],sp=el.children,hp=h.ko?0:h.hp/h.maxhp;el.style.left=(r.left+(h.x+h.dx+4)*k)+'px';el.style.top=(r.top+(h.y-1)*k-el.offsetHeight)+'px';el.style.width=Math.max(24,15*k)+'px';
     sp[0].className='xh'+(hp<=.25?' crit':hp<=.5?' warn':'');sp[0].firstChild.style.width=(hp*100)+'%';
     sp[1].hidden=!h.maxmp;if(h.maxmp)sp[1].firstChild.style.width=(h.mp/h.maxmp*100)+'%';
     sp[2].className='xl'+(h.limit>=100?' full':'');sp[2].firstChild.style.width=Math.min(100,h.limit)+'%';

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ember Wyrm</title>
-<meta name="description" content="A 16-bit style ATB battle: five heroes against a two-phase dragon.">
+<meta name="description" content="A 16-bit style turn battle: five heroes against a two-phase dragon.">
 <meta name="theme-color" content="#0e0b10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -23,7 +23,7 @@
 body{margin:0;-webkit-tap-highlight-color:transparent}
 button{touch-action:manipulation}
 [hidden]{display:none!important}
-/* Layout: a full-screen console frame; battle view on top, FF-style command and party windows below, all scaled to the screen */
+/* Layout: a full-screen console frame; battle view on top, classic command and party windows below, all scaled to the screen */
 :root{
   --bg:#0e0b10; --panel:#16111a; --panel-2:#221a27; --line:#4d3828; --line-hi:#b9824a;
   --text:#efe5d3; --muted:#9b8d80; --dim:#5f554d; --gold:#f2b544;
@@ -420,7 +420,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.47.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Ember Wyrm <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.48.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Ember%20Wyrm" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -430,19 +430,19 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <p>When a hero's gold gauge fills, their menu opens. Tap any glowing name to switch who acts. <b>Wait</b> pauses the gauges while you choose; <b>Active</b> doesn't.</p>
     <p>The <b>back row</b> halves physical damage dealt and taken. Magic ignores rows.</p>
     <p><b>Options</b>: open the menu (Party) and choose <b>Options</b> to switch between manual and auto battle, pick the auto strategy, choose which heroes fight on auto and their habits, set Wait or Active, turn random encounters and the mini map on or off, and switch between the Classic and Touch interfaces. Your battle settings are remembered.</p>
-    <p><b>Touch view</b>: the game starts in touch view, which hides the menus and fills the screen with the game (switch to Classic in Options or the action ring). Hold anywhere on the left side and drag to walk with the thumb stick; tap the right side for a ring of actions (Party, Journal and whatever you can do where you are, plus Full screen, Help and <b>Classic view</b> to switch back). In battle, the hero whose turn it is gets a ring of commands (or just tap an enemy to Fight it); Magic, Skill and Item lists open as a second ring around the hero (two loops when long, with More › to page); to pick who a spell or item is for, just tap that enemy or hero. With a single-target attack spell, triple-tap empty space to spread it across every enemy, splitting the damage between them. Tap another glowing hero to switch who acts; Wait/Active and Auto are in the top-right corner. Bars under each hero show HP (green), MP (blue), Limit (pink) and the turn gauge (gold).</p>
-    <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Limit command appears.</p>
+    <p><b>Touch view</b>: the game starts in touch view, which hides the menus and fills the screen with the game (switch to Classic in Options or the action ring). Hold anywhere on the left side and drag to walk with the thumb stick; tap the right side for a ring of actions (Party, Journal and whatever you can do where you are, plus Full screen, Help and <b>Classic view</b> to switch back). In battle, the hero whose turn it is gets a ring of commands (or just tap an enemy to Fight it); Magic, Skill and Item lists open as a second ring around the hero (two loops when long, with More › to page); to pick who a spell or item is for, just tap that enemy or hero. With a single-target attack spell, triple-tap empty space to spread it across every enemy, splitting the damage between them. Tap another glowing hero to switch who acts; Wait/Active and Auto are in the top-right corner. Bars under each hero show HP (green), MP (blue), Fury (pink) and the turn gauge (gold).</p>
+    <p>The <b>pink bar</b> is the limit gauge. It fills as a hero takes damage; when full, a Fury command appears.</p>
     <p>After the wyrm falls, the <b>world map</b> opens. Walk with the arrow keys or WASD, or press and hold on the map. Random battles happen as you walk; <b>Camp</b> restores HP and MP, and <b>Run</b> escapes most fights.</p>
 <p><b>Frostfang Peak</b>: a cave in the great mountain range leads up three floors to the summit, where Frostfang, the Rime Wyrm, waits. Glowing <b>save circles</b> are safe spots: they save your progress, let you pitch a Tent, and are where you wake if the party falls. Help the miner, the stranded climber and the hermit on the way up.</p>
 <p><b>The hidden valley</b>: high in the island’s great mountain range lies a valley no road can reach. Fly the Aurora there to find Castle Arcanum and the village of Highmere, with the strongest spells, items and gear in the realm. The magi can raise the lost <b>Isle of Aether</b>, but a wall of storm clouds surrounds it and hurls back the airship. King Aldous can build you a port east of his castle: walk out along the pier to board the ship. On the main island she can only tie up at that pier; on the isle she can land on any beach. The <b>Tower of Aether</b> has a hundred floors, guardians on floors 25, 50 and 75, waystones every tenth floor (tap one three times until it blazes purple to return to the first floor), and Zephyrion the Sky Wyrm at the top.</p>
-<p><b>Day and night</b>: a day passes in about six minutes. The icon in the top-left corner shows the sun by day, the moon and its phase by night (a 15-day cycle), and the weather; tap it for details. Weather drifts between clear, cloudy, rain and storms, with cloud shadows sweeping the ground. At night every area’s monsters are replaced by night forms about twice as tough, and new night-only creatures prowl: wraiths, gargoyles, moon moths and big cats (panthers, tigers, lions, lynxes, sabertooths and jaguars). Night monsters have MP and cast spells like Fire, Blizzard, Drain, Poison and Cure; once their MP is gone they can only fight, and Osmose drains it. Rain brings Rain Toads, storms bring Thunderbirds, and Thornhares sleep at night. Every other full moon rises as a <b>Blood Moon</b> (the first on day 9, then every 30 days): zombies, ghouls and Zombie Knights swarm the wilds, Valemont’s gate and Thornwick’s gates shut until dawn, and the magi of Arcanum hold a holy barrier over their valley. In the week before, any king offers the Blood Moon Hunt: slay 5, 15, 30 or 50 of the dead for rising rewards. Inns, beds, tents and bunks let you sleep until morning or until nightfall, but no one sleeps under a Blood Moon. Shops close at dusk (19:00) and open at dawn (6:00), and townsfolk head home for the night. Monsters attack ships at sea: sea serpents, giant crabs, harpies and sahagin by day; krakens, ghost pirates, abyssal anglers and sirens by night. They’re manageable near the Eastern Port pier and grow far deadlier the farther out you sail. Fish bite more in the rain and around the full moon. Thieves’ guild doormen want the secret sign every time; get it wrong and you’re thrown out. <b>The far isles</b>: sail to <b>Coralhaven</b> on the Coral Reach (southwest) or <b>Stormhaven</b> on the Storm Isles (northeast), where the ship can land on any beach. Coralhaven sits on the east shore of its isle, beside its own pier: steer into the pier to tie up, and the town gate is just ashore. Each town has weapon, armor, item and magic shops, an inn, a guild board and a hidden thieves’ guild. The monsters there are the deadliest in the realm. <b>Maelstrom</b>, the Water Wyrm, sleeps in a whirlpool in the southeast sea; sail into it to fight. Until it falls, a wall of seawater seals the Tower of Aether. <b>Seasons</b>: every three moons (45 days) the season turns: Fall, Winter, Spring, Summer. Winter brings snow instead of rain. <b>The Homestead</b>, a few leagues north of Castle Valemont, is yours to farm: stand on a plot to till, plant, water and harvest (or work the whole field at once). Crops grow only on days they’re watered or it rains, each has its season, and out-of-season crops wither. Old Hob sells seeds, animals and buildings (coop, barn, well, scarecrow, more fields, greenhouse, greenhouse well). Step into the farmhouse to rest and decorate: browse the catalog, mail an order from the red mailbox, and the furniture arrives in boxes by the door the next morning. Carry them in, then face a spot and choose Place furniture, or let Auto-arrange lay everything out. The Journal’s Homestead tab tracks harvest dates, animals, earnings and more. Walk into the greenhouse to farm its 288 beds, where any seed grows in any season and nothing withers; drop produce, eggs, milk and wool in the shipping bin to sell. <b>Rows</b>: in the main menu, double-tap a hero to move them between the front row (portrait on the left) and the back row (portrait shifted right). Back-row heroes take and deal half physical damage; in battle, use the Row command. <b>Class advancement</b>: at level 20, once the Hill Ogre is slain, King Aldous offers Garrick the Oath of Light, a trial against the Black Knight, to become a <b>Paladin</b>. Once the isle is raised, Queen Elowen of Arcanum holds the Rite of Mastery: Senna becomes a <b>Master Summoner</b> (Bahamut, level 20). Trials can’t hurt you: win or lose, the party is restored. Ilse is called instead: once she knows Curaga and reaches level 20, stay a night at the Coralhaven inn. She wakes alone in the town’s new church, the Chapel of the Tide (its tabernacle stands behind the altar, its red sanctuary lamp always lit; by day a line waits in the back pew for the confessional, and touching the holy water font beside the door fully restores the party; Our Lady’s statue stands in a rose garden outside), where the Seraph of the Tide explains a White Wizard’s duties and asks her five questions of conscience. Answer as a true healer would and she becomes a <b>White Wizard</b> (Benediction); miss one and she wakes at the inn, free to try again another night. Morrow becomes a <b>Black Wizard</b> another way: fly the airship over the chasm near Stormhaven and choose <b>Descend</b> to land in <b>Gloamhollow</b>, an underground city of black wizards with hat-shaped houses (and no thieves’ guild). Its shops sell wood weapons, cloth armor, and two spells any magic user can learn: <b>Osmose</b> (drain MP from an enemy) and <b>Wall</b> (each ally reflects the next three spells back at the caster). Only magic users may pass the Gate of the Depths, wearing no metal armor (crowns and helms included); Garrick and Vesh wait in town. The Depths run twenty floors, each harder than the last, with rune circles every five floors to return to town. Three <b>Economizer</b> rings lie in chests on floors 6, 12 and 18: with one on, every spell costs 1 MP. <b>King Nocturne</b> waits on floor 20, nearly all spells and very hard to beat; Wall is the key. Beat him and Morrow becomes a Black Wizard (Ultima), and you win the Night King’s Hat. Each promotion brings new gear, stronger stats and a signature skill: Holy Blade and Lay on Hands, Benediction, Ultima or Alexander. Vesh wears a ninja outfit once he becomes a Ninja. The <b>Journal</b> keeps your stats, a bestiary, items collected and used, the Fish Book and your own notes. <b>Save</b> holds three games: save to any slot, load one, or start a new game in an empty slot. The game also saves itself to the slot you’re playing. On the world map, <b>Full view</b> hides the menus and zooms the map out (2×, 3× or 1.5×) so you see more of the world while you travel. Aboard the Aurora, choose <b>Explore the ship</b> to walk her decks: bunks below restore HP and MP, Quartermaster Hilde runs a shop, and the training room’s <b>Battle Simulator</b> lets you practice against any creature you’ve fought. Simulations give no EXP, gil or items, and the party is always restored to how it started, win or lose. Take the helm to fly on. Rest at an inn after dark and Vesh can slip out alone. At night he can’t leave town, but he can pick locks (tap when the pick is in the gold), sneak through sleeping houses, and steal goods to sell to the hidden <b>thieves’ guild</b> in every town (look for a trapdoor at night). Walking near sleepers wakes them; guards with lanterns catch anyone who gets too close. Guild masters give quests, the trainer teaches new battle skills, and the last quest makes Vesh a <b>Ninja</b>.</p>
+<p><b>Day and night</b>: a day passes in about six minutes. The icon in the top-left corner shows the sun by day, the moon and its phase by night (a 15-day cycle), and the weather; tap it for details. Weather drifts between clear, cloudy, rain and storms, with cloud shadows sweeping the ground. At night every area’s monsters are replaced by night forms about twice as tough, and new night-only creatures prowl: wraiths, gargoyles, moon moths and big cats (panthers, tigers, lions, lynxes, sabertooths and jaguars). Night monsters have MP and cast spells like Flame, Frost, Drain, Poison and Mend; once their MP is gone they can only fight, and Mana Siphon drains it. Rain brings Rain Toads, storms bring Thunderbirds, and Thornhares sleep at night. Every other full moon rises as a <b>Blood Moon</b> (the first on day 9, then every 30 days): zombies, ghouls and Zombie Knights swarm the wilds, Valemont’s gate and Thornwick’s gates shut until dawn, and the magi of Arcanum hold a holy barrier over their valley. In the week before, any king offers the Blood Moon Hunt: slay 5, 15, 30 or 50 of the dead for rising rewards. Inns, beds, tents and bunks let you sleep until morning or until nightfall, but no one sleeps under a Blood Moon. Shops close at dusk (19:00) and open at dawn (6:00), and townsfolk head home for the night. Monsters attack ships at sea: sea serpents, giant crabs, harpies and sahagin by day; krakens, ghost pirates, abyssal anglers and sirens by night. They’re manageable near the Eastern Port pier and grow far deadlier the farther out you sail. Fish bite more in the rain and around the full moon. Thieves’ guild doormen want the secret sign every time; get it wrong and you’re thrown out. <b>The far isles</b>: sail to <b>Coralhaven</b> on the Coral Reach (southwest) or <b>Stormhaven</b> on the Storm Isles (northeast), where the ship can land on any beach. Coralhaven sits on the east shore of its isle, beside its own pier: steer into the pier to tie up, and the town gate is just ashore. Each town has weapon, armor, item and magic shops, an inn, a guild board and a hidden thieves’ guild. The monsters there are the deadliest in the realm. <b>Maelstrom</b>, the Water Wyrm, sleeps in a whirlpool in the southeast sea; sail into it to fight. Until it falls, a wall of seawater seals the Tower of Aether. <b>Seasons</b>: every three moons (45 days) the season turns: Fall, Winter, Spring, Summer. Winter brings snow instead of rain. <b>The Homestead</b>, a few leagues north of Castle Valemont, is yours to farm: stand on a plot to till, plant, water and harvest (or work the whole field at once). Crops grow only on days they’re watered or it rains, each has its season, and out-of-season crops wither. Old Hob sells seeds, animals and buildings (coop, barn, well, scarecrow, more fields, greenhouse, greenhouse well). Step into the farmhouse to rest and decorate: browse the catalog, mail an order from the red mailbox, and the furniture arrives in boxes by the door the next morning. Carry them in, then face a spot and choose Place furniture, or let Auto-arrange lay everything out. The Journal’s Homestead tab tracks harvest dates, animals, earnings and more. Walk into the greenhouse to farm its 288 beds, where any seed grows in any season and nothing withers; drop produce, eggs, milk and wool in the shipping bin to sell. <b>Rows</b>: in the main menu, double-tap a hero to move them between the front row (portrait on the left) and the back row (portrait shifted right). Back-row heroes take and deal half physical damage; in battle, use the Row command. <b>Class advancement</b>: at level 20, once the Hill Ogre is slain, King Aldous offers Garrick the Oath of Light, a trial against the Black Knight, to become a <b>Paladin</b>. Once the isle is raised, Queen Elowen of Arcanum holds the Rite of Mastery: Senna becomes a <b>Master Summoner</b> (Drakonis, level 20). Trials can’t hurt you: win or lose, the party is restored. Ilse is called instead: once she knows Grand Mend and reaches level 20, stay a night at the Coralhaven inn. She wakes alone in the town’s new church, the Chapel of the Tide (its tabernacle stands behind the altar, its red sanctuary lamp always lit; by day a line waits in the back pew for the confessional, and touching the holy water font beside the door fully restores the party; Our Lady’s statue stands in a rose garden outside), where the Seraph of the Tide explains a High Cleric’s duties and asks her five questions of conscience. Answer as a true healer would and she becomes a <b>High Cleric</b> (Benediction); miss one and she wakes at the inn, free to try again another night. Morrow becomes a <b>Archmage</b> another way: fly the airship over the chasm near Stormhaven and choose <b>Descend</b> to land in <b>Gloamhollow</b>, an underground city of sorcerers with hat-shaped houses (and no thieves’ guild). Its shops sell wood weapons, cloth armor, and two spells any magic user can learn: <b>Mana Siphon</b> (drain MP from an enemy) and <b>Wall</b> (each ally reflects the next three spells back at the caster). Only magic users may pass the Gate of the Depths, wearing no metal armor (crowns and helms included); Garrick and Vesh wait in town. The Depths run twenty floors, each harder than the last, with rune circles every five floors to return to town. Three <b>Thrift Ring</b> rings lie in chests on floors 6, 12 and 18: with one on, every spell costs 1 MP. <b>King Nocturne</b> waits on floor 20, nearly all spells and very hard to beat; Wall is the key. Beat him and Morrow becomes a Archmage (Oblivion), and you win the Night King’s Hat. Each promotion brings new gear, stronger stats and a signature skill: Holy Blade and Lay on Hands, Benediction, Oblivion or Bastion. Vesh wears a ninja outfit once he becomes a Ninja. The <b>Journal</b> keeps your stats, a bestiary, items collected and used, the Fish Book and your own notes. <b>Save</b> holds three games: save to any slot, load one, or start a new game in an empty slot. The game also saves itself to the slot you’re playing. On the world map, <b>Full view</b> hides the menus and zooms the map out (2×, 3× or 1.5×) so you see more of the world while you travel. Aboard the Aurora, choose <b>Explore the ship</b> to walk her decks: bunks below restore HP and MP, Quartermaster Hilde runs a shop, and the training room’s <b>Battle Simulator</b> lets you practice against any creature you’ve fought. Simulations give no EXP, gold or items, and the party is always restored to how it started, win or lose. Take the helm to fly on. Rest at an inn after dark and Vesh can slip out alone. At night he can’t leave town, but he can pick locks (tap when the pick is in the gold), sneak through sleeping houses, and steal goods to sell to the hidden <b>thieves’ guild</b> in every town (look for a trapdoor at night). Walking near sleepers wakes them; guards with lanterns catch anyone who gets too close. Guild masters give quests, the trainer teaches new battle skills, and the last quest makes Vesh a <b>Ninja</b>.</p>
 <p><b>Fishing</b>: while sailing, schools of fish ripple on the water. Sail up to one and choose <b>Fish</b>. Tap the water to cast, hold <b>Reel</b> to work the lure, keep still while a fish nibbles, then tap <b>HOOK!</b> the moment it bites. While landing it, watch the line: ease off when the fish thrashes or the line snaps. Snag chests on the seabed for treasure, including magic armor found nowhere else. Old Gill at the Adventurers’ Guild buys your catch, and the <b>Fish Book</b> logs every kind with its largest size and date.</p>
-<p><b>Status ailments</b>: some monsters poison (HP drains over time, even while walking), petrify (the hero is out of the fight until cured) or confuse (the hero attacks at random). Cure them with Antidotes, Gold Needles, Remedies, or the <b>Heal</b> spell. Confusion wears off when a battle ends; poison and stone last until cured, or until you rest at an inn or camp. Open <b>Party</b> outside battle to cast healing magic (Cure, Heal, Revive, Exit and more) and use items. A <b>Ribbon</b> blocks them all. <b>Exit</b> warps the party out of any dungeon, castle or town to the world map. In Ironhold, the <b>Rune Hall</b> sells Firaga, Bio and the summons Ifrit, Titan and Bahamut, and the <b>Training Hall</b> teaches the Fighter monk arts and the Thief new tricks.</p>
+<p><b>Status ailments</b>: some monsters poison (HP drains over time, even while walking), petrify (the hero is out of the fight until cured) or confuse (the hero attacks at random). Cure them with Antidotes, Stonebalm, Remedies, or the <b>Heal</b> spell. Confusion wears off when a battle ends; poison and stone last until cured, or until you rest at an inn or camp. Open <b>Party</b> outside battle to cast healing magic (Mend, Heal, Revive, Exit and more) and use items. A <b>Warding Sash</b> blocks them all. <b>Exit</b> warps the party out of any dungeon, castle or town to the world map. In Ironhold, the <b>Rune Hall</b> sells Firestorm, Blight and the summons Pyralis, Gaian and Drakonis, and the <b>Training Hall</b> teaches the Fighter monk arts and the Thief new tricks.</p>
 <p><b>Deepdelve Mine</b>: on the northern cape, sealed until you finish King Aldous’s Hill Ogre quest and defeat Frostfang. Then a mine shaft drops five levels to Ironhold, the dwarf city. Each level has a lift near its entrance that runs to any level you’ve already reached. Read the old tablets on the Sky Road, slay Gravemaw the Earth Wyrm to free the trapped dwarves, and their King and Queen can blast free the airship <b>Aurora</b>. Walk aboard to fly anywhere on the world map with no random battles; choose <b>Land</b> to set down on open ground.</p>
 <p><b>Castle Valemont</b>: walk in to meet the King and Queen, rest in the guest rooms, raid the armory, and earn your way into the royal vault. Walk into people to talk to them.</p>
 <p><b>Auto</b> hands chosen heroes to the AI with a strategy you pick.</p>
     <p>Keyboard: arrows to move, Enter to choose, Esc to go back.</p>
-    <p><b>Towns</b>: walk into Valemont Village (inside the castle walls, on both sides of the road) or Thornwick. Walk around, talk to townsfolk, and walk into shop doors to shop or rest at the inn. The <b>Adventurers&rsquo; Guild</b> in Valemont Village posts bounties for gil, EXP and gear. Monsters give EXP and Gil, and heroes level up as they fight. Progress saves automatically once the wyrm falls.</p>
+    <p><b>Towns</b>: walk into Valemont Village (inside the castle walls, on both sides of the road) or Thornwick. Walk around, talk to townsfolk, and walk into shop doors to shop or rest at the inn. The <b>Adventurers&rsquo; Guild</b> in Valemont Village posts bounties for gold, EXP and gear. Monsters give EXP and Gold, and heroes level up as they fight. Progress saves automatically once the wyrm falls.</p>
 <div class="arow"><button class="btn ghost" id="newGameBtn" type="button">Start a new game</button><button class="btn" id="helpClose" type="button">Back to the game</button></div>
   </div>
 </div>
@@ -494,7 +494,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <p class="lab">Strategy</p>
     <div class="strats" id="stratList"></div>
     <p class="lab">Heroes on auto &middot; habit</p>
-    <p class="tip">A habit overrides the strategy whenever it can be used, using the strongest version of a spell the hero has learned. New spells appear here once bought. Full limit breaks still fire.</p>
+    <p class="tip">A habit overrides the strategy whenever it can be used, using the strongest version of a spell the hero has learned. New spells appear here once bought. Full fury still fire.</p>
     <div class="awho" id="autoWho"></div>
     <div class="arow">
       <button class="btn ghost" id="autoOff" type="button">Manual control</button>
@@ -552,7 +552,7 @@ const SPR={
   "...dd..dd...",
   "...dd..dd...",
   "..kkk.kkk..."]},
- white:{pal:{h:'#f2efe6',r:'#c8323c',s:'#eabf98',e:'#1b1012',b:'#e9e4d8',d:'#b9b1a0',w:'#c9a24a',k:'#7a5434'},map:[
+ white:{pal:{h:'#f2efe6',r:'#3a6ac8',s:'#eabf98',e:'#1b1012',b:'#e9e4d8',d:'#b9b1a0',w:'#c9a24a',k:'#7a5434'},map:[
   "....hhhh....",
   "...hhhhhh...",
   "..hhrhhhhh..",
@@ -567,15 +567,15 @@ const SPR={
   "..rbbbbbbr..",
   "..rrrrrrrr..",
   "..kk...kk..."]},
- black:{pal:{h:'#3b2b63',H:'#251a42',d:'#09070d',y:'#ffd23a',b:'#3f4596',B:'#2a2f6e',w:'#8a5a2b',s:'#09070d',k:'#5b3b24'},map:[
+ black:{pal:{h:'#2e4a3a',H:'#1c2e24',d:'#09070d',y:'#ffd23a',f:'#e8c49a',e:'#1b1012',g:'#c8c8d0',b:'#7a2a2a',B:'#4e1a1a',w:'#8a5a2b',s:'#e8c49a',k:'#3b2b1e'},map:[
   ".....H......",
   "....hH......",
   "....hhH.....",
   "...hhhhH....",
   "...hhhhhH...",
   ".hhhhhhhhhH.",
-  "...ydydd....",
-  "...dddd.....",
+  "...fefff....",
+  "...gggg.....",
   "w.bbbbbbb...",
   "w.bbbbbbbB..",
   "wsbbbbbbbbs.",
@@ -613,40 +613,40 @@ function drawSprite(c,spr,x,y,o){
 const CL={
  fighter:{name:'Garrick',cls:'Fighter',hp:1480,mp:0,spd:9,str:64,mag:8,phys:.8,spLabel:'Arts',skills:['rage','guard']},
  thief:{name:'Vesh',cls:'Thief',hp:1040,mp:0,spd:15,str:40,mag:10,spLabel:'Tricks',skills:['steal','mug']},
- white:{name:'Ilse',cls:'White Mage',hp:880,mp:200,spd:8,str:18,mag:56,spLabel:'White Magic',skills:['cure','cureall','protect','revive']},
- black:{name:'Morrow',cls:'Black Mage',hp:790,mp:130,spd:8,str:16,mag:72,spLabel:'Black Magic',skills:['flame','frost','thunder']},
+ white:{name:'Ilse',cls:'Cleric',hp:880,mp:200,spd:8,str:18,mag:56,spLabel:'White Magic',skills:['cure','cureall','protect','revive']},
+ black:{name:'Morrow',cls:'Sorcerer',hp:790,mp:130,spd:8,str:16,mag:72,spLabel:'Black Magic',skills:['flame','frost','thunder']},
  summoner:{name:'Senna',cls:'Summoner',hp:840,mp:230,spd:7,str:20,mag:64,spLabel:'Summon',skills:['undine','sylph','golem']}
 };
 const SK={
  rage:{name:'Rage Strike',mp:0,t:'enemy',d:'Heavy blow, costs 10% HP'},
  guard:{name:'Guard',mp:0,t:'self',d:'Take hits meant for allies'},
  steal:{name:'Steal',mp:0,t:'enemy',d:'Lift an item from the wyrm'},
- mug:{name:'Mug',mp:0,t:'enemy',d:'Strike and grab at once'},
- cure:{name:'Cure',mp:10,t:'ally',d:'Heal one ally'},
- cureall:{name:'Cure All',mp:28,t:'party',d:'Heal the whole party'},
- protect:{name:'Protect',mp:16,t:'ally',d:'Cut damage taken for a while'},
- shell:{name:'Shell',mp:16,t:'ally',d:'Cut magic damage taken for a while'},
- regen:{name:'Regen',mp:22,t:'ally',d:'Slowly restore HP for a while'},
+ mug:{name:'Plunder',mp:0,t:'enemy',d:'Strike and grab at once'},
+ cure:{name:'Mend',mp:10,t:'ally',d:'Heal one ally'},
+ cureall:{name:'Mend All',mp:28,t:'party',d:'Heal the whole party'},
+ protect:{name:'Bulwark',mp:16,t:'ally',d:'Cut damage taken for a while'},
+ shell:{name:'Spellguard',mp:16,t:'ally',d:'Cut magic damage taken for a while'},
+ regen:{name:'Renew',mp:22,t:'ally',d:'Slowly restore HP for a while'},
  revive:{name:'Revive',mp:32,t:'ko',d:'Raise a fallen ally'},
  flame:{name:'Flame',mp:10,t:'enemy',d:'Fire damage'},
  frost:{name:'Frost',mp:18,t:'enemy',d:'Ice damage'},
  thunder:{name:'Thunder',mp:12,t:'enemy',d:'Lightning damage'},
  undine:{name:'Undine',mp:56,t:'enemy',d:'Tidal Surge, water damage'},
- sylph:{name:'Sylph',mp:44,t:'party',d:'Cure, Haste, Shell and Regen for all'},
- golem:{name:'Golem',mp:40,t:'party',d:'Earthen Wall: Protect all'},
- cura:{name:'Cura',mp:22,t:'ally',d:'Heal one ally greatly'},
- holy:{name:'Holy',mp:40,t:'enemy',d:'Searing holy light'},
- fira:{name:'Fira',mp:28,t:'enemy',d:'Strong fire damage'},
- blizzara:{name:'Blizzara',mp:28,t:'enemy',d:'Strong ice damage'},
- thundara:{name:'Thundara',mp:28,t:'enemy',d:'Strong lightning damage'},
+ sylph:{name:'Sylph',mp:44,t:'party',d:'Mend, Haste, Spellguard and Renew for all'},
+ golem:{name:'Golem',mp:40,t:'party',d:'Earthen Wall: Bulwark all'},
+ cura:{name:'Greater Mend',mp:22,t:'ally',d:'Heal one ally greatly'},
+ holy:{name:'Radiance',mp:40,t:'enemy',d:'Searing holy light'},
+ fira:{name:'Blaze',mp:28,t:'enemy',d:'Strong fire damage'},
+ blizzara:{name:'Hailstorm',mp:28,t:'enemy',d:'Strong ice damage'},
+ thundara:{name:'Thunderbolt',mp:28,t:'enemy',d:'Strong lightning damage'},
  glacia:{name:'Glacia',mp:60,t:'enemy',d:'Frozen Gale: heavy ice damage'},
  raijin:{name:'Raijin',mp:60,t:'enemy',d:'Storm Drum: heavy thunder damage'}
 };
 const ITEMS={
  potion:{name:'Potion',t:'ally',d:'Restore 500 HP'},
- hipotion:{name:'Hi-Potion',t:'ally',d:'Restore 1500 HP'},
- ether:{name:'Ether',t:'mp',d:'Restore 60 MP'},
- feather:{name:'Phoenix Feather',t:'ko',d:'Revive with 30% HP'},
+ hipotion:{name:'Greater Potion',t:'ally',d:'Restore 1500 HP'},
+ ether:{name:'Mana Tonic',t:'mp',d:'Restore 60 MP'},
+ feather:{name:'Life Feather',t:'ko',d:'Revive with 30% HP'},
  elixir:{name:'Elixir',t:'ally',d:'Fully restore HP and MP'},
  tent:{name:'Tent',t:'camp',d:'Camp on the world map to restore all HP and MP'}
 };
@@ -656,9 +656,9 @@ const homeX=h=>(h.row==='front'?192:216)+(h.i%2)*8;
 const LB={
  fighter:{name:'Meteor Cleave',d:'Leap and cleave for massive damage'},
  thief:{name:'Shadow Flurry',d:'Six quick strikes and a sure steal'},
- white:{name:"Seraph's Grace",d:'Revive, fully heal and Protect all'},
+ white:{name:"Seraph's Grace",d:'Revive, fully heal and Bulwark all'},
  black:{name:'Nova',d:'Overwhelming non-elemental blast'},
- summoner:{name:'Leviathan',d:'Abyssal Wave: huge water damage'}
+ summoner:{name:'Thalassa',d:'Abyssal Wave: huge water damage'}
 };
 
 let S=null, kb=false;
@@ -813,7 +813,7 @@ function hurt(h,n,type,elem){
   if(h.confuse&&h.hp>0&&(type==='phys'||type==='pierce')&&Math.random()<.5){h.confuse=false;pop(h.x,h.y-22,'Snapped out','lbl');}
   if(h.hp===0){knockOut(h);for(const a of alive())gainLimit(a,12);}else gainLimit(h,v/h.maxhp*95);
 }
-function gainLimit(h,n){if(h.ko||h.limit>=100)return;h.limit=Math.min(100,h.limit+n);if(h.limit>=100){pop(h.x,h.y-22,'Limit!','lim');say(`${h.name}'s limit gauge is full!`);if(S.menu&&S.menu.hero===h&&S.menu.view==='root')renderMenu(true);}}
+function gainLimit(h,n){if(h.ko||h.limit>=100)return;h.limit=Math.min(100,h.limit+n);if(h.limit>=100){pop(h.x,h.y-22,'Fury!','lim');say(`${h.name}'s limit gauge is full!`);if(S.menu&&S.menu.hero===h&&S.menu.view==='root')renderMenu(true);}}
 function knockOut(h){h.ko=true;h.poison=h.stone=h.confuse=false;h.hp=0;h.atb=0;h.ready=false;h.queued=false;h.defend=h.guard=false;h.protect=0;h.haste=0;h.shell=0;h.regen=0;h.cast=null;
   S.readyQ=S.readyQ.filter(x=>x!==h);S.actQ=S.actQ.filter(a=>a.actor!==h);if(S.menu&&S.menu.hero===h)S.menu=null;say(`${h.name} falls!`);renderMenu();}
 function heal(h,n){if(h.ko)return;const v=Math.min(Math.round(n),h.maxhp-h.hp);h.hp+=v;pop(h.x,h.y-12,Math.round(n),'heal');}
@@ -867,7 +867,7 @@ async function doLimit(h){
         c.globalAlpha=Math.sin(p*Math.PI)*.5;c.fillStyle='#ffffff';c.beginPath();c.arc(DX,DY,4+p*18,0,7);c.fill();c.globalAlpha=1;});
       flash('#ffffff',400);shake();hitDragon(h.mag*45*rnd(.95,1.05),null);
       for(let k=0;k<50;k++)part(DX,DY,{vx:rnd(-120,120),vy:rnd(-120,120),life:rnd(.3,.8),c:pick(['#ffffff','#b48cff','#bfefff'])});await sleep(400);break;}
-    case 'summoner':{await summonIntro('#3f86d0');banner('Leviathan · Abyssal Wave');shake();
+    case 'summoner':{await summonIntro('#3f86d0');banner('Thalassa · Abyssal Wave');shake();
       await addFx(1400,(c,p)=>{const lvl=H-Math.sin(p*Math.PI)*110;c.fillStyle='rgba(20,70,150,.7)';c.fillRect(0,lvl,170,H-lvl);
         c.fillStyle='rgba(140,200,255,.8)';for(let x=0;x<170;x+=3)c.fillRect(x,Math.round(lvl+Math.sin(x*.15+p*18)*2),2,1);
         c.strokeStyle='#2f6fb8';c.lineWidth=5;c.beginPath();for(let x=-20;x<=190;x+=6){const y=lvl-10+Math.sin(x*.06+p*9)*14;x===-20?c.moveTo(x,y):c.lineTo(x,y);}c.stroke();c.lineWidth=1;
@@ -912,9 +912,9 @@ async function doHero(h,kind,id,tg){
     case 'mug':{await stepIn(h,18);slashFx(DX+4,DY,'#ffffff');await sleep(100);strike(h,1);if(S.dragon.steals>0)trySteal(h,.45);await sleep(250);await stepOut(h,18);break;}
     case 'cure':{await castPose(h,'#9df29a');healFx(tg);heal(tg,h.mag*15*rnd(.95,1.05));await sleep(450);break;}
     case 'cureall':{await castPose(h,'#9df29a');for(const a of alive()){healFx(a);heal(a,h.mag*9*rnd(.95,1.05));}await sleep(500);break;}
-    case 'protect':{await castPose(h,'#86b4f2');protectFx(tg);tg.protect=30;pop(tg.x,tg.y-12,'Protect','lbl');await sleep(450);break;}
-    case 'shell':{await castPose(h,'#86b4f2');shellFx(tg);tg.shell=30;pop(tg.x,tg.y-12,'Shell','mpp');await sleep(450);break;}
-    case 'regen':{await castPose(h,'#9df29a');healFx(tg);tg.regen=30;tg.rtick=0;pop(tg.x,tg.y-12,'Regen','heal');await sleep(450);break;}
+    case 'protect':{await castPose(h,'#86b4f2');protectFx(tg);tg.protect=30;pop(tg.x,tg.y-12,'Bulwark','lbl');await sleep(450);break;}
+    case 'shell':{await castPose(h,'#86b4f2');shellFx(tg);tg.shell=30;pop(tg.x,tg.y-12,'Spellguard','mpp');await sleep(450);break;}
+    case 'regen':{await castPose(h,'#9df29a');healFx(tg);tg.regen=30;tg.rtick=0;pop(tg.x,tg.y-12,'Renew','heal');await sleep(450);break;}
     case 'revive':{await castPose(h,'#ffffff');healFx(tg);revive(tg,.25);await sleep(450);break;}
     case 'flame':{await castPose(h,'#ff8a2a');await fireFx(DX,DY);hitDragon(h.mag*13*rnd(.92,1.08),'fire');await sleep(250);break;}
     case 'frost':{await castPose(h,'#9fe6ff');await frostFx(DX,DY);hitDragon(h.mag*13*rnd(.92,1.08),'ice');await sleep(300);break;}
@@ -932,12 +932,12 @@ async function doHero(h,kind,id,tg){
     case 'undine':{await castPose(h,'#6fb3ff',300);await summonIntro('#6fb3ff');banner('Undine · Tidal Surge');shake();
       await addFx(1150,(c,p)=>{const f=196-p*270;c.fillStyle='rgba(30,100,190,.6)';c.fillRect(f,40,64,104);c.fillStyle='rgba(120,190,255,.5)';c.fillRect(f,40,8,104);c.fillStyle='#dff3ff';for(let y=40;y<H;y+=4)c.fillRect(Math.round(f+Math.sin(y*.3+p*20)*3),y,3,2);if(Math.random()<.7)part(f,rnd(40,H),{vx:rnd(-40,10),vy:rnd(-40,0),life:.4,c:'#cfeaff'});});
       hitAll(h.mag*22,'water');await sleep(350);break;}
-    case 'sylph':{await castPose(h,'#9df29a',300);await summonIntro('#9df29a');banner('Sylph · Cure, Haste, Shell, Regen');
+    case 'sylph':{await castPose(h,'#9df29a',300);await summonIntro('#9df29a');banner('Sylph · Mend, Haste, Spellguard, Renew');
       await addFx(1000,(c,p)=>{for(let k=0;k<20;k++){const a=k*.9+p*10,x=212+Math.cos(a)*(10+k*.6),y=40+((k*13+p*150)%96);c.fillStyle=k%3?'#9df29a':'#e6ffd8';c.fillRect(x|0,y|0,2,1);}});
       for(const a of alive()){healFx(a);heal(a,h.mag*11*rnd(.95,1.05));}await sleep(350);
       for(const a of alive()){a.haste=30;pop(a.x+(a.mx||0),a.y+(a.my||0)-20,'Haste','lbl');for(let k=0;k<6;k++)part(a.x,a.y-6,{vx:rnd(-40,-10),vy:rnd(-8,8),life:.4,c:'#ffe14a',s:1});}await sleep(350);
-      for(const a of alive()){a.shell=30;pop(a.x+(a.mx||0),a.y+(a.my||0)-20,'Shell','mpp');shellFx(a);}await sleep(350);
-      for(const a of alive()){a.regen=30;a.rtick=0;pop(a.x+(a.mx||0),a.y+(a.my||0)-20,'Regen','heal');healFx(a);}await sleep(400);break;}
+      for(const a of alive()){a.shell=30;pop(a.x+(a.mx||0),a.y+(a.my||0)-20,'Spellguard','mpp');shellFx(a);}await sleep(350);
+      for(const a of alive()){a.regen=30;a.rtick=0;pop(a.x+(a.mx||0),a.y+(a.my||0)-20,'Renew','heal');healFx(a);}await sleep(400);break;}
     case 'golem':{await castPose(h,'#c9a074',300);await summonIntro('#c9a074');banner('Golem · Earthen Wall');shake();
       await addFx(1100,(c,p)=>{const k2=p<.6?p/.6:1-(p-.6)/.4;for(let k=0;k<5;k++){const x=188+(k%2)*6,by=60+k*18,hh=Math.round(17*k2);c.fillStyle='#6a5240';c.fillRect(x,by-hh,7,hh);c.fillStyle='#9a7e5e';c.fillRect(x,by-hh,7,2);}});
       for(const a of alive()){a.protect=30;protectFx(a);}say('Stone guards the party.');await sleep(300);break;}
@@ -1431,17 +1431,17 @@ const ALLC=['fighter','thief','white','black','summoner'],MAGES=['white','black'
 const GEAR={
  bronzesword:{name:'Bronze Sword',slot:'weapon',who:['fighter'],atk:6,price:100},
  ironsword:{name:'Iron Sword',slot:'weapon',who:['fighter'],atk:14,price:450},
- mythrilsword:{name:'Mythril Sword',slot:'weapon',who:['fighter'],atk:24,price:1500},
+ mythrilsword:{name:'Silversteel Sword',slot:'weapon',who:['fighter'],atk:24,price:1500},
  knightsword:{name:'Knight Sword',slot:'weapon',who:['fighter'],atk:36,str:3,price:4200},
  dagger:{name:'Dagger',slot:'weapon',who:['thief'],atk:4,price:80},
- mythrilknife:{name:'Mythril Knife',slot:'weapon',who:['thief','fighter'],atk:11,price:400},
+ mythrilknife:{name:'Silversteel Knife',slot:'weapon',who:['thief','fighter'],atk:11,price:400},
  maingauche:{name:'Main Gauche',slot:'weapon',who:['thief'],atk:18,def:4,price:1100},
  assassin:{name:'Assassin Dagger',slot:'weapon',who:['thief'],atk:27,spd:2,price:3200},
  staff:{name:'Staff',slot:'weapon',who:['white','summoner'],atk:2,mag:2,price:60},
- mythrilstaff:{name:'Mythril Staff',slot:'weapon',who:['white','summoner'],atk:5,mag:6,price:700},
+ mythrilstaff:{name:'Silversteel Staff',slot:'weapon',who:['white','summoner'],atk:5,mag:6,price:700},
  healstaff:{name:'Healing Staff',slot:'weapon',who:['white'],atk:7,mag:12,price:2400},
  rod:{name:'Rod',slot:'weapon',who:['black','summoner'],mag:3,price:60},
- mythrilrod:{name:'Mythril Rod',slot:'weapon',who:['black','summoner'],atk:2,mag:8,price:800},
+ mythrilrod:{name:'Silversteel Rod',slot:'weapon',who:['black','summoner'],atk:2,mag:8,price:800},
  flamerod:{name:'Flame Rod',slot:'weapon',who:['black'],atk:3,mag:14,price:2600},
  whip:{name:'Whip',slot:'weapon',who:['summoner'],atk:3,mag:1,price:70},
  chainwhip:{name:'Chain Whip',slot:'weapon',who:['summoner'],atk:10,mag:3,price:600},
@@ -1449,19 +1449,19 @@ const GEAR={
  bronzeshield:{name:'Bronze Shield',slot:'shield',who:['fighter'],def:4,price:90},
  buckler:{name:'Buckler',slot:'shield',who:['fighter','thief'],def:5,price:250},
  ironshield:{name:'Iron Shield',slot:'shield',who:['fighter'],def:8,price:350},
- mythrilshield:{name:'Mythril Shield',slot:'shield',who:['fighter','thief'],def:13,mdef:4,price:1300},
+ mythrilshield:{name:'Silversteel Shield',slot:'shield',who:['fighter','thief'],def:13,mdef:4,price:1300},
  leathercap:{name:'Leather Cap',slot:'head',who:ALLC,def:2,price:50},
  ironhelm:{name:'Iron Helm',slot:'head',who:['fighter'],def:6,price:400},
  bandana:{name:'Bandana',slot:'head',who:['thief','fighter'],def:4,spd:1,price:450},
  feathercap:{name:'Feather Cap',slot:'head',who:['thief','white','black','summoner'],def:3,mdef:5,price:450},
- mythrilhelm:{name:'Mythril Helm',slot:'head',who:['fighter'],def:10,mdef:3,price:1200},
+ mythrilhelm:{name:'Silversteel Helm',slot:'head',who:['fighter'],def:10,mdef:3,price:1200},
  wizardhat:{name:'Wizard Hat',slot:'head',who:MAGES,def:5,mdef:9,mag:3,price:1500},
  leatherarmor:{name:'Leather Armor',slot:'body',who:['fighter','thief'],def:6,price:120},
  cottonrobe:{name:'Cotton Robe',slot:'body',who:MAGES,def:3,mdef:4,price:100},
  ironarmor:{name:'Iron Armor',slot:'body',who:['fighter'],def:14,price:700},
  chainvest:{name:'Chain Vest',slot:'body',who:['thief','fighter'],def:11,spd:1,price:650},
  silkrobe:{name:'Silk Robe',slot:'body',who:MAGES,def:7,mdef:9,price:650},
- mythrilmail:{name:'Mythril Mail',slot:'body',who:['fighter'],def:24,mdef:5,price:2600},
+ mythrilmail:{name:'Silversteel Mail',slot:'body',who:['fighter'],def:24,mdef:5,price:2600},
  whiterobe:{name:'White Robe',slot:'body',who:['white'],def:10,mdef:15,mag:4,price:2000},
  blackrobe:{name:'Black Robe',slot:'body',who:['black'],def:10,mdef:15,mag:6,price:2000},
  sagerobe:{name:'Sage Robe',slot:'body',who:['summoner'],def:10,mdef:15,mag:5,price:2000},
@@ -1983,11 +1983,11 @@ const MAPS={
    {x:15,y:23,spr:'guard',talk:()=>['Gate guard: Welcome to Valemont Village. The castle road is just outside the gate.']},
    {x:18,y:23,spr:'guard',talk:()=>['Gate guard: Keep your weapons sheathed in town, and we’ll get along fine.']},
    {x:9,y:9,spr:'farmer',wander:[2,9,12,14],talk:()=>['Farmer: Thornhares got into my cabbages again. If you’re heading out, give ’em a scare for me.']},
-   {x:22,y:12,spr:'woman',wander:[21,9,31,14],talk:()=>['Villager: The Adventurers’ Guild posts bounties on its board. Good gil for good work!']},
+   {x:22,y:12,spr:'woman',wander:[21,9,31,14],talk:()=>['Villager: The Adventurers’ Guild posts bounties on its board. Good gold for good work!']},
    {x:15,y:9,spr:'kid',wander:[13,9,20,14],talk:()=>['Kid: Tag! You’re it! …Hey, come back!']},
    {x:18,y:14,spr:'kid2',wander:[13,9,20,14],talk:()=>['Kid: When I grow up I’m going to slay a wyrm too. A bigger one.']},
-   {x:5,y:21,spr:'elder',wander:[2,20,14,22],talk:()=>['Elder: Mythril is expensive, but it’s worth every gil. Ask the armor shop.']},
-   {x:25,y:21,spr:'woman2',wander:[19,20,31,22],talk:()=>['Innkeeper’s daughter: The inn is only 80 gil a night. Best beds this side of the castle!']},
+   {x:5,y:21,spr:'elder',wander:[2,20,14,22],talk:()=>['Elder: Silversteel is expensive, but it’s worth every gold. Ask the armor shop.']},
+   {x:25,y:21,spr:'woman2',wander:[19,20,31,22],talk:()=>['Innkeeper’s daughter: The inn is only 80 gold a night. Best beds this side of the castle!']},
    {x:24,y:8,spr:'adventurer',wander:[2,7,31,8],talk:()=>[S.flags.ogre?'Adventurer: You took down the Hill Ogre? The whole guild is talking about it.':'Adventurer: Hill Ogres roam the eastern hills. Don’t fight one under-leveled.']},
    {x:11,y:22,spr:'man',wander:[2,22,14,24],talk:()=>['Merchant: Business is good since the wyrm fell. Caravans run every week now.']}]},
  town:{id:'town',name:'Thornwick',w:24,h:18,entry:{x:12*CT,y:15*CT+8},hello:'Thornwick. Farmers wave from the fields.',leave:'Leave town',out:'You leave Thornwick behind.',
@@ -2128,7 +2128,7 @@ Object.assign(MON,{
   pal:{w:'#e8f8ff',b:'#a8d8f8',B:'#5a9ad8',e:'#3a5ab0'},
   map:["....ww....","...wbbw...","..wbwwbw..",".wbweewbw.",".wbwwwwbw.","..wbbbbw..","...wbbw...","..w.ww.w..",".w..ww..w.","....w....."]},
  golem:{name:'Rime Golem',hp:6200,exp:300,gil:220,spd:.8,scale:4,bg:'mtn',weak:['fire'],absorb:'ice',steals:1,steal:['hipotion','elixir'],drop:[{id:'hipotion',ch:.4}],
-  atk:[{name:'Ice Fist',lo:560,hi:660,w:3,col:'#bfefff'},{name:'Quake',lo:280,hi:340,w:1,all:true,col:'#a8b4c8'}],
+  atk:[{name:'Ice Fist',lo:560,hi:660,w:3,col:'#bfefff'},{name:'Tremor',lo:280,hi:340,w:1,all:true,col:'#a8b4c8'}],
   pal:{i:'#a8d8f8',I:'#5a8ab8',w:'#e8f8ff',e:'#3a5ab0'},
   map:["....IIIIII....","...IiiiiiiI...","...IieiieiI...","...IiiiiiiI...","..IIIiiiiIII..",".IiiiIiiIiiiI.","IiwiiIiiIiiwiI","Iii.IiiiiI.iiI","Ii..IiiiiI..iI","....IiiiiI....","...IiiI.IiiI..","...Iii...iiI..","..IIII...IIII."]},
  yeti:{name:'Mountain Yeti',hp:5200,exp:260,gil:200,spd:1.05,scale:4,bg:'mtn',weak:['fire'],absorb:null,steals:1,steal:['hipotion','ether'],drop:[{id:'hipotion',ch:.3}],
@@ -2160,7 +2160,7 @@ Object.assign(MAPS,{
   enc:[['harpy','harpy'],['crag'],['crag','wisp'],['wisp','wisp','wisp'],['harpy','crag']],
   npcs:[{x:16,y:17,spr:'miner',talk:()=>{const f=S.flags;
    if(f.pickDone)return['Brom: Back to work for me. Watch yourselves up top.'];
-   if(f.pick){f.pickDone=true;S.gil+=2000;S.items.hipotion=(S.items.hipotion||0)+3;saveGame();renderMenu();return['Brom: My lucky pickaxe! You found it!','Brom: Take this. Every gil I had stashed, and a few potions besides.','Received 2,000 G and 3 Hi-Potions!'];}
+   if(f.pick){f.pickDone=true;S.gil+=2000;S.items.hipotion=(S.items.hipotion||0)+3;saveGame();renderMenu();return['Brom: My lucky pickaxe! You found it!','Brom: Take this. Every gold I had stashed, and a few potions besides.','Received 2,000 G and 3 Greater Potions!'];}
    return['Brom: Thank the stars, travelers! I’m Brom. I mine these caves.','Brom: A Rime Golem chased me off the Icy Ledges and I dropped my lucky pickaxe up there.','Brom: Bring it back and I’ll make it worth your while.'];}}]},
  mt2:{id:'mt2',name:'Icy Ledges',dungeon:true,snow:true,w:30,h:22,entry:{x:17*CT+8,y:19*CT+8},hello:'The Icy Ledges. Wind howls across the snow.',
   build(){return mtGrid(MT2);},links:{'17,20':{to:'mt1',x:25,y:2},'14,1':{to:'mt3',x:19,y:14}},
@@ -2290,7 +2290,7 @@ Object.assign(MON,{
   pal:{F:'#c84a1a',f:'#ffb03a',e:'#1b1012',l:'#ff7a2a',o:'#5a2a1a'},
   map:["..ff............",".fFFf...........","fFeFFFFFFFFf....","FFFFFFFFFFFFFFf.","FFlFFFlFFFFlFFFf","ooooooooooooooo.","..o...o...o....."]},
  magmaworm:{name:'Magma Worm',hp:26000,exp:3500,gil:4000,spd:1.05,scale:4,big:true,boss:true,bg:'magma',weak:['ice','water'],absorb:'fire',steals:1,steal:['elixir'],drop:[],
-  atk:[{name:'Crushing Coil',lo:760,hi:880,w:3,col:'#ffffff'},{name:'Magma Breath',lo:420,hi:500,w:2,all:true,type:'mag',col:'#ff7a2a'},{name:'Quake',lo:380,hi:440,w:1,all:true,col:'#a8987a'}],
+  atk:[{name:'Crushing Coil',lo:760,hi:880,w:3,col:'#ffffff'},{name:'Magma Breath',lo:420,hi:500,w:2,all:true,type:'mag',col:'#ff7a2a'},{name:'Tremor',lo:380,hi:440,w:1,all:true,col:'#a8987a'}],
   pal:{W:'#5a160a',w:'#c8401a',e:'#ffd34a',t:'#ffffff',l:'#ffb03a'},
   map:["..WWWW..........",".WwwwwW.........","WweewwwW........","WwwwwwwWW.......","WtwtwwwwW.......",".WtWtWwwwW......","....WwwwwW......",".....WwwwwW.....","......WwwwwW....",".....WwlwwwW....","....WwwwlwwW....","..WWwwwwwwwWWW..",".WwwwwlwwwwwwwW.","WWWWWWWWWWWWWWWW"]}
 });
@@ -2429,7 +2429,7 @@ MAPS.ironhold={id:'ironhold',name:'Ironhold',dynamic:true,pal:DD_PAL.ironhold,w:
   {x:18,y:9,spr:'dwarfchief',talk:()=>{const f=S.flags;if(f.blasted)return['Forgemaster Brannoc: Did you see her fly? Straight up the old Sky Road!','Forgemaster Brannoc: The Aurora waits up top, beside Deepdelve Mine. Gorrim’s lift will take you up.'];
    if(!f.audience)return['Forgemaster Brannoc: You’re the ones who broke Gravemaw? Hammers and anvils, the whole city owes you!','Forgemaster Brannoc: King Durgan and Queen Sigrun are asking for you. The Royal Hall is the big red-roofed building, south of the plaza.'];
    showDialog(['Forgemaster Brannoc: Stand back, friends. Let’s wake her up!'],blastSequence);return null;}},
-  {x:6,y:14,spr:'dwarfsmith',wander:[2,14,13,15],talk:()=>['Smith Durra: Adamant takes a week at the forge to fold. Worth every gil, mind you.']},
+  {x:6,y:14,spr:'dwarfsmith',wander:[2,14,13,15],talk:()=>['Smith Durra: Adamant takes a week at the forge to fold. Worth every gold, mind you.']},
   {x:24,y:15,spr:'dwarf',wander:[20,14,31,15],talk:()=>[S.flags.blasted?'Miner: An airship! I never believed the old stories.':'Miner: Brannoc has stared at that rubble every day for forty years.']},
   {x:22,y:22,spr:'dwarf2',wander:[18,21,31,23],talk:()=>['Dwarf: Mind the forge pool. Lava doesn’t care how brave you are.']},
   {x:28,y:15,spr:'dwarfgirl',when:()=>!!S.flags.hildeDone,talk:()=>['Hilde: Home again, thanks to you! My pack is lost, but my head is still on my shoulders.']},
@@ -2460,19 +2460,19 @@ async function blastSequence(){
 Object.assign(SK,{
  heal:{name:'Heal',mp:12,t:'status',d:'Cure poison, stone and confusion'},
  exit:{name:'Exit',mp:20,t:'field',d:'Outside battle: warp out of any dungeon, castle or town to the world map'},
- firaga:{name:'Firaga',mp:52,t:'enemy',all:true,d:'Fire storm on every enemy'},
- blizzaga:{name:'Blizzaga',mp:52,t:'enemy',all:true,d:'Ice storm on every enemy'},
- thundaga:{name:'Thundaga',mp:52,t:'enemy',all:true,d:'Lightning storm on every enemy'},
- bio:{name:'Bio',mp:30,t:'enemy',d:'Toxic blast that poisons the target'},
- ifrit:{name:'Ifrit',mp:70,t:'enemy',all:true,d:'Hellfire: fire damage to all enemies'},
- titan:{name:'Titan',mp:66,t:'enemy',all:true,d:'Gaia’s Wrath: earth damage to all enemies'},
- bahamut:{name:'Bahamut',mp:110,t:'enemy',all:true,d:'Megaflare: massive damage to all enemies'},
- chakra:{name:'Chakra',mp:0,t:'self',d:'Heal 30% HP and shake off poison and confusion'},
+ firaga:{name:'Firestorm',mp:52,t:'enemy',all:true,d:'Fire storm on every enemy'},
+ blizzaga:{name:'Glacier',mp:52,t:'enemy',all:true,d:'Ice storm on every enemy'},
+ thundaga:{name:'Stormcall',mp:52,t:'enemy',all:true,d:'Lightning storm on every enemy'},
+ bio:{name:'Blight',mp:30,t:'enemy',d:'Toxic blast that poisons the target'},
+ ifrit:{name:'Pyralis',mp:70,t:'enemy',all:true,d:'Cinderstorm: fire damage to all enemies'},
+ titan:{name:'Gaian',mp:66,t:'enemy',all:true,d:'Worldbreaker: earth damage to all enemies'},
+ bahamut:{name:'Drakonis',mp:110,t:'enemy',all:true,d:'Sovereign Flame: massive damage to all enemies'},
+ chakra:{name:'Inner Focus',mp:0,t:'self',d:'Heal 30% HP and shake off poison and confusion'},
  pummel:{name:'Pummel',mp:0,t:'enemy',d:'A flurry of two to four punches'},
  wavefist:{name:'Wave Fist',mp:0,t:'enemy',d:'Ki blast; full power even from the back row'},
  earthslash:{name:'Earth Slash',mp:0,t:'enemy',all:true,d:'Split the ground under every enemy'},
  purify:{name:'Purification',mp:0,t:'status',d:'Cure an ally of poison, stone and confusion'},
- phoenixpalm:{name:'Phoenix Palm',mp:0,t:'ko',d:'Revive a fallen ally; costs 15% of own HP'},
+ phoenixpalm:{name:'Rising Palm',mp:0,t:'ko',d:'Revive a fallen ally; costs 15% of own HP'},
  twinstrike:{name:'Twin Strike',mp:0,t:'enemy',d:'Two lightning-fast strikes'},
  venomedge:{name:'Venom Edge',mp:0,t:'enemy',d:'Strike and poison the target'},
  smokebomb:{name:'Smoke Bomb',mp:0,t:'self',d:'Escape any battle except a boss'},
@@ -2488,9 +2488,9 @@ Object.assign(TOMES,{heal:{who:'white',price:1200},exit:{who:'white',price:800},
  chakra:{who:'fighter',price:3000,lv:15},pummel:{who:'fighter',price:5000,lv:18},wavefist:{who:'fighter',price:6000,lv:20},purify:{who:'fighter',price:4000,lv:20},
  phoenixpalm:{who:'fighter',price:9000,lv:22},earthslash:{who:'fighter',price:12000,lv:25},
  smokebomb:{who:'thief',price:2000,lv:12},twinstrike:{who:'thief',price:4000,lv:15},venomedge:{who:'thief',price:5000,lv:18},assassinate:{who:'thief',price:14000,lv:25}});
-Object.assign(ITEMS,{antidote:{name:'Antidote',t:'poison',d:'Cure poison'},goldneedle:{name:'Gold Needle',t:'stone',d:'Cure stone'},remedy:{name:'Remedy',t:'status',d:'Cure every status ailment'}});
+Object.assign(ITEMS,{antidote:{name:'Antidote',t:'poison',d:'Cure poison'},goldneedle:{name:'Stonebalm',t:'stone',d:'Cure stone'},remedy:{name:'Remedy',t:'status',d:'Cure every status ailment'}});
 Object.assign(ITEM_PRICE,{antidote:60,goldneedle:250,remedy:1000});
-Object.assign(GEAR,{ribbon:{name:'Ribbon',slot:'acc',who:ALLC,def:6,mdef:12,immune:true,price:20000},
+Object.assign(GEAR,{ribbon:{name:'Warding Sash',slot:'acc',who:ALLC,def:6,mdef:12,immune:true,price:20000},
  tigerfang:{name:'Tiger Fangs',slot:'weapon',who:['fighter'],atk:58,str:12,spd:2,price:17000}});
 SHOPS.magic.stock.push('heal','exit');SHOPS.item.stock.push('antidote','goldneedle','remedy');SHOPS.dwarfarmor.stock.push('ribbon');SHOPS.dwarfweapon.stock.push('tigerfang');
 Object.assign(SHOPS,{runehall:{name:'Rune Hall',hello:'Spells carved in dwarven runes. Old magic, and strong.',stock:['shell','heal','exit','bio','firaga','blizzaga','thundaga','ifrit','titan','bahamut']},
@@ -2506,8 +2506,8 @@ Object.assign(MON.crawler.atk[1],{st:'poison',ch:.5});Object.assign(MON.shade.at
 // Ironhold's new halls
 Object.assign(MAPS.ironhold.doors,{'5,19':{shop:'runehall'},'26,19':{shop:'dojo'}});
 MAPS.ironhold.npcs.splice(MAPS.ironhold.npcs.length-1,0,
- {x:29,y:20,spr:'dwarfsmith',talk:()=>{const g=S.heroes.find(x=>x.key==='fighter');return g.cls==='Paladin'?['Master Bryn: A paladin, eh? Keep your fists sharp anyway. Holy light won’t block every punch.']:['Master Bryn: Your Fighter has a monk’s frame. Chakra, Pummel, Earth Slash… I can teach him all of it.','Master Bryn: Learn three arts and he’ll fight like a true monk. Your Thief could use a few tricks too.'];}},
- {x:8,y:21,spr:'dwarfelder',talk:()=>['Rune-sage Olla: The Rune Hall keeps the strongest spells under the earth. Firaga, Bio, even the summons of Ifrit and Bahamut.','Rune-sage Olla: Exit is a handy one too. It whisks you straight out of a dungeon.']});
+ {x:29,y:20,spr:'dwarfsmith',talk:()=>{const g=S.heroes.find(x=>x.key==='fighter');return g.cls==='Paladin'?['Master Bryn: A paladin, eh? Keep your fists sharp anyway. Holy light won’t block every punch.']:['Master Bryn: Your Fighter has a monk’s frame. Inner Focus, Pummel, Earth Slash… I can teach him all of it.','Master Bryn: Learn three arts and he’ll fight like a true monk. Your Thief could use a few tricks too.'];}},
+ {x:8,y:21,spr:'dwarfelder',talk:()=>['Rune-sage Olla: The Rune Hall keeps the strongest spells under the earth. Firestorm, Blight, even the summons of Pyralis and Drakonis.','Rune-sage Olla: Exit is a handy one too. It whisks you straight out of a dungeon.']});
 
 /* status effects */
 const ST_NAME={poison:'Poison',stone:'Stone',confuse:'Confused'};
@@ -2576,13 +2576,13 @@ async function doHero2(h,id,tg){const d=S.dragon;
     case 'bio':{await castPose(h,'#a8f05a');await addFx(650,(c,p)=>{for(let k=0;k<3;k++)part(DX+rnd(-14,14),DY+rnd(-10,10),{vy:rnd(-30,-5),life:.5,c:pick(['#a8f05a','#5aa040','#d8ff8a']),s:2});
         c.globalAlpha=(1-p)*.5;c.fillStyle='#7ad05a';c.beginPath();c.arc(DX,DY,6+p*16,0,7);c.fill();c.globalAlpha=1;});
       hitDragon(h.mag*POW.bio*rnd(.92,1.08),null);if(!d.dead)poisonFoe(d,.8);await sleep(250);break;}
-    case 'ifrit':{await castPose(h,'#ff7a2a',300);await summonIntro('#ff7a2a');banner('Ifrit · Hellfire');shake();
+    case 'ifrit':{await castPose(h,'#ff7a2a',300);await summonIntro('#ff7a2a');banner('Pyralis · Cinderstorm');shake();
       await addFx(1200,(c,p)=>{c.fillStyle=`rgba(255,90,20,${.35*Math.sin(p*Math.PI)})`;c.fillRect(0,0,W,H);for(let k=0;k<6;k++)part(rnd(0,170),-2,{vx:rnd(-10,20),vy:rnd(130,190),life:.8,c:pick(FIRE),s:2});});
       eachFoe(f=>fireFx(f.ax,f.ay));hitAll(h.mag*POW.ifrit,'fire');await sleep(400);break;}
-    case 'titan':{await castPose(h,'#c9a074',300);await summonIntro('#c9a074');banner('Titan · Gaia’s Wrath');
+    case 'titan':{await castPose(h,'#c9a074',300);await summonIntro('#c9a074');banner('Gaian · Worldbreaker');
       for(let k=0;k<4;k++){shake();eachFoe(f=>{for(let j=0;j<10;j++)part(f.bx+rnd(-18,18),f.by,{vx:rnd(-25,25),vy:rnd(-110,-50),g:200,life:rnd(.5,.8),c:pick(['#8a6a48','#c8a070','#5a3a24']),s:pick([2,3])});});await sleep(200);}
       hitAll(h.mag*POW.titan,'earth');await sleep(400);break;}
-    case 'bahamut':{await castPose(h,'#b48cff',300);await summonIntro('#b48cff');banner('Bahamut · Megaflare');
+    case 'bahamut':{await castPose(h,'#b48cff',300);await summonIntro('#b48cff');banner('Drakonis · Sovereign Flame');
       await addFx(1500,(c,p)=>{const cx=80,cy=90;c.fillStyle=`rgba(10,4,20,${.6*Math.sin(p*Math.PI)})`;c.fillRect(0,0,W,H);
         if(p<.5){c.strokeStyle='#b48cff';for(let k=0;k<12;k++){const a=k/12*6.283+p*6,r=70*(1-p*2)+6;c.beginPath();c.moveTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r*.7);c.lineTo(cx,cy);c.stroke();}}
         else{const r=(p-.5)*2*120;c.globalAlpha=1-(p-.5)*1.6;c.fillStyle='#ffffff';c.beginPath();c.arc(cx,cy,r,0,7);c.fill();c.fillStyle='#b48cff';c.beginPath();c.arc(cx,cy,r*.6,0,7);c.fill();c.globalAlpha=1;}});
@@ -2638,7 +2638,7 @@ MAPS.ironhall={id:'ironhall',name:'Royal Hall of Ironhold',w:24,h:16,pal:DD_PAL.
   {x:11,y:2,spr:'dwarfking',talk:()=>{const f=S.flags;if(!f.audience&&!f.blasted){royalAudience();return null;}{const bl=bloodKingLines('King Durgan');if(bl)return bl;}
     return['King Durgan: The Aurora is yours, friends. Fly her well, and come home to Ironhold whenever you like.','King Durgan: The Rune Hall and the Training Hall are open to you, free of any royal tax. Ha!'];}},
   {x:13,y:2,spr:'dwarfqueen',talk:()=>{const f=S.flags;if(!f.audience&&!f.blasted){royalAudience();return null;}
-    if(!f.queenGift){f.queenGift=true;S.bag.ribbon=(S.bag.ribbon||0)+1;saveGame();return['Queen Sigrun: Before you go, take this. A Ribbon, woven by my grandmother.','Queen Sigrun: No poison, curse or stone will touch whoever wears it.','Received the Ribbon!'];}
+    if(!f.queenGift){f.queenGift=true;S.bag.ribbon=(S.bag.ribbon||0)+1;saveGame();return['Queen Sigrun: Before you go, take this. A Warding Sash, woven by my grandmother.','Queen Sigrun: No poison, curse or stone will touch whoever wears it.','Received the Warding Sash!'];}
     return['Queen Sigrun: Ironhold owes you its life. Our doors are always open.'];}},
   {x:10,y:12,spr:'dwarf',talk:()=>['Royal Guard: Bow when you reach the thrones. Or don’t. Their Majesties are in a forgiving mood today.']},
   {x:14,y:12,spr:'dwarf',talk:()=>['Royal Guard: The King hasn’t smiled like that in forty years.']},
@@ -2651,16 +2651,16 @@ TOWNS.highmere={name:'Highmere',shops:[],castle:false,hello:'Highmere.'};
 const tintHex=(hex,to,a)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),A=p(hex),B=p(to);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*a).toString(16).padStart(2,'0')).join('');};
 // spells, items and gear of the magi
 Object.assign(SK,{
- curaga:{name:'Curaga',mp:60,t:'party',d:'Heal the whole party greatly'},
- arise:{name:'Arise',mp:80,t:'ko',d:'Revive an ally with full HP'},
- flare:{name:'Flare',mp:70,t:'enemy',d:'Searing non-elemental blast'},
- meteor:{name:'Meteor',mp:120,t:'enemy',all:true,d:'Call down meteors on every enemy'},
- odin:{name:'Odin',mp:90,t:'enemy',all:true,d:'Zantetsuken: may cleave foes in two'},
- phoenix:{name:'Phoenix',mp:100,t:'party',d:'Rebirth Flame: revive and heal the party'}});
+ curaga:{name:'Grand Mend',mp:60,t:'party',d:'Heal the whole party greatly'},
+ arise:{name:'Rebirth',mp:80,t:'ko',d:'Revive an ally with full HP'},
+ flare:{name:'Sunburst',mp:70,t:'enemy',d:'Searing non-elemental blast'},
+ meteor:{name:'Skyfall',mp:120,t:'enemy',all:true,d:'Call down meteors on every enemy'},
+ odin:{name:'Valgard',mp:90,t:'enemy',all:true,d:'Severing Stroke: may cleave foes in two'},
+ phoenix:{name:'Emberwing',mp:100,t:'party',d:'Ashen Dawn: revive and heal the party'}});
 Object.assign(POW,{flare:60,meteor:48,odin:40});
 Object.assign(TOMES,{curaga:{who:'white',price:14000,lv:30},flare:{who:'black',price:16000,lv:32},odin:{who:'summoner',price:18000,lv:32},
  arise:{who:'white',price:20000,lv:34},meteor:{who:'black',price:30000,lv:40},phoenix:{who:'summoner',price:26000,lv:36}});
-Object.assign(ITEMS,{xpotion:{name:'X-Potion',t:'ally',d:'Fully restore HP'},hiether:{name:'Hi-Ether',t:'mp',d:'Restore 200 MP'},megalixir:{name:'Megalixir',t:'ally',d:'Fully restore the whole party'}});
+Object.assign(ITEMS,{xpotion:{name:'Grand Potion',t:'ally',d:'Fully restore HP'},hiether:{name:'Greater Tonic',t:'mp',d:'Restore 200 MP'},megalixir:{name:'Grand Elixir',t:'ally',d:'Fully restore the whole party'}});
 Object.assign(ITEM_PRICE,{xpotion:1200,hiether:2500,megalixir:15000});
 Object.assign(GEAR,{
  crystalsword:{name:'Crystal Sword',slot:'weapon',who:['fighter'],atk:86,str:8,price:38000},
@@ -2675,8 +2675,8 @@ Object.assign(GEAR,{
  arcanerobe:{name:'Arcane Robe',slot:'body',who:MAGES,def:28,mdef:36,mag:10,price:30000},
  magusring:{name:'Magus Ring',slot:'acc',who:ALLC,mag:14,mdef:10,price:26000},
  giantbelt:{name:'Giant’s Belt',slot:'acc',who:ALLC,str:14,def:6,price:26000},
- genjihelm:{name:'Genji Helm',slot:'head',who:['fighter','thief'],def:28,mdef:18,spd:2,price:40000},
- ultimaweapon:{name:'Ultima Weapon',slot:'weapon',who:['fighter'],atk:120,str:12,price:90000},
+ genjihelm:{name:'Ronin Helm',slot:'head',who:['fighter','thief'],def:28,mdef:18,spd:2,price:40000},
+ ultimaweapon:{name:'Oblivion Weapon',slot:'weapon',who:['fighter'],atk:120,str:12,price:90000},
  holyrobe:{name:'Holy Robe',slot:'body',who:MAGES,def:34,mdef:44,mag:14,price:60000},
  heroring:{name:'Hero’s Ring',slot:'acc',who:ALLC,str:10,mag:10,spd:4,def:10,mdef:10,price:70000}});
 Object.assign(SHOPS,{
@@ -2746,11 +2746,11 @@ MAPS.highmere={id:'highmere',name:'Highmere',w:26,h:18,entry:{x:13*CT,y:16*CT+8}
   for(const b of this.buildings){for(let y=b.y;y<b.y+b.h;y++)for(let x=b.x;x<b.x+b.w;x++)set(x,y,'H');set(b.door,b.y+b.h-1,'d');}
   set(12,this.h-1,'E');set(13,this.h-1,'E');return g;},
  doors:{'3,6':{shop:'arcgear'},'8,6':{shop:'arcitem'},'17,6':{shop:'arcmagic'},'22,6':{inn:true},
-  '4,14':{house:['A magus’s cottage. Books are stacked to the ceiling, and a teapot pours itself.']},'21,15':{house:['Someone inside is practicing Flare. You decide not to knock.']}},
+  '4,14':{house:['A magus’s cottage. Books are stacked to the ceiling, and a teapot pours itself.']},'21,15':{house:['Someone inside is practicing Sunburst. You decide not to knock.']}},
  npcs:[
   {x:11,y:15,spr:'magus2',talk:()=>['Gatekeeper: No road reaches Highmere. You came by air? Then the Aurora has woken. The King will want to see you.']},
   {x:7,y:9,spr:'sorceress',wander:[1,7,24,9],talk:()=>['Sorceress: Castle Arcanum is just north of the village. Every mage in the realm studied there once.']},
-  {x:18,y:13,spr:'magus3',wander:[14,12,18,16],talk:()=>['Old Magus: The Spellhouse sells Curaga, Flare and Odin. The Grand Library in the castle keeps the rarest tomes.']},
+  {x:18,y:13,spr:'magus3',wander:[14,12,18,16],talk:()=>['Old Magus: The Spellhouse sells Grand Mend, Sunburst and Valgard. The Grand Library in the castle keeps the rarest tomes.']},
   {x:9,y:12,spr:'kid',wander:[7,9,11,16],talk:()=>['Kid: I can make a spark with my fingers! …Ow.']},
   {x:21,y:10,spr:'sorceress2',wander:[19,9,24,11],talk:()=>[S.flags.islandUp?'Sorceress: Did you see the light in the northwest? The magi did it. They raised a whole island!':'Sorceress: The magi whisper about a lost island under the northwestern sea.']}]};
 
@@ -2758,7 +2758,7 @@ MAPS.highmere={id:'highmere',name:'Highmere',w:26,h:18,entry:{x:13*CT,y:16*CT+8}
 const MAGI_CIRCLE=[[21,2],[23,2],[25,2],[21,4],[25,4],[21,6],[23,6],[25,6]];
 MAPS.arcanum={id:'arcanum',name:'Castle Arcanum',w:28,h:22,entry:{x:14*CT+8,y:19*CT+8},hello:'Castle Arcanum. Robed magi drift through halls that hum with old magic.',leave:'Leave the castle',out:'You step out into the hidden valley.',
  rooms:[{n:'Grand Library',x0:1,y0:1,x1:6,y1:8},{n:'Throne Room',x0:8,y0:1,x1:19,y1:8},{n:'Circle of Magi',x0:21,y0:1,x1:26,y1:8},{n:'Great Hall',x0:1,y0:10,x1:26,y1:12},{n:'Entrance Hall',x0:11,y0:13,x1:16,y1:20}],
- books:[['A tome titled “On the Four Wyrms”: Ember, Rime, Earth and Sky. Each sleeps where its element is strongest.'],['“The Isle of Aether sank in a single night when the Sky Wyrm tore the clouds apart.”'],['A spellbook full of margin notes: “Odin answers only the patient.”'],['“Flare: compress the heat of a star into a fist-sized sphere. Do NOT practice indoors.”']],
+ books:[['A tome titled “On the Four Wyrms”: Ember, Rime, Earth and Sky. Each sleeps where its element is strongest.'],['“The Isle of Aether sank in a single night when the Sky Wyrm tore the clouds apart.”'],['A spellbook full of margin notes: “Valgard answers only the patient.”'],['“Sunburst: compress the heat of a star into a fist-sized sphere. Do NOT practice indoors.”']],
  build(){const g=gridFill(this.w,this.h,'#'),set=(x,y,c)=>{g[y][x]=c;},rect=(x0,y0,x1,y1,c)=>{for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)set(x,y,c);};
   rect(1,1,6,8,'.');rect(8,1,19,8,'.');rect(21,1,26,8,'.');rect(1,10,26,12,'.');rect(11,13,16,20,'.');
   set(3,9,'D');set(14,9,'D');set(23,9,'D');
@@ -2780,7 +2780,7 @@ MAPS.arcanum={id:'arcanum',name:'Castle Arcanum',w:28,h:22,entry:{x:14*CT+8,y:19
     if(!f.skyWyrm)return['King Corvin: Your ship waits at the Eastern Port, east of Castle Valemont. Sail northwest to the isle and climb.','King Corvin: The Warden on the tower’s first floor and the waystones on every tenth floor will spare your legs.'];
     return['King Corvin: Zephyrion is gone, and the sky is ours again. The magi will sing of you for a thousand years.'];}},
   {x:15,y:2,spr:'archqueen',talk:()=>{const f=S.flags;if(!f.islandUp)return['Queen Elowen: Speak with my husband. The magi are ready when he is.'];
-    if(!f.arcGift){f.arcGift=true;S.items.megalixir=(S.items.megalixir||0)+2;saveGame();return['Queen Elowen: You will need more than courage in that tower. Take these.','Received 2 Megalixirs!'];}
+    if(!f.arcGift){f.arcGift=true;S.items.megalixir=(S.items.megalixir||0)+2;saveGame();return['Queen Elowen: You will need more than courage in that tower. Take these.','Received 2 Grand Elixirs!'];}
     return['Queen Elowen: Zephyrion breathes lightning and drinks it too. Don’t waste thunder on it. Stone and ice will serve you better.'];}},
   {x:4,y:3,spr:'magus3',talk:()=>{openShop('arclib');return null;}},
   {x:3,y:6,spr:'sorceress',wander:[3,5,4,8],talk:()=>['Librarian’s apprentice: Shh! The Grand Library sells only the rarest tomes. Talk to the Head Librarian by the shelves.']},
@@ -2876,11 +2876,11 @@ async function doHero3(h,id,tg){const d=S.dragon;
     case 'meteor':{await castPose(h,'#ff7a2a',380);const tg2=liveFoes();
       await addFx(1300,(c,p)=>{c.fillStyle=`rgba(40,10,10,${.4*Math.sin(p*Math.PI)})`;c.fillRect(0,0,W,H);for(let k=0;k<2;k++)part(rnd(0,170),-4,{vx:rnd(30,60),vy:rnd(150,210),life:.7,c:pick(FIRE),s:3});});
       for(const f of tg2)fireFx(f.ax,f.ay);flash('#ffb03a',400);shake();hitAll(h.mag*POW.meteor,null);await sleep(400);break;}
-    case 'odin':{await castPose(h,'#c8c8d8',300);await summonIntro('#c8c8d8');banner('Odin · Zantetsuken');
+    case 'odin':{await castPose(h,'#c8c8d8',300);await summonIntro('#c8c8d8');banner('Valgard · Severing Stroke');
       await addFx(700,(c,p)=>{c.strokeStyle='#ffffff';c.lineWidth=2;c.beginPath();c.moveTo(0,40+p*60);c.lineTo(170*p,140-p*60);c.stroke();c.lineWidth=1;});flash('#ffffff',300);shake();
       eachFoe(f=>{const boss=f.kind==='wyrm'||(MON[f.kind]&&MON[f.kind].boss);if(!boss&&Math.random()<.25){pop(f.ax,f.ay-16,'Cleaved!','lbl');hitDragon(f.hp,null,true);}else hitDragon(h.mag*POW.odin*rnd(.95,1.05),null);});
       await sleep(400);break;}
-    case 'phoenix':{await castPose(h,'#ff7a2a',300);await summonIntro('#ff7a2a');banner('Phoenix · Rebirth Flame');
+    case 'phoenix':{await castPose(h,'#ff7a2a',300);await summonIntro('#ff7a2a');banner('Emberwing · Ashen Dawn');
       await addFx(1200,(c,p)=>{for(let k=0;k<3;k++)part(rnd(185,235),H,{vx:rnd(-10,10),vy:rnd(-110,-60),life:.9,c:pick(FIRE)});});
       for(const x of S.heroes){if(x.ko)revive(x,.5);else if(!x.stone){healFx(x);heal(x,h.mag*10);}}say('The party rises from the flames!');await sleep(400);break;}
     default:await doHero4(h,id,tg);
@@ -3062,7 +3062,7 @@ $('fishClose').onclick=()=>{closeSheet($('fishOv'));renderMenu();};
 /* Old Gill, the guild's angler */
 const FISH_MILES=[{n:3,give:()=>{S.flags.fishLine=true;},lines:['Old Gill: Three kinds already! Take my Sturdy Line. It holds a lot more strain before it snaps.','Received the Sturdy Line!']},
  {n:6,give:()=>{S.flags.fishReel=true;},lines:['Old Gill: Six kinds! You’ve earned my Master Reel. It pulls in line much faster.','Received the Master Reel!']},
- {n:9,give:()=>{S.items.megalixir=(S.items.megalixir||0)+3;},lines:['Old Gill: Nine kinds… I haven’t seen a collection like this in forty years. Take these Megalixirs.','Received 3 Megalixirs!']},
+ {n:9,give:()=>{S.items.megalixir=(S.items.megalixir||0)+3;},lines:['Old Gill: Nine kinds… I haven’t seen a collection like this in forty years. Take these Grand Elixirs.','Received 3 Grand Elixirs!']},
  {n:12,give:()=>{S.bag.kingfisher=(S.bag.kingfisher||0)+1;},lines:['Old Gill: Every kind in the sea. Even the Aether Sea Serpent! You’re the finest angler I’ve ever met.','Old Gill: Wear my Kingfisher Ring. It belonged to my teacher.','Received the Kingfisher Ring!']}];
 MAPS.guild.npcs.push({x:11,y:2,spr:'angler',talk:()=>{const f=S.flags,reg=freg(),bk=fbasket();
   if(!f.port)return['Old Gill: Name’s Gill. I fished these waters for fifty years, until my knees gave out.','Old Gill: Get yourselves a ship someday, and bring me what swims out there. I pay well.'];
@@ -3166,10 +3166,10 @@ function openLootChest(C,ck){S.flags.chests[ck]=true;const R=S.flags.robbed||(S.
   noiseBurst(.3);drawCastleTex();say(msg);renderMenu();saveGame();}
 
 /* the thieves' guilds */
-SHOPS.tguild={name:'Thieves’ Trainer',hello:'Rook: Every trick I teach costs gil, and every trick needs the rank to back it.',stock:['backstab','pickpocket','shuriken','shadowbind']};
+SHOPS.tguild={name:'Thieves’ Trainer',hello:'Rook: Every trick I teach costs gold, and every trick needs the rank to back it.',stock:['backstab','pickpocket','shuriken','shadowbind']};
 Object.assign(SK,{
  backstab:{name:'Backstab',mp:0,t:'enemy',d:'A strike from the shadows. Always critical'},
- pickpocket:{name:'Pickpocket',mp:0,t:'enemy',d:'A sure steal, plus a purse of gil'},
+ pickpocket:{name:'Pickpocket',mp:0,t:'enemy',d:'A sure steal, plus a purse of gold'},
  shuriken:{name:'Shuriken',mp:0,t:'enemy',all:true,d:'Throw stars at every enemy'},
  shadowbind:{name:'Shadowbind',mp:0,t:'enemy',d:'Pin the target’s shadow and reset its turn'},
  katon:{name:'Katon',mp:0,t:'enemy',all:true,d:'Ninjutsu: a blast of fire on all enemies'},
@@ -3391,7 +3391,7 @@ function drawBlood(dt){if(S.scene!=='map'||!bloodTonight())return;const a=nightA
 
 /* the kings' Blood Moon Hunt */
 const BMQ_TIERS=[{n:5,gil:3000,give:()=>{S.items.elixir=(S.items.elixir||0)+2;},what:'2 Elixirs'},
- {n:15,gil:8000,give:()=>{S.items.megalixir=(S.items.megalixir||0)+2;},what:'2 Megalixirs'},
+ {n:15,gil:8000,give:()=>{S.items.megalixir=(S.items.megalixir||0)+2;},what:'2 Grand Elixirs'},
  {n:30,gil:20000,gear:'sunlitcharm',again:12000},
  {n:50,gil:40000,gear:'dawnbringer',again:25000}];
 Object.assign(GEAR,{
@@ -3417,7 +3417,7 @@ function bloodKingLines(king){const f=S.flags,d=f.day||1,m=clockMin();
   const when=bloodTonight()?'tonight — it is already rising':nb===d?'tonight':`in ${nb-d} day${nb-d===1?'':'s'}`;
   return[`${king}: Heroes, heed me. The astrologers say a Blood Moon comes ${when}.`,'(Every other full moon rises red, and the dead claw their way out of the earth across the wilds.)',
     `${king}: Every gate in the realm will be shut against them. But someone must thin their numbers out there. Will you hunt them?`,
-    `${king}: Slay 5 for 3,000 G and Elixirs. 15 for 8,000 G and Megalixirs. 30 for 20,000 G and the Sunlit Charm. 50 for 40,000 G and Dawnbringer, the blade of the first dawn.`,
+    `${king}: Slay 5 for 3,000 G and Elixirs. 15 for 8,000 G and Grand Elixirs. 30 for 20,000 G and the Sunlit Charm. 50 for 40,000 G and Dawnbringer, the blade of the first dawn.`,
     'Accepted the Blood Moon Hunt! Report to any king after the red moon sets.'];}
 
 
@@ -3502,11 +3502,11 @@ const simKinds=()=>{const seen=Object.assign({},S.flags.seen||{});for(const k in
   return Object.keys(seen).filter(k=>MON[k]&&MON[k].hp>1&&!/wyrm|icon/.test(k)).sort((a,b)=>MON[a].hp-MON[b].hp||MON[a].name.localeCompare(MON[b].name));};
 function simTalk(){const n=simKinds().length;
   return['Tactician Ysolde: Welcome to the training room. The crystal remembers every creature you have faced.','Tactician Ysolde: Touch it, pick a foe and how many, and it conjures them for a practice bout.',
-    'Tactician Ysolde: Nothing here is real. No experience, no gil, no spoils. And no one can truly fall: when the fight ends, everyone is put back exactly as they were, potions and all.',
+    'Tactician Ysolde: Nothing here is real. No experience, no gold, no spoils. And no one can truly fall: when the fight ends, everyone is put back exactly as they were, potions and all.',
     n?`Tactician Ysolde: It holds ${n} creature${n>1?'s':''} so far. Try out a new strategy before you meet the real thing.`:'Tactician Ysolde: It holds nothing yet. Go fight something!'];}
 let simN=1;
 const simOv=document.createElement('div');simOv.className='sheet';simOv.id='simOv';simOv.setAttribute('role','dialog');simOv.setAttribute('aria-modal','true');simOv.setAttribute('aria-label','Battle Simulator');simOv.hidden=true;
-simOv.innerHTML='<div class="card help"><div class="shop-h"><h2>Battle Simulator</h2><span class="gil" id="simCount"></span></div><p class="tip">Practice bouts against any creature you have fought. No EXP, gil or items, and no real harm: when the fight ends, win or lose, the party is restored to exactly how it started.</p><p class="lab">How many</p><div class="chips" id="simTabs"></div><div class="slist" id="simList"></div><div class="arow"><button class="btn" id="simClose" type="button">Close</button></div></div>';
+simOv.innerHTML='<div class="card help"><div class="shop-h"><h2>Battle Simulator</h2><span class="gil" id="simCount"></span></div><p class="tip">Practice bouts against any creature you have fought. No EXP, gold or items, and no real harm: when the fight ends, win or lose, the party is restored to exactly how it started.</p><p class="lab">How many</p><div class="chips" id="simTabs"></div><div class="slist" id="simList"></div><div class="arow"><button class="btn" id="simClose" type="button">Close</button></div></div>';
 $('shopOv').parentNode.appendChild(simOv);
 $('simClose').onclick=()=>{closeSheet(simOv);renderMenu();};
 function drawSim(){const ks=simKinds();$('simCount').textContent=ks.length+' known';
@@ -3525,7 +3525,7 @@ function simRestore(){const q=S.sim;if(!q)return;S.sim=null;
 {const sb0=startBattle;startBattle=function(kind){if(!S.sim){const ks=Array.isArray(kind)?kind:[kind];const seen=S.flags.seen||(S.flags.seen={});for(const k of ks)if(MON[k])seen[k]=1;}return sb0(kind);};}
 {const so0=showOver;showOver=function(win){if(!S.sim)return so0(win);
   $('overT').textContent=win?'Simulation complete':'Simulation ended';
-  $('overP').textContent=win?`All foes down in ${fmt(S.clock)}. The simulator grants no EXP, gil or items. The party will be restored to how it stood before the fight.`:`The party fell after ${fmt(S.clock)}. No harm done: the crystal restores everyone to how they stood before the fight.`;
+  $('overP').textContent=win?`All foes down in ${fmt(S.clock)}. The simulator grants no EXP, gold or items. The party will be restored to how it stood before the fight.`:`The party fell after ${fmt(S.clock)}. No harm done: the crystal restores everyone to how they stood before the fight.`;
   $('again').textContent='Back to the ship';S.onContinue=()=>toCastle();$('over').hidden=false;$('again').focus({preventScroll:true});};}
 {const tc0=toCastle;toCastle=function(msg){if(S.sim){const ran=msg==='The party fell back.',tr=S.sim.trial;simRestore();msg=tr?(ran?'You step away from the trial. Everyone is restored.':'The trial is over. Everyone is restored.'):ran?'You step out of the simulation. The crystal restores the party.':'The crystal dims. The party is just as it was before the fight.';}return tc0(msg);};}
 
@@ -3650,7 +3650,7 @@ function drawJournal(){const st=stObj(),f=S.flags;
       ['Time played',hm(st.play)],['Days passed',(f.day||1)+''],['Season',seasonText()],['Homestead earnings',fmtG((f.farm&&f.farm.earned)||0)],['Time of day',`${clockText()} · ${moonName()}`],
       ['Steps on foot',Math.round(st.px/8).toLocaleString()],['Leagues sailed',Math.round(st.sail/TS).toLocaleString()],['Leagues flown',Math.round(st.fly/TS).toLocaleString()],
       ['Battles fought',st.bat.toLocaleString()],['Won · lost · fled',`${st.win} · ${st.lose} · ${st.run}`],['Monsters slain',kills.toLocaleString()],
-      ['Gil on hand',fmtG(S.gil)],['Gil earned',fmtG(st.earn)],['Gil spent',fmtG(st.spend)],
+      ['Gold on hand',fmtG(S.gil)],['Gold earned',fmtG(st.earn)],['Gold spent',fmtG(st.spend)],
       ['Chests opened',Object.keys(f.chests||{}).length+''],['Fish caught',`${nf} of ${FISH.length} kinds${big?` · biggest ${FISH.find(x=>x.id===big[0]).name}, ${big[1].best} cm`:''}`],
       ['Blood Moon Hunt best',f.bmqBest?`${f.bmqBest} slain`:'—'],['Thieves’ rank',RANK_NAME[thiefRank()]],
       ['Thieves’ sign',f.tsign?esc(f.tsign.join(' → ')):'Not learned yet'],['Party levels',esc(lv)]
@@ -3709,9 +3709,9 @@ function openSaves(){svArm=null;svDel={n:0,c:0,t:0};drawSaves();openSheet(svOv,$
 /* ---------- v3.6: class advancement and new outfits ---------- */
 const PROMO={
  fighter:{cls:'Paladin',skill:'holyblade',trial:'blackknight',who:'King Aldous',need:'level 20 and the Hill Ogre slain'},
- white:{cls:'White Wizard',skill:'benediction',trial:'lich',who:'Queen Elowen',need:'Curaga and level 20'},
- black:{cls:'Black Wizard',skill:'ultima',trial:'runeward',who:'Queen Elowen',need:'Flare and level 20'},
- summoner:{cls:'Master Summoner',skill:'alexander',trial:'eidolon',who:'Queen Elowen',need:'Bahamut and level 20'}};
+ white:{cls:'High Cleric',skill:'benediction',trial:'lich',who:'Queen Elowen',need:'Grand Mend and level 20'},
+ black:{cls:'Archmage',skill:'ultima',trial:'runeward',who:'Queen Elowen',need:'Sunburst and level 20'},
+ summoner:{cls:'Master Summoner',skill:'alexander',trial:'eidolon',who:'Queen Elowen',need:'Drakonis and level 20'}};
 function promoted(k){return k==='thief'?!!(S&&S.flags&&S.flags.ninja):!!(S&&S.flags&&S.flags.promo&&S.flags.promo[k]);}
 function promoReady(k){const h=S.heroes.find(x=>x.key===k);if(!h||promoted(k))return false;
   if(k==='fighter')return h.lv>=20&&!!S.flags.ogre;
@@ -3724,8 +3724,8 @@ function promoMp(h){return!promoted(h.key)||h.key==='thief'?0:h.key==='fighter'?
 Object.assign(SPR,{
  fighterP:{pal:{h:'#dfe4ec',H:'#8a94a0',g:'#e8c048',s:'#e8b48a',e:'#1b1012',a:'#c8d0da',A:'#8a94a0',b:'#3d6fb3',w:'#f4f6fa',c:'#b8323a',k:'#5a5e6a'},map:["....gHHg....","...hhhhhhH..","..ghhhhhhhH.","...seshhhH..","...ssssH....","....sss.....","w.aaaaaaaAc.","wsabbgbbacc.","w.abgggbacc.","g..bbgbbacc.","...aAAAAa.c.","...aa..aa...","...aA..Aa...","..kkk.kkk..."]},
  thiefP:{pal:{h:'#2a2e4a',m:'#1a1c2e',s:'#e2a77c',e:'#1b1012',c:'#d83a3a',b:'#30344e',d:'#1e2034',w:'#c8ccd8',k:'#141420'},map:["............","...hhhhhh...","..hhhhhhhh..","..hssessh...","..hmmmmmhh..","...mmmmm.cc.","..dccccbd.cc",".sbbbbbbbs..","w.bbddbbb...","...bbbbbb...","...dd..dd...","...dd..dd...","..kkk.kkk..."]},
- whiteP:{pal:{h:'#ffffff',g:'#e8c048',r:'#c8323c',s:'#eabf98',e:'#1b1012',b:'#f4f0e8',o:'#86e0ff',w:'#c9a24a',k:'#7a5434'},map:["o...hhhh....","w..hhghhh...","w.hhgrghhh..","w.hsesshhh..","w.hssssshh..","w.hhsssshh..","w.gbbbbbbg..","wsbbbbbbbb..","w.bbgbbgbbs.","w.bbbbbbbb..","w.bgbbbbgb..","..gbbbbbbg..","..gggggggg..","..kk...kk..."]},
- blackP:{pal:{h:'#2a1a3a',H:'#180e24',r:'#d83a3a',d:'#09070d',y:'#ff5a3a',b:'#7a1a3a',B:'#4a0e24',w:'#3a2a4a',s:'#09070d',k:'#2a1a12'},map:[".....H......","....hH......","....hhH.....","...hhhhH....","...rrrrrr...",".hhhhhhhhhH.","...ydydd....","...dddd.....","w.bbbbbbb...","w.bbrbbbbB..","wsbbbbbbbbs.","w.bbbbbbbB..","..bbbbbbbB..","..BBBBBBBB..","..kk...kk..."]},
+ whiteP:{pal:{h:'#ffffff',g:'#e8c048',r:'#3a6ac8',s:'#eabf98',e:'#1b1012',b:'#f4f0e8',o:'#86e0ff',w:'#c9a24a',k:'#7a5434'},map:["o...hhhh....","w..hhghhh...","w.hhgrghhh..","w.hsesshhh..","w.hssssshh..","w.hhsssshh..","w.gbbbbbbg..","wsbbbbbbbb..","w.bbgbbgbbs.","w.bbbbbbbb..","w.bgbbbbgb..","..gbbbbbbg..","..gggggggg..","..kk...kk..."]},
+ blackP:{pal:{h:'#1a1a2a',H:'#0e0e18',r:'#e8b43a',d:'#09070d',y:'#ff5a3a',f:'#e8c49a',e:'#1b1012',g:'#e8e8f0',b:'#3a1a4a',B:'#220e2e',w:'#3a2a4a',s:'#e8c49a',k:'#2a1a12'},map:[".....H......","....hH......","....hhH.....","...hhhhH....","...rrrrrr...",".hhhhhhhhhH.","...fefff....","...gggg.....","w.bbbbbbb...","w.bbrbbbbB..","wsbbbbbbbbs.","w.bbbbbbbB..","..bbbbbbbB..","..BBBBBBBB..","..kk...kk..."]},
  summonerP:{pal:{o:'#f0e0b0',g:'#e8c048',h:'#3fae6b',s:'#eabf98',e:'#1b1012',b:'#1e6a6a',c:'#6a3a9a',k:'#4a3020'},map:["..o......o..","..oo....oo..","..ogggggo...","..hhhhhhhh..","..hseshhhhc.","..hsssshhhcc","...ssshhhhcc","..gbbbbbbbcc",".sbbbbbbbbsc","..bgbbbbgb.c","..bbggbbbb.c","..bgbbbbgb..","..bbbbbbbbb.","..bbbbbbbbbb","..kk...kk..."]}});
 for(const k of['fighterP','thiefP','whiteP','blackP','summonerP']){SPR[k].grey={};for(const c in SPR[k].pal)SPR[k].grey[c]=greyOf(SPR[k].pal[c]);}
 function heroSpr(h){return promoted(h.key)&&SPR[h.key+'P']?SPR[h.key+'P']:SPR[h.key];}
@@ -3735,9 +3735,9 @@ Object.assign(SK,{
  hundredfist:{name:'Hundred Fists',mp:0,t:'enemy',d:'Six lightning-fast blows'},
  holyblade:{name:'Holy Blade',mp:0,t:'enemy',d:'A sword stroke of holy light; full power from either row (Paladin)'},
  layhands:{name:'Lay on Hands',mp:16,t:'ally',d:'Restore half an ally’s HP and cure ailments (Paladin)'},
- benediction:{name:'Benediction',mp:90,t:'party',d:'Fully heal and cleanse the whole party (White Wizard)'},
- ultima:{name:'Ultima',mp:120,t:'enemy',all:true,d:'Raw magic tears through every enemy (Black Wizard)'},
- alexander:{name:'Alexander',mp:120,t:'enemy',all:true,d:'Divine Judgment: holy damage to all enemies (Master Summoner)'}});
+ benediction:{name:'Benediction',mp:90,t:'party',d:'Fully heal and cleanse the whole party (High Cleric)'},
+ ultima:{name:'Oblivion',mp:120,t:'enemy',all:true,d:'Raw magic tears through every enemy (Archmage)'},
+ alexander:{name:'Bastion',mp:120,t:'enemy',all:true,d:'Final Verdict: holy damage to all enemies (Master Summoner)'}});
 Object.assign(POW,{ultima:44,alexander:40});SK_EL.alexander='holy';SK_EL.holyblade='holy';FIELD_SK.benediction='all';FIELD_SK.layhands='one';
 {const cf0=castField;castField=function(c,id,tg){if(id==='layhands'){c.mp-=mpCost(c,SK[id]);const t=tg&&!tg.ko?tg:c;const v=fieldHealHp(t,t.maxhp*.5);t.poison=t.stone=t.confuse=false;return`${c.name} lays hands on ${t.name}: ${v} HP restored.`;}if(id!=='benediction')return cf0(c,id,tg);c.mp-=mpCost(c,SK[id]);for(const x of S.heroes){if(x.ko)continue;x.hp=x.maxhp;x.poison=x.stone=x.confuse=false;}return'A soft light falls on the party. Fully healed.';};}
 {const dh4=doHero4;doHero4=async function(h,id,tg){const d=S.dragon;
@@ -3752,10 +3752,10 @@ Object.assign(POW,{ultima:44,alexander:40});SK_EL.alexander='holy';SK_EL.holybla
    case 'benediction':{await castPose(h,'#fff3c4',420);addFx(1100,(c,p)=>{c.fillStyle=`rgba(255,246,200,${.35*Math.sin(p*Math.PI)})`;c.fillRect(0,0,W,H);});
      for(const x of S.heroes){if(x.ko||x.stone&&false)continue;for(let k=0;k<10;k++)part(x.x+rnd(-8,8),x.y-rnd(0,18),{vy:rnd(-40,-15),life:rnd(.4,.8),c:pick(['#ffffff','#fff3c4','#ffd34a'])});healFx(x);heal(x,x.maxhp);cureStatus(x);}
      say('Benediction! The party is restored.');await sleep(450);return;}
-   case 'ultima':{await castPose(h,'#7affb0',500);banner('Ultima');
+   case 'ultima':{await castPose(h,'#7affb0',500);banner('Oblivion');
      await addFx(1300,(c,p)=>{const cx=70,cy=86,r=p*150;c.fillStyle=`rgba(0,20,10,${.55*Math.sin(p*Math.PI)})`;c.fillRect(0,0,W,H);c.strokeStyle=`rgba(122,255,176,${1-p})`;c.lineWidth=3;c.beginPath();c.arc(cx,cy,r,0,7);c.stroke();c.strokeStyle=`rgba(255,255,255,${1-p})`;c.lineWidth=1;c.beginPath();c.arc(cx,cy,r*.7,0,7);c.stroke();});
      shake();hitAll(h.mag*POW.ultima,null);await sleep(400);return;}
-   case 'alexander':{await castPose(h,'#fff3c4',300);await summonIntro('#fff3c4');banner('Alexander · Divine Judgment');
+   case 'alexander':{await castPose(h,'#fff3c4',300);await summonIntro('#fff3c4');banner('Bastion · Final Verdict');
      for(let k=0;k<8;k++){const x=rnd(20,150);addFx(500,(c,p)=>{c.fillStyle=`rgba(255,250,220,${.9*(1-p)})`;c.fillRect(x-3,0,6,H);c.fillStyle=`rgba(255,255,255,${1-p})`;c.fillRect(x-1,0,2,H);});await sleep(80);}
      shake();flash('#ffffff',350);hitAll(h.mag*POW.alexander,'holy');await sleep(400);return;}}
   return dh4(h,id,tg);};}
@@ -3774,7 +3774,7 @@ Object.assign(MON,{
  runeward:{name:'Rune Warden',hp:36000,exp:0,gil:0,spd:1,scale:4,big:true,boss:true,bg:'hills',weak:['fire','ice','thunder'],steals:0,steal:[],drop:[],
   atk:[{name:'Rune Blade',lo:560,hi:660,w:3,col:'#86e0ff'},{name:'Arcane Burst',lo:380,hi:450,w:2,all:true,type:'mag',col:'#b48cff'}],
   pal:{a:'#4a4a6a',A:'#2a2a44',c:'#86e0ff',C:'#3a8ab8',e:'#ffffff'},map:["....aaaa......","...aAaaAa.....","...aeccea.....","...aaccaa.....","....aaaa....c.",".aaaaccaaaa.c.","aA.acCCca.Aac.","aa.aaccaa.aac.","...aaccaa...c.","...aAAAAa.....","...aa..aa.....","...aA..Aa.....","..aaa..aaa...."]},
- eidolon:{name:'Eidolon Warden',hp:34000,exp:0,gil:0,spd:1.1,scale:4,big:true,boss:true,bg:'hills',weak:['holy'],steals:0,steal:[],drop:[],
+ eidolon:{name:'Spirit Warden',hp:34000,exp:0,gil:0,spd:1.1,scale:4,big:true,boss:true,bg:'hills',weak:['holy'],steals:0,steal:[],drop:[],
   atk:[{name:'Spectral Claw',lo:600,hi:700,w:3,col:'#b48cff'},{name:'Starfall',lo:420,hi:500,w:2,all:true,type:'mag',col:'#fff3c4'}],
   pal:{p:'#6a3a9a',P:'#3a1a5a',g:'#e8c048',e:'#86e0ff',w:'#e8e0ff'},map:["..g......g....","..gg....gg....","...pppppp.....","..ppeppepp....","..pppPPppp....","w.ppppppp.w...","ww.PPPPPP.ww..","wwppppppppww..","w..ppPPpp..w..","...pppppp.....","...pp..pp.....","...pP..Pp.....","..ppp..ppp...."]}});
 for(const k of['ironmonk','blackknight','lich','runeward','eidolon']){const q=MON[k];q.h=q.map.length;q.w=Math.max(...q.map.map(r=>r.length));}
@@ -3792,9 +3792,9 @@ function trialStart(who){const P=PROMO[who];
 function promote(k){const f=S.flags;f.promo=f.promo||{};f.promo[k]=true;const h=S.heroes.find(x=>x.key===k),P=PROMO[k];
   if(!h.skills.includes(P.skill))h.skills.push(P.skill);recalc(h);h.hp=h.maxhp;h.mp=h.maxmp;saveGame();renderMenu();
   const lines={fighter:['King Aldous: The Black Knight kneels, his oath broken and yours unbroken.','King Aldous: Kneel, Garrick. By the light that watches over Valemont…','King Aldous: Rise, Sir Garrick, Paladin of Valemont.',`${h.name} became a Paladin! Learned Holy Blade and Lay on Hands.`,'(Strength, defense and magic defense rise, he gains MP for Lay on Hands, and he dons the white and gold of Valemont’s holy knights.)'],
-    white:['Ilse wakes at the inn. Morning light is streaming in, and the others are just stirring.','There is no mark on her, but her hands still glow faintly, and when she breathes out, the room feels warmer.',`${h.name} became a White Wizard! Learned Benediction.`,'(Magic, magic defense and MP rise, and she wears the white and gold of the Seraph’s healers.)'],
-    black:['King Nocturne falls to one knee. His great hat tumbles from his head.','King Nocturne: Two hundred years… and my own spells, thrown back in my face. Well played.','King Nocturne: Take my hat. It is the only thing I own that I have not burned. And take the title: Black Wizard.',`${h.name} became a Black Wizard! Learned Ultima.`,'Received the Night King’s Hat and 40,000 gil!','(Magic and MP rise.)'],
-    summoner:['Queen Elowen: The Eidolon Warden bows. The great spirits will answer you now.','Queen Elowen: Rise, Master Summoner.',`${h.name} became a Master Summoner! Learned to call Alexander.`,'(Magic, magic defense and MP rise.)']}[k];
+    white:['Ilse wakes at the inn. Morning light is streaming in, and the others are just stirring.','There is no mark on her, but her hands still glow faintly, and when she breathes out, the room feels warmer.',`${h.name} became a High Cleric! Learned Benediction.`,'(Magic, magic defense and MP rise, and she wears the white and gold of the Seraph’s healers.)'],
+    black:['King Nocturne falls to one knee. His great hat tumbles from his head.','King Nocturne: Two hundred years… and my own spells, thrown back in my face. Well played.','King Nocturne: Take my hat. It is the only thing I own that I have not burned. And take the title: Archmage.',`${h.name} became a Archmage! Learned Oblivion.`,'Received the Night King’s Hat and 40,000 gold!','(Magic and MP rise.)'],
+    summoner:['Queen Elowen: The Spirit Warden bows. The great spirits will answer you now.','Queen Elowen: Rise, Master Summoner.',`${h.name} became a Master Summoner! Learned to call Bastion.`,'(Magic, magic defense and MP rise.)']}[k];
   showDialog(lines);}
 
 /* Master Bryn's Trial of the Fist */
@@ -3809,7 +3809,7 @@ function promote(k){const f=S.flags;f.promo=f.promo||{};f.promo[k]=true;const h=
   if(ready.length){const names=ready.map(k=>`${S.heroes.find(h=>h.key===k).name} (${PROMO[k].cls})`);
     askChoice(`Queen Elowen: I sense mastery waiting to be claimed. Who will undertake the Rite?`,[...names,'Not now']).then(c=>{if(c<ready.length)trialStart(ready[c]);});return null;}
   const left=['summoner'].filter(k=>!promoted(k));
-  if((left.length||!promoted('black')||!promoted('white'))&&!f.riteTold){f.riteTold=true;saveGame();return['Queen Elowen: Our magi keep an old rite, the Rite of Mastery.',...left.map(k=>`Queen Elowen: ${S.heroes.find(h=>h.key===k).name} may attempt it with ${PROMO[k].need}.`),'Queen Elowen: Come to me when they are ready.',...(promoted('black')?[]:['Queen Elowen: Morrow’s path is not mine to give. Black wizards answer only to King Nocturne, in a city beneath the Storm Isles.']),...(promoted('white')?[]:['Queen Elowen: And Ilse… healers are called by the Seraph of the Tide. Once she has mastered Curaga, have her spend a night in Coralhaven.'])];}
+  if((left.length||!promoted('black')||!promoted('white'))&&!f.riteTold){f.riteTold=true;saveGame();return['Queen Elowen: Our magi keep an old rite, the Rite of Mastery.',...left.map(k=>`Queen Elowen: ${S.heroes.find(h=>h.key===k).name} may attempt it with ${PROMO[k].need}.`),'Queen Elowen: Come to me when they are ready.',...(promoted('black')?[]:['Queen Elowen: Morrow’s path is not mine to give. Black wizards answer only to King Nocturne, in a city beneath the Storm Isles.']),...(promoted('white')?[]:['Queen Elowen: And Ilse… healers are called by the Seraph of the Tide. Once she has mastered Grand Mend, have her spend a night in Coralhaven.'])];}
   return t0();};}}
 
 
@@ -4078,7 +4078,7 @@ Object.assign(MON,{
   atk:[{name:'Iron Ram',lo:880,hi:1000,w:3,col:'#ffffff'},{name:'Shrapnel',lo:420,hi:500,w:2,all:true,col:'#c8ccd8'}],
   pal:{i:'#7a7e8a',I:'#4a4e5a',r:'#a85a2a',e:'#ff5a3a',y:'#ffd34a'},map:["...IIIIIIII...","..IiiiiiiiiI..",".IiiyiiiiyiiI.","IiiiiiiiiiiiiI","IirrrrrrrrrriI","IiiiieiieiiiiI",".IiiiiiiiiiiI.","..IIIIIIIIII..",".II.II..II.II."]},
  nightmare:{name:'Nightmare',hp:17000,exp:2100,gil:1100,spd:1.4,scale:4,bg:'storm',weak:['holy'],steals:1,steal:['remedy'],drop:[{id:'remedy',ch:.3}],
-  atk:[{name:'Trample',lo:700,hi:820,w:2,col:'#ffffff'},{name:'Night Terror',lo:300,hi:380,w:2,all:true,type:'mag',col:'#b48cff',st:'confuse',ch:.35},{name:'Hellfire Mane',lo:500,hi:580,w:1,all:true,type:'mag',col:'#ff5a3a'}],
+  atk:[{name:'Trample',lo:700,hi:820,w:2,col:'#ffffff'},{name:'Night Terror',lo:300,hi:380,w:2,all:true,type:'mag',col:'#b48cff',st:'confuse',ch:.35},{name:'Cinderstorm Mane',lo:500,hi:580,w:1,all:true,type:'mag',col:'#ff5a3a'}],
   pal:{k:'#1e1a2a',K:'#0e0a16',f:'#b48cff',e:'#ff3a3a'},map:["ff..........","fkkk........",".kekk.......",".kkkkkkkkk..","..kkkkkkkkkf",".kkkkkkkkkkf","..kK.kk.Kk..","..k..k...k..",".kk.kk..kk.."]}});
 for(const k of['basilisk','krakenling','abysswalker','wyvern','ironclad','nightmare']){const q=MON[k];q.h=q.map.length;q.w=Math.max(...q.map.map(r=>r.length));}
 const ENC_SW=[['basilisk'],['krakenling','krakenling'],['abysswalker'],['basilisk','krakenling'],['abysswalker','krakenling']],ENC_NE=[['wyvern'],['ironclad'],['nightmare','wyvern'],['ironclad','nightmare'],['wyvern','wyvern']];
@@ -4117,14 +4117,14 @@ function makeIsleTown(id,o){return{id,name:o.name,w:30,h:18,entry:{x:15*CT,y:16*
 MAPS.coralhaven=makeIsleTown('coralhaven',{name:'Coralhaven',hello:'Coralhaven. Pink coral walls, salt in the air, and everyone armed to the teeth.',roofs:['#e8706a','#f0a07a','#5ab8a8','#7a5ab0'],shops:['cweapon','carmor','citem','cmagic'],
  houses:[['A pearl diver’s house. Nets and shells hang everywhere.'],['The door is locked. Someone inside is singing sea shanties.']],
  npcs:[{x:16,y:12,spr:'man',wander:[13,9,17,15],talk:()=>['Harbormaster: Nobody sails to the southeast. There’s a whirlpool out there big enough to swallow a castle.','Harbormaster: Old sailors say a wyrm sleeps at the bottom of it. Maelstrom, they call it.']},
-  {x:22,y:8,spr:'woman2',wander:[18,8,28,9],talk:()=>['Diver: The basilisks out past the walls can turn you to stone with a look. Carry Gold Needles. Lots.']},
+  {x:22,y:8,spr:'woman2',wander:[18,8,28,9],talk:()=>['Diver: The basilisks out past the walls can turn you to stone with a look. Carry Stonebalm. Lots.']},
   {x:6,y:8,spr:'ranger',talk:()=>['Ranger: If you made it here alive, you’re tougher than most. The Abyss Walkers on this isle hunt in the dark water. Bring holy magic.']},
   {x:12,y:15,spr:'guard',guard:true,talk:()=>['Guard: Stay inside the walls after dark. Unless you’re looking for trouble. Some people are.']}]});
 MAPS.stormhaven=makeIsleTown('stormhaven',{name:'Stormhaven',hello:'Stormhaven. Lightning rods on every roof, and thunder that never quite stops.',roofs:['#5a6a9a','#4a5a7a','#6a8aa8','#8a6ab0'],shops:['sweapon','sarmor','sitem','smagic'],
  houses:[['A storm-watcher’s house. Weathervanes spin on every windowsill.'],['A sailmaker’s home. Canvas is stacked to the rafters.']],
  npcs:[{x:16,y:12,spr:'elder',wander:[13,9,17,15],talk:()=>['Storm-watcher: The tower on the lost isle? Its door is held shut by the sea itself.','Storm-watcher: The tides answer to Maelstrom, the Water Wyrm, in the great whirlpool of the southeast. Break it, and the seal breaks with it.']},
   {x:22,y:8,spr:'adventurer',wander:[18,8,28,9],talk:()=>['Adventurer: Ironclads out there shrug off swords. Thunder cracks their shells.']},
-  {x:6,y:8,spr:'mage',talk:()=>['Mage: Wyverns spit venom. Keep Antidotes handy, or a White Mage who knows Heal.']},
+  {x:6,y:8,spr:'mage',talk:()=>['Mage: Wyverns spit venom. Keep Antidotes handy, or a Cleric who knows Heal.']},
   {x:12,y:15,spr:'guard',guard:true,talk:()=>['Guard: Welcome to Stormhaven. Mind the lightning rods.']},
   {x:21,y:9,spr:'mage',talk:()=>['Mage: There’s a chasm a short walk from town with no bottom anyone has found. Violet lights drift up out of it at night.','Mage: Black wizards live down there, they say. A whole city of them. Only an airship could get down.']}]});
 OUTDOOR.add('coralhaven');OUTDOOR.add('stormhaven');HOME_MAPS.add('coralhaven');HOME_MAPS.add('stormhaven');THIEF_TOWNS.push('coralhaven','stormhaven');
@@ -4317,7 +4317,7 @@ function autoArrange(){const h=home(),all=[];for(const p of h.placed)all.push(p.
 
 /* ---------- v3.14: the party menu, in the classic style ---------- */
 const mOv=document.createElement('div');mOv.className='sheet';mOv.id='mOv';mOv.setAttribute('role','dialog');mOv.setAttribute('aria-modal','true');mOv.setAttribute('aria-label','Party menu');mOv.hidden=true;
-mOv.innerHTML='<div class="card ffm"><div class="ffm-party" id="ffmParty"></div><div class="ffm-side"><div class="ffm-box ffm-cmds" id="ffmCmds"></div><div class="ffm-box ffm-time"><span class="ffc">Time</span><b id="ffmTime"></b></div><div class="ffm-box ffm-steps"><span class="ffc">Steps</span><b id="ffmSteps"></b><span class="ffc">Gil</span><b id="ffmGil"></b></div></div></div>';
+mOv.innerHTML='<div class="card ffm"><div class="ffm-party" id="ffmParty"></div><div class="ffm-side"><div class="ffm-box ffm-cmds" id="ffmCmds"></div><div class="ffm-box ffm-time"><span class="ffc">Time</span><b id="ffmTime"></b></div><div class="ffm-box ffm-steps"><span class="ffc">Steps</span><b id="ffmSteps"></b><span class="ffc">Gold</span><b id="ffmGil"></b></div></div></div>';
 $('shopOv').parentNode.appendChild(mOv);
 let ffmSel=null,ffmBack=false;
 function ffmPortrait(h){const c=document.createElement('canvas');c.width=16;c.height=17;const x=c.getContext('2d');x.imageSmoothingEnabled=false;
@@ -4449,7 +4449,7 @@ const SEA_BASE={
  seaharpy:{name:'Storm Harpy',hp:18000,exp:2800,gil:1400,spd:1.4,weak:['ice'],time:'day',steal:['remedy'],drop:[{id:'remedy',ch:.3}],
   atk:[{name:'Talon Rake',lo:800,hi:920,w:3,col:'#ffffff'},{name:'Shriek',lo:300,hi:380,w:1,all:true,type:'mag',col:'#e88ad0',st:'confuse',ch:.35},{name:'Gale',lo:480,hi:560,w:1,all:true,type:'mag',col:'#bfefff'}],
   pal:{p:'#8a5ab0',P:'#5a3a7a',s:'#e8b48a',h:'#e8d070',e:'#1b1012',y:'#ffd34a'},map:["pp..hhhh..pp","pPp.hseh.pPp",".pPpssssppPp.","..pPpsspPp..","....pppp....","...pPPPPp...","....pppp....","....y..y....","...yy..yy..."]},
- sahagin:{name:'Sahagin Chief',hp:20000,exp:3000,gil:1500,spd:1.2,weak:['thunder'],absorb:'water',time:'day',steal:['xpotion'],drop:[{id:'xpotion',ch:.25}],
+ sahagin:{name:'Reefkin Chief',hp:20000,exp:3000,gil:1500,spd:1.2,weak:['thunder'],absorb:'water',time:'day',steal:['xpotion'],drop:[{id:'xpotion',ch:.25}],
   atk:[{name:'Trident',lo:880,hi:1000,w:3,col:'#ffffff'},{name:'Water Jet',lo:500,hi:580,w:2,all:true,type:'mag',col:'#86e0ff'}],
   pal:{b:'#3a6ab8',B:'#1a3a78',e:'#ffe14a',f:'#86e0ff',t:'#c8c8d8'},map:["..f.bbbb..t.",".ffbbbbbb.t.","..bebbbeb.t.","..bbbbbbb.t.","...bBBBb..t.",".bbbbbbbbbt.","b.bbBBbb.bt.","..bbbbbb..t.","..bb..bb....","..bb..bb....",".fff..fff..."]},
  kraken:{name:'Kraken',hp:28000,exp:4400,gil:2400,spd:1,big:true,weak:['thunder','fire'],absorb:'water',time:'night',steal:['megalixir'],drop:[{id:'megalixir',ch:.06},{id:'xpotion',ch:.3}],
@@ -4534,9 +4534,9 @@ function wsTap(n){if(n.wsGo)return null;const c=wsCharge(n)+1;n.ws=c;n.wsAt=perf
   const r=t0();if(!busy&&r&&f.ogre&&!promoted('fighter')&&!f.palTold){f.palTold=true;saveGame();return r.concat(['King Aldous: One more thing. Garrick fights like the holy knights of old.',`King Aldous: When he reaches level 20, bring him to me. I would see him take the Oath of Light and become a Paladin.${g&&g.lv<20?' (Level '+g.lv+' now.)':''}`]);}
   return r;};}
 
-/* ---------- v3.21: Gloamhollow, the black wizards' city under the Storm Isles, and the Depths below it ---------- */
-/* spells for every magic user: Osmose and Wall */
-Object.assign(SK,{osmose:{name:'Osmose',mp:0,t:'enemy',d:'Drain MP from an enemy'},
+/* ---------- v3.21: Gloamhollow, the sorcerers' city under the Storm Isles, and the Depths below it ---------- */
+/* spells for every magic user: Mana Siphon and Wall */
+Object.assign(SK,{osmose:{name:'Mana Siphon',mp:0,t:'enemy',d:'Drain MP from an enemy'},
  wall:{name:'Wall',mp:24,t:'party',d:'Each ally reflects the next three spells back at the caster'}});
 for(const k of MAGES){for(const s of['osmose','wall']){const id=s+'_'+k;SK[id]=SK[s];TOMES[id]={who:k,price:s==='osmose'?24000:32000,lv:s==='osmose'?30:35,teach:s};}}
 function mpCost(h,sk){if(typeof sk==='string')sk=SK[sk];return h&&h.eco&&sk.mp>1?1:sk.mp;}
@@ -4560,13 +4560,13 @@ function mpCost(h,sk){if(typeof sk==='string')sk=SK[sk];return h&&h.eco&&sk.mp>1
     if(h.skills.includes('osmose')&&!h.eco&&h.mp<h.maxmp*.3)return{kind:'skill',id:'osmose'};}
   return ai7(h);};}
 
-/* gear: wood and cloth for magic users, and the Economizer */
+/* gear: wood and cloth for magic users, and the Thrift Ring */
 Object.assign(GEAR,{
  witchwood:{name:'Witchwood Rod',slot:'weapon',who:['black'],atk:10,mag:50,price:58000},ebonystaff:{name:'Ebony Staff',slot:'weapon',who:['white','summoner'],atk:16,mag:44,price:54000},
  gnarlwand:{name:'Gnarled Wand',slot:'weapon',who:['summoner','black'],atk:20,mag:46,price:56000},
  nightrobe:{name:'Nightweave Robe',slot:'body',who:MAGES,def:34,mdef:46,mag:12,price:52000},pointhat:{name:'Pointed Hat',slot:'head',who:MAGES,def:18,mdef:32,mag:12,price:38000},
  shadowsash:{name:'Shadow Sash',slot:'acc',who:MAGES,mdef:16,mag:8,price:30000},
- economizer:{name:'Economizer',slot:'acc',who:ALLC,eco:true,price:0},nighthat:{name:'Night King’s Hat',slot:'head',who:MAGES,def:24,mdef:48,mag:22,price:0}});
+ economizer:{name:'Thrift Ring',slot:'acc',who:ALLC,eco:true,price:0},nighthat:{name:'Night King’s Hat',slot:'head',who:MAGES,def:24,mdef:48,mag:22,price:0}});
 const METAL=new Set(['rimecrown','sagecrown','stormcrown','pearlcrown','ironhelm','mythrilhelm','dwarfhelm','crystalhelm','genjihelm','nautilushelm','ironarmor','chainvest','mythrilmail','adamantarmor','wyrmscale','crystalmail','coralmail',
  'bronzeshield','ironshield','mythrilshield','adamantshield','crystalshield','thundershield']);
 {const rc7=recalc;recalc=function(h){const r=rc7(h);h.eco=SLOTS.some(s=>GEAR[h.eq[s]]&&GEAR[h.eq[s]].eco);return r;};}
@@ -4574,14 +4574,14 @@ const METAL=new Set(['rimecrown','sagecrown','stormcrown','pearlcrown','ironhelm
 Object.assign(SHOPS,{
  gweapon:{name:'The Whittled Wand',hello:'Wood remembers the tree it was. Metal remembers only the fire.',stock:['witchwood','ebonystaff','gnarlwand','wizardrod','seraphstaff']},
  garmor:{name:'Threads of Night',hello:'Cloth, felt and shadow-silk. Nothing that rings when you walk.',stock:['nightrobe','pointhat','shadowsash','arcanerobe','wizardhat']},
- gitem:{name:'Gloamhollow Stores',hello:'Ethers by the crate. Everyone down here runs dry eventually.',stock:['ether','hiether','megalixir','elixir','remedy','feather','tent','xpotion']},
+ gitem:{name:'Gloamhollow Stores',hello:'Mana Tonics by the crate. Everyone down here runs dry eventually.',stock:['ether','hiether','megalixir','elixir','remedy','feather','tent','xpotion']},
  gmagic:{name:'Hall of Whispers',hello:'Two spells every magic user should know before the Depths. Learn them well.',stock:['osmose_white','osmose_black','osmose_summoner','wall_white','wall_black','wall_summoner','flare','meteor']}});
 for(const k of['gweapon','garmor','gitem','gmagic'])NIGHT_SHOPS.add(k);
 
-/* the townsfolk: nothing but black wizards */
+/* the townsfolk: nothing but sorcerers */
 {const B=SPR.black,mk=(o)=>({map:B.map,pal:{...B.pal,...o}});
- Object.assign(NPCSPR,{bwiz1:mk({}),bwiz2:mk({h:'#1e1828',H:'#120e1a',b:'#2e2840',B:'#1e1a2e'}),bwiz3:mk({h:'#4a2a6a',H:'#2e1a46',b:'#5a3a7a',B:'#3a2456',y:'#ff8a3a'}),
-  bwiz4:mk({h:'#2a2a3a',H:'#1a1a26',b:'#6a6a7a',B:'#4a4a5a',y:'#86e0ff'}),bwgate:mk({h:'#3a0e1a',H:'#24060e',b:'#6a1a2a',B:'#4a0e1a',y:'#ff3a3a'})});}
+ Object.assign(NPCSPR,{bwiz1:mk({h:'#3a2a5a',H:'#241a3a',b:'#4a3a6a',B:'#2e2448'}),bwiz2:mk({h:'#1e1828',H:'#120e1a',b:'#2e2840',B:'#1e1a2e',f:'#c8946a',s:'#c8946a',g:'#5a4a3a'}),bwiz3:mk({h:'#4a2a6a',H:'#2e1a46',b:'#5a3a7a',B:'#3a2456',f:'#f0d0b0',s:'#f0d0b0',g:'#f0d0b0'}),
+  bwiz4:mk({h:'#2a2a3a',H:'#1a1a26',b:'#6a6a7a',B:'#4a4a5a',f:'#8a5a3a',s:'#8a5a3a',g:'#e8e8f0'}),bwgate:mk({h:'#3a0e1a',H:'#24060e',b:'#6a1a2a',B:'#4a0e1a',f:'#d8a880',s:'#d8a880',g:'#3a2a1e'})});}
 
 /* the world: a chasm on the Storm Isles that only the Aurora can descend */
 {const gw7=genWorld;genWorld=function(seed,opt){const Wd=gw7(seed,opt);try{const I=Wd.isles2&&Wd.isles2.ne;if(I){const T=Wd.tiles,ok=k=>I.set.has(k)&&[T_GRASS,T_FOREST,T_HILLS].includes(T[k]);let best=null;
@@ -4622,7 +4622,7 @@ const UMBRA_GATE={x:16*CT+8,y:21*CT+8};
 const UMBRA_PAL={f:['#3a3448','#322c40','#443e54'],r:['#120c1a','#241c30','#32283f','#3e324c','#120c1a'],g:['#b48cff','#e8d8ff','#6a3a9a']};
 DD_PAL.umbra=UMBRA_PAL;
 MAPS.umbra={id:'umbra',umbra:true,name:'Gloamhollow',dynamic:true,pal:UMBRA_PAL,w:34,h:25,entry:{x:16*CT+8,y:7*CT+8},
- hello:'Gloamhollow, city of the black wizards. Pointed roofs crowd a cavern lit by drifting violet flames.',
+ hello:'Gloamhollow, city of the sorcerers. Pointed roofs crowd a cavern lit by drifting violet flames.',
  build(){const g=gridFill(this.w,this.h,'R'),set=(x,y,c)=>{if(x>=0&&y>=0&&x<this.w&&y<this.h)g[y][x]=c;},rect=(x0,y0,x1,y1,c)=>{for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)set(x,y,c);};
    rect(9,1,24,6,'y');rect(2,7,31,22,'y');rect(15,23,17,23,'y');
    for(const x of[3,8,13,20,25,30])set(x,6,'G');for(const[x,y]of[[9,1],[24,1],[1,12],[32,12],[1,18],[32,18]])set(x,y,'G');
@@ -4631,19 +4631,19 @@ MAPS.umbra={id:'umbra',umbra:true,name:'Gloamhollow',dynamic:true,pal:UMBRA_PAL,
    for(const b of this.buildings){for(let y=b.y;y<b.y+b.h;y++)for(let x=b.x;x<b.x+b.w;x++)set(x,y,'H');set(b.door,b.y+b.h-1,'d');}
    set(16,23,'N');return g;},
  doors:{'5,12':{shop:'gweapon'},'10,12':{shop:'garmor'},'24,12':{shop:'gitem'},'29,12':{shop:'gmagic'},'5,20':{inn:true},
-  '11,20':{house:['A black wizard’s study. Candles float in mid-air above a desk buried in scrolls.','“Close the door! You’re letting the dark out.”']},
+  '11,20':{house:['A sorcerer’s study. Candles float in mid-air above a desk buried in scrolls.','“Close the door! You’re letting the dark out.”']},
   '23,20':{house:['A tiny cottage stacked to the ceiling with jars: eyes of newt, bottled lightning, a very annoyed toad.']},
   '28,20':{house:['The Elder’s house. A star chart covers the ceiling, and a single word is carved above the hearth: OBEY.']}},
  get npcs(){return UMBRA_NPCS;},onEnter(){S.flags.gloamSeen=true;}};
 const UMBRA_NPCS=[
  {x:16,y:5,ship:true,talk:()=>{askChoice('The Aurora rests on the cavern floor, her lanterns glowing. Take off and climb back out of the chasm?',['Take off','Stay']).then(c=>{if(c===0)umbraUp();});return null;}},
  {x:16,y:22,spr:'bwgate',talk:()=>{gloamGate();return null;}},
- {x:14,y:9,spr:'bwiz1',wander:[13,8,19,13],talk:()=>['Black Wizard: Surface folk? Here? The Aurora must have been very brave, or very lost.','Black Wizard: We came below so no one would mind our experiments. Most of the explosions stay down here now.']},
- {x:19,y:14,spr:'bwiz2',wander:[14,13,20,18],talk:()=>['Black Wizard: Iron drinks magic. Gold is worse. Nothing that rings when you tap it may pass the Gate of the Depths.','Black Wizard: Threads of Night sells proper cloth hats. Leave your crowns at home.']},
- {x:7,y:14,spr:'bwiz3',talk:()=>['Black Wizard: Wall is the first thing they teach us. A spell thrown at a walled wizard comes straight back at whoever threw it.','Black Wizard: The King throws nothing but spells. Think about that.']},
- {x:25,y:14,spr:'bwiz4',talk:()=>['Black Wizard: Running out of MP down there is how you die. Osmose pulls it straight out of your enemies.','Black Wizard: And somewhere in the Depths lie Economizer rings. With one on, every spell costs a single MP.']},
- {x:20,y:21,spr:'bwiz2',wander:[18,20,21,22],talk:()=>[`Black Wizard: Twenty floors down, King Nocturne waits. Beat him and you are one of us. ${S.flags.bwKing?'Well. You did beat him. Welcome, sibling.':'Nobody has beaten him in two hundred years.'}`]},
- {x:12,y:8,spr:'bwiz1',talk:()=>['Black Wizard: A thieves’ guild? Here? Ha! Try picking a black wizard’s pocket and see what happens to your fingers.']}];
+ {x:14,y:9,spr:'bwiz1',wander:[13,8,19,13],talk:()=>['Sorcerer: Surface folk? Here? The Aurora must have been very brave, or very lost.','Sorcerer: We came below so no one would mind our experiments. Most of the explosions stay down here now.']},
+ {x:19,y:14,spr:'bwiz2',wander:[14,13,20,18],talk:()=>['Sorcerer: Iron drinks magic. Gold is worse. Nothing that rings when you tap it may pass the Gate of the Depths.','Sorcerer: Threads of Night sells proper cloth hats. Leave your crowns at home.']},
+ {x:7,y:14,spr:'bwiz3',talk:()=>['Sorcerer: Wall is the first thing they teach us. A spell thrown at a walled wizard comes straight back at whoever threw it.','Sorcerer: The King throws nothing but spells. Think about that.']},
+ {x:25,y:14,spr:'bwiz4',talk:()=>['Sorcerer: Running out of MP down there is how you die. Mana Siphon pulls it straight out of your enemies.','Sorcerer: And somewhere in the Depths lie Thrift Rings. With one on, every spell costs a single MP.']},
+ {x:20,y:21,spr:'bwiz2',wander:[18,20,21,22],talk:()=>[`Sorcerer: Twenty floors down, King Nocturne waits. Beat him and you are one of us. ${S.flags.bwKing?'Well. You did beat him. Welcome, sibling.':'Nobody has beaten him in two hundred years.'}`]},
+ {x:12,y:8,spr:'bwiz1',talk:()=>['Sorcerer: A thieves’ guild? Here? Ha! Try picking a sorcerer’s pocket and see what happens to your fingers.']}];
 
 /* hat-shaped A-frame houses */
 {const dov=drawOverlays;drawOverlays=function(c){if(!IM||!(IM.buildings||[]).some(b=>b.hat))return dov(c);const all=IM.buildings;IM.buildings=all.filter(b=>!b.hat);try{dov(c);}finally{IM.buildings=all;}
@@ -4676,10 +4676,10 @@ function gloamGate(){const f=S.flags,m=metalOn();
 Object.assign(BGS,{umbral:{sky:['#0e0a18','#2a1e3e'],far:'#1a1428',g:['#3a2e4e','#140e1e'],spk:['#6a3a9a','#b48cff']}});
 Object.assign(MON,{
  acolyte:{name:'Acolyte',scale:4,hp:3600,exp:260,gil:220,spd:1.15,weak:['holy'],steals:1,steal:['ether'],drop:[{id:'ether',ch:.3}],
-  atk:[{name:'Fira',lo:300,hi:360,w:3,type:'mag',col:'#ff7a2a'},{name:'Blizzara',lo:170,hi:210,w:2,all:true,type:'mag',col:'#86e0ff'},{name:'Staff Rap',lo:180,hi:220,w:1,col:'#ffffff'}],
-  pal:{h:'#5a4a7a',H:'#3a2e56',d:'#09070d',y:'#ff5a3a',b:'#6a3a8a',B:'#4a2666',w:'#8a5a2b',s:'#09070d',k:'#2a1a12'},map:SPR.black.map},
+  atk:[{name:'Blaze',lo:300,hi:360,w:3,type:'mag',col:'#ff7a2a'},{name:'Hailstorm',lo:170,hi:210,w:2,all:true,type:'mag',col:'#86e0ff'},{name:'Staff Rap',lo:180,hi:220,w:1,col:'#ffffff'}],
+  pal:{h:'#5a4a7a',H:'#3a2e56',d:'#09070d',y:'#ff5a3a',f:'#09070d',e:'#ff5a3a',g:'#09070d',b:'#6a3a8a',B:'#4a2666',w:'#8a5a2b',s:'#09070d',k:'#2a1a12'},map:SPR.black.map},
  grimoire:{name:'Grimoire',scale:4,hp:3000,exp:240,gil:260,spd:1.3,weak:['fire'],steals:1,steal:['hiether'],drop:[{id:'hiether',ch:.15}],
-  atk:[{name:'Paper Cut',lo:240,hi:290,w:2,col:'#ffffff'},{name:'Thundara',lo:300,hi:350,w:2,type:'mag',col:'#ffe14a'},{name:'Hex',lo:120,hi:150,w:1,all:true,type:'mag',col:'#e88ad0',st:'confuse',ch:.2}],
+  atk:[{name:'Paper Cut',lo:240,hi:290,w:2,col:'#ffffff'},{name:'Thunderbolt',lo:300,hi:350,w:2,type:'mag',col:'#ffe14a'},{name:'Hex',lo:120,hi:150,w:1,all:true,type:'mag',col:'#e88ad0',st:'confuse',ch:.2}],
   pal:{c:'#5a2a3a',C:'#3a1a24',p:'#e8e0c8',P:'#b8b098',g:'#e8c048',e:'#b48cff'},map:["cc..........cc","cCc........cCc",".cCcccccccccC.","..cpppppppppc.","..cpPpepPppPc.","..cppppppppgc.","..cpPpppPpppc.","..cppppppppgc.","..cccccccccc..","...C......C..."]},
  gargoyle:{name:'Gargoyle',scale:4,hp:5200,exp:300,gil:240,spd:1.05,weak:['thunder'],steals:1,steal:['remedy'],drop:[{id:'remedy',ch:.2}],
   atk:[{name:'Stone Claw',lo:320,hi:380,w:3,col:'#ffffff'},{name:'Petrify Gaze',lo:0,hi:0,w:1,all:true,type:'mag',col:'#c8b080',st:'stone',ch:.12},{name:'Dark Wind',lo:200,hi:240,w:2,all:true,type:'mag',col:'#6a3a9a'}],
@@ -4692,7 +4692,7 @@ for(let n=1;n<=20;n++){const T=BW_TIERS[Math.floor((n-1)/4)],m=bwMult(n);for(con
   MON[`bw${n}_${b}`]={...M,name:`${T.p} ${nm}`,hp:Math.round(M.hp*m),exp:Math.round(M.exp*2.4*m),gil:Math.round(M.gil*2.2*m),bg:'umbral',
    atk:M.atk.map(a=>({...a,lo:Math.round(a.lo*(.9+.45*m)),hi:Math.round(a.hi*(.9+.45*m))})),pal:Object.fromEntries(Object.entries(M.pal).map(([k,v])=>[k,tintHex(v,T.c,.35)]))};}}
 MON.bwking={name:'King Nocturne',hp:240000,exp:60000,gil:40000,spd:1.6,scale:4,big:true,boss:true,bg:'umbral',weak:['holy'],steals:0,steal:[],drop:[{id:'megalixir',ch:1}],
- atk:[{name:'Doomfire',lo:2600,hi:3000,w:3,all:true,type:'mag',col:'#ff5a3a'},{name:'Abyssal Flare',lo:4800,hi:5400,w:3,type:'mag',col:'#b48cff'},{name:'Night Ultima',lo:3400,hi:3800,w:2,all:true,type:'mag',col:'#7affb0'},
+ atk:[{name:'Doomfire',lo:2600,hi:3000,w:3,all:true,type:'mag',col:'#ff5a3a'},{name:'Abyssal Sunburst',lo:4800,hi:5400,w:3,type:'mag',col:'#b48cff'},{name:'Night Oblivion',lo:3400,hi:3800,w:2,all:true,type:'mag',col:'#7affb0'},
   {name:'Mind Shatter',lo:500,hi:600,w:1,all:true,type:'mag',col:'#e88ad0',st:'confuse',ch:.35},{name:'Grave Touch',lo:2600,hi:3000,w:2,col:'#6a3a9a'},{name:'Petrifying Word',lo:0,hi:0,w:1,all:true,type:'mag',col:'#c8b080',st:'stone',ch:.15}],
  pal:{h:'#1a1424',H:'#0e0a14',g:'#e8c048',e:'#ff3a3a',r:'#3a1a5a',R:'#24103a',s:'#c8a0ff',w:'#5a3a24',b:'#e8e0ff'},
  map:["......hhg.......","......hhhH......",".....hhhhH......",".....hhhhhH.....","....hhhhhhhH....","..ggggggggggggg.","hhhhhhhhhhhhhhhh","....heeheeh.....","....hhhhhhh..s..",".r..rrrrrrr..s..","rRrrrrrrrrrrrw..","rRrrRrrrrRrrrw..",".rrrRrrrrRrrrw..",".rrrRrrrrRrrr...","..rrRrrrrRrr....","..RRRRRRRRRR....","..bb......bb...."]};
@@ -4720,16 +4720,16 @@ function makeBwFloor(n){const r=bwGen(n),tier=Math.floor((n-1)/4),links={},chest
     onEnter(){S.flags.bwMax=Math.max(S.flags.bwMax||0,n);}};}
 {const em7=ensureMap;ensureMap=function(id){if(!MAPS[id]&&/^bw\d+$/.test(id||'')){const n=+id.slice(2);if(n>=1&&n<=20)MAPS[id]=makeBwFloor(n);}return em7(id);};}
 
-/* the Black Wizard promotion now comes from King Nocturne */
+/* the Archmage promotion now comes from King Nocturne */
 Object.assign(PROMO.black,{trial:null,who:'King Nocturne',need:'King Nocturne defeated at the bottom of the Gloamhollow Depths'});
 {const pr7=promoReady;promoReady=function(k){return k==='black'?false:pr7(k);};}
 {const so7=showOver;showOver=function(win){if(win&&S.foes&&S.foes.some(f=>f.kind==='bwking')){S.flags.bwKing=true;S._bwKingNew=true;}return so7(win);};}
 {const tc9=toCastle;toCastle=function(msg){const r=tc9(msg);if(S._bwKingNew){S._bwKingNew=false;const H=S.bag;H.nighthat=(H.nighthat||0)+1;S.gil+=40000;saveGame();
-   if(!promoted('black'))promote('black');else showDialog(['King Nocturne: …Hah. Already a Black Wizard, and still you came all this way to beat me.','King Nocturne: Take my hat. It is the only thing I own that I have not burned.','Received the Night King’s Hat and 40,000 gil!']);}return r;};}
+   if(!promoted('black'))promote('black');else showDialog(['King Nocturne: …Hah. Already a Archmage, and still you came all this way to beat me.','King Nocturne: Take my hat. It is the only thing I own that I have not burned.','Received the Night King’s Hat and 40,000 gold!']);}return r;};}
 
 /* ---------- v3.22: the Chapel of the Tide in Coralhaven, and Ilse's night with the Seraph ---------- */
 {const pW=promoReady;promoReady=function(k){return k==='white'?false:pW(k);};var whiteReady=()=>!promoted('white')&&pW('white');}
-Object.assign(PROMO.white,{trial:null,who:'the Seraph of Coralhaven',need:'Curaga, level 20, and a night at the Coralhaven inn'});
+Object.assign(PROMO.white,{trial:null,who:'the Seraph of Coralhaven',need:'Grand Mend, level 20, and a night at the Coralhaven inn'});
 
 /* the church in town: white stone, a steeple, and stained glass */
 {const b0=MAPS.coralhaven.build;MAPS.coralhaven.build=function(){const g=b0.call(this);const i=this.buildings.findIndex(b=>b.x===23&&b.y===10);
@@ -4786,7 +4786,7 @@ const CHAPEL_DAY=[{x:6,y:4,spr:'woman2',talk:()=>{const w=S.heroes.find(h=>h.key
    return['Sister Marisol: Welcome to the Chapel of the Tide. Sailors come here to pray before they go out, and again when they come home.',
    ...(promoted('white')?['Sister Marisol: There is a light about you, Ilse. I think you have already met the one who keeps this place.']:
      w&&w.lv>=20&&w.skills.includes('curaga')?['Sister Marisol: You are a healer, aren’t you? Our old stories say the Seraph of the Tide visits healers in the night.','Sister Marisol: Stay a night at the inn. If you are called, you will know.']:
-     ['Sister Marisol: Our old stories say the Seraph of the Tide calls on healers who have mastered Curaga. They say she comes in the night.'])];}},
+     ['Sister Marisol: Our old stories say the Seraph of the Tide calls on healers who have mastered Grand Mend. They say she comes in the night.'])];}},
  {x:3,y:12,spr:'man',talk:()=>['Fisherman: I lit a candle for my brother’s boat. Three days late. The Sister says to keep faith, so I am keeping it.']}];
 const CHAPEL_VISION=[{x:6,y:4,mon:'seraph',sc:1,glow:seraphGlow,talk:()=>{seraphTalk();return null;}}];
 
@@ -4805,8 +4805,8 @@ async function seraphTalk(){const f=S.flags,h=S.heroes.find(x=>x.key==='white');
   const say2=lines=>new Promise(r=>showDialog(lines,r));
   try{
   await say2(['Seraph: Be still, child. You are not dreaming, and you are not in danger.','Seraph: I am the Seraph of the Tide. I keep watch over those who heal.',
-    'Seraph: A White Wizard’s magic is not her own. It is lent to her. With it come three duties: to mend what is broken, to shelter the weak, and to speak the truth even when it costs her.',
-    'Seraph: A White Wizard heals friend and stranger alike, and sometimes her enemies. She does not choose who deserves the light.',
+    'Seraph: A High Cleric’s magic is not her own. It is lent to her. With it come three duties: to mend what is broken, to shelter the weak, and to speak the truth even when it costs her.',
+    'Seraph: A High Cleric heals friend and stranger alike, and sometimes her enemies. She does not choose who deserves the light.',
     'Seraph: Before I give you the light in full, I must see your heart. I will ask you five things. There are no tricks here. Answer as you truly would.']);
   for(let i=0;i<SERAPH_TRIALS.length;i++){const t=SERAPH_TRIALS[i],c=await askChoice(t.q,t.o);
     if(c!==t.ok){await say2([t.why[c]||'Seraph: That is not the answer of a healer.','Seraph: Not yet, Ilse. There is no shame in it. Rest, and when your heart is ready, I will call you again.']);return seraphWake(false);}
@@ -4946,15 +4946,15 @@ async function iceSpikes(){banner('Ice Spikes');const t=pickTarget();for(let k=0
 const STRATS={
  aggressive:{name:'All-Out Attack',d:'Hit hard and spend MP freely. Limits fire the moment they fill. Heals only in emergencies.',heal:.35,group:.35,save:0},
  balanced:{name:'Balanced',d:'Attack steadily, keep the party above half HP, and brace when Inferno is coming.',heal:.5,group:.5,save:.15},
- defensive:{name:'Protect Allies',d:'Heal early, keep Protect on everyone, Guard the weak and Defend through Inferno.',heal:.7,group:.65,save:.1},
+ defensive:{name:'Protect Allies',d:'Heal early, keep Bulwark on everyone, Guard the weak and Defend through Inferno.',heal:.7,group:.65,save:.1},
  conserve:{name:'Save MP',d:'Weapons, steals and items first. Spells only when they really matter.',heal:.4,group:.4,save:.6}
 };
 const HABITS={
  fighter:{rage:'Always Rage Strike',fight:'Always Fight',pummel:'Always Pummel',earthslash:'Always Earth Slash',wavefist:'Always Wave Fist'},
- thief:{steal:'Always Steal',mug:'Always Mug',backstab:'Always Backstab',shuriken:'Always Shuriken',twinstrike:'Always Twin Strike',assassinate:'Always Assassinate'},
- white:{cure:'Always Cure',cura:'Always Cura',cureall:'Always Cure All',holy:'Always Holy'},
+ thief:{steal:'Always Steal',mug:'Always Plunder',backstab:'Always Backstab',shuriken:'Always Shuriken',twinstrike:'Always Twin Strike',assassinate:'Always Assassinate'},
+ white:{cure:'Always Mend',cura:'Always Greater Mend',cureall:'Always Mend All',holy:'Always Radiance'},
  black:{fire:'Always Fire',frost:'Always Ice',thunder:'Always Lightning'},
- summoner:{undine:'Always Undine',glacia:'Always Glacia',raijin:'Always Raijin',ifrit:'Always Ifrit',titan:'Always Titan',bahamut:'Always Bahamut',sylph:'Always Sylph'}
+ summoner:{undine:'Always Undine',glacia:'Always Glacia',raijin:'Always Raijin',ifrit:'Always Pyralis',titan:'Always Gaian',bahamut:'Always Drakonis',sylph:'Always Sylph'}
 };
 function habitAct(h,hb){
   const low=alive().sort((a,b)=>a.hp/a.maxhp-b.hp/b.maxhp)[0];
@@ -4984,7 +4984,7 @@ function aiChoose(h){
   const white=S.heroes.find(x=>x.key==='white');
   const wOk=!white.ko&&!white.stone&&!white.confuse,whiteHeals=wOk&&white.mp>=10, whiteRevives=wOk&&white.mp>=32,whiteCures=wOk&&white.skills.includes('heal')&&white.mp>=mpCost(white,SK.heal);
   const hb=S.auto.habit&&S.auto.habit[h.key];
-  // limit breaks
+  // fury
   if(h.limit>=100&&(hb||h.key!=='white'||ko.length||hurt.length>=2||crit))return{kind:'limit'};
   // habit
   if(hb){const c=habitAct(h,hb);if(c)return c;}
@@ -5019,7 +5019,7 @@ function aiChoose(h){
       if(I.elixir&&pct(low)<.2)return{kind:'item',id:'elixir',tg:low};
     }
   }
-  // brace for Inferno, keep Protect up
+  // brace for Inferno, keep Bulwark up
   const bare=al.filter(x=>x.protect<=0).sort((a,b)=>a.maxhp-b.maxhp);
   const brace=d.charging&&k!=='aggressive';
   if(bare.length&&(brace||k==='defensive')){
@@ -5095,7 +5095,7 @@ function fmt(s){s=Math.round(s);return `${Math.floor(s/60)}:${String(s%60).padSt
 function showOver(win){
   const d=S.foes[0],wy=d.kind==='wyrm',ret=()=>S.battleReturn==='castle'?toCastle():toMap();let t,p,b;
   if(win&&wy&&d.variant==='sky'){S.flags.skyWyrm=true;const ups=awardBattle(30000,60000);t='Victory';p='Zephyrion, the Sky Wyrm, falls from the storm! Ember, Rime, Earth, Tide and Sky: all five wyrms are gone, and the realm is free. Gained 30,000 EXP and 60,000 G.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toCastle('The storm breaks, and sunlight pours over the Tower of Aether. Thank you for playing Ember Wyrm!');}
-  else if(win&&wy&&d.variant==='tide'){S.flags.tideWyrm=true;const ups=awardBattle(15000,30000);S.bag.maelstromring=(S.bag.maelstromring||0)+1;S.items.megalixir=(S.items.megalixir||0)+3;t='Victory';p='Maelstrom, the Water Wyrm, sinks into the deep! Gained 15,000 EXP and 30,000 G. Found the Maelstrom Ring and 3 Megalixirs.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toMap('The whirlpool stills. Far to the northwest, the sea wall around the Tower of Aether crashes down.');}
+  else if(win&&wy&&d.variant==='tide'){S.flags.tideWyrm=true;const ups=awardBattle(15000,30000);S.bag.maelstromring=(S.bag.maelstromring||0)+1;S.items.megalixir=(S.items.megalixir||0)+3;t='Victory';p='Maelstrom, the Water Wyrm, sinks into the deep! Gained 15,000 EXP and 30,000 G. Found the Maelstrom Ring and 3 Grand Elixirs.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toMap('The whirlpool stills. Far to the northwest, the sea wall around the Tower of Aether crashes down.');}
   else if(win&&wy&&d.variant==='earth'){S.flags.worm=true;S.flags.heart=true;const ups=awardBattle(4000,6000);S.bag.wyrmscale=(S.bag.wyrmscale||0)+1;S.items.elixir=(S.items.elixir||0)+2;t='Victory';p='Gravemaw is defeated! Gained 4,000 EXP and 6,000 G. Found Wyrmscale Mail and 2 Elixirs. From the rubble of its body you pry loose the Earthheart, a stone that thrums like a forge.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toCastle('The tunnel ahead is clear. Far below, dwarven horns are sounding.');}
   else if(win&&wy&&d.variant==='frost'){S.flags.wyrm2=true;const ups=awardBattle(3000,5000);S.bag.frostbrand=(S.bag.frostbrand||0)+1;S.bag.rimecrown=(S.bag.rimecrown||0)+1;t='Victory';p='Frostfang is defeated! Gained 3,000 EXP and 5,000 G. Found the Frostbrand and the Rime Crown.'+(ups.length?' '+ups.join(' '):'');b='Continue';S.onContinue=()=>toCastle('The summit falls silent. Snow drifts down over the peak.');}
   else if(win&&wy){S.wyrmDone=true;const ups=awardBattle(800,1500);t='Victory';p=`Both forms felled in ${fmt(S.clock)}. Gained 800 EXP and 1,500 G.`+(ups.length?' '+ups.join(' '):'');b='Enter the world map';S.onContinue=()=>toMap('The pass is clear. The world opens up before you.');}
@@ -5150,7 +5150,7 @@ function renderMenu(focus){
   }
   const h=m.hero;let html=`<div class="cmd-h"><span class="who">${esc(h.name)}</span><span class="cls">${esc(h.cls)}${m.view!=='root'?' · '+esc(m.view==='skills'?h.spLabel:m.view==='items'?'Item':'Choose target'):''}</span></div>`;
   if(m.view==='root'){
-    if(h.limit>=100)html+=opt('limit','Limit · '+LB[h.key].name,null,LB[h.key].d,false,'lim');
+    if(h.limit>=100)html+=opt('limit','Fury · '+LB[h.key].name,null,LB[h.key].d,false,'lim');
     html+=opt('fight','Fight',null,h.row==='back'?'Back row: half damage':null)+opt('sp',h.spLabel)+opt('item','Item')+opt('def','Defend')+opt('row','Row',h.row==='front'?'to back':'to front')+(S.foes[0].kind!=='wyrm'?opt('run','Run'):'');}
   else if(m.view==='skills'){
     for(const id of h.skills){const sk=SK[id];if(sk.t==='field')continue;const noT=((sk.t==='ko'||sk.t==='status')&&!S.heroes.some(x=>validTarget(sk.t,x)));html+=opt('sk:'+id,sk.name,sk.mp?mpCost(h,sk)+' MP':null,sk.d,h.mp<mpCost(h,sk)||noT);}
@@ -5373,7 +5373,7 @@ stage.addEventListener('pointerdown',e=>{if(!TUI.on||!S)return;if(e.target.close
 addEventListener('pointermove',e=>{const j=TUI.joy;if(!j||e.pointerId!==j.id)return;let dx=e.clientX-j.x,dy=e.clientY-j.y;const L=Math.hypot(dx,dy),M=46;if(L>M){dx*=M/L;dy*=M/L;}
   tJoy.firstChild.style.transform=`translate(${dx}px,${dy}px)`;steer=L>10?{x:dx,y:dy}:{x:0,y:0};},{passive:true});
 const joyEnd=e=>{if(TUI.joy&&e.pointerId===TUI.joy.id)endJoy();};addEventListener('pointerup',joyEnd);addEventListener('pointercancel',joyEnd);
-/* the battle bars under each hero: HP, MP, Limit and the ATB gauge */
+/* the battle bars under each hero: HP, MP, Fury and the turn gauge */
 function touchFrame(){if(!TUI.on){return;}
   if(TUI.joy&&(S.scene!=='map'&&S.scene!=='castle'||S.dlg||S.cut))endJoy();else if(TUI.joy&&!steer)steer={x:0,y:0};
   const bt=S.scene==='battle';tBars.hidden=!bt||!!S.over||(typeof sumSkip!=='undefined'&&!!sumSkip);if(TUI.ring&&!bt&&TUI.ring.kind==='hero')closeRing();if(TUI.ring&&TUI.ring.kind==='sys'&&S.scene!=='battle'&&S.scene!=='map'&&S.scene!=='castle')closeRing();
@@ -5409,7 +5409,7 @@ for(const id of['autoGo','autoOff'])$(id).addEventListener('click',saveOpts);
 function optSeg(key,cur,choices){return`<span class="seg" role="group">${choices.map(([v,l])=>`<button type="button" data-o="${key}" data-v="${v}" aria-pressed="${String(cur)===String(v)}">${l}</button>`).join('')}</span>`;}
 function optRow(t,d,ctl){return`<div class="orow"><span><b>${t}</b><small>${d}</small></span>${ctl}</div>`;}
 let oTab='battle',aboutLog=false;
-const CHANGELOG=/*CHANGELOG*/[{"v":"3.47.0","t":"2026-11-09T05:51:27-06:00","d":"Night monsters: twice as tough with MP and spells, plus wraiths, gargoyles, moon moths and big cats"},{"v":"3.46.1","t":"2026-11-09T05:32:49-06:00","d":"Journal stats: long values wrap instead of overlapping their labels"},{"v":"3.46.0","t":"2026-11-09T04:49:53-06:00","d":"Change log in Options › About"},{"v":"3.45.1","t":"2026-11-09T04:48:16-06:00","d":"Camp button in the touch view action ring"},{"v":"3.45.0","t":"2026-11-09T04:44:48-06:00","d":"Five random campfire scenes when camping (5.6 s)"},{"v":"3.44.0","t":"2026-11-09T04:34:47-06:00","d":"Regen, Shell and Regen tomes for Ilse, enemy bars under enemies"},{"v":"3.43.0","t":"2026-11-09T00:55:59-06:00","d":"Sylph casts Cure, Haste and Shell on the party"},{"v":"3.42.0","t":"2026-11-08T23:18:59-06:00","d":"Tap Auto to toggle, double-tap for settings"},{"v":"3.41.4","t":"2026-11-08T23:15:56-06:00","d":"Fix the dark line when a limit gauge fills"},{"v":"3.41.3","t":"2026-11-08T22:53:29-06:00","d":"Steadier touch view during hits and shakes"},{"v":"3.41.2","t":"2026-11-08T22:39:09-06:00","d":"Inkwell keeps villager hours"},{"v":"3.41.1","t":"2026-11-08T22:37:57-06:00","d":"Leaving a thieves' guild puts Vesh south of the trapdoor"},{"v":"3.41.0","t":"2026-11-08T22:34:15-06:00","d":"Skills, magic and items open as a ring around the hero"},{"v":"3.40.2","t":"2026-11-08T22:28:53-06:00","d":"No action ring from tapping empty space in battle"},{"v":"3.40.1","t":"2026-11-08T19:21:17-06:00","d":"Chosen hero names appear in all dialogue"},{"v":"3.40.0","t":"2026-11-08T19:11:25-06:00","d":"Inkwell renames your heroes in every town"},{"v":"3.39.0","t":"2026-11-08T18:40:01-06:00","d":"The active hero steps to front and center"},{"v":"3.38.0","t":"2026-11-08T18:26:52-06:00","d":"Summon entrances"},{"v":"3.37.1","t":"2026-11-08T18:17:20-06:00","d":"Hero bars trail behind each hero, with more room between heroes"},{"v":"3.37.0","t":"2026-11-08T18:07:07-06:00","d":"Wait/Active and Auto in the battle corner"},{"v":"3.36.0","t":"2026-11-08T18:04:55-06:00","d":"Text size settings"},{"v":"3.35.2","t":"2026-11-08T17:58:10-06:00","d":"Guards keep clear when Vesh steps out at night"},{"v":"3.35.1","t":"2026-11-08T15:20:32-06:00","d":"Battle results are tappable in touch view on upright phones"},{"v":"3.35.0","t":"2026-11-08T13:04:52-06:00","d":"Tap an enemy to Fight it"},{"v":"3.34.1","t":"2026-11-08T12:07:41-06:00","d":"Spread spells animate on every enemy"},{"v":"3.34.0","t":"2026-11-08T12:04:16-06:00","d":"Triple-tap empty space to spread an attack spell"},{"v":"3.33.3","t":"2026-11-08T11:56:45-06:00","d":"Frostfang harpies are Frost Harpies again"},{"v":"3.33.2","t":"2026-11-08T07:50:21-06:00","d":"Storm lightning and clouds fill the zoomed-out view"},{"v":"3.33.1","t":"2026-11-08T07:45:45-06:00","d":"Keep the zoom magnifier clear of the mini map button"},{"v":"3.33.0","t":"2026-11-08T07:43:48-06:00","d":"Zoom magnifier under the mini map in touch view"},{"v":"3.32.0","t":"2026-11-08T07:40:51-06:00","d":"Triple-tap Clear for save slots"},{"v":"3.31.3","t":"2026-11-08T07:38:24-06:00","d":"New games always go to an empty save slot"},{"v":"3.31.2","t":"2026-11-08T07:36:25-06:00","d":"Version and update link on the title screen"},{"v":"3.31.1","t":"2026-11-08T07:34:47-06:00","d":"Slow the title screen dragons"},{"v":"3.31.0","t":"2026-11-08T07:33:09-06:00","d":"Title screen"},{"v":"3.30.1","t":"2026-11-07T22:57:21-06:00","d":"Only the head shows when walking through forest"},{"v":"3.30.0","t":"2026-11-07T22:54:19-06:00","d":"Tap a hero to target heals, items and support spells"},{"v":"3.29.0","t":"2026-11-07T22:51:36-06:00","d":"Tap an enemy to target it"},{"v":"3.28.1","t":"2026-11-07T22:40:20-06:00","d":"How to play link in Options → About"},{"v":"3.28.0","t":"2026-11-07T22:34:50-06:00","d":"About in Options, and touch view by default"},{"v":"3.27.1","t":"2026-11-07T22:29:11-06:00","d":"Options and Quests styled like the Journal"},{"v":"3.27.0","t":"2026-11-07T22:24:02-06:00","d":"Options in the main menu"},{"v":"3.26.0","t":"2026-11-07T21:36:31-06:00","d":"Touch-optimized interface"},{"v":"3.25.2","t":"2026-11-07T12:54:25-06:00","d":"The ship docks when steered at a pier from any angle"},{"v":"3.25.1","t":"2026-11-07T08:13:28-06:00","d":"Change rows from the main menu instead of the party list"},{"v":"3.25.0","t":"2026-11-07T08:10:58-06:00","d":"Double-tap a party member to change rows"},{"v":"3.24.0","t":"2026-11-07T07:57:02-06:00","d":"Steeple occlusion, confessional, holy water and rose garden"},{"v":"3.23.0","t":"2026-11-07T07:46:32-06:00","d":"The chapel's tabernacle and the Coralhaven docks"},{"v":"3.22.0","t":"2026-11-06T23:09:30-06:00","d":"The Chapel of the Tide and Ilse's calling"},{"v":"3.21.0","t":"2026-11-06T17:05:23-06:00","d":"Gloamhollow and the Depths, the new Black Wizard path"},{"v":"3.20.0","t":"2026-11-06T16:45:23-06:00","d":"Garrick's promotion is now the Paladin"},{"v":"3.19.0","t":"2026-11-06T10:12:16-06:00","d":"Walk behind the Tower of Aether and behind roofs"},{"v":"3.18.1","t":"2026-11-06T10:10:36-06:00","d":"Walking into a waystone no longer teleports"},{"v":"3.18.0","t":"2026-11-06T10:06:25-06:00","d":"Tower waystones wake on a triple tap"},{"v":"3.17.1","t":"2026-11-06T09:59:29-06:00","d":"Battles leave full view and draw pixel-snapped foes"},{"v":"3.17.0","t":"2026-11-06T09:42:14-06:00","d":"Fog of war on dungeon minimaps; minimap can be closed and reopened with an M button"},{"v":"3.16.0","t":"2026-11-06T09:29:56-06:00","d":"Sea battles by day and night, weaker near the Eastern Port pier and deadlier far out"},{"v":"3.15.1","t":"2026-11-06T09:04:24-06:00","d":"Tent from the Item screen, Quests in the party menu; Save, Camp and Quests removed from the main menu"},{"v":"3.15.0","t":"2026-11-06T08:48:22-06:00","d":"Item, Skills, Equip, Status and Journal screens in the classic layout"},{"v":"3.14.0","t":"2026-11-06T08:14:35-06:00","d":"Party menu laid out like the classic FF menu (portraits and stats left, commands, time and steps/gil right)"},{"v":"3.13.1","t":"2026-11-06T05:28:34-06:00","d":"No minimap while Vesh works alone at night"},{"v":"3.13.0","t":"2026-11-06T05:23:42-06:00","d":"Full view zooms the world map out (2x, 3x, 1.5x) to show more of the world"},{"v":"3.12.1","t":"2026-11-06T05:18:29-06:00","d":"Sell animals back to Old Hob for 60%"},{"v":"3.12.0","t":"2026-11-06T04:29:23-06:00","d":"Journal Homestead tab (harvest schedule, land, animals, earnings, buildings, farmhouse) and farmhouse Auto-arrange"},{"v":"3.11.0","t":"2026-11-05T20:43:18-06:00","d":"Enterable farmhouse, home goods catalog, mailbox orders delivered in boxes, furniture placement"},{"v":"3.10.0","t":"2026-11-05T20:07:58-06:00","d":"The greenhouse becomes a real indoor growing room (288 beds) with its own well"},{"v":"3.9.4","t":"2026-11-05T19:13:22-06:00","d":"Well sits just below the field and waters every plot automatically each morning"},{"v":"3.9.3","t":"2026-11-05T18:57:58-06:00","d":"Cows at twice their original size, sheep at 1.25x"},{"v":"3.9.2","t":"2026-11-05T18:55:04-06:00","d":"Cows drawn four times larger"},{"v":"3.9.1","t":"2026-11-05T16:24:07-06:00","d":"Fishing line meter drawn above the weather, moved to the bottom"},{"v":"3.9.0","t":"2026-11-05T16:10:22-06:00","d":"Coralhaven and Stormhaven isles, Maelstrom the Water Wyrm, tower sealed until it falls"},{"v":"3.8.0","t":"2026-11-05T16:02:52-06:00","d":"Seasons and the homestead (crops, animals, buildings, selling)"},{"v":"3.7.0","t":"2026-11-05T15:56:35-06:00","d":"Mine shaft lift on every level; five new Ironhold houses"},{"v":"3.6.0","t":"2026-11-05T15:53:25-06:00","d":"Monk, White Wizard, Black Wizard and Master Summoner trials; new outfits incl. Ninja"},{"v":"3.5.0","t":"2026-11-05T15:48:14-06:00","d":"Journal (stats, bestiary, items, fish book, notes) and three save slots"},{"v":"3.4.0","t":"2026-11-05T15:44:44-06:00","d":"Rest till nightfall, town hours, thieves' sign, sky window, fishing weather, full view, Raijin storm, shake fix, boat beside pier"},{"v":"3.3.1","t":"2026-11-05T12:28:17-06:00","d":"Open the doorway into the Aurora's stores"},{"v":"3.3.0","t":"2026-11-05T12:21:50-06:00","d":"Walkable Aurora decks with bunks, stores and a battle simulator"},{"v":"3.2.1","t":"2026-11-05T12:10:51-06:00","d":"15-day lunar cycle; Blood Moon every other full moon (every 30 days)"},{"v":"3.2.0","t":"2026-11-05T12:07:38-06:00","d":"Blood Moon — zombies, shut gates, the magi's holy barrier and the kings' tiered hunt"},{"v":"3.1.0","t":"2026-11-05T11:55:04-06:00","d":"Sun and moon icon, moon phases, weather and weather-dependent monsters"},{"v":"3.0.0","t":"2026-11-05T11:03:37-06:00","d":"Day and night, Vesh's night heists, thieves' guilds and the Ninja path"},{"v":"2.9.0","t":"2026-11-05T10:27:47-06:00","d":"Fishing at sea, Old Gill and the Fish Book"},{"v":"2.8.1","t":"2026-11-05T10:02:01-06:00","d":"Eastern Port pier east of Castle Valemont"},{"v":"2.8.0","t":"2026-11-05T09:36:46-06:00","d":"Storm wall around the Isle of Aether"},{"v":"2.7.4","t":"2026-11-05T09:22:28-06:00","d":"Keep menu rows from collapsing; style the Exit confirm like the version updater"},{"v":"2.7.3","t":"2026-11-05T09:19:16-06:00","d":"Exit needs a second tap to confirm"},{"v":"2.7.2","t":"2026-11-05T09:15:32-06:00","d":"Exit works in castles and towns too"},{"v":"2.7.1","t":"2026-11-05T09:12:35-06:00","d":"Cast healing magic and use items from the Party screen"},{"v":"2.7.0","t":"2026-11-05T08:50:40-06:00","d":"Castle Arcanum, Highmere, the Isle of Aether and its 100-floor tower"},{"v":"2.6.0","t":"2026-11-05T08:09:47-06:00","d":"Gravemaw the Earth Wyrm and Ironhold's Royal Hall"},{"v":"2.5.1","t":"2026-11-05T06:35:39-06:00","d":"Seal Deepdelve Mine until the Hill Ogre quest and Frostfang are done"},{"v":"2.5.0","t":"2026-11-05T06:14:20-06:00","d":"Status ailments, new magic and summons, monk arts and thief tricks"},{"v":"2.4.0","t":"2026-11-05T05:28:18-06:00","d":"Deepdelve Mine, Ironhold and the airship Aurora"},{"v":"2.3.2","t":"2026-11-05T05:03:43-06:00","d":"Fix being trapped beside the village on the castle grounds"},{"v":"2.3.1","t":"2026-11-04T22:52:48-06:00","d":"Auto battle uses purchased spells smartly"},{"v":"2.3.0","t":"2026-11-04T18:41:04-06:00","d":"Frostfang Peak mountain dungeon and the Rime Wyrm"},{"v":"2.2.0","t":"2026-11-04T18:16:00-06:00","d":"Walkable towns, townsfolk, Adventurers' Guild and quests"},{"v":"2.1.0","t":"2026-11-04T16:21:04-06:00","d":"Walled castle grounds, village south of the castle, mini-map"},{"v":"2.0.0","t":"2026-11-04T15:27:40-06:00","d":"Group battles, new monsters and Castle Valemont interior"},{"v":"1.9.0","t":"2026-11-04T13:02:05-06:00","d":"Towns, shops, equipment, levels and saving"},{"v":"1.8.0","t":"2026-11-04T12:48:14-06:00","d":"FF2 (SNES)-style top-down overworld"},{"v":"1.7.0","t":"2026-11-04T09:49:03-06:00","d":"World map, random encounters and camping"},{"v":"1.6.0","t":"2026-11-04T08:52:26-06:00","d":"Footer: dash separator, email link and Venmo donate"},{"v":"1.5.0","t":"2026-11-04T08:43:46-06:00","d":"Tap the footer version twice to force an update"},{"v":"1.4.0","t":"2026-11-04T08:41:06-06:00","d":"Add per-hero auto battle habits; fix KO render crash"},{"v":"1.3.0","t":"2026-11-04T08:35:47-06:00","d":"Add auto battle with strategies"},{"v":"1.2.0","t":"2026-11-04T08:25:23-06:00","d":"Full-screen console layout"},{"v":"1.1.0","t":"2026-11-04T08:13:22-06:00","d":"Fill the display, add full screen button and version footer"},{"v":"1.0.0","t":"2026-11-04T08:03:29-06:00","d":"First release: the Ember Wyrm battle, installable as an app"}]/*/CHANGELOG*/;
+const CHANGELOG=/*CHANGELOG*/[{"v":"3.48.0","t":"2026-11-09T11:54:20-06:00","d":"Renamed spells, summons, items, classes and gold to original names; new looks for Morrow, Ilse and Gloamhollow's sorcerers"},{"v":"3.47.0","t":"2026-11-09T05:51:27-06:00","d":"Night monsters: twice as tough with MP and spells, plus wraiths, gargoyles, moon moths and big cats"},{"v":"3.46.1","t":"2026-11-09T05:32:49-06:00","d":"Journal stats: long values wrap instead of overlapping their labels"},{"v":"3.46.0","t":"2026-11-09T04:49:53-06:00","d":"Change log in Options › About"},{"v":"3.45.1","t":"2026-11-09T04:48:16-06:00","d":"Camp button in the touch view action ring"},{"v":"3.45.0","t":"2026-11-09T04:44:48-06:00","d":"Five random campfire scenes when camping (5.6 s)"},{"v":"3.44.0","t":"2026-11-09T04:34:47-06:00","d":"Renew, Spellguard and Renew tomes for Ilse, enemy bars under enemies"},{"v":"3.43.0","t":"2026-11-09T00:55:59-06:00","d":"Sylph casts Mend, Haste and Spellguard on the party"},{"v":"3.42.0","t":"2026-11-08T23:18:59-06:00","d":"Tap Auto to toggle, double-tap for settings"},{"v":"3.41.4","t":"2026-11-08T23:15:56-06:00","d":"Fix the dark line when a limit gauge fills"},{"v":"3.41.3","t":"2026-11-08T22:53:29-06:00","d":"Steadier touch view during hits and shakes"},{"v":"3.41.2","t":"2026-11-08T22:39:09-06:00","d":"Inkwell keeps villager hours"},{"v":"3.41.1","t":"2026-11-08T22:37:57-06:00","d":"Leaving a thieves' guild puts Vesh south of the trapdoor"},{"v":"3.41.0","t":"2026-11-08T22:34:15-06:00","d":"Skills, magic and items open as a ring around the hero"},{"v":"3.40.2","t":"2026-11-08T22:28:53-06:00","d":"No action ring from tapping empty space in battle"},{"v":"3.40.1","t":"2026-11-08T19:21:17-06:00","d":"Chosen hero names appear in all dialogue"},{"v":"3.40.0","t":"2026-11-08T19:11:25-06:00","d":"Inkwell renames your heroes in every town"},{"v":"3.39.0","t":"2026-11-08T18:40:01-06:00","d":"The active hero steps to front and center"},{"v":"3.38.0","t":"2026-11-08T18:26:52-06:00","d":"Summon entrances"},{"v":"3.37.1","t":"2026-11-08T18:17:20-06:00","d":"Hero bars trail behind each hero, with more room between heroes"},{"v":"3.37.0","t":"2026-11-08T18:07:07-06:00","d":"Wait/Active and Auto in the battle corner"},{"v":"3.36.0","t":"2026-11-08T18:04:55-06:00","d":"Text size settings"},{"v":"3.35.2","t":"2026-11-08T17:58:10-06:00","d":"Guards keep clear when Vesh steps out at night"},{"v":"3.35.1","t":"2026-11-08T15:20:32-06:00","d":"Battle results are tappable in touch view on upright phones"},{"v":"3.35.0","t":"2026-11-08T13:04:52-06:00","d":"Tap an enemy to Fight it"},{"v":"3.34.1","t":"2026-11-08T12:07:41-06:00","d":"Spread spells animate on every enemy"},{"v":"3.34.0","t":"2026-11-08T12:04:16-06:00","d":"Triple-tap empty space to spread an attack spell"},{"v":"3.33.3","t":"2026-11-08T11:56:45-06:00","d":"Frostfang harpies are Frost Harpies again"},{"v":"3.33.2","t":"2026-11-08T07:50:21-06:00","d":"Storm lightning and clouds fill the zoomed-out view"},{"v":"3.33.1","t":"2026-11-08T07:45:45-06:00","d":"Keep the zoom magnifier clear of the mini map button"},{"v":"3.33.0","t":"2026-11-08T07:43:48-06:00","d":"Zoom magnifier under the mini map in touch view"},{"v":"3.32.0","t":"2026-11-08T07:40:51-06:00","d":"Triple-tap Clear for save slots"},{"v":"3.31.3","t":"2026-11-08T07:38:24-06:00","d":"New games always go to an empty save slot"},{"v":"3.31.2","t":"2026-11-08T07:36:25-06:00","d":"Version and update link on the title screen"},{"v":"3.31.1","t":"2026-11-08T07:34:47-06:00","d":"Slow the title screen dragons"},{"v":"3.31.0","t":"2026-11-08T07:33:09-06:00","d":"Title screen"},{"v":"3.30.1","t":"2026-11-07T22:57:21-06:00","d":"Only the head shows when walking through forest"},{"v":"3.30.0","t":"2026-11-07T22:54:19-06:00","d":"Tap a hero to target heals, items and support spells"},{"v":"3.29.0","t":"2026-11-07T22:51:36-06:00","d":"Tap an enemy to target it"},{"v":"3.28.1","t":"2026-11-07T22:40:20-06:00","d":"How to play link in Options → About"},{"v":"3.28.0","t":"2026-11-07T22:34:50-06:00","d":"About in Options, and touch view by default"},{"v":"3.27.1","t":"2026-11-07T22:29:11-06:00","d":"Options and Quests styled like the Journal"},{"v":"3.27.0","t":"2026-11-07T22:24:02-06:00","d":"Options in the main menu"},{"v":"3.26.0","t":"2026-11-07T21:36:31-06:00","d":"Touch-optimized interface"},{"v":"3.25.2","t":"2026-11-07T12:54:25-06:00","d":"The ship docks when steered at a pier from any angle"},{"v":"3.25.1","t":"2026-11-07T08:13:28-06:00","d":"Change rows from the main menu instead of the party list"},{"v":"3.25.0","t":"2026-11-07T08:10:58-06:00","d":"Double-tap a party member to change rows"},{"v":"3.24.0","t":"2026-11-07T07:57:02-06:00","d":"Steeple occlusion, confessional, holy water and rose garden"},{"v":"3.23.0","t":"2026-11-07T07:46:32-06:00","d":"The chapel's tabernacle and the Coralhaven docks"},{"v":"3.22.0","t":"2026-11-06T23:09:30-06:00","d":"The Chapel of the Tide and Ilse's calling"},{"v":"3.21.0","t":"2026-11-06T17:05:23-06:00","d":"Gloamhollow and the Depths, the new Archmage path"},{"v":"3.20.0","t":"2026-11-06T16:45:23-06:00","d":"Garrick's promotion is now the Paladin"},{"v":"3.19.0","t":"2026-11-06T10:12:16-06:00","d":"Walk behind the Tower of Aether and behind roofs"},{"v":"3.18.1","t":"2026-11-06T10:10:36-06:00","d":"Walking into a waystone no longer teleports"},{"v":"3.18.0","t":"2026-11-06T10:06:25-06:00","d":"Tower waystones wake on a triple tap"},{"v":"3.17.1","t":"2026-11-06T09:59:29-06:00","d":"Battles leave full view and draw pixel-snapped foes"},{"v":"3.17.0","t":"2026-11-06T09:42:14-06:00","d":"Fog of war on dungeon minimaps; minimap can be closed and reopened with an M button"},{"v":"3.16.0","t":"2026-11-06T09:29:56-06:00","d":"Sea battles by day and night, weaker near the Eastern Port pier and deadlier far out"},{"v":"3.15.1","t":"2026-11-06T09:04:24-06:00","d":"Tent from the Item screen, Quests in the party menu; Save, Camp and Quests removed from the main menu"},{"v":"3.15.0","t":"2026-11-06T08:48:22-06:00","d":"Item, Skills, Equip, Status and Journal screens in the classic layout"},{"v":"3.14.0","t":"2026-11-06T08:14:35-06:00","d":"Party menu laid out like the classic FF menu (portraits and stats left, commands, time and steps/gil right)"},{"v":"3.13.1","t":"2026-11-06T05:28:34-06:00","d":"No minimap while Vesh works alone at night"},{"v":"3.13.0","t":"2026-11-06T05:23:42-06:00","d":"Full view zooms the world map out (2x, 3x, 1.5x) to show more of the world"},{"v":"3.12.1","t":"2026-11-06T05:18:29-06:00","d":"Sell animals back to Old Hob for 60%"},{"v":"3.12.0","t":"2026-11-06T04:29:23-06:00","d":"Journal Homestead tab (harvest schedule, land, animals, earnings, buildings, farmhouse) and farmhouse Auto-arrange"},{"v":"3.11.0","t":"2026-11-05T20:43:18-06:00","d":"Enterable farmhouse, home goods catalog, mailbox orders delivered in boxes, furniture placement"},{"v":"3.10.0","t":"2026-11-05T20:07:58-06:00","d":"The greenhouse becomes a real indoor growing room (288 beds) with its own well"},{"v":"3.9.4","t":"2026-11-05T19:13:22-06:00","d":"Well sits just below the field and waters every plot automatically each morning"},{"v":"3.9.3","t":"2026-11-05T18:57:58-06:00","d":"Cows at twice their original size, sheep at 1.25x"},{"v":"3.9.2","t":"2026-11-05T18:55:04-06:00","d":"Cows drawn four times larger"},{"v":"3.9.1","t":"2026-11-05T16:24:07-06:00","d":"Fishing line meter drawn above the weather, moved to the bottom"},{"v":"3.9.0","t":"2026-11-05T16:10:22-06:00","d":"Coralhaven and Stormhaven isles, Maelstrom the Water Wyrm, tower sealed until it falls"},{"v":"3.8.0","t":"2026-11-05T16:02:52-06:00","d":"Seasons and the homestead (crops, animals, buildings, selling)"},{"v":"3.7.0","t":"2026-11-05T15:56:35-06:00","d":"Mine shaft lift on every level; five new Ironhold houses"},{"v":"3.6.0","t":"2026-11-05T15:53:25-06:00","d":"Monk, High Cleric, Archmage and Master Summoner trials; new outfits incl. Ninja"},{"v":"3.5.0","t":"2026-11-05T15:48:14-06:00","d":"Journal (stats, bestiary, items, fish book, notes) and three save slots"},{"v":"3.4.0","t":"2026-11-05T15:44:44-06:00","d":"Rest till nightfall, town hours, thieves' sign, sky window, fishing weather, full view, Raijin storm, shake fix, boat beside pier"},{"v":"3.3.1","t":"2026-11-05T12:28:17-06:00","d":"Open the doorway into the Aurora's stores"},{"v":"3.3.0","t":"2026-11-05T12:21:50-06:00","d":"Walkable Aurora decks with bunks, stores and a battle simulator"},{"v":"3.2.1","t":"2026-11-05T12:10:51-06:00","d":"15-day lunar cycle; Blood Moon every other full moon (every 30 days)"},{"v":"3.2.0","t":"2026-11-05T12:07:38-06:00","d":"Blood Moon — zombies, shut gates, the magi's holy barrier and the kings' tiered hunt"},{"v":"3.1.0","t":"2026-11-05T11:55:04-06:00","d":"Sun and moon icon, moon phases, weather and weather-dependent monsters"},{"v":"3.0.0","t":"2026-11-05T11:03:37-06:00","d":"Day and night, Vesh's night heists, thieves' guilds and the Ninja path"},{"v":"2.9.0","t":"2026-11-05T10:27:47-06:00","d":"Fishing at sea, Old Gill and the Fish Book"},{"v":"2.8.1","t":"2026-11-05T10:02:01-06:00","d":"Eastern Port pier east of Castle Valemont"},{"v":"2.8.0","t":"2026-11-05T09:36:46-06:00","d":"Storm wall around the Isle of Aether"},{"v":"2.7.4","t":"2026-11-05T09:22:28-06:00","d":"Keep menu rows from collapsing; style the Exit confirm like the version updater"},{"v":"2.7.3","t":"2026-11-05T09:19:16-06:00","d":"Exit needs a second tap to confirm"},{"v":"2.7.2","t":"2026-11-05T09:15:32-06:00","d":"Exit works in castles and towns too"},{"v":"2.7.1","t":"2026-11-05T09:12:35-06:00","d":"Cast healing magic and use items from the Party screen"},{"v":"2.7.0","t":"2026-11-05T08:50:40-06:00","d":"Castle Arcanum, Highmere, the Isle of Aether and its 100-floor tower"},{"v":"2.6.0","t":"2026-11-05T08:09:47-06:00","d":"Gravemaw the Earth Wyrm and Ironhold's Royal Hall"},{"v":"2.5.1","t":"2026-11-05T06:35:39-06:00","d":"Seal Deepdelve Mine until the Hill Ogre quest and Frostfang are done"},{"v":"2.5.0","t":"2026-11-05T06:14:20-06:00","d":"Status ailments, new magic and summons, monk arts and thief tricks"},{"v":"2.4.0","t":"2026-11-05T05:28:18-06:00","d":"Deepdelve Mine, Ironhold and the airship Aurora"},{"v":"2.3.2","t":"2026-11-05T05:03:43-06:00","d":"Fix being trapped beside the village on the castle grounds"},{"v":"2.3.1","t":"2026-11-04T22:52:48-06:00","d":"Auto battle uses purchased spells smartly"},{"v":"2.3.0","t":"2026-11-04T18:41:04-06:00","d":"Frostfang Peak mountain dungeon and the Rime Wyrm"},{"v":"2.2.0","t":"2026-11-04T18:16:00-06:00","d":"Walkable towns, townsfolk, Adventurers' Guild and quests"},{"v":"2.1.0","t":"2026-11-04T16:21:04-06:00","d":"Walled castle grounds, village south of the castle, mini-map"},{"v":"2.0.0","t":"2026-11-04T15:27:40-06:00","d":"Group battles, new monsters and Castle Valemont interior"},{"v":"1.9.0","t":"2026-11-04T13:02:05-06:00","d":"Towns, shops, equipment, levels and saving"},{"v":"1.8.0","t":"2026-11-04T12:48:14-06:00","d":"FF2 (SNES)-style top-down overworld"},{"v":"1.7.0","t":"2026-11-04T09:49:03-06:00","d":"World map, random encounters and camping"},{"v":"1.6.0","t":"2026-11-04T08:52:26-06:00","d":"Footer: dash separator, email link and Venmo donate"},{"v":"1.5.0","t":"2026-11-04T08:43:46-06:00","d":"Tap the footer version twice to force an update"},{"v":"1.4.0","t":"2026-11-04T08:41:06-06:00","d":"Add per-hero auto battle habits; fix KO render crash"},{"v":"1.3.0","t":"2026-11-04T08:35:47-06:00","d":"Add auto battle with strategies"},{"v":"1.2.0","t":"2026-11-04T08:25:23-06:00","d":"Full-screen console layout"},{"v":"1.1.0","t":"2026-11-04T08:13:22-06:00","d":"Fill the display, add full screen button and version footer"},{"v":"1.0.0","t":"2026-11-04T08:03:29-06:00","d":"First release: the Ember Wyrm battle, installable as an app"}]/*/CHANGELOG*/;
 function logWhen(t){try{return new Date(t).toLocaleString([],{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'});}catch(e){return t;}}
 function drawOptions(){const enc=S.world&&S.world.enc!==false,who=S.heroes.filter(h=>S.auto.who[h.key]).map(h=>h.name);
   $('optSub').textContent=`${S.auto.on?'Auto · '+STRATS[S.auto.strat].name:'Manual'} · ${S.mode==='wait'?'Wait':'Active'}`;
@@ -5697,14 +5697,14 @@ function campScene(ms){const kind=pick(CAMP_SCENES),T0=S.t;say(campCaption(kind)
   return addFx(ms||5600,(c,p)=>{const a=p<.1?p/.1:p>.9?(1-p)/.1:1,t=S.t-T0;c.save();zOver();c.globalAlpha=a;campBackdrop(c,t,a);try{CAMP_DRAW[kind](c,t);}catch(e){}c.globalAlpha=1;c.restore();});}
 /* ---------- v3.47: night monsters (twice as tough, with MP and spells), new classes and the big cats ---------- */
 const FSPELL={
- fire:{name:'Fire',mp:5,elem:'fire',pow:1.1,col:'#ff7a2a',pal:['#ff7a2a','#ffd34a','#fff3c4']},
- blizzard:{name:'Blizzard',mp:5,elem:'ice',pow:1.1,col:'#86e0ff',pal:['#86e0ff','#e8f8ff','#5ab8f2']},
+ fire:{name:'Flame',mp:5,elem:'fire',pow:1.1,col:'#ff7a2a',pal:['#ff7a2a','#ffd34a','#fff3c4']},
+ blizzard:{name:'Frost',mp:5,elem:'ice',pow:1.1,col:'#86e0ff',pal:['#86e0ff','#e8f8ff','#5ab8f2']},
  thunder:{name:'Thunder',mp:5,elem:'thunder',pow:1.1,col:'#ffe14a',pal:['#ffe14a','#fff6c0','#ffffff']},
- aqua:{name:'Aqua',mp:5,elem:'water',pow:1.1,col:'#5ab8f2',pal:['#5ab8f2','#a8e0ff','#2a7ac8']},
+ aqua:{name:'Torrent',mp:5,elem:'water',pow:1.1,col:'#5ab8f2',pal:['#5ab8f2','#a8e0ff','#2a7ac8']},
  drain:{name:'Drain',mp:8,pow:.9,col:'#b48cff',pal:['#b48cff','#e0c8ff','#7a4ac8'],drain:true},
  poison:{name:'Poison',mp:4,pow:.35,col:'#a8f05a',pal:['#a8f05a','#5aa04a'],st:'poison',ch:.75},
  confuse:{name:'Confuse',mp:6,pow:0,col:'#e88ad0',pal:['#e88ad0','#ffc8f0'],st:'confuse',ch:.45},
- cure:{name:'Cure',mp:6,heal:.25,col:'#9df29a',pal:['#9df29a','#e8ffe0','#ffffff']}};
+ cure:{name:'Mend',mp:6,heal:.25,col:'#9df29a',pal:['#9df29a','#e8ffe0','#ffffff']}};
 /* the new classes, stated at day strength; only their night forms (twice as tough) ever appear */
 const NC_MAPS={
  panther:["..B.B...........",".BbBb...........","Bbebbb..........","Bbbbbbb.......B.","nbbbbbbBBBBBBB.B",".tbbbbbbbbbbbbbB","..bbbbbbbbbbbbB.","..BbB......BbbB.","..Bb........Bb..",".BB........BB..."],
@@ -5787,7 +5787,7 @@ async function foeCast(d,choice){const sp=FSPELL[choice.k],m=MON[d.kind];d.mp=Ma
   await sleep(380);}
 {const maN=monsterAct;monsterAct=async function(){const d=S.dragon,m=d&&MON[d.kind];
   if(m&&m.spells&&d.mp>0&&!d.dead&&alive().length){const ch=pickFoeSpell(d,m);if(ch){d.queued=false;d.atb=0;d.turns++;
-    if(!S.flags.foeMagic){S.flags.foeMagic=1;say('Night creatures know magic, and spend MP to cast it. Osmose can drain it.');}return foeCast(d,ch);}}
+    if(!S.flags.foeMagic){S.flags.foeMagic=1;say('Night creatures know magic, and spend MP to cast it. Mana Siphon can drain it.');}return foeCast(d,ch);}}
   return maN();};}
 /* ---------- v3.31: the title screen ---------- */
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!titleOv.hidden){e.preventDefault();e.stopImmediatePropagation();}},true);

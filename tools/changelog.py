@@ -2,12 +2,14 @@
 """Rebuild the CHANGELOG list inside index.html from git history.
 Usage: python3 tools/changelog.py [vX.Y.Z "what changed"]   (the optional pair adds the release being made now)"""
 import re, subprocess, sys, json, datetime, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from rename import scrub
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 log = subprocess.run(['git', 'log', '--reverse', '--format=%aI\t%s'], cwd=root, capture_output=True, text=True).stdout.splitlines()
 seen, out = set(), []
 def add(v, when, msg):
     if v in seen: return
-    seen.add(v); msg = msg.strip().rstrip('.'); out.append({'v': v, 't': when, 'd': msg[:1].upper() + msg[1:]})
+    seen.add(v); msg = scrub(msg.strip().rstrip('.')); out.append({'v': v, 't': when, 'd': msg[:1].upper() + msg[1:]})
 for line in log:
     when, s = line.split('\t', 1)
     if re.match(r'(Redeploy|Retrigger|README)', s): continue

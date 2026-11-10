@@ -274,3 +274,7 @@ Options › About has a **Latest version** row under the installed version. **Ch
 
 ## Summons on top (v3.73.0)
 While a summon plays, the enemy name tags, HP bars and boss bar fade out (`.stage.summoning`), so the summoned creature isn't covered. They fade back in as soon as the summon's action ends.
+
+## Warp ring and quest tracker shortcut (v3.74.0)
+- **Warp in the touch ring**: once Morrow knows Warp, the world-map and town command ring has a **Warp** chip. Tapping it opens a second ring of visited towns, with a hint showing the MP cost and Morrow's MP, plus **‹ Back** to the command ring. Picking a town casts Warp straight away (`castWarp(h, dest)`).
+- **Quest tracker**: tapping the *Quests* header, or any quest in the list, opens the Quests menu. The **−/+** box still collapses and expands the tracker.

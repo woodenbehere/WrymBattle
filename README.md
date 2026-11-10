@@ -324,3 +324,6 @@ Battle skill, magic, summon and item lists in the touch view (`layList`) now for
 
 ## Six spots per battle ring (v3.83.0)
 In battle, every touch ring holds at most **six** choices. If there are more, the sixth spot becomes **More › 2/3**, which opens the next ring under the same rule. In spell, summon and item lists, the **‹ Back** button by the hero goes back one page (and to the command ring from the first page). In command rings, Back takes one of the six spots on later pages. Outside battle, rings hold up to 8.
+
+## Command ring behind the heroes (v3.84.0)
+While a touch command ring is open in battle, the heroes are drawn a second time onto a see-through canvas (`#actorCv`, which ignores taps) placed exactly over the game canvas and above the ring. The hero HP/MP bars move above the ring too. The ring now sits behind the party, and buttons still respond everywhere, even under a sprite.

@@ -251,3 +251,17 @@ The fishing scene now has an on-screen **✕ Stop fishing** button in the top-le
 
 ## Raijin bolts stay on the enemy side (v3.69.0)
 Raijin's Storm Drum still throws its barrage of lightning, but the bolts now only land between the left edge and just short of the front hero (`min(hero.x) - 18`), so none strike the party.
+
+## Hero's Diners (v3.70.0)
+A cottage in each town (Valemont, Thornwick, Highmere, Coralhaven, Stormhaven and Ironhold) is now an empty eatery with a plate-and-cutlery sign. Lease it for 2,500 G from the landlord inside to open a **Hero's Diner**.
+
+- **Ingredients**:
+  - **Monster cuts** drop in battle (`CUTS`): Hare Haunch, Wolf Flank, Harpy Wing, Lizard Tail, Scorpion Tail, Toad Legs, Ray Fin, Slime Jelly, Mole Cutlet, Spider Leg, Yeti Shank, Crab Claw, Kraken Tentacle, Serpent Fillet, Panther Loin (all the big cats) and the rare Drake Tail. Night forms drop more.
+  - **Fish** in the basket count as carried food.
+  - **Crops, eggs and milk** sit in the farm crates. Pack them at the **Larder** (the farmhouse icebox, or *Larder* in the house menu), which also stores food for runners.
+- **Each diner keeps its own stock.** Carry food in on the Stock tab ("Stock everything the menu uses" does it in one tap).
+- **Menu**: 22 recipes (`RECIPES`). Four are known at the start; learn the rest with gold, and some need more stars. You get 3 slots at first, up to 5. Each town favors certain kinds of food (`DINER_TOWNS[t].taste`): those dishes sell more often and for 20% more.
+- **Staff**: hire a cook (required; skill raises prices) and a server (brings in more customers). Each has a trait (Generous, Gourmet, Speedy, Showman or Thrifty) and a daily wage paid from the till. New applicants come each week.
+- **Each morning** (`dinerDay`): customers come based on reputation and the server, order by local taste, and switch to another dish if theirs is out of stock. Sales fill the till and wages come out of it. Reputation (0–100) gives 1–5 stars, which unlock recipes and upgrades. The Overview tab keeps a 7-day ledger.
+- **Upgrades**: extra menu slots; runners (6 or 12 ingredients a day carried from the larder for the menu); a road sentry post (raid chance drops from 25% to 8%); and the sky skiff (20 a day, can't be raided).
+- **Raids**: when runners are ambushed, the shipment is lost and they won't go out again. Talk to the runner at the diner (or tap *Clear the road*) to fight the area's monsters. Winning keeps the road safe for 7 days.

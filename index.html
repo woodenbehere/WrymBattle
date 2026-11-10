@@ -465,7 +465,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.81.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.81.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -6494,7 +6494,8 @@ function dinerReport(t,D){dinerStats(D);const L=D.life,W=D.log.slice(0,7),sum=(a
   {const U={};for(const e of W)for(const[k,n]of Object.entries(e.used||{}))U[k]=(U[k]||0)+n;const top=Object.entries(U).sort((a,b)=>b[1]-a[1]).slice(0,10);
     if(top.length){const m=top[0][1],CC={meat:'#c8503a',fish:'#3a8ad8',veg:'#5ab04a',dairy:'#e8e0c0',grain:'#d8a050',spice:'#e8402a',sweet:'#d070c0'};
       h+=`<p class="lab">Most used ingredients (last 7 days)</p><div class="rbars ring">`+top.map(([k,n])=>`<div class="rbar"><span>${esc(foodName(k))}</span><i style="width:${Math.max(3,Math.round(n/m*100))}%;background:${CC[foodCat(k)]||'#a8a8b8'}"></i><b>×${n} · ${fmtG(n*foodValue(k))}</b></div>`).join('')+
-      `</div><p class="tip">${Object.entries(CC).filter(([c])=>top.some(([k])=>foodCat(k)===c)).map(([c,col])=>`<span style="color:${col}">■</span> ${c}`).join(' · ')}. Kitchen has ${top.map(([k])=>`${esc(foodName(k))} ×${D.stock[k]||0}`).slice(0,3).join(', ')} left.</p>`;}}
+      `</div><p class="tip">${Object.entries(CC).filter(([c])=>top.some(([k])=>foodCat(k)===c)).map(([c,col])=>`<span style="color:${col}">■</span> ${c}`).join(' · ')}. Kitchen has ${top.map(([k])=>`${esc(foodName(k))} ×${D.stock[k]||0}`).slice(0,3).join(', ')} left.</p>`;}
+    else h+=`<p class="lab">Most used ingredients (last 7 days)</p><p class="tip">No ingredient use recorded yet. This chart started tracking in v3.81, so it fills in after this diner’s next morning of business (it needs a cook, a menu and food in stock).</p>`;}
   h+=`<p class="lab">Income statement</p>`+rTable(['','Last 7 days','All time'],[
     {c:['Sales',fmtG(w.sales),fmtG(L.sales)]},{c:['Food cost',sg(-w.cogs),sg(-L.cogs)]},{cls:'sub',c:['Gross profit',sg(a7.gp),sg(aL.gp)]},
     {c:['Wages',sg(-w.wages),sg(-L.wages)]},{cls:'tot',c:['Net profit',sg(a7.np),sg(aL.np)]},{c:['Profit margin',a7.m+'%',aL.m+'%']}]);

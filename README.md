@@ -330,3 +330,6 @@ While a touch command ring is open in battle, the heroes are drawn a second time
 
 ## Battle commands beside the hero (v3.85.0)
 The main battle command ring (Fight, Arts/Magic/Summon, Item, Defend, Row, Run) now uses the same curved column as the spell and item lists, on the enemy side of the active hero. Nothing sits over the party anymore, and it follows the same six-spot / More rule.
+
+## Battle commands on the right (v3.86.0)
+All battle command columns (main commands, spells, summons, skills and items) now sit to the **right** of the active hero. Each button is pulled in so it never runs off the screen. Buttons draw on top again: the v3.84 hero overlay is switched off, and the HP bars go back under the ring.

@@ -423,7 +423,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
 #tring button.sys{border-color:var(--line);color:var(--muted)}
 #tring button:active{background:var(--line)}
 @keyframes tpop{from{opacity:0;transform:translate(-50%,-50%) scale(.6)}}
-#tbars .tbar{position:fixed;z-index:14;pointer-events:none;display:grid;grid-template-columns:1fr;gap:1px}
+#tbars .tbar{position:fixed;z-index:11;pointer-events:none;display:grid;grid-template-columns:1fr;gap:1px}
 #tbars .tbar span{display:block;height:3px;background:rgba(0,0,0,.75);outline:1px solid rgba(0,0,0,.6)}
 #tbars .tbar span i{display:block;height:100%;width:0}
 #tbars .tbar .xh i{background:var(--heal)} #tbars .tbar .xh.warn i{background:var(--hp-warn)} #tbars .tbar .xh.crit i{background:var(--hp-crit)}
@@ -466,7 +466,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.85.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.86.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -5411,7 +5411,7 @@ function layRing(cx,cy,items,hero){const vw=innerWidth,vh=innerHeight,n=items.le
 const actorCv=document.createElement('canvas');actorCv.id='actorCv';document.body.appendChild(actorCv);const actx=actorCv.getContext('2d');actx.imageSmoothingEnabled=false;
 let actorOn=false,actorSet=null;
 {const ds9=drawSprite;drawSprite=function(c,spr,x,y,o){ds9(c,spr,x,y,o);if(actorOn&&c===ctx&&actorSet&&actorSet.has(spr)){actx.setTransform(ctx.getTransform());ds9(actx,spr,x,y,o);}};}
-{const br9=battleRender;battleRender=function(dt){const show=!tRing.hidden&&S.scene==='battle';
+{const br9=battleRender;battleRender=function(dt){const show=false;/* v3.86: buttons now sit beside the party, so the hero overlay is off */
   if(show){const r=cv.getBoundingClientRect();if(actorCv.width!==cv.width||actorCv.height!==cv.height){actorCv.width=cv.width;actorCv.height=cv.height;actx.imageSmoothingEnabled=false;}
     Object.assign(actorCv.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',display:'block'});actx.setTransform(1,0,0,1,0,0);actx.clearRect(0,0,actorCv.width,actorCv.height);
     actorSet=new Set(S.heroes.map(h=>{try{return heroSpr(h);}catch(e){return null;}}));actorOn=true;}
@@ -5457,8 +5457,10 @@ function layList(c,back,rest){const k=(S.menu&&S.menu.view)+':'+(S.menu&&S.menu.
     b.style.left=Math.max(56,Math.min(vw-56,x))+'px';b.style.top=Math.max(20,Math.min(vh-20,y))+'px';b.style.animationDelay=(j*14)+'ms';b.addEventListener('pointerdown',e=>e.stopPropagation());
     b.onclick=e=>{e.stopPropagation();if(it.dis)return;it.go();};tRing.appendChild(b);};
   for(const it of back)add(it,c.x,c.y+40*tk,0);
-  const m=show.length,hgt=(m-1)*gap,y0=Math.max(22,Math.min(vh-22-hgt,c.y-hgt/2)),cx=c.x-160*Math.max(1,tk*.9);
-  show.forEach((it,j)=>{const t=m>1?(j-(m-1)/2)/((m-1)/2):0;add(it,cx+Math.abs(t)*22,y0+j*gap,j+1);});
+  const m=show.length,hgt=(m-1)*gap,y0=Math.max(22,Math.min(vh-22-hgt,c.y-hgt/2)),cx=c.x+120*Math.max(1,tk*.9);
+  /* v3.86: the column sits on the right of the hero, pulled in so it never runs off the screen */
+  show.forEach((it,j)=>{const t=m>1?(j-(m-1)/2)/((m-1)/2):0;add(it,cx-Math.abs(t)*22,y0+j*gap,j+1);const b=tRing.lastElementChild,w=b.offsetWidth||120,x=parseFloat(b.style.left);
+    b.style.left=Math.min(vw-6-w/2,Math.max(c.x+30+w/2,x))+'px';});
   tRing.hidden=false;}
 {const rmT=renderMenu;renderMenu=function(f){rmT(f);try{touchSync();}catch(e){console.warn(e);}};}
 function foeAt(x,y){let best=null;S.foes.forEach((f,i)=>{if(f.dead||f.gone)return;const m=f.kind==='wyrm'?null:MON[f.kind];

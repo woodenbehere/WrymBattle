@@ -175,6 +175,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .ffs-it[aria-pressed="true"]{color:var(--gold)}
 .ffs-it[aria-pressed="true"]::before,.ffs-slot[aria-pressed="true"]::before{content:"\25B6";position:absolute;left:2px;top:8px;font-size:9px;color:var(--gold)}
 .ffs-it b{font-weight:normal;white-space:pre}
+.ffs-gdesc{padding:6px 10px}.ffs-gdesc .gd-head{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.ffs-gdesc p{margin:3px 0 0;font-size:.92em;line-height:1.35}
 .ffs-row2{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
 .ffs-mp{min-width:90px;align-content:center}.ffs-mp b{font-family:var(--f-body);font-size:22px;font-weight:normal;text-align:right;color:var(--mp)}
 .ffs-hero{display:flex;align-items:center;gap:12px}
@@ -449,7 +450,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.63.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.64.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -4400,6 +4401,21 @@ const sOv=document.createElement('div');sOv.className='sheet';sOv.id='sOv';sOv.s
 sOv.innerHTML='<div class="card ffs" id="ffsCard"></div>';$('shopOv').parentNode.appendChild(sOv);
 const FS={mode:'item',sel:null,pend:null,note:'',slot:null,eqMode:'equip',tab:'use'};
 const curHero=()=>S.heroes.find(x=>x.key===partyKey)||S.heroes[0];
+const GEAR_FLAVOR={ribbon:'A charm-stitched sash. Its wearer shrugs off poison, stone, confusion and every other ailment.',
+ economizer:'A plain copper band that hoards magic. Every spell costs only 1 MP, so casters can fire freely.',
+ frostward:'Cold-forged silver that halves ice damage.',maelstromring:'Taken from the deep. It halves water damage and sharpens body and mind.',
+ dragoncrest:'A crest of dragon bone that lifts every stat a little.',heroring:'The ring of a true hero. A big boost to every stat.',
+ genjihelm:'A wandering swordsman’s helm, light enough to keep you quick.',ultimaweapon:'A legendary blade from the top of the tower.',
+ holyrobe:'A robe woven with blessed thread. Superb against magic.',dawnbringer:'Garrick’s finest blade, forged to greet the dawn.',
+ wyrmscale:'Mail made from shed dragon scales. Tough against blades and spells alike.'};
+function gearKind(it){const n=it.name.toLowerCase(),k=[['sword','sword'],['blade','blade'],['dagger','dagger'],['knife','knife'],['gauche','parrying dagger'],['staff','staff'],['rod','rod'],['wand','wand'],['whip','whip'],['katana','katana'],['shield','shield'],['buckler','shield'],['helm','helm'],['hat','hat'],['cap','cap'],['crown','crown'],['bandana','headband'],['robe','robe'],['mail','mail'],['armor','armor'],['vest','vest'],['garb','garb'],['ring','ring'],['band','band'],['bracer','bracer'],['armlet','armlet'],['charm','charm'],['pendant','pendant'],['sash','sash']].find(([w])=>n.includes(w));
+  return k?k[1]:({weapon:'weapon',shield:'shield',head:'piece of headgear',body:'piece of armor',acc:'accessory'})[it.slot];}
+function gearDesc(id){const it=GEAR[id];if(!it)return'';const who=it.who.length>=5?'anyone':it.who.map(k=>CL[k]?CL[k].name:k).join(it.who.length===2?' and ':', ');
+  const SN={atk:'Weapon power',str:'Attack',mag:'Magic',def:'Defense',mdef:'Magic def.',spd:'Speed'};
+  const st=Object.keys(SN).filter(k=>it[k]).map(k=>k==='atk'?`${SN[k]} ${it[k]}`:`${SN[k]} ${it[k]>0?'+':''}${it[k]}`);
+  const fx=[];if(!GEAR_FLAVOR[id]){if(it.immune)fx.push('Blocks all status ailments');if(it.res)fx.push(`Halves ${it.res} damage`);if(it.eco)fx.push('Every spell costs 1 MP');}
+  const kind=gearKind(it),lead=GEAR_FLAVOR[id]||(it.slot==='weapon'?`A ${kind} that hits harder the higher its power.`:it.slot==='acc'?`A ${kind} worn for its special edge.`:`A ${kind} that soaks up ${it.mdef>it.def?'magic':'blows'}.`);
+  return `${lead} ${[...st,...fx].join(' · ')}${st.length||fx.length?'. ':''}Can equip: ${who}.`;}
 function fsBox(cls,inner){return`<div class="ffm-box ${cls}">${inner}</div>`;}
 function fsHeroBox(h,big){return`<div class="ffs-hero">${S.heroes.length>1?'<button type="button" class="ffs-arr" data-hero="-1" aria-label="Previous hero">◀</button>':''}<img alt="" src="${ffmPortrait(h)}" class="${big?'big':''}"><span class="ffm-info"><span class="ffm-name">${esc(h.name)}<em>${esc(h.cls)}</em></span><span class="ffm-stats">
   <span class="ffm-num"><span class="ffc">LV</span><b>${h.lv}</b></span><span class="ffm-num"><span class="ffc">HP</span><b class="${h.hp<=h.maxhp/4?'low':''}">${h.hp}/${h.maxhp}</b></span>${h.maxmp?`<span class="ffm-num"><span class="ffc">MP</span><b>${h.mp}/${h.maxmp}</b></span>`:''}</span></span>${S.heroes.length>1?'<button type="button" class="ffs-arr" data-hero="1" aria-label="Next hero">▶</button>':''}</div>`;}
@@ -4431,6 +4447,8 @@ function drawFfs(){const h=curHero(),m=FS.mode;let html='';
     html+=fsBox('ffs-list',h.skills.length?`<div class="ffs-grid">${h.skills.map(id=>`<button type="button" class="ffs-it${skWhy(h,id)?' dim':''}" data-sk="${id}" aria-pressed="${id===sel}"><span>${esc(SK[id].name)}</span><b>${mpCost(h,SK[id])||''}</b></button>`).join('')}</div>`:'<p class="tip">No skills yet.</p>');}
   else if(m==='equip'){const em=FS.eqMode,slot=FS.slot;
     html+=fsTop('Equip',[['equip','Equip',em==='equip'],['optimum','Optimum'],['remove','Remove',em==='remove'],['empty','Empty']]);
+    {const did=FS.sel&&GEAR[FS.sel]?FS.sel:(slot&&h.eq[slot]),gi=did&&GEAR[did];
+      if(gi)html+=fsBox('ffs-gdesc',`<div class="gd-head"><b>${esc(gi.name)}</b><span class="ffc">${did===h.eq[slot]&&!FS.sel?'Equipped · ':''}${SLOT_NAME[gi.slot]}</span></div><p>${esc(gearDesc(did))}</p>`);}
     html+=fsBox('ffs-slots',`<div class="ffs-slotlist">${SLOTS.map(s=>{const it=GEAR[h.eq[s]],can=Object.keys(GEAR).some(id=>GEAR[id].slot===s&&GEAR[id].who.includes(h.key));return`<button type="button" class="ffs-slot" data-slot="${s}" aria-pressed="${s===slot}"${can?'':' disabled'}><span class="ffc">${SLOT_NAME[s]}</span><span>${it?esc(it.name):'—'}</span></button>`;}).join('')}</div>${fsHeroBox(h,false)}`);
     let left='',prev=null;
     if(FS.note)left+=`<p class="tip">${esc(FS.note)}</p>`;

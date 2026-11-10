@@ -231,3 +231,6 @@ A guild hall now stands in Ironhold's southeast corner (gold-brown roof, crossed
 
 ## Choosing what the tracker shows (v3.63)
 In Quests › Active, every bounty in progress (and the main story goal at the top) has a **Track** button. Tracked ones (✓ Tracked, in blue) appear in the map and dungeon tracker; untrack any you don't want cluttering the screen. New bounties are tracked automatically, and the choices are saved with your game.
+
+## Equip item descriptions (v3.64.0)
+On the Equip screen, a description box sits between the top command bar and the slot list. It shows the selected piece (or the piece already in the chosen slot): its name, slot, a short line on what it does, its stat bonuses, any special effect (blocks ailments, halves an element, 1-MP spells) and who can wear it. Text comes from `gearDesc(id)`; notable items have hand-written lines in `GEAR_FLAVOR`.

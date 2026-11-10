@@ -222,3 +222,6 @@ A Tent pitched on a dungeon's save circle plays a camp scene built for that plac
 
 ## Warp (v3.59)
 Morrow can buy **Warp** (2,500 G, 30 MP) at the Valemont magic shop. Cast it from Party › Magic on the world map or inside a town: pick any town the party has visited (Valemont Village, Thornwick, Highmere, Coralhaven, Stormhaven or the Homestead) and the party arrives there in a swirl of blue light. Walking out of the town puts you beside it on the world map. It can't be cast aboard a ship or the airship, in dungeons (that's Ilse's Exit), or on Vesh's solo nights. Your ship stays where you left it, so warp back to it when you need it. Valemont Village counts as visited from the start; other towns are added the first time you enter them after this update.
+
+## Mine battles (v3.60)
+Battles inside Deepdelve now look like the level you're fighting on: timber supports, a hanging lantern, rails and broken ore carts on the first level; walls of glowing cyan and violet crystals (and a cart full of them) in the Crystal Galleries; glowing Sky Folk carvings over the rails on the Old Sky Road; giant glowing mushrooms and a cart of spores in the Fungal Hollow; and a lava river, glowing cracks and a scorched cart in the Magma Depths. Crystals, lanterns and mushrooms softly pulse with light, and crystal tips glint. Gravemaw keeps his own arena.

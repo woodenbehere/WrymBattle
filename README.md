@@ -265,3 +265,6 @@ A cottage in each town (Valemont, Thornwick, Highmere, Coralhaven, Stormhaven an
 - **Each morning** (`dinerDay`): customers come based on reputation and the server, order by local taste, and switch to another dish if theirs is out of stock. Sales fill the till and wages come out of it. Reputation (0–100) gives 1–5 stars, which unlock recipes and upgrades. The Overview tab keeps a 7-day ledger.
 - **Upgrades**: extra menu slots; runners (6 or 12 ingredients a day carried from the larder for the menu); a road sentry post (raid chance drops from 25% to 8%); and the sky skiff (20 a day, can't be raided).
 - **Raids**: when runners are ambushed, the shipment is lost and they won't go out again. Talk to the runner at the diner (or tap *Clear the road*) to fight the area's monsters. Winning keeps the road safe for 7 days.
+
+## Status screen fit (v3.71.0)
+The hero card and the command list on the Status screen now sit in a wrapping row (`.ffs-strow`). When big text or a narrow screen leaves too little room, the command list drops below the card and lays out in columns instead of squeezing the card. Numbers like EXP no longer run over the box border.

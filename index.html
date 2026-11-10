@@ -77,7 +77,8 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .dlg{position:absolute;left:6px;right:6px;bottom:6px;background:linear-gradient(#2c48b8,#121a62);border:2px solid #e8e8f0;box-shadow:0 0 0 2px #000;border-radius:3px;padding:.35em .7em 1em;color:#ffffff;font-size:calc(clamp(14px,3.3cqw,30px) * var(--t-dlg,1));line-height:1.15;z-index:6;cursor:pointer}
 .dlg p{margin:0}.dlg span{position:absolute;right:.6em;bottom:.15em;font-size:.7em;animation:glow .8s steps(2) infinite;color:#ffd34a}
 .stage.map .note{bottom:auto;top:8px}
-.stage.cutmeal #mini,.stage.cutmeal .minix,.stage.cutmeal #qTrk{visibility:hidden}
+.stage.cutfx .note{top:auto!important;bottom:10px!important}
+.stage.cutfx #mini,.stage.cutfx .minix,.stage.cutfx #qTrk{visibility:hidden}
 /* info text sits on the side of the screen away from the hero */
 .stage.castle.msgTop .note,.stage.town.msgTop .note{bottom:auto;top:8px}
 .stage.msgTop .banner:not([hidden])~.note,.stage.map .banner:not([hidden])~.note{top:calc(16px + 1.6em)}
@@ -455,7 +456,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.66.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.67.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -2851,12 +2852,7 @@ async function raiseIsle(){
   await addFx(2600,(c,p)=>{for(const[x,y]of MAGI_CIRCLE){const a=scr(x*CT+8,y*CT+2);if(Math.random()<.5)part(a.x,a.y,{vx:(ctr.x-a.x)*1.6,vy:(ctr.y-a.y)*1.6,life:.6,c:pick(['#b48cff','#86e0ff','#ffffff'])});}
     c.globalAlpha=.25+.25*Math.sin(p*20);c.strokeStyle='#b48cff';c.beginPath();c.arc(ctr.x,ctr.y,8+p*26,0,7);c.stroke();c.globalAlpha=1;});
   flash('#ffffff',900);shake();await sleep(700);
-  f.islandUp=true;const keep={x:S.world.x,y:S.world.y};buildWorld();const I=WORLD.isle;
-  S.cam=null;S.scene='map';stage.classList.remove('castle');stage.classList.add('map');S.isleView=true;S.world.x=(I.cx+.5)*TS;S.world.y=(I.cy+.5)*TS+10;renderMenu();
-  flash('#bfefff',800);shake();say('Far to the northwest, a lost island bursts from the sea, and a white tower climbs into the clouds!');
-  await addFx(3200,(c,p)=>{if(Math.random()<.9)for(let k=0;k<4;k++){const a=Math.random()*6.283,r=rnd(30,70);part(W/2+Math.cos(a)*r*1.4,PY+Math.sin(a)*r*.7,{vx:Math.cos(a)*20,vy:rnd(-50,-20),g:60,life:rnd(.5,1),c:pick(['#e8f6ff','#90c8f8','#ffffff'])});}
-    if(p<.3)shake();});
-  S.world.x=keep.x;S.world.y=keep.y;S.isleView=false;
+  f.islandUp=true;buildWorld();stage.classList.add('cutfx');await isleCine();stage.classList.remove('cutfx');flash('#ffffff',600);
   enterInterior('arcanum',{x:14*CT+8,y:4*CT+8});S.cut=false;saveGame();
   showDialog(['King Corvin: It is done. The Isle of Aether stands again, and the Tower of Aether with it. A hundred floors, with Zephyrion at the top.',
    'Queen Elowen: But beware. The tower’s winds turn back anything that flies. The Aurora cannot land on the isle.',
@@ -6335,6 +6331,58 @@ introOv.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();i
   const row=document.createElement('div');row.innerHTML=optRow('The opening','Watch the chronicle of Orren Vael again.','<button type="button" class="btn sm" data-o="intro">Watch</button>');
   const first=ab.querySelector('.orow');if(first)first.after(row.firstElementChild);else ab.appendChild(row.firstElementChild);};}
 optOv.addEventListener('click',e=>{if(!e.target.closest('[data-o="intro"]'))return;e.stopPropagation();playIntro(()=>{});},true);
+/* ---------- v3.67: the Isle of Aether rising cut scene (sea churns, tower rises, island lifts, storm gathers, wall of water) ---------- */
+function isleCine(ms){const T0=S.t,caps=['Far to the northwest, the sea begins to churn…','A white tower bursts from the waves, sea water pouring off its walls!','Then the whole island heaves up out of the ocean.','Storm clouds boil up around the tower’s peak.','And a great wall of water rises to ring the Isle of Aether.'];
+  const cuts=[0,.18,.38,.58,.78,1],sm=x=>x<=0?0:x>=1?1:x*x*(3-2*x),seg=(p,i)=>sm((p-cuts[i])/(cuts[i+1]-cuts[i]));let ph=-1;
+  const WL=106,CX=128;
+  return addFx(ms||13500,(c,p)=>{const t=S.t-T0,q=cuts.findIndex((v,i)=>p>=v&&p<cuts[i+1]),ix=q<0?4:q;if(ix!==ph){ph=ix;say(caps[ix]);}
+    const A=seg(p,0),R=Math.min(1,seg(p,1)*.92+A*.08),Lf=seg(p,2),St=seg(p,3),Wv=seg(p,4),fade=p<.03?p/.03:p>.97?(1-p)/.03:1;
+    const rumble=reduce?0:(p<.62?(.6+1.6*(A<1?A:1-Lf*.5)):St*.4)*(Math.sin(t*61)+Math.sin(t*37))*.5;
+    c.save();zOver();c.globalAlpha=fade;c.translate(Math.round(rumble),Math.round(rumble*.5));
+    /* sky darkens as the storm builds */
+    const mix=(a,b,k)=>{const h=s=>[1,3,5].map(i=>parseInt(s.slice(i,i+2),16)),x=h(a),y=h(b);return`rgb(${x.map((v,i)=>Math.round(v+(y[i]-v)*k)).join(',')})`;};
+    const dk=Math.min(1,St*.9+Wv*.1),sky=c.createLinearGradient(0,0,0,WL);sky.addColorStop(0,mix('#5a8ad8','#1a1e30',dk));sky.addColorStop(1,mix('#bfe0f8','#4a5068',dk));c.fillStyle=sky;c.fillRect(-4,-4,W+8,WL+4);
+    c.fillStyle=mix('#a8c8e8','#3a4258',dk);for(const[x,y,w]of[[20,88,40],[200,84,50],[90,94,30]]){c.beginPath();c.ellipse(x,y,w,5,0,0,7);c.fill();}
+    /* sea */const sea=c.createLinearGradient(0,WL-14,0,H);sea.addColorStop(0,mix('#3a7ac8','#1a3050',dk));sea.addColorStop(1,mix('#1a4a8a','#0a1428',dk));c.fillStyle=sea;c.fillRect(-4,WL-14,W+8,H-WL+18);
+    c.fillStyle=mix('#6aa8e8','#3a5878',dk);for(let y=WL-10;y<H;y+=6)for(let x=((y*13+t*(8+y*.2))%22)-22;x<W;x+=22)c.fillRect(Math.round(x),y,8,1);
+    /* churning: whirlpool rings and a swelling dome of water */
+    if(Lf<1){c.globalAlpha=fade*(1-Lf);for(let k=0;k<4;k++){const r=(((t*.7+k/4)%1))*70+8;c.strokeStyle=`rgba(220,240,255,${.5*(1-r/78)})`;c.lineWidth=1;c.beginPath();c.ellipse(CX,WL+4,r,r*.18,0,0,7);c.stroke();}
+      c.fillStyle='rgba(140,200,250,.7)';c.beginPath();c.ellipse(CX,WL+2,26+A*20,2+A*6,0,Math.PI,0);c.fill();
+      for(let k=0;k<10;k++){const s=(t*1.6+k*.37)%1,x=CX-30+((k*29)%60);c.fillStyle=`rgba(240,250,255,${1-s})`;c.fillRect(x,Math.round(WL+4-s*10*A),1,1);}c.globalAlpha=fade;}
+    /* the wall of water: back half behind the island */
+    const RX=112,RY=14,WH=Wv*40;const wall=(front)=>{for(let x=CX-RX;x<=CX+RX;x+=2){const d=(x-CX)/RX,e=Math.sqrt(Math.max(0,1-d*d)),by=WL+2+(front?RY*e:-RY*e),hh=WH*(.75+.25*e)+Math.sin(t*6+x*.2)*2*Wv;if(hh<1)continue;
+        c.fillStyle=front?'rgba(90,170,240,.55)':'rgba(40,110,190,.9)';c.fillRect(x,Math.round(by-hh),2,Math.round(hh));c.fillStyle=front?'rgba(230,248,255,.85)':'rgba(200,236,255,.8)';c.fillRect(x,Math.round(by-hh),2,1);
+        if(front&&((x+Math.floor(t*30))%8===0)){c.fillStyle='rgba(255,255,255,.6)';c.fillRect(x,Math.round(by-hh+3),1,Math.round(hh-3));}}};
+    if(Wv>0)wall(false);
+    /* island and tower, clipped at the waterline */
+    const lift=Lf*24,top=WL-lift,tH=48,tBase=top+4+(tH+4)*(1-R),tTop=tBase-tH;
+    c.save();c.beginPath();c.rect(-4,-40,W+8,WL+42);c.clip();
+    /* tower */c.fillStyle='#e8eef8';c.fillRect(CX-7,tTop,14,tH);c.fillStyle='#b8c4d8';c.fillRect(CX+3,tTop,4,tH);c.fillStyle='#d0d8e8';for(let y=tTop+9;y<tTop+tH;y+=12)c.fillRect(CX-8,y,16,2);
+    c.fillStyle='#3a4a6a';for(let y=tTop+13;y<tTop+tH-4;y+=12)c.fillRect(CX-2,y,3,4);
+    c.fillStyle='#ffd34a';c.beginPath();c.moveTo(CX-9,tTop);c.lineTo(CX,tTop-14);c.lineTo(CX+9,tTop);c.closePath();c.fill();c.fillStyle='#c8a020';c.beginPath();c.moveTo(CX,tTop-14);c.lineTo(CX+9,tTop);c.lineTo(CX+3,tTop);c.closePath();c.fill();
+    c.fillStyle='#e8eef8';c.fillRect(CX-10,tTop-1,20,2);if(St>0){const g=c.createRadialGradient(CX,tTop-14,1,CX,tTop-14,14);g.addColorStop(0,`rgba(255,240,180,${.8*St})`);g.addColorStop(1,'rgba(255,240,180,0)');c.fillStyle=g;c.fillRect(CX-16,tTop-30,32,32);}
+    /* water sheeting off the tower while it rises */
+    if(R>0&&R<1||Lf>0&&Lf<1){const k=R<1?1:1-Lf;for(let i=0;i<8;i++){const x=CX-7+i*2,ph2=(t*2.4+i*.31)%1;c.fillStyle=`rgba(200,236,255,${.7*k})`;c.fillRect(x,Math.round(tTop+ph2*tH),1,6);}}
+    /* island: rock cliffs and a grass cap */
+    if(Lf>0){c.fillStyle='#4a4a5a';c.beginPath();c.moveTo(56,WL+2);c.lineTo(66,top+10);c.lineTo(80,top+3);c.lineTo(100,top);c.lineTo(156,top);c.lineTo(176,top+3);c.lineTo(190,top+10);c.lineTo(200,WL+2);c.closePath();c.fill();
+      c.fillStyle='#6a6a7a';for(const[x,y,w]of[[74,14,18],[150,12,22],[100,20,14],[120,26,20],[168,22,12],[84,28,12]])c.fillRect(x,top+y,w,2);
+      c.fillStyle='#3a8a3a';c.beginPath();c.moveTo(66,top+10);c.lineTo(80,top+3);c.lineTo(100,top);c.lineTo(156,top);c.lineTo(176,top+3);c.lineTo(190,top+10);c.lineTo(178,top+7);c.lineTo(80,top+7);c.closePath();c.fill();
+      c.fillStyle='#5ab04a';c.fillRect(100,top,56,1);c.fillStyle='#2a6a2a';for(const x of[86,96,160,172])c.fillRect(x,top-3,4,5);
+      /* waterfalls pouring off the cliffs */const k=Lf<1?1:Math.max(0,1-(p-.58)*3);if(k>0)for(let i=0;i<14;i++){const x=i<7?62+i*3:172+(i-7)*3,y0=top+8,ph2=(t*2+i*.29)%1;c.fillStyle=`rgba(210,240,255,${.75*k})`;c.fillRect(x,Math.round(y0+ph2*(WL-y0)),1,8);c.fillStyle=`rgba(255,255,255,${.5*k})`;c.fillRect(x,y0,1,Math.round((WL-y0)*.5));}}
+    c.restore();
+    /* foam and spray where it breaks the surface */
+    if(R>0){const fw=Lf>0?74:16;c.fillStyle='rgba(240,250,255,.85)';for(let x=CX-fw;x<=CX+fw;x+=3)c.fillRect(x,Math.round(WL+1+Math.sin(t*9+x)*1.2),3,2);
+      if(p<.62)for(let i=0;i<14;i++){const s=(t*1.3+i*.17)%1,a=i*.45;c.fillStyle=`rgba(255,255,255,${1-s})`;c.fillRect(Math.round(CX+Math.cos(a)*fw*(.6+s*.6)),Math.round(WL-s*24*Math.abs(Math.sin(a+1))),2,2);}}
+    /* storm clouds gather over the peak and spin */
+    if(St>0){for(let i=0;i<9;i++){const a=i/9*6.283+t*.6,r=(1-St)*140+26+(i%3)*8,x=CX+Math.cos(a)*r*1.3,y=tTop-26+Math.sin(a)*r*.18;c.fillStyle=i%2?'#2a2e40':'#3a3e54';c.beginPath();c.ellipse(x,y,22,8,0,0,7);c.fill();c.fillStyle='rgba(90,96,120,.6)';c.beginPath();c.ellipse(x-4,y-3,12,4,0,0,7);c.fill();}
+      c.fillStyle=`rgba(20,22,34,${.5*St})`;c.beginPath();c.ellipse(CX,tTop-26,90*St,9*St,0,0,7);c.fill();
+      /* lightning */const lz=(t*1.4)%1;if(St>.5&&lz<.07){c.fillStyle='rgba(230,240,255,.25)';c.fillRect(-4,-4,W+8,H+8);const sx=CX+(Math.floor(t*1.4)%2?-34:38);let x=sx,y=tTop-22;c.strokeStyle='#fff6c0';c.lineWidth=1.5;c.beginPath();c.moveTo(x,y);
+        for(let k=0;k<6;k++){x+=(cRand(k+Math.floor(t*1.4)*7)-.5)*10;y+=(top-(tTop-22))/6;c.lineTo(x,y);}c.stroke();}
+      /* rain */c.fillStyle=`rgba(180,200,230,${.5*St})`;for(let i=0;i<70;i++){const x=(cRand(i)*W+t*60)%W,y=(cRand(i+50)*H+t*220)%H;c.fillRect(Math.round(x),Math.round(y),1,4);}}
+    /* the wall of water: front half, see-through, with spray along its crest */
+    if(Wv>0){wall(true);for(let i=0;i<24;i++){const a=(i/24)*6.283+t*.4,x=CX+Math.cos(a)*RX,y=WL+2+Math.sin(a)*RY-WH*(.75+.25*Math.abs(Math.sin(a)))-((t*1.5+i*.13)%1)*8;c.fillStyle='rgba(255,255,255,.7)';c.fillRect(Math.round(x),Math.round(y),2,1);}}
+    /* letterbox bars for a cinematic frame */c.fillStyle='#000';c.fillRect(-4,-4,W+8,10);c.fillRect(-4,H-6,W+8,10);
+    c.globalAlpha=1;c.restore();});}
 /* ---------- v3.66: the bigger farmhouse (bedroom, kitchen, living room, dining room) and family meals ---------- */
 {const de3=drawExtraTile;drawExtraTile=function(t,tx,ty,f,ch){if(!(IM&&IM.id==='farmhouse')||!'αβγδεζηθικξο'.includes(t))return de3(t,tx,ty,f,ch);
   de3('u',tx,ty,f,ch);const L=ch(tx-1,ty)===t,R=ch(tx+1,ty)===t,U=ch(tx,ty-1)===t,D=ch(tx,ty+1)===t;
@@ -6393,7 +6441,7 @@ async function familyMeal(){if(S.resting)return;const F=farm(),n=Object.values(F
   if(c!==0)return;const used=[];
   if(useFarm){let need=6;while(need>0){const ks=Object.keys(F.crates).filter(k=>F.crates[k]>0).sort((a,b)=>F.crates[b]-F.crates[a]);if(!ks.length)break;for(const k of ks){if(!need)break;F.crates[k]--;used.push(k);need--;}}}
   else{if(S.gil<MEAL_COST){say(`Groceries cost ${MEAL_COST} G. You have ${fmtG(S.gil)}.`);return;}S.gil-=MEAL_COST;used.push('potato','carrot','egg','milk','wheat','tomato');}
-  S.resting=true;renderMenu();stage.classList.add('cutmeal');await mealScene(used);stage.classList.remove('cutmeal');
+  S.resting=true;renderMenu();stage.classList.add('cutfx');await mealScene(used);stage.classList.remove('cutfx');
   S.flags.meal={until:(S.flags.day||1)+7};for(const h of S.heroes){recalc(h);h.ko=false;h.hp=h.maxhp;h.mp=h.maxmp;h.poison=h.stone=h.confuse=false;}
   S.resting=false;say('Well Fed for 7 days! +10% Attack, Magic, Defense, Magic def. and Max HP. HP and MP restored.');renderMenu();saveGame();}
 {const hc2=homeCmd;homeCmd=function(a){if(a==='hm:meal')return familyMeal();return hc2(a);};}

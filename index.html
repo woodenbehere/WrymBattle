@@ -460,7 +460,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.75.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.76.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -6592,6 +6592,11 @@ optOv.addEventListener('click',e=>{const b=e.target.closest('[data-o="latest"]')
 {const si2=summonIntro;summonIntro=function(col){stage.classList.add('summoning');return si2(col);};}
 {const dh9=doHero;doHero=async function(){try{return await dh9.apply(this,arguments);}finally{stage.classList.remove('summoning');}};}
 {const sb9=startBattle;startBattle=function(k){stage.classList.remove('summoning');return sb9(k);};}
+/* v3.76: counters, stoves, tables and other furniture are drawn in front of whoever stands just behind them */
+const FG_TILES='αβγδεψθκζξη';
+{const cr4=castleRender;castleRender=function(){cr4();if(!isWoodRoom()||!S.camOff)return;const{x:cx,y:cy}=S.camOff,done=new Set();
+  const cover=(tx,ty)=>{for(let dx=-1;dx<=1;dx++){const X=tx+dx,Y=ty+1,k=X+','+Y;if(done.has(k))continue;const c=CASTLE[Y]&&CASTLE[Y][X];if(!c||!FG_TILES.includes(c))continue;done.add(k);ctx.drawImage(ctex,X*CT,Y*CT,CT,CT,X*CT-cx,Y*CT-cy,CT,CT);}};
+  cover(Math.floor(S.cpos.x/CT),Math.floor(S.cpos.y/CT));};}
 /* v3.68: an on-screen way out of fishing (touch view hides the command list) */
 {const b=document.createElement('button');b.id='fishX';b.type='button';b.textContent='✕ Stop fishing';stage.appendChild(b);
   b.addEventListener('pointerdown',e=>{e.stopPropagation();e.preventDefault();if(S.scene==='fish')stopFishing();});}

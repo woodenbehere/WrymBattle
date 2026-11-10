@@ -290,3 +290,6 @@ While a summon plays, the enemy name tags, HP bars and boss bar fade out (`.stag
   - Bosses have their own drops (tower guardians and the Black Wyrm King give Drake Tail). Anything without a match drops Monster Jerky.
 - Six new recipes use them: Monster Jerky Plate (known from the start), Ogre Cheese Toastie, Salt-Crusted Fish, Wisp Honey Cake, Fire Pepper Steak and Shadow Truffle Risotto. Recipes can now ask for any bread, any egg or dairy, any spice or any sweet, and wheat counts as bread.
 - **Journal › Food** lists every ingredient by group, with how many you've gathered all-time (`S.flags.foodLog`: battle drops, fish caught, crops harvested) and where it is now: your pack, home (larder and crates) or stocked in your diners.
+
+## Standing behind counters (v3.76.0)
+In the diners and the farmhouse, furniture just below the hero (counters, stoves, sink, icebox, kitchen island, tables, couches, the bed) is redrawn over the hero's sprite after the frame is drawn. Standing behind the counter now shows the hero half-hidden behind it instead of on top of it.

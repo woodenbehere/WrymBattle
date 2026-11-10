@@ -470,7 +470,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.87.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.88.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -3628,9 +3628,32 @@ const shopsShut=()=>{const m=clockMin();return m>=19*60||m<6*60;};
 /* villagers head home at dusk */
 const HOME_MAPS=new Set(['village','town','highmere','ironhold']);
 const homeTime=()=>{const m=clockMin();return m>=19*60||m<6*60;};
-function villagersHome(){if(!IM||!HOME_MAPS.has(IM.id)||S.flags.solo)return;for(const n of NPCS){if(n._home||n.guard||n.ship||n.mon||/guard/.test(n.spr||''))continue;n._home=true;const w0=n.when;n.when=()=>!homeTime()&&(!w0||w0());}}
+function villagersHome(){if(!IM||!HOME_MAPS.has(IM.id)||S.flags.solo)return;for(const n of NPCS){if(n._home||n.guard||n.ship||n.mon||/guard/.test(n.spr||''))continue;n._home=true;n._sx=n.x;n._sy=n.y;n._gone=homeTime();const w0=n.when;n.when=()=>(!homeTime()||n._leaving)&&(!w0||w0());}}
 {const ei0=enterInterior;enterInterior=function(id,pos){const from=IM&&S.scene==='castle'?IM.id:null;const r=ei0(id,pos);villagersHome();if(id.startsWith('tg_')&&!(from&&from.startsWith('tg_')))thiefSign();return r;};}
 let duskSaid=-1;
+/* v3.88: at dusk, villagers in view walk off the edge of the screen before vanishing; at dawn they're back where they started */
+let wasHomeTime=null;
+/* shortest walk to any tile outside the current view (or the map's edge) */
+function exitPath(n,cx,cy){const off=(x,y)=>{const sx=x*CT+8-cx,sy=y*CT+8-cy;return sx<-12||sx>W+12||sy<-12||sy>H+12||x<=0||y<=0||x>=CW-1||y>=CH-1;};
+  const key=(x,y)=>y*CW+x,prev=new Map([[key(n.x,n.y),null]]),q=[[n.x,n.y]];let end=null;
+  while(q.length&&prev.size<4000){const[x,y]=q.shift();if((x!==n.x||y!==n.y)&&off(x,y)){end=[x,y];break;}
+    for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const X=x+dx,Y=y+dy;if(X<0||Y<0||X>=CW||Y>=CH||prev.has(key(X,Y)))continue;const t=CASTLE[Y][X];if(C_BLOCK.has(t)||t==='E')continue;prev.set(key(X,Y),[x,y]);q.push([X,Y]);}}
+  if(!end)return null;const path=[];let c=end;while(c&&(c[0]!==n.x||c[1]!==n.y)){path.unshift(c);c=prev.get(key(c[0],c[1]));}return path;}
+{const wn2=wanderNPCs;wanderNPCs=function(dt){wn2(dt);if(!IM||!HOME_MAPS.has(IM.id)||!S.camOff)return;const ht=homeTime(),cx=S.camOff.x,cy=S.camOff.y;
+  const onScr=n=>{const sx=n.x*CT+8-cx,sy=n.y*CT+8-cy;return sx>-12&&sx<W+12&&sy>-12&&sy<H+12;};
+  if(wasHomeTime===false&&ht){for(const n of NPCS){if(!n._home||n._gone||n._leaving)continue;if(onScr(n)){n._leaving=true;n._w0=n.wander;n.wander=null;
+      const sx=n.x*CT+8-cx,sy=n.y*CT+8-cy,d=[[-1,0,sx],[1,0,W-sx],[0,-1,sy],[0,1,H-sy]].sort((a,b)=>a[2]-b[2])[0];n._dir=[d[0],d[1]];n._path=exitPath(n,cx,cy);n._t=rnd(0,.6);}else n._gone=true;}}
+  if(!ht&&wasHomeTime){for(const n of NPCS){if(!n._home)continue;if(n._gone||n._leaving){n.x=n._sx;n.y=n._sy;n.ox=n.oy=0;if(n._w0!==undefined){n.wander=n._w0;n._w0=undefined;}}n._gone=false;n._leaving=false;}}
+  wasHomeTime=ht;
+  const p=S.cpos,ptx=Math.floor(p.x/CT),pty=Math.floor(p.y/CT);
+  for(const n of NPCS){if(!n._leaving||n.ox||n.oy||S.dlg)continue;if((n._t-=dt)>0)continue;
+    if(!onScr(n)){n._leaving=false;n._gone=true;continue;}
+    const free=(tx,ty)=>CASTLE[ty]&&CASTLE[ty][tx]!==undefined&&!C_BLOCK.has(CASTLE[ty][tx])&&CASTLE[ty][tx]!=='E'&&!(tx===ptx&&ty===pty)&&!NPCS.some(o=>o!==n&&o.x===tx&&o.y===ty&&(!o.when||o.when()));
+    if(n._path&&n._path.length){const[nx,ny]=n._path[0];if(free(nx,ny)){n._path.shift();const dx=nx-n.x,dy=ny-n.y;n.x=nx;n.y=ny;n.ox=-dx*CT;n.oy=-dy*CT;if(dx)n.face=dx;n._t=.05;continue;}n._t=.25;if((n._wait=(n._wait||0)+1)>6){n._wait=0;n._path=exitPath(n,S.camOff.x,S.camOff.y);if(!n._path){n._leaving=false;n._gone=true;}}continue;}
+    let[dx,dy]=n._dir;if(!free(n.x+dx,n.y+dy)){const side=pick([[dy,dx],[-dy,-dx]]);if(free(n.x+side[0],n.y+side[1]))[dx,dy]=side;else if(free(n.x-side[0],n.y-side[1]))[dx,dy]=[-side[0],-side[1]];else{n._stuck=(n._stuck||0)+1;if(n._stuck>12){n._leaving=false;n._gone=true;}n._t=.3;continue;}}
+    n.x+=dx;n.y+=dy;n.ox=-dx*CT;n.oy=-dy*CT;if(dx)n.face=dx;n._t=.05;
+    if(n.x<=0||n.y<=0||n.x>=CW-1||n.y>=CH-1){n._leaving=false;n._gone=true;}}};}
+{const ei7=enterInterior;enterInterior=function(id,pos){wasHomeTime=null;const r=ei7(id,pos);for(const n of NPCS){if(!n._home)continue;if(n._leaving||n._gone){n.x=n._sx;n.y=n._sy;n.ox=n.oy=0;if(n._w0!==undefined){n.wander=n._w0;n._w0=undefined;}}n._leaving=false;n._gone=homeTime();}return r;};}
 {const tc1=tickClock;tickClock=function(dt){const was=homeTime();tc1(dt);if(!was&&homeTime()&&S.scene==='castle'&&IM&&HOME_MAPS.has(IM.id)&&!S.flags.solo){say('Dusk settles in. Shutters close and the townsfolk head home.');}};}
 
 /* the thieves' sign at the guild door */

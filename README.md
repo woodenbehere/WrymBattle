@@ -336,3 +336,6 @@ All battle command columns (main commands, spells, summons, skills and items) no
 
 ## ✕ on every menu (v3.87.0)
 Every menu sheet (Journal, diner screens, Larder, main menu and its Status/Equip/Item screens, Options, Party, shops, the guild, Help, fishing book, saves and so on) has a small **✕** in its top-right corner. It closes every open menu, including ones that would normally reopen the main menu or the Journal, and drops you straight back to the hero in town, dungeon or on the world map. `closeAllSheets()` presses each sheet's own Close button so its usual cleanup still runs, and falls back to `closeSheet`. The title screen, intro, choice prompts and the naming screen don't get the ✕.
+
+## Villagers walk home at dusk (v3.88.0)
+When dusk falls (7 pm) while you're in Valemont, Thornwick, Highmere or Ironhold, villagers in view no longer blink out. Each one stops wandering and walks the shortest route (`exitPath`, a breadth-first search over walkable tiles) to the nearest spot outside the screen, stepping around buildings and each other, and disappears once out of sight. Villagers already off-screen simply go home. At dawn everyone is back at their usual spot. Entering a town at night still shows it empty.

@@ -296,3 +296,6 @@ In the diners and the farmhouse, furniture just below the hero (counters, stoves
 
 ## Repaint after returning to the app (v3.77.0)
 Phone browsers can quietly discard large off-screen canvases while the app is in the background, so the pre-drawn world map (`tex`, `tex2`), the minimap (`worldMini`) and the room texture (`ctex`) can come back blank. Then the island, or all the land, disappears until a reload. On `visibilitychange`, `pageshow` and `focus`, `repaintLost()` checks one pixel of each cached canvas and rebuilds any that came back empty.
+
+## Fishing buttons under the boat (v3.78.0)
+**✕ Stop fishing** now sits just under the boat, with a new **⤒ Reel in** button below it (`#fishBtns`, positioned against the canvas every 150 ms and on resize). Reel in (`fishReelIn()`) pulls the line straight back to the rod tip so you can cast again. Any fish nibbling swim off. It's greyed out while the line is already in, or while a fish or treasure is hooked.

@@ -465,7 +465,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.82.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.83.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -5395,11 +5395,13 @@ function layRing(cx,cy,items,hero){const vw=innerWidth,vh=innerHeight,n=items.le
     tRing.appendChild(b);});
   tRing.hidden=false;}
 /* v3.82: rings with too many choices split into pages: "More ›" opens the next ring, "‹ Back" returns to the previous one */
-{const lr0=layRing;layRing=function(cx,cy,items,hero,page){const cap=hero===true?5:7,bi=items.findIndex(it=>/^‹/.test(it.label)),back=bi>=0?items[bi]:null,rest=items.filter((_,i)=>i!==bi);
-  if(rest.length<=cap+1||items.some(it=>it.pg))return lr0(cx,cy,items,hero);
-  page=page||0;const pages=Math.ceil(rest.length/cap),st={};
+{const lr0=layRing;layRing=function(cx,cy,items,hero,page){const POS=S.scene==='battle'?6:8,bi=items.findIndex(it=>/^‹/.test(it.label)),back=bi>=0?items[bi]:null,rest=items.filter((_,i)=>i!==bi);
+  if(rest.length+(back?1:0)<=POS||items.some(it=>it.pg))return lr0(cx,cy,items,hero);
+  /* each ring has POS spots: page 1 = items + More (+ the original Back); later pages = items + More + Back one page */
+  const firstCap=POS-1-(back?1:0),laterCap=POS-2,starts=[0];while(true){const p0=starts.length-1,s0=starts[p0],cap=p0?laterCap:firstCap,lastFits=rest.length-s0<=cap+1;if(lastFits)break;starts.push(s0+cap);}
+  page=Math.min(page||0,starts.length-1);const pages=starts.length,st={};const cap=page<pages-1?(page?laterCap:firstCap):rest.length;
   const go=p=>()=>{TUI.ring=st.ring;tRing.className=st.cls||'';layRing(cx,cy,items,hero,p);for(const h of st.hints||[])tRing.appendChild(h.cloneNode(true));};
-  const L=rest.slice(page*cap,page*cap+cap);
+  const L=rest.slice(starts[page],page<pages-1?starts[page+1]:rest.length);
   if(page<pages-1)L.push({label:`More › ${page+2}/${pages}`,cls:'sys',pg:1,go:go(page+1)});
   if(page>0)L.push({label:'‹ Back',cls:'sys',pg:1,go:go(page-1)});else if(back)L.push(back);
   lr0(cx,cy,L.map(it=>it.pg?it:Object.assign({},it,{pg:1})),hero);
@@ -5436,7 +5438,7 @@ function spellCats(h,rest){if(!h||(h.key!=='white'&&h.key!=='black'))return null
 let listPage=0,listKey='';
 function layList(c,back,rest){const k=(S.menu&&S.menu.view)+':'+(S.menu&&S.menu.hero&&S.menu.hero.key)+':'+rest.length+':'+(TUI.cat||'');if(k!==listKey){listKey=k;listPage=0;}const tk=(typeof TXT!=='undefined'&&TXT.cmd)||1;
   /* v3.82: one tidy column beside the hero; if it doesn't fit, "More ›" opens the next page and "‹ Back" steps back a page */
-  const vw=innerWidth,vh=innerHeight,gap=38*Math.max(1,tk*.9),rows=Math.max(3,Math.min(7,Math.floor((vh-30)/gap))),paged=rest.length>rows,per=paged?rows-1:rows,pages=Math.max(1,Math.ceil(rest.length/per));listPage=Math.min(listPage,pages-1);
+  const vw=innerWidth,vh=innerHeight,gap=38*Math.max(1,tk*.9),rows=Math.max(3,Math.min(6,Math.floor((vh-30)/gap))),paged=rest.length>rows,per=paged?rows-1:rows,pages=Math.max(1,Math.ceil(rest.length/per));listPage=Math.min(listPage,pages-1);
   const show=rest.slice(listPage*per,listPage*per+per);if(paged&&listPage<pages-1)show.push({label:`More › ${listPage+2}/${pages}`,cls:'sys',go:()=>{listPage++;touchSync();},keepRing:true});
   if(listPage>0)back=[{label:'‹ Back',cls:'sys',go:()=>{listPage--;touchSync();},keepRing:true}];
   tRing.innerHTML=`<div class="hub" style="left:${c.x}px;top:${c.y}px"></div>`;

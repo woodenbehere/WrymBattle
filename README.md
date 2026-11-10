@@ -321,3 +321,6 @@ Diner Reports now has a **Most used ingredients (last 7 days)** bar chart under 
 
 ## Tidy spell lists with More pages (v3.82.0)
 Battle skill, magic, summon and item lists in the touch view (`layList`) now form one neat curved column beside the hero instead of two crowded loops. When there are more entries than fit the screen height (up to 7 rows), the last slot becomes **More › 2/3** and opens the next page. On later pages the center **‹ Back** steps back a page, and on the first page it returns to the command ring. Command rings (`layRing`) page the same way when they hold more than 8 choices.
+
+## Six spots per battle ring (v3.83.0)
+In battle, every touch ring holds at most **six** choices. If there are more, the sixth spot becomes **More › 2/3**, which opens the next ring under the same rule. In spell, summon and item lists, the **‹ Back** button by the hero goes back one page (and to the command ring from the first page). In command rings, Back takes one of the six spots on later pages. Outside battle, rings hold up to 8.

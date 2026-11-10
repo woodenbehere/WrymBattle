@@ -268,3 +268,6 @@ A cottage in each town (Valemont, Thornwick, Highmere, Coralhaven, Stormhaven an
 
 ## Status screen fit (v3.71.0)
 The hero card and the command list on the Status screen now sit in a wrapping row (`.ffs-strow`). When big text or a narrow screen leaves too little room, the command list drops below the card and lays out in columns instead of squeezing the card. Numbers like EXP no longer run over the box border.
+
+## Check the latest version (v3.72.0)
+Options › About has a **Latest version** row under the installed version. **Check** fetches the live `index.html` with `cache: 'no-store'` and a cache-busting query, so the service worker can't answer from its cache. It reads the footer version and the embedded changelog, then shows the installed and latest versions side by side, with a list of the updates you don't have yet. Nothing is installed until you tap the version twice.

@@ -459,7 +459,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.71.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.72.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -5520,6 +5520,7 @@ function drawOptions(){const enc=S.world&&S.world.enc!==false,who=S.heroes.filte
   else if(oTab==='about')h=`<div class="about">
     <p class="lab">Drakes of Dusk and Dawn</p>
     ${optRow('Version','Tap the version twice to check for and install the latest update.',`<button type="button" class="ver abv${verBtn.classList.contains('armed')?' armed':''}" data-o="ver"${verBtn.disabled?' disabled':''}>${esc(verBtn.textContent)}</button>`)}
+    ${optRow('Latest version',latestTxt(),`<button type="button" class="btn sm" data-o="latest"${LATEST.busy?' disabled':''}>${LATEST.busy?'Checking…':'Check'}</button>`)}
     ${optRow('Change log','Every update to the game, newest first, with the date and time.','<button type="button" class="btn sm" data-o="log">View</button>')}
     ${optRow('How to play','Controls, battles, rows, the touch view and everything else in the game.','<button type="button" class="btn sm" data-o="help">Read</button>')}
     ${optRow('Made by','Parden Web Apps 2026','')}
@@ -6332,7 +6333,7 @@ introOv.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();i
 /* Options › About: watch it again */
 {const dOpt2=drawOptions;drawOptions=function(){dOpt2();if(oTab!=='about'||aboutLog)return;const ab=$('optCard').querySelector('.about');if(!ab)return;
   const row=document.createElement('div');row.innerHTML=optRow('The opening','Watch the chronicle of Orren Vael again.','<button type="button" class="btn sm" data-o="intro">Watch</button>');
-  const first=ab.querySelector('.orow');if(first)first.after(row.firstElementChild);else ab.appendChild(row.firstElementChild);};}
+  const lt=ab.querySelector('[data-o="latest"]'),first=lt?lt.closest('.orow'):ab.querySelector('.orow');if(first)first.after(row.firstElementChild);else ab.appendChild(row.firstElementChild);};}
 optOv.addEventListener('click',e=>{if(!e.target.closest('[data-o="intro"]'))return;e.stopPropagation();playIntro(()=>{});},true);
 /* ---------- v3.70: Hero's Diners ----------
    Monster cuts drop in battle, fish come from the basket, and crops/eggs/milk come from the homestead.
@@ -6535,6 +6536,22 @@ dOv.addEventListener('click',e=>{const tb=e.target.closest('[data-dtab]');if(tb)
 {const hm3=homeMenuOpts;homeMenuOpts=function(){const n=Object.values(homeStock()).reduce((a,b)=>a+b,0);return opt('hm:larder','Larder',n?String(n):'','Store food for your diners’ runners')+hm3();};}
 /* the diner sign: a plate with a fork and knife */
 {const ds2=drawSign;drawSign=function(f,id,x,y){if(id!=='diner')return ds2(f,id,x,y);f('#f4f4f8',x-3,y-2,6,5);f('#d8d8e0',x-2,y-1,4,3);f('#c8402a',x-1,y,2,1);f('#a8a8b8',x-5,y-3,1,7);f('#a8a8b8',x-6,y-3,1,2);f('#a8a8b8',x-4,y-3,1,2);f('#a8a8b8',x+4,y-3,1,7);f('#d8d8e0',x+5,y-3,1,3);};}
+/* v3.72: look up the newest published version (and what changed) without installing it */
+const LATEST={busy:false,v:null,news:null,err:null};
+const vNum=v=>String(v).replace(/^v/,'').split('.').map(Number),vNewer=(a,b)=>{const x=vNum(a),y=vNum(b);for(let i=0;i<3;i++){if((x[i]||0)!==(y[i]||0))return(x[i]||0)>(y[i]||0);}return false;};
+function latestTxt(){if(LATEST.err)return`Couldn’t reach the server (${esc(LATEST.err)}). Check your connection and try again.`;
+  if(!LATEST.v)return`Installed: v${esc(APP_VERSION)}. Tap Check to see the newest version online without installing it.`;
+  if(!vNewer(LATEST.v,APP_VERSION))return`Installed v${esc(APP_VERSION)} · Latest v${esc(LATEST.v)}. You’re up to date.`;
+  const n=LATEST.news||[];return`Installed v${esc(APP_VERSION)} · <b>Latest v${esc(LATEST.v)}</b>. ${n.length} update${n.length!==1?'s':''} waiting:`+n.slice(0,6).map(e=>`<br>· v${esc(e.v)}: ${esc(e.d)}`).join('')+(n.length>6?`<br>· and ${n.length-6} more`:'')+'<br>Tap the version twice to install.';}
+async function checkLatest(){LATEST.busy=true;LATEST.err=null;redrawAbout();
+  try{const r=await fetch('./index.html?latest='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const t=await r.text();
+    const m=t.match(/id="verBtn"[^>]*>\s*v?([\d.]+)/);if(!m)throw new Error('no version found');LATEST.v=m[1];
+    const c=t.match(/\/\*CHANGELOG\*\/(\[[\s\S]*?\])\/\*\/CHANGELOG\*\//);let log=[];try{log=c?JSON.parse(c[1]):[];}catch(e){}
+    LATEST.news=log.filter(e=>vNewer(e.v,APP_VERSION));}
+  catch(e){LATEST.err=e.message||'offline';}
+  LATEST.busy=false;redrawAbout();}
+function redrawAbout(){const b=optOv.querySelector('[data-o="latest"]');if(!b||optOv.hidden)return;const row=b.closest('.orow');if(!row)return;row.querySelector('small').innerHTML=latestTxt();b.disabled=LATEST.busy;b.textContent=LATEST.busy?'Checking…':'Check';}
+optOv.addEventListener('click',e=>{const b=e.target.closest('[data-o="latest"]');if(!b)return;e.stopPropagation();if(!LATEST.busy)checkLatest();},true);
 /* v3.68: an on-screen way out of fishing (touch view hides the command list) */
 {const b=document.createElement('button');b.id='fishX';b.type='button';b.textContent='✕ Stop fishing';stage.appendChild(b);
   b.addEventListener('pointerdown',e=>{e.stopPropagation();e.preventDefault();if(S.scene==='fish')stopFishing();});}

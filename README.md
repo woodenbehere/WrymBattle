@@ -248,3 +248,6 @@ When the Circle of Magi raises the isle, `isleCine()` plays a ~13.5 s letterboxe
 
 ## Stop fishing button (v3.68.0)
 The fishing scene now has an on-screen **✕ Stop fishing** button in the top-left corner (`#fishX`). Touch view hides the command list, so before this there was no way out of fishing on a phone. Esc still works on a keyboard.
+
+## Raijin bolts stay on the enemy side (v3.69.0)
+Raijin's Storm Drum still throws its barrage of lightning, but the bolts now only land between the left edge and just short of the front hero (`min(hero.x) - 18`), so none strike the party.

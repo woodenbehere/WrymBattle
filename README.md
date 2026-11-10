@@ -312,3 +312,6 @@ Each diner has a **Reports** tab:
 - **All your diners**: stars, rating, 7-day profit and till for each location.
 
 Pricing changed with this: each plate now sells for 1.4× the value of the ingredients actually used, plus half the recipe's base price, then the cook, server and local-taste bonuses. Before, rare fish or milk could sell for less than they cost. Each served plate gets a 1–5 rating (local taste, cook skill, whether there's a server, signature dish, plus some luck), and reputation now grows from those ratings. Data: `D.life`, `D.dishes`, `D.cash`, `D.inv`, `D.reviews`, and 14 days of `D.log`.
+
+## Journal › Diners (v3.80.0)
+The Journal has a **Diners** page: totals across all diners (customers served and profit over the last 7 days, gold waiting in the tills), then one line per town with stars, 7-day sales, rating, profit and till, plus warnings (no cook, empty menu, road blocked, wages owed). **Reports** opens that diner's Overview and Reports read-only (`openDiner(t,'report',true)`). Collecting, stocking, menu and staff changes still need a visit. Closing returns to the Journal.

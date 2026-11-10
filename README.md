@@ -315,3 +315,6 @@ Pricing changed with this: each plate now sells for 1.4× the value of the ingre
 
 ## Journal › Diners (v3.80.0)
 The Journal has a **Diners** page: totals across all diners (customers served and profit over the last 7 days, gold waiting in the tills), then one line per town with stars, 7-day sales, rating, profit and till, plus warnings (no cook, empty menu, road blocked, wages owed). **Reports** opens that diner's Overview and Reports read-only (`openDiner(t,'report',true)`). Collecting, stocking, menu and staff changes still need a visit. Closing returns to the Journal.
+
+## Most used ingredients chart (v3.81.0)
+Diner Reports now has a **Most used ingredients (last 7 days)** bar chart under Daily profit: the top 10 ingredients by amount used, colored by food group, each with the count and its value in gold. A key and a "kitchen has … left" line for the top three follow. Each day's log entry now records `used` (ingredient → amount), filled in by `cookFrom(st, R, use)`.

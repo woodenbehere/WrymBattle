@@ -85,7 +85,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .stage.summoning #fbars,.stage.summoning #bossBox{opacity:0;transition:opacity .2s}
 .rtab{width:100%;border-collapse:collapse;font-size:.82em;margin:2px 0 8px}.rtab th{font-weight:normal;opacity:.7;text-align:right;padding:2px 4px;border-bottom:1px solid rgba(232,220,192,.3)}
 .rtab td{white-space:nowrap;text-align:right;padding:3px 4px;border-bottom:1px solid rgba(232,220,192,.1)}.rtab td:first-child{white-space:normal}.rtab tr.sub td{opacity:.85;font-style:italic}.rtab tr.tot td{border-top:1px solid rgba(232,220,192,.5);color:var(--gold,#ffd34a)}
-.rbars{display:flex;flex-direction:column;gap:3px;margin:2px 0 8px;font-size:.8em}.rbar{display:grid;grid-template-columns:4.5em 1fr 5.5em;align-items:center;gap:6px}.rbar i{display:block;height:8px;border-radius:2px}.rbar b{text-align:right;font-weight:normal}
+.rbars{display:flex;flex-direction:column;gap:3px;margin:2px 0 8px;font-size:.8em}.rbar{display:grid;grid-template-columns:4.5em 1fr 5.5em;align-items:center;gap:6px}.rbar i{display:block;height:8px;border-radius:2px}.rbar b{text-align:right;font-weight:normal}.rbars.ring .rbar{grid-template-columns:minmax(6em,9em) 1fr auto}.rbars.ring .rbar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .stage.cutfx .note{top:auto!important;bottom:10px!important}
 .stage.cutfx #mini,.stage.cutfx .minix,.stage.cutfx #qTrk{visibility:hidden}
 /* info text sits on the side of the screen away from the hero */
@@ -465,7 +465,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.80.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.81.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -6451,7 +6451,7 @@ function makeCandidates(D,t){const n=Object.keys(dinersAll()).indexOf(t),out=[],
   D.cands=out;D.candWeek=Math.floor((S.flags.day||1)/7);}
 function newDiner(t){return{rep:10,menu:['stew','omelet'],stock:{},till:0,cook:null,server:null,up:{},log:[],lastDay:S.flags.day||1,raided:false,safeUntil:0,opened:S.flags.day||1};}
 /* one day of business */
-function dinerDay(t,D,day){dinerStats(D);const T=DINER_TOWNS[t],news=[];let served=0,missed=0,earned=0,cogs=0,rateSum=0;const sold={};
+function dinerDay(t,D,day){dinerStats(D);const T=DINER_TOWNS[t],news=[];let served=0,missed=0,earned=0,cogs=0,rateSum=0;const sold={},used={};
   /* runners bring food from the homestead */
   const cap=D.up.skiff?20:D.up.runner2?12:D.up.runner1?6:0;
   if(cap&&D.menu.length){if(D.raided&&!D.up.skiff)news.push('Runners stayed home: the road is still unsafe.');
@@ -6466,7 +6466,7 @@ function dinerDay(t,D,day){dinerStats(D);const T=DINER_TOWNS[t],news=[];let serv
     const pm=(1+.12*D.cook.skill)*(D.cook.trait==='Gourmet'?1.15:1)*(D.server&&D.server.trait==='Showman'?1.12:1);
     for(let g=0;g<guests;g++){const ws=D.menu.map(r=>1+(RECIPES[r].tags.some(x=>T.taste.includes(x))?1.5:0)),tot=ws.reduce((a,b)=>a+b,0);let r=Math.random()*tot,i=0;while(r>ws[i]){r-=ws[i];i++;}let rid=D.menu[Math.min(i,D.menu.length-1)];if(!canCook(D.stock,RECIPES[rid])&&Math.random()<.7){const alt=D.menu.filter(r=>canCook(D.stock,RECIPES[r]));if(alt.length)rid=pick(alt);}const R=RECIPES[rid];
       const ds=dishStat(D,rid),like=R.tags.some(x=>T.taste.includes(x));
-      if(canCook(D.stock,R)){const cost=cookFrom(D.stock,R),sale=Math.round((cost*1.4+R.price*.5)*pm*(like?1.2:1));served++;sold[rid]=(sold[rid]||0)+1;earned+=sale;cogs+=cost;
+      if(canCook(D.stock,R)){const cost=cookFrom(D.stock,R,used),sale=Math.round((cost*1.4+R.price*.5)*pm*(like?1.2:1));served++;sold[rid]=(sold[rid]||0)+1;earned+=sale;cogs+=cost;
         const rt=Math.max(1,Math.min(5,3+(like?.8:0)+(D.cook.skill-2)*.5+(D.server?.3:-.4)+(D.cook.trait==='Generous'?.3:0)+(R.sig?.5:0)+rnd(-.9,.9)));
         ds.sold++;ds.rev+=sale;ds.cogs+=cost;ds.rate+=rt;rateSum+=rt;D.rep=Math.max(0,Math.min(100,D.rep+(rt-2)*.4*(D.cook.trait==='Generous'?1.25:1)));
         if(Math.random()<.25)addReview(D,t,R,rt);}
@@ -6474,7 +6474,7 @@ function dinerDay(t,D,day){dinerStats(D);const T=DINER_TOWNS[t],news=[];let serv
   const wages=(D.cook?D.cook.wage:0)+(D.server?D.server.wage:0);D.till+=earned-wages;
   const top=Object.entries(sold).sort((a,b)=>b[1]-a[1])[0];
   const L=D.life;L.days++;L.served+=served;L.missed+=missed;L.sales+=earned;L.cogs+=cogs;L.wages+=wages;L.rate+=rateSum;
-  D.log.unshift({day,served,missed,earned,wages,cogs,rate:served?rateSum/served:0,top:top?RECIPES[top[0]].n:'',news});D.log=D.log.slice(0,14);}
+  D.log.unshift({day,served,missed,earned,wages,cogs,used,rate:served?rateSum/served:0,top:top?RECIPES[top[0]].n:'',news});D.log=D.log.slice(0,14);}
 /* v3.79: bookkeeping for each diner */
 function foodValue(id){if(id.startsWith('m_'))return(CUTS[id.slice(2)]||{v:30}).v;if(FISHD[id])return FISHD[id].price;if(CROPS[id])return CROPS[id].sell;if(GOODS[id])return GOODS[id].sell;return 20;}
 function dinerStats(D){if(!D.life)D.life={days:0,served:0,missed:0,sales:0,cogs:0,wages:0,rate:0};if(!D.dishes)D.dishes={};if(!D.reviews)D.reviews=[];
@@ -6491,6 +6491,10 @@ function dinerReport(t,D){dinerStats(D);const L=D.life,W=D.log.slice(0,7),sum=(a
   const days=D.log.slice(0,14).reverse(),mx=Math.max(1,...days.map(e=>Math.abs((e.earned||0)-(e.cogs||0)-(e.wages||0))));
   if(days.length)h+=`<p class="lab">Daily profit</p><div class="rbars">`+days.map(e=>{const np=(e.earned||0)-(e.cogs||0)-(e.wages||0),wd=Math.max(2,Math.round(Math.abs(np)/mx*100));
     return`<div class="rbar"><span>Day ${e.day}</span><i style="width:${wd}%;background:${np>=0?'#5ab04a':'#c8402a'}"></i><b>${sg(np)}</b></div>`;}).join('')+'</div>';
+  {const U={};for(const e of W)for(const[k,n]of Object.entries(e.used||{}))U[k]=(U[k]||0)+n;const top=Object.entries(U).sort((a,b)=>b[1]-a[1]).slice(0,10);
+    if(top.length){const m=top[0][1],CC={meat:'#c8503a',fish:'#3a8ad8',veg:'#5ab04a',dairy:'#e8e0c0',grain:'#d8a050',spice:'#e8402a',sweet:'#d070c0'};
+      h+=`<p class="lab">Most used ingredients (last 7 days)</p><div class="rbars ring">`+top.map(([k,n])=>`<div class="rbar"><span>${esc(foodName(k))}</span><i style="width:${Math.max(3,Math.round(n/m*100))}%;background:${CC[foodCat(k)]||'#a8a8b8'}"></i><b>×${n} · ${fmtG(n*foodValue(k))}</b></div>`).join('')+
+      `</div><p class="tip">${Object.entries(CC).filter(([c])=>top.some(([k])=>foodCat(k)===c)).map(([c,col])=>`<span style="color:${col}">■</span> ${c}`).join(' · ')}. Kitchen has ${top.map(([k])=>`${esc(foodName(k))} ×${D.stock[k]||0}`).slice(0,3).join(', ')} left.</p>`;}}
   h+=`<p class="lab">Income statement</p>`+rTable(['','Last 7 days','All time'],[
     {c:['Sales',fmtG(w.sales),fmtG(L.sales)]},{c:['Food cost',sg(-w.cogs),sg(-L.cogs)]},{cls:'sub',c:['Gross profit',sg(a7.gp),sg(aL.gp)]},
     {c:['Wages',sg(-w.wages),sg(-L.wages)]},{cls:'tot',c:['Net profit',sg(a7.np),sg(aL.np)]},{c:['Profit margin',a7.m+'%',aL.m+'%']}]);
@@ -6520,7 +6524,7 @@ const invValue=st=>Object.entries(st).reduce((a,[k,v])=>a+v*foodValue(k),0);
 function priceGuess(D,R,t){const tmp={...D.stock};let cost;if(canCook(tmp,R))cost=cookFrom(tmp,R);else cost=R.ing.reduce((a,[s,q])=>a+q*(s.startsWith('any:')?60:foodValue(s)),0);
   const pm=D.cook?(1+.12*D.cook.skill)*(D.cook.trait==='Gourmet'?1.15:1)*(D.server&&D.server.trait==='Showman'?1.12:1):1,like=R.tags.some(x=>DINER_TOWNS[t].taste.includes(x));return Math.round((cost*1.4+R.price*.5)*pm*(like?1.2:1));}
 function canCook(st,R){const tmp={...st};for(const[spec,q]of R.ing){let need=q;for(const k of Object.keys(tmp).filter(k=>fits(spec,k)&&tmp[k]>0).sort((a,b)=>tmp[b]-tmp[a])){const u=Math.min(need,tmp[k]);tmp[k]-=u;need-=u;if(!need)break;}if(need)return false;}return true;}
-function cookFrom(st,R){let cost=0;for(const[spec,q]of R.ing){let need=q;for(const k of Object.keys(st).filter(k=>fits(spec,k)&&st[k]>0).sort((a,b)=>st[b]-st[a])){const u=Math.min(need,st[k]);st[k]-=u;need-=u;cost+=u*foodValue(k);if(!st[k])delete st[k];if(!need)break;}}return cost;}
+function cookFrom(st,R,use){let cost=0;for(const[spec,q]of R.ing){let need=q;for(const k of Object.keys(st).filter(k=>fits(spec,k)&&st[k]>0).sort((a,b)=>st[b]-st[a])){const u=Math.min(need,st[k]);st[k]-=u;need-=u;cost+=u*foodValue(k);if(use)use[k]=(use[k]||0)+u;if(!st[k])delete st[k];if(!need)break;}}return cost;}
 const servings=(st,R)=>{let n=0;const tmp={...st};while(n<99&&canCook(tmp,R)){cookFrom(tmp,R);n++;}return n;};
 function dinerTick(){const day=S.flags.day||1,A=dinersAll();let sum=0,raids=[];for(const[t,D]of Object.entries(A)){if(D.lastDay>=day)continue;const from=Math.max(D.lastDay+1,day-14);
     for(let d=from;d<=day;d++){const wasRaided=D.raided;dinerDay(t,D,d);sum+=D.log[0].earned-D.log[0].wages;if(D.raided&&!wasRaided)raids.push(MAPS[t].name);}D.lastDay=day;}

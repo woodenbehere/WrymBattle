@@ -77,6 +77,10 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .dlg{position:absolute;left:6px;right:6px;bottom:6px;background:linear-gradient(#2c48b8,#121a62);border:2px solid #e8e8f0;box-shadow:0 0 0 2px #000;border-radius:3px;padding:.35em .7em 1em;color:#ffffff;font-size:calc(clamp(14px,3.3cqw,30px) * var(--t-dlg,1));line-height:1.15;z-index:6;cursor:pointer}
 .dlg p{margin:0}.dlg span{position:absolute;right:.6em;bottom:.15em;font-size:.7em;animation:glow .8s steps(2) infinite;color:#ffd34a}
 .stage.map .note{bottom:auto;top:8px}
+/* info text sits on the side of the screen away from the hero */
+.stage.castle.msgTop .note,.stage.town.msgTop .note{bottom:auto;top:8px}
+.stage.msgTop .banner:not([hidden])~.note,.stage.map .banner:not([hidden])~.note{top:calc(16px + 1.6em)}
+.stage.castle.msgTop .dlg,.stage.map .dlg{bottom:auto;top:6px}
 .bossbar i{display:block;height:100%;background:var(--hp-crit);width:100%}
 #pops{position:absolute;inset:0;pointer-events:none}
 .pop{position:absolute;transform:translate(-50%,-50%);font-family:var(--f-display);font-weight:700;font-size:clamp(12px,4cqw,40px);color:#fff;
@@ -1888,7 +1892,9 @@ const ctileAt=(x,y)=>{const tx=Math.floor(x/CT),ty=Math.floor(y/CT);return(ty<0|
 const npcAt=(tx,ty)=>NPCS.find(n=>n.x===tx&&n.y===ty&&(!n.when||n.when()));
 const cwalk=(x,y)=>!C_BLOCK.has(ctileAt(x,y))&&!npcAt(Math.floor(x/CT),Math.floor(y/CT));
 function roomName(){const tx=Math.floor(S.cpos.x/CT),ty=Math.floor(S.cpos.y/CT);const r=ROOMS.find(r=>tx>=r.x0&&tx<=r.x1&&ty>=r.y0&&ty<=r.y1);return r?r.n:(IM?IM.name:'Castle Valemont');}
-function castleRender(){
+function msgSide(){if(S.scene!=='castle'||!S.cpos||!S.camOff)return;const sy=S.cpos.y-S.camOff.y,top=stage.classList.contains('msgTop');
+  if(!top&&sy>H*.56)stage.classList.add('msgTop');else if(top&&sy<H*.44)stage.classList.remove('msgTop');}
+function castleRender(){msgSide();
   const p=S.cpos,cm=S.cam||p,cx=Math.max(0,Math.min(CW*CT-W,Math.round(cm.x-W/2))),cy=Math.max(0,Math.min(CH*CT-H,Math.round(cm.y-H/2)));S.camOff={x:cx,y:cy};
   ctx.fillStyle='#22222e';ctx.fillRect(0,0,W,H);ctx.drawImage(ctex,cx,cy,W,H,0,0,W,H);
   for(const n of NPCS){if(n.when&&!n.when())continue;const sx=n.x*CT+8-cx+(n.ox||0),sy=n.y*CT+15-cy+(n.oy||0);if(!n.ship&&(sx<-16||sx>W+16||sy<-4||sy>H+20))continue;

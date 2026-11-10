@@ -234,3 +234,6 @@ In Quests › Active, every bounty in progress (and the main story goal at the t
 
 ## Equip item descriptions (v3.64.0)
 On the Equip screen, a description box sits between the top command bar and the slot list. It shows the selected piece (or the piece already in the chosen slot): its name, slot, a short line on what it does, its stat bonuses, any special effect (blocks ailments, halves an element, 1-MP spells) and who can wear it. Text comes from `gearDesc(id)`; notable items have hand-written lines in `GEAR_FLAVOR`.
+
+## Info text away from the hero (v3.65.0)
+In towns, castles and dungeons, info text (`say`) and NPC dialog boxes move to the top of the screen when the hero is in the lower half, and back to the bottom when the hero is in the upper half (with a little dead zone so they don't flicker). `msgSide()` runs each castle frame and toggles `.msgTop` on the stage. On the world map the hero sits just below center, so both always show at the top there. If an area-name banner is showing, the info text drops just below it.

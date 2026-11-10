@@ -245,3 +245,6 @@ The farmhouse is now 24×16 with four rooms: a **Bedroom** (big bed that rests t
 
 ## Isle of Aether rising cut scene (v3.67.0)
 When the Circle of Magi raises the isle, `isleCine()` plays a ~13.5 s letterboxed scene in five beats: the sea churns (whirlpool rings, a swelling dome, the golden spire tip), the white tower bursts up with water sheeting off it, the island heaves out of the ocean with waterfalls pouring off its cliffs, storm clouds spin in over the peak with rain and lightning, and a see-through wall of water rises to ring the island. The screen shakes while things rise, and captions run along the bottom (`.stage.cutfx`). This replaces the old world-map splash.
+
+## Stop fishing button (v3.68.0)
+The fishing scene now has an on-screen **✕ Stop fishing** button in the top-left corner (`#fishX`). Touch view hides the command list, so before this there was no way out of fishing on a phone. Esc still works on a keyboard.

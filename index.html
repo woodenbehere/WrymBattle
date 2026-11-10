@@ -77,6 +77,8 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .dlg{position:absolute;left:6px;right:6px;bottom:6px;background:linear-gradient(#2c48b8,#121a62);border:2px solid #e8e8f0;box-shadow:0 0 0 2px #000;border-radius:3px;padding:.35em .7em 1em;color:#ffffff;font-size:calc(clamp(14px,3.3cqw,30px) * var(--t-dlg,1));line-height:1.15;z-index:6;cursor:pointer}
 .dlg p{margin:0}.dlg span{position:absolute;right:.6em;bottom:.15em;font-size:.7em;animation:glow .8s steps(2) infinite;color:#ffd34a}
 .stage.map .note{bottom:auto;top:8px}
+#fishX{display:none;position:absolute;z-index:7;left:8px;top:8px;font:inherit;font-size:.8em;padding:5px 10px;border-radius:6px;border:2px solid #e8dcc0;background:rgba(22,17,26,.85);color:#fff3c4;cursor:pointer}
+.stage.fish #fishX{display:block}
 .stage.cutfx .note{top:auto!important;bottom:10px!important}
 .stage.cutfx #mini,.stage.cutfx .minix,.stage.cutfx #qTrk{visibility:hidden}
 /* info text sits on the side of the screen away from the hero */
@@ -456,7 +458,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.67.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.68.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -6331,6 +6333,9 @@ introOv.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();i
   const row=document.createElement('div');row.innerHTML=optRow('The opening','Watch the chronicle of Orren Vael again.','<button type="button" class="btn sm" data-o="intro">Watch</button>');
   const first=ab.querySelector('.orow');if(first)first.after(row.firstElementChild);else ab.appendChild(row.firstElementChild);};}
 optOv.addEventListener('click',e=>{if(!e.target.closest('[data-o="intro"]'))return;e.stopPropagation();playIntro(()=>{});},true);
+/* v3.68: an on-screen way out of fishing (touch view hides the command list) */
+{const b=document.createElement('button');b.id='fishX';b.type='button';b.textContent='✕ Stop fishing';stage.appendChild(b);
+  b.addEventListener('pointerdown',e=>{e.stopPropagation();e.preventDefault();if(S.scene==='fish')stopFishing();});}
 /* ---------- v3.67: the Isle of Aether rising cut scene (sea churns, tower rises, island lifts, storm gathers, wall of water) ---------- */
 function isleCine(ms){const T0=S.t,caps=['Far to the northwest, the sea begins to churn…','A white tower bursts from the waves, sea water pouring off its walls!','Then the whole island heaves up out of the ocean.','Storm clouds boil up around the tower’s peak.','And a great wall of water rises to ring the Isle of Aether.'];
   const cuts=[0,.18,.38,.58,.78,1],sm=x=>x<=0?0:x>=1?1:x*x*(3-2*x),seg=(p,i)=>sm((p-cuts[i])/(cuts[i+1]-cuts[i]));let ph=-1;

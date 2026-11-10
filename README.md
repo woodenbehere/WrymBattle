@@ -228,3 +228,6 @@ Battles inside Deepdelve now look like the level you're fighting on: timber supp
 
 ## Ironhold's guild hall (v3.62)
 A guild hall now stands in Ironhold's southeast corner (gold-brown roof, crossed-swords sign). Guildmaster Torva posts a deep-tunnel board of nine tougher, better-paying bounties: Tunnel Crawlers, Undermined (Burrow Moles), Crystal Thieves (Crystal Spiders, Bronze), Shades on the Sky Road (Bronze), Yeti Hunt (Bronze, Frost Ward), Molten Menace (Magma Slugs, Silver, Magus Ring), Rogue Golems (Silver, Giant's Belt), Night Prowlers (Shadow Panthers at night, Silver) and The Dusk Lions (Gold: 9,000 G, two Grand Elixirs and the Hero's Ring). Ironhold bounties are accepted only at Ironhold's board and surface ones only in Valemont; finished bounties can be claimed at either hall, and all of them count toward guild rank. Master Bryn now stands beside the Training Hall door.
+
+## Choosing what the tracker shows (v3.63)
+In Quests › Active, every bounty in progress (and the main story goal at the top) has a **Track** button. Tracked ones (✓ Tracked, in blue) appear in the map and dungeon tracker; untrack any you don't want cluttering the screen. New bounties are tracked automatically, and the choices are saved with your game.

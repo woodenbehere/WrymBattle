@@ -271,3 +271,6 @@ The hero card and the command list on the Status screen now sit in a wrapping ro
 
 ## Check the latest version (v3.72.0)
 Options › About has a **Latest version** row under the installed version. **Check** fetches the live `index.html` with `cache: 'no-store'` and a cache-busting query, so the service worker can't answer from its cache. It reads the footer version and the embedded changelog, then shows the installed and latest versions side by side, with a list of the updates you don't have yet. Nothing is installed until you tap the version twice.
+
+## Summons on top (v3.73.0)
+While a summon plays, the enemy name tags, HP bars and boss bar fade out (`.stage.summoning`), so the summoned creature isn't covered. They fade back in as soon as the summon's action ends.

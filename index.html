@@ -465,7 +465,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.81.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.82.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -5394,6 +5394,16 @@ function layRing(cx,cy,items,hero){const vw=innerWidth,vh=innerHeight,n=items.le
         if(!open&&!S.dlg&&cmdEl.querySelector('button.opt[data-a="back"]'))openSysRing(cx,cy);},40);};
     tRing.appendChild(b);});
   tRing.hidden=false;}
+/* v3.82: rings with too many choices split into pages: "More ›" opens the next ring, "‹ Back" returns to the previous one */
+{const lr0=layRing;layRing=function(cx,cy,items,hero,page){const cap=hero===true?5:7,bi=items.findIndex(it=>/^‹/.test(it.label)),back=bi>=0?items[bi]:null,rest=items.filter((_,i)=>i!==bi);
+  if(rest.length<=cap+1||items.some(it=>it.pg))return lr0(cx,cy,items,hero);
+  page=page||0;const pages=Math.ceil(rest.length/cap),st={};
+  const go=p=>()=>{TUI.ring=st.ring;tRing.className=st.cls||'';layRing(cx,cy,items,hero,p);for(const h of st.hints||[])tRing.appendChild(h.cloneNode(true));};
+  const L=rest.slice(page*cap,page*cap+cap);
+  if(page<pages-1)L.push({label:`More › ${page+2}/${pages}`,cls:'sys',pg:1,go:go(page+1)});
+  if(page>0)L.push({label:'‹ Back',cls:'sys',pg:1,go:go(page-1)});else if(back)L.push(back);
+  lr0(cx,cy,L.map(it=>it.pg?it:Object.assign({},it,{pg:1})),hero);
+  setTimeout(()=>{st.ring=TUI.ring;st.cls=tRing.className;st.hints=[...tRing.querySelectorAll('.thint')].map(n=>n.cloneNode(true));},0);};}
 /* v3.74: Warp from the touch ring: a second ring of towns, with Back to the command ring */
 function openWarpRing(h){const p=TUI.lastSys||{x:innerWidth/2,y:innerHeight/2},L=warpDest(),why=h.ko||h.stone?`${h.name} can’t cast right now`:h.mp<mpCost(h,SK.warp)?`Not enough MP (${mpCost(h,SK.warp)} needed)`:'';
   if(why){say(why+'.');return openSysRing(p.x,p.y);}
@@ -5424,15 +5434,18 @@ function spellCats(h,rest){if(!h||(h.key!=='white'&&h.key!=='black'))return null
   return order.filter(n=>G[n]).map(n=>({name:n,list:G[n]}));}
 /* a skill, magic or item list forms a second ring (two loops if long, with paging) around the hero */
 let listPage=0,listKey='';
-function layList(c,back,rest){const k=(S.menu&&S.menu.view)+':'+rest.length;if(k!==listKey){listKey=k;listPage=0;}const tk=(typeof TXT!=='undefined'&&TXT.cmd)||1;
-  const RINGS=[{n:6,rx:150,ry:86},{n:8,rx:250,ry:132}],cap=RINGS.reduce((a,r)=>a+r.n,0),paged=rest.length>cap,per=paged?cap-1:cap,pages=Math.max(1,Math.ceil(rest.length/per));listPage=Math.min(listPage,pages-1);
-  const show=rest.slice(listPage*per,listPage*per+per);if(paged)show.push({label:listPage<pages-1?'More ›':'‹ First',cls:'sys',go:()=>{listPage=(listPage+1)%pages;touchSync();},keepRing:true});
-  const vw=innerWidth,vh=innerHeight;tRing.innerHTML=`<div class="hub" style="left:${c.x}px;top:${c.y}px"></div>`;let i=0;
+function layList(c,back,rest){const k=(S.menu&&S.menu.view)+':'+(S.menu&&S.menu.hero&&S.menu.hero.key)+':'+rest.length+':'+(TUI.cat||'');if(k!==listKey){listKey=k;listPage=0;}const tk=(typeof TXT!=='undefined'&&TXT.cmd)||1;
+  /* v3.82: one tidy column beside the hero; if it doesn't fit, "More ›" opens the next page and "‹ Back" steps back a page */
+  const vw=innerWidth,vh=innerHeight,gap=38*Math.max(1,tk*.9),rows=Math.max(3,Math.min(7,Math.floor((vh-30)/gap))),paged=rest.length>rows,per=paged?rows-1:rows,pages=Math.max(1,Math.ceil(rest.length/per));listPage=Math.min(listPage,pages-1);
+  const show=rest.slice(listPage*per,listPage*per+per);if(paged&&listPage<pages-1)show.push({label:`More › ${listPage+2}/${pages}`,cls:'sys',go:()=>{listPage++;touchSync();},keepRing:true});
+  if(listPage>0)back=[{label:'‹ Back',cls:'sys',go:()=>{listPage--;touchSync();},keepRing:true}];
+  tRing.innerHTML=`<div class="hub" style="left:${c.x}px;top:${c.y}px"></div>`;
   const add=(it,x,y,j)=>{const b=document.createElement('button');b.type='button';b.innerHTML=esc(it.label)+(it.right?` <i>${esc(it.right)}</i>`:'');b.className=(it.cls||'')+(it.dis?' dis':'');
     b.style.left=Math.max(56,Math.min(vw-56,x))+'px';b.style.top=Math.max(20,Math.min(vh-20,y))+'px';b.style.animationDelay=(j*14)+'ms';b.addEventListener('pointerdown',e=>e.stopPropagation());
     b.onclick=e=>{e.stopPropagation();if(it.dis)return;it.go();};tRing.appendChild(b);};
   for(const it of back)add(it,c.x,c.y+40*tk,0);
-  for(const R of RINGS){const take=show.slice(i,i+R.n);i+=take.length;take.forEach((it,j)=>{const a=-Math.PI/2+j/R.n*Math.PI*2+Math.PI/R.n;add(it,c.x+Math.cos(a)*R.rx*Math.max(1,tk*.9),c.y+Math.sin(a)*R.ry*Math.max(1,tk*.9),i+j);});if(i>=show.length)break;}
+  const m=show.length,hgt=(m-1)*gap,y0=Math.max(22,Math.min(vh-22-hgt,c.y-hgt/2)),cx=c.x-160*Math.max(1,tk*.9);
+  show.forEach((it,j)=>{const t=m>1?(j-(m-1)/2)/((m-1)/2):0;add(it,cx+Math.abs(t)*22,y0+j*gap,j+1);});
   tRing.hidden=false;}
 {const rmT=renderMenu;renderMenu=function(f){rmT(f);try{touchSync();}catch(e){console.warn(e);}};}
 function foeAt(x,y){let best=null;S.foes.forEach((f,i)=>{if(f.dead||f.gone)return;const m=f.kind==='wyrm'?null:MON[f.kind];

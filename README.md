@@ -318,3 +318,6 @@ The Journal has a **Diners** page: totals across all diners (customers served an
 
 ## Most used ingredients chart (v3.81.0)
 Diner Reports now has a **Most used ingredients (last 7 days)** bar chart under Daily profit: the top 10 ingredients by amount used, colored by food group, each with the count and its value in gold. A key and a "kitchen has … left" line for the top three follow. Each day's log entry now records `used` (ingredient → amount), filled in by `cookFrom(st, R, use)`.
+
+## Tidy spell lists with More pages (v3.82.0)
+Battle skill, magic, summon and item lists in the touch view (`layList`) now form one neat curved column beside the hero instead of two crowded loops. When there are more entries than fit the screen height (up to 7 rows), the last slot becomes **More › 2/3** and opens the next page. On later pages the center **‹ Back** steps back a page, and on the first page it returns to the command ring. Command rings (`layRing`) page the same way when they hold more than 8 choices.

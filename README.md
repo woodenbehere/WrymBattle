@@ -278,3 +278,15 @@ While a summon plays, the enemy name tags, HP bars and boss bar fade out (`.stag
 ## Warp ring and quest tracker shortcut (v3.74.0)
 - **Warp in the touch ring**: once Morrow knows Warp, the world-map and town command ring has a **Warp** chip. Tapping it opens a second ring of visited towns, with a hint showing the MP cost and Morrow's MP, plus **‹ Back** to the command ring. Picking a town casts Warp straight away (`castWarp(h, dest)`).
 - **Quest tracker**: tapping the *Quests* header, or any quest in the list, opens the Quests menu. The **−/+** box still collapses and expands the tracker.
+
+## Every monster drops food, and a Food page in the Journal (v3.75.0)
+- Every defeated monster now always drops one food ingredient, or two for night forms half the time. The cuts table gained non-meat foods:
+  - **Vegetables**: Mandrake Root, Grave Mushroom (undead), Reef Kelp (sea folk), Shadow Truffle (shades, wraiths, gargoyles).
+  - **Spices**: Rock Salt (golems, orbs, ironclads), Fire Pepper (imps, slugs).
+  - **Sweets**: Wisp Honey (wisps, moths), Mana Sugar (grimoires).
+  - **Bread**: Trail Bread (goblins, acolytes, ghost pirates).
+  - **Dairy**: Ogre Cheese, Wild Egg, Fresh Cream.
+  - **Meats**: Bat Wing, Grub Steak, Nightmare Rump, Mutton, Angler Fillet, Wyvern Wing.
+  - Bosses have their own drops (tower guardians and the Black Wyrm King give Drake Tail). Anything without a match drops Monster Jerky.
+- Six new recipes use them: Monster Jerky Plate (known from the start), Ogre Cheese Toastie, Salt-Crusted Fish, Wisp Honey Cake, Fire Pepper Steak and Shadow Truffle Risotto. Recipes can now ask for any bread, any egg or dairy, any spice or any sweet, and wheat counts as bread.
+- **Journal › Food** lists every ingredient by group, with how many you've gathered all-time (`S.flags.foodLog`: battle drops, fish caught, crops harvested) and where it is now: your pack, home (larder and crates) or stocked in your diners.

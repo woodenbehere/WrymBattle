@@ -460,7 +460,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.74.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.75.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -3693,7 +3693,7 @@ const jRow=(a,b)=>`<div class="srow jrow"><div class="sinfo"><b>${esc(a)}</b></d
 const jName=id=>ITEMS[id]?ITEMS[id].name:GEAR[id]?GEAR[id].name:id;
 function drawJournal(){const st=stObj(),f=S.flags;
   $('jSub').textContent=`Day ${f.day||1} · ${hm(st.play)} played`;
-  $('jTabs').innerHTML=[['stats','Stats'],['farm','Homestead'],['beasts','Bestiary'],['items','Items'],['fish','Fish Book'],['notes','Notes']].map(([k,n])=>`<button type="button" class="ffm-cmd" data-jt="${k}" aria-pressed="${k===jTab}">${n}</button>`).join('');
+  $('jTabs').innerHTML=[['stats','Stats'],['farm','Homestead'],['beasts','Bestiary'],['items','Items'],['fish','Fish Book'],['food','Food'],['notes','Notes']].map(([k,n])=>`<button type="button" class="ffm-cmd" data-jt="${k}" aria-pressed="${k===jTab}">${n}</button>`).join('');
   let h='';
   if(jTab==='stats'){const kills=Object.values(S.kills).reduce((a,b)=>a+(b||0),0),fb=typeof fbook==='function'?fbook():{},nf=Object.keys(fb).length,big=Object.entries(fb).sort((a,b)=>b[1].best-a[1].best)[0];
     const lv=S.heroes.map(x=>`${x.name} ${x.lv}`).join(', ');
@@ -3714,6 +3714,7 @@ function drawJournal(){const st=stObj(),f=S.flags;
       (gear.length?'<p class="lab">Gear collected</p><div class="slist">'+gear.sort().map(k=>jRow(jName(k),`×${st.gear[k]}`)).join('')+'</div>':'');}
   else if(jTab==='fish'){if(typeof drawFishBook==='function'){drawFishBook();h=`<p class="tip">${esc($('fishMsg').textContent)}</p><div class="slist">${$('fishList').innerHTML}</div>`;}}
   else if(jTab==='farm'){h=farmJournal();}
+  else if(jTab==='food'){h=foodJournal();}
   else if(jTab==='notes'){h=`<p class="tip">Your own notes. They’re kept with this save.</p><textarea id="jNotes" rows="10" style="width:100%;font:inherit;font-size:16px;background:var(--panel-2);color:var(--text);border:2px solid var(--line);padding:8px;resize:vertical" placeholder="Where the chests are, what to buy next, which sign the doorman wants…">${esc(f.notes||'')}</textarea>`;}
   $('jBody').innerHTML=h;
   const ta=$('jNotes');if(ta)ta.addEventListener('input',()=>{S.flags.notes=ta.value.slice(0,20000);clearTimeout(drawJournal.t);drawJournal.t=setTimeout(saveGame,800);});}
@@ -6350,15 +6351,36 @@ const CUTS={hare:{n:'Hare Haunch',v:40,from:['thornhare']},wolf:{n:'Wolf Flank',
  lizard:{n:'Lizard Tail',v:80,from:['crag','salamander','basilisk']},scorp:{n:'Scorpion Tail',v:70,from:['scorpion']},toad:{n:'Toad Legs',v:50,from:['toad']},
  ray:{n:'Ray Fin',v:60,from:['ray']},slime:{n:'Slime Jelly',v:30,from:['slime']},mole:{n:'Mole Cutlet',v:50,from:['mole']},spider:{n:'Spider Leg',v:60,from:['spider']},
  yeti:{n:'Yeti Shank',v:110,from:['yeti']},crab:{n:'Crab Claw',v:140,from:['shellgiant']},kraken:{n:'Kraken Tentacle',v:150,from:['krakenling','kraken']},
- serpent:{n:'Serpent Fillet',v:200,from:['seaserpent']},cat:{n:'Panther Loin',v:180,from:['panther','jaguar','tiger','lion','lynx','saber']},drake:{n:'Drake Tail',v:400,from:['wyvern'],ch:.25}};
-const CUT_OF={};for(const[k,c]of Object.entries(CUTS))for(const m of c.from)CUT_OF[m]=k;
+ serpent:{n:'Serpent Fillet',v:200,from:['seaserpent']},cat:{n:'Panther Loin',v:180,from:['panther','jaguar','tiger','lion','lynx','saber']},drake:{n:'Drake Tail',v:400,from:['wyvern'],ch:.25,alt:'wyvwing'},
+ /* v3.75: every monster drops something edible */
+ wyvwing:{n:'Wyvern Wing',v:160,from:[]},bat:{n:'Bat Wing',v:40,from:['bat']},grub:{n:'Grub Steak',v:60,from:['crawler']},nightmare:{n:'Nightmare Rump',v:220,from:['nightmare']},
+ mutton:{n:'Mutton',v:90,from:['sheep']},angler:{n:'Angler Fillet',v:150,from:['angler']},jerky:{n:'Monster Jerky',v:30,from:[]},
+ mandrake:{n:'Mandrake Root',v:60,cat:'veg',from:['mandrake']},mushroom:{n:'Grave Mushroom',v:50,cat:'veg',from:['zombie','ghoul','zknight']},
+ kelp:{n:'Reef Kelp',v:50,cat:'veg',from:['sahagin','siren']},truffle:{n:'Shadow Truffle',v:140,cat:'veg',from:['shade','wraith','abysswalker','gargoyle']},
+ salt:{n:'Rock Salt',v:30,cat:'spice',from:['golem','crag_golem','ironclad','imp_rock','wardorb','waystone','waystoneP','sentinel']},pepper:{n:'Fire Pepper',v:40,cat:'spice',from:['imp','salamander_x','slug']},
+ honey:{n:'Wisp Honey',v:70,cat:'sweet',from:['wisp','nwisp','moth']},sugar:{n:'Mana Sugar',v:60,cat:'sweet',from:['grimoire']},
+ bread:{n:'Trail Bread',v:30,cat:'grain',from:['goblin','acolyte','ghostpirate']},cheese:{n:'Ogre Cheese',v:120,cat:'dairy',from:['ogre']},
+ egg2:{n:'Wild Egg',v:40,cat:'dairy',from:['chick','harpy_x']},cream:{n:'Fresh Cream',v:60,cat:'dairy',from:['cow']}};
+const CUT_OF={};for(const[k,c]of Object.entries(CUTS))for(const m of c.from)CUT_OF[m]=k;Object.assign(CUT_OF,{yetiking:'yeti',magmaworm:'pepper',tg25:'drake',tg50:'drake',tg75:'drake',ironmonk:'bread',blackknight:'nightmare',lich:'truffle',runeward:'salt',eidolon:'sugar',bwking:'drake',bwkingicon:'drake'});
 const monBase=k=>k.replace(/^n_(sw_|ne_)?/,'').replace(/^t\d_|^bw\d+_/,'').replace(/_\d$/,'');
 const foodBag=()=>S.flags.food||(S.flags.food={}),larder=()=>S.flags.larder||(S.flags.larder={});
 function foodName(id){if(id.startsWith('m_'))return CUTS[id.slice(2)]?CUTS[id.slice(2)].n:id;if(FISHD[id])return FISHD[id].name;if(CROPS[id])return CROPS[id].n;if(GOODS[id])return GOODS[id].n;return id;}
-function foodCat(id){if(id.startsWith('m_'))return'meat';if(FISHD[id])return'fish';if(CROPS[id])return'veg';if(id==='egg'||id==='milk')return'dairy';return null;}
+function foodCat(id){if(id.startsWith('m_'))return(CUTS[id.slice(2)]&&CUTS[id.slice(2)].cat)||'meat';if(FISHD[id])return'fish';if(CROPS[id])return'veg';if(id==='egg'||id==='milk')return'dairy';return null;}
 const isFood=id=>!!foodCat(id);
 /* battle drops: a cut from each beast that has one */
-{const rd2=rollDrops;rollDrops=function(f){const got=rd2(f),c=CUT_OF[monBase(f.kind)];if(c){const night=/^n_/.test(f.kind),ch=(CUTS[c].ch||.45)*(night?1.3:1);if(Math.random()<ch){const n=night&&Math.random()<.5?2:1,B=foodBag();B['m_'+c]=(B['m_'+c]||0)+n;got.push(CUTS[c].n+(n>1?' ×2':''));}}return got;};}
+function logFood(id,n){const L=S.flags.foodLog||(S.flags.foodLog={});L[id]=(L[id]||0)+n;}
+{const rd2=rollDrops;rollDrops=function(f){const got=rd2(f);let c=CUT_OF[monBase(f.kind)]||'jerky';if(CUTS[c].ch&&Math.random()>CUTS[c].ch)c=CUTS[c].alt||'jerky';
+  const night=/^n_/.test(f.kind),n=night&&Math.random()<.5?2:1,B=foodBag();B['m_'+c]=(B['m_'+c]||0)+n;logFood('m_'+c,n);got.push(CUTS[c].n+(n>1?' ×2':''));return got;};}
+{const lf2=landFish;landFish=function(f){logFood(f.sp.id,1);return lf2(f);};}
+{const ha2=harvestAt;harvestAt=function(k){const c=farm().plots[k]&&farm().plots[k].c,n=ha2(k);if(c&&n)logFood(c,n);return n;};}
+function foodJournal(){const C=carried(),H=homeStock(),D=dinersAll(),inD={};for(const d of Object.values(D))for(const[k,v]of Object.entries(d.stock))inD[k]=(inD[k]||0)+v;
+  const G=S.flags.foodLog||{},ids=[...new Set([...Object.keys(G),...Object.keys(C),...Object.keys(H),...Object.keys(inD)])].filter(isFood);
+  const CATN={meat:'Meat',fish:'Fish',veg:'Vegetables',dairy:'Eggs and dairy',grain:'Bread and grain',spice:'Spices',sweet:'Sweets'};
+  if(!ids.length)return'<p class="tip">No food yet. Every monster drops something edible, fish go in the basket, and the farm fills the crates.</p>';
+  const tot=k=>(C[k]||0)+(H[k]||0)+(inD[k]||0);
+  return'<p class="tip">“Got” is everything gathered so far. Then where it is now: your pack (with the fish basket), home (larder and farm crates), and diners (stocked kitchens).</p>'+
+    Object.keys(CATN).map(cat=>{const L=ids.filter(k=>foodCat(k)===cat).sort((a,b)=>foodName(a).localeCompare(foodName(b)));if(!L.length)return'';
+      return`<p class="lab">${CATN[cat]}</p><div class="slist">`+L.map(k=>jRow(esc(foodName(k)),[`${G[k]||0} got`,C[k]&&`${C[k]} pack`,H[k]&&`${H[k]} home`,inD[k]&&`${inD[k]} diners`].filter(Boolean).join(' · '))).join('')+'</div>';}).join('');}
 /* what the party carries: the food pack plus the fish basket */
 function carried(){const o={...foodBag()};for(const f of fbasket())o[f.sp]=(o[f.sp]||0)+1;for(const k in o)if(!o[k])delete o[k];return o;}
 function takeCarried(id,n){const B=foodBag();let got=0;while(got<n&&B[id]>0){B[id]--;got++;}if(!B[id])delete B[id];
@@ -6389,10 +6411,16 @@ const RECIPES={
  steak:{n:'Panther Loin Steak',ing:[['m_cat',1],['snowroot',1]],price:360,tags:['hearty'],learn:1500,star:3},
  sashimi:{n:'Serpent Sashimi',ing:[['m_serpent',1],['snowroot',1]],price:420,tags:['sea','light'],learn:2500,star:4},
  tuna:{n:'Sunscale Tuna Steak',ing:[['tuna',1],['melon',1]],price:550,tags:['sea','light'],learn:3000,star:4,sig:true},
+ jerkyplate:{n:'Monster Jerky Plate',ing:[['m_jerky',2]],price:90,tags:['hearty'],learn:0,star:1},
+ toastie:{n:'Ogre Cheese Toastie',ing:[['m_cheese',1],['any:grain',1]],price:160,tags:['comfort'],learn:400,star:1},
+ saltfish:{n:'Salt-Crusted Fish',ing:[['any:fish',1],['m_salt',1]],price:190,tags:['sea'],learn:500,star:1},
+ honeycake:{n:'Wisp Honey Cake',ing:[['m_honey',1],['any:grain',1],['any:dairy',1]],price:210,tags:['sweet'],learn:600,star:2},
+ peppersteak:{n:'Fire Pepper Steak',ing:[['any:meat',1],['m_pepper',1]],price:240,tags:['spicy','hearty'],learn:700,star:2},
+ risotto:{n:'Shadow Truffle Risotto',ing:[['m_truffle',1],['any:dairy',1],['any:veg',1]],price:300,tags:['light','comfort'],learn:1200,star:3},
  feast:{n:'Drake Tail Feast',ing:[['m_drake',1],['pumpkin',1],['corn',1]],price:700,tags:['hearty','spicy'],learn:5000,star:5,sig:true}};
 const TAG_NAME={comfort:'comfort food',hearty:'hearty meals',light:'light fare',sweet:'sweets',sea:'seafood',spicy:'spicy food'};
-const ingName=s=>s.startsWith('any:')?({meat:'any meat',fish:'any fish',veg:'any vegetable'})[s.slice(4)]:foodName(s);
-const fits=(spec,id)=>spec.startsWith('any:')?foodCat(id)===spec.slice(4):spec===id;
+const ingName=s=>s.startsWith('any:')?({meat:'any meat',fish:'any fish',veg:'any vegetable',dairy:'any egg or dairy',grain:'any bread or grain',spice:'any spice',sweet:'any sweet'})[s.slice(4)]:foodName(s);
+const fits=(spec,id)=>spec.startsWith('any:')?(foodCat(id)===spec.slice(4)||(spec==='any:grain'&&id==='wheat')):spec===id;
 const DINER_TOWNS={village:{door:'29,6',b:[27,2],taste:['comfort','light'],road:['goblin','wolf','goblin']},
  town:{door:'5,13',b:[3,10],taste:['hearty','comfort'],road:['wolf','goblin','thornhare','wolf']},
  highmere:{door:'4,14',b:[2,11],taste:['sweet','light'],road:['harpy','yeti','harpy']},

@@ -237,3 +237,8 @@ On the Equip screen, a description box sits between the top command bar and the 
 
 ## Info text away from the hero (v3.65.0)
 In towns, castles and dungeons, info text (`say`) and NPC dialog boxes move to the top of the screen when the hero is in the lower half, and back to the bottom when the hero is in the upper half (with a little dead zone so they don't flicker). `msgSide()` runs each castle frame and toggles `.msgTop` on the stage. On the world map the hero sits just below center, so both always show at the top there. If an area-name banner is showing, the info text drops just below it.
+
+## Bigger farmhouse and family meals (v3.66.0)
+The farmhouse is now 24×16 with four rooms: a **Bedroom** (big bed that rests the party, fireplace), a **Kitchen** (icebox, counters, iron stove, sink, kitchen island), a **Living Room** (two couches facing a low table, the catalog stand) and a **Dining Room** (table for six). Doorways and the front door approach are kept clear of placed furniture (`HOME_CLEAR`); anything from the old layout that lands in a wall goes back to storage.
+
+**Family meal**: use the stove, the dining table or chairs, or *Cook a family meal* in the house menu. It costs 6 farm goods from the crates (or 500 G of groceries when short). A ~10 s cut scene plays (cooking → serving → toast → eating) with the whole party and Old Hob, then everyone is **Well Fed** for 7 game days: +10% Attack, Magic, Defense, Magic def. and Max HP, plus HP/MP restored. A new meal restarts the week. The status screen shows the days left. Code: `familyMeal()`, `mealScene()`, `wellFed()`, and a `recalc` wrapper.

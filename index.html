@@ -83,6 +83,9 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 #fishBtns button:disabled{opacity:.45;cursor:default}
 .ffs-strow{display:flex!important;flex-wrap:wrap;gap:8px}.ffs-strow>.ffs-herobox{flex:1 1 auto}.ffs-strow>.ffs-cmdlist{flex:1 0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(7.5em,1fr));align-content:center}
 .stage.summoning #fbars,.stage.summoning #bossBox{opacity:0;transition:opacity .2s}
+.rtab{width:100%;border-collapse:collapse;font-size:.82em;margin:2px 0 8px}.rtab th{font-weight:normal;opacity:.7;text-align:right;padding:2px 4px;border-bottom:1px solid rgba(232,220,192,.3)}
+.rtab td{white-space:nowrap;text-align:right;padding:3px 4px;border-bottom:1px solid rgba(232,220,192,.1)}.rtab td:first-child{white-space:normal}.rtab tr.sub td{opacity:.85;font-style:italic}.rtab tr.tot td{border-top:1px solid rgba(232,220,192,.5);color:var(--gold,#ffd34a)}
+.rbars{display:flex;flex-direction:column;gap:3px;margin:2px 0 8px;font-size:.8em}.rbar{display:grid;grid-template-columns:4.5em 1fr 5.5em;align-items:center;gap:6px}.rbar i{display:block;height:8px;border-radius:2px}.rbar b{text-align:right;font-weight:normal}
 .stage.cutfx .note{top:auto!important;bottom:10px!important}
 .stage.cutfx #mini,.stage.cutfx .minix,.stage.cutfx #qTrk{visibility:hidden}
 /* info text sits on the side of the screen away from the hero */
@@ -462,7 +465,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.78.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.79.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -6447,7 +6450,7 @@ function makeCandidates(D,t){const n=Object.keys(dinersAll()).indexOf(t),out=[],
   D.cands=out;D.candWeek=Math.floor((S.flags.day||1)/7);}
 function newDiner(t){return{rep:10,menu:['stew','omelet'],stock:{},till:0,cook:null,server:null,up:{},log:[],lastDay:S.flags.day||1,raided:false,safeUntil:0,opened:S.flags.day||1};}
 /* one day of business */
-function dinerDay(t,D,day){const T=DINER_TOWNS[t],news=[];let served=0,missed=0,earned=0;const sold={};
+function dinerDay(t,D,day){dinerStats(D);const T=DINER_TOWNS[t],news=[];let served=0,missed=0,earned=0,cogs=0,rateSum=0;const sold={};
   /* runners bring food from the homestead */
   const cap=D.up.skiff?20:D.up.runner2?12:D.up.runner1?6:0;
   if(cap&&D.menu.length){if(D.raided&&!D.up.skiff)news.push('Runners stayed home: the road is still unsafe.');
@@ -6456,18 +6459,67 @@ function dinerDay(t,D,day){const T=DINER_TOWNS[t],news=[];let served=0,missed=0,
           const src=Object.keys(hs).filter(k=>fits(spec,k)&&hs[k]>(plan[k]||0)).sort((a,b)=>hs[b]-hs[a])[0];if(src&&(!best||have<best.have))best={have,src};}}
         if(!best)break;plan[best.src]=(plan[best.src]||0)+1;moved++;}
       if(moved){if(Math.random()<raid){for(const[k,q]of Object.entries(plan))takeHome(k,q);D.raided=true;news.push(`Monsters ambushed your runners on the road! ${moved} ingredient${moved>1?'s were':' was'} lost. Clear the road before they’ll go out again.`);}
-        else{for(const[k,q]of Object.entries(plan)){const g=takeHome(k,q);D.stock[k]=(D.stock[k]||0)+g;}news.push(`${D.up.skiff?'The sky skiff':'Runners'} delivered ${moved} ingredient${moved>1?'s':''}.`);}}}}
+        else{for(const[k,q]of Object.entries(plan)){const g=takeHome(k,q);D.stock[k]=(D.stock[k]||0)+g;foodIn(D,k,g);}news.push(`${D.up.skiff?'The sky skiff':'Runners'} delivered ${moved} ingredient${moved>1?'s':''}.`);}}}}
   if(!D.cook||!D.menu.length){D.rep=Math.max(0,D.rep-1);news.push(!D.cook?'Closed today: no cook.':'Closed today: nothing on the menu.');}
   else{const sk=D.server?D.server.skill:0,speedy=D.server&&D.server.trait==='Speedy'?1.2:1;let guests=Math.round((3+sk*3)*(.6+D.rep/100)*speedy*rnd(.8,1.2));
     const pm=(1+.12*D.cook.skill)*(D.cook.trait==='Gourmet'?1.15:1)*(D.server&&D.server.trait==='Showman'?1.12:1);
     for(let g=0;g<guests;g++){const ws=D.menu.map(r=>1+(RECIPES[r].tags.some(x=>T.taste.includes(x))?1.5:0)),tot=ws.reduce((a,b)=>a+b,0);let r=Math.random()*tot,i=0;while(r>ws[i]){r-=ws[i];i++;}let rid=D.menu[Math.min(i,D.menu.length-1)];if(!canCook(D.stock,RECIPES[rid])&&Math.random()<.7){const alt=D.menu.filter(r=>canCook(D.stock,RECIPES[r]));if(alt.length)rid=pick(alt);}const R=RECIPES[rid];
-      if(canCook(D.stock,R)){cookFrom(D.stock,R);served++;sold[rid]=(sold[rid]||0)+1;earned+=Math.round(R.price*pm*(R.tags.some(x=>T.taste.includes(x))?1.2:1));}else missed++;}
-    D.rep=Math.max(0,Math.min(100,D.rep+served*.8*(D.cook.trait==='Generous'?1.25:1)-missed*.5));}
+      const ds=dishStat(D,rid),like=R.tags.some(x=>T.taste.includes(x));
+      if(canCook(D.stock,R)){const cost=cookFrom(D.stock,R),sale=Math.round((cost*1.4+R.price*.5)*pm*(like?1.2:1));served++;sold[rid]=(sold[rid]||0)+1;earned+=sale;cogs+=cost;
+        const rt=Math.max(1,Math.min(5,3+(like?.8:0)+(D.cook.skill-2)*.5+(D.server?.3:-.4)+(D.cook.trait==='Generous'?.3:0)+(R.sig?.5:0)+rnd(-.9,.9)));
+        ds.sold++;ds.rev+=sale;ds.cogs+=cost;ds.rate+=rt;rateSum+=rt;D.rep=Math.max(0,Math.min(100,D.rep+(rt-2)*.4*(D.cook.trait==='Generous'?1.25:1)));
+        if(Math.random()<.25)addReview(D,t,R,rt);}
+      else{missed++;ds.miss++;D.rep=Math.max(0,D.rep-.5);}}}
   const wages=(D.cook?D.cook.wage:0)+(D.server?D.server.wage:0);D.till+=earned-wages;
   const top=Object.entries(sold).sort((a,b)=>b[1]-a[1])[0];
-  D.log.unshift({day,served,missed,earned,wages,top:top?RECIPES[top[0]].n:'',news});D.log=D.log.slice(0,7);}
+  const L=D.life;L.days++;L.served+=served;L.missed+=missed;L.sales+=earned;L.cogs+=cogs;L.wages+=wages;L.rate+=rateSum;
+  D.log.unshift({day,served,missed,earned,wages,cogs,rate:served?rateSum/served:0,top:top?RECIPES[top[0]].n:'',news});D.log=D.log.slice(0,14);}
+/* v3.79: bookkeeping for each diner */
+function foodValue(id){if(id.startsWith('m_'))return(CUTS[id.slice(2)]||{v:30}).v;if(FISHD[id])return FISHD[id].price;if(CROPS[id])return CROPS[id].sell;if(GOODS[id])return GOODS[id].sell;return 20;}
+function dinerStats(D){if(!D.life)D.life={days:0,served:0,missed:0,sales:0,cogs:0,wages:0,rate:0};if(!D.dishes)D.dishes={};if(!D.reviews)D.reviews=[];
+  if(!D.cash)D.cash={collected:0,paidIn:0,foodIn:invValue(D.stock||{})};if(!D.inv)D.inv={lease:DINER_OPEN,up:Object.keys(D.up||{}).reduce((a,k)=>a+(DINER_UPS[k]?DINER_UPS[k].cost:0),0)};return D;}
+function foodIn(D,k,n){dinerStats(D).cash.foodIn+=n*foodValue(k);}
+const stars=r=>{const n=Math.round(r*2)/2;return'★'.repeat(Math.floor(n))+(n%1?'½':'')+` ${r.toFixed(1)}`;};
+const sr=r=>'★'+r.toFixed(1),sg=n=>(n<0?'−':'')+fmtG(Math.abs(Math.round(n)));
+function rTable(head,rows){return`<table class="rtab"><thead><tr>${head.map((h,i)=>`<th${i?'':' style="text-align:left"'}>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr${r.cls?` class="${r.cls}"`:''}>${r.c.map((c,i)=>`<td${i?'':' style="text-align:left"'}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;}
+function dinerReport(t,D){dinerStats(D);const L=D.life,W=D.log.slice(0,7),sum=(a,k)=>a.reduce((x,e)=>x+(e[k]||0),0);
+  const w={sales:sum(W,'earned'),cogs:sum(W,'cogs'),wages:sum(W,'wages'),served:sum(W,'served'),missed:sum(W,'missed'),rate:W.reduce((x,e)=>x+(e.rate||0)*(e.served||0),0)};
+  const pl=o=>{const gp=o.sales-o.cogs,np=gp-o.wages;return{gp,np,m:o.sales?Math.round(np/o.sales*100):0};},a7=pl(w),aL=pl(L);
+  let h=`<p class="lab">Last 7 days</p>`+rTable(['','Served','Turned away','Rating','Profit'],[{c:['This diner',w.served,w.missed,w.served?sr(w.rate/w.served):'–',sg(a7.np)]}]);
+  /* daily profit bars */
+  const days=D.log.slice(0,14).reverse(),mx=Math.max(1,...days.map(e=>Math.abs((e.earned||0)-(e.cogs||0)-(e.wages||0))));
+  if(days.length)h+=`<p class="lab">Daily profit</p><div class="rbars">`+days.map(e=>{const np=(e.earned||0)-(e.cogs||0)-(e.wages||0),wd=Math.max(2,Math.round(Math.abs(np)/mx*100));
+    return`<div class="rbar"><span>Day ${e.day}</span><i style="width:${wd}%;background:${np>=0?'#5ab04a':'#c8402a'}"></i><b>${sg(np)}</b></div>`;}).join('')+'</div>';
+  h+=`<p class="lab">Income statement</p>`+rTable(['','Last 7 days','All time'],[
+    {c:['Sales',fmtG(w.sales),fmtG(L.sales)]},{c:['Food cost',sg(-w.cogs),sg(-L.cogs)]},{cls:'sub',c:['Gross profit',sg(a7.gp),sg(aL.gp)]},
+    {c:['Wages',sg(-w.wages),sg(-L.wages)]},{cls:'tot',c:['Net profit',sg(a7.np),sg(aL.np)]},{c:['Profit margin',a7.m+'%',aL.m+'%']}]);
+  const C=D.cash,inv=D.inv.lease+D.inv.up,stock=invValue(D.stock),till=D.till;
+  h+=`<p class="lab">Cash flow (all time)</p>`+rTable(['','Gold'],[
+    {c:['Sales into the till',fmtG(L.sales)]},{c:['Wages paid from the till',sg(-L.wages)]},{c:['You collected',sg(-C.collected)]},{c:['You paid in (wages owed)',fmtG(C.paidIn)]},
+    {cls:'tot',c:['Cash in the till now',sg(till)]},{c:['&nbsp;','']},{c:['Lease and upgrades you paid',sg(-inv)]},{cls:'tot',c:['Net cash to you so far',sg(C.collected-C.paidIn-inv)]}]);
+  h+=`<p class="lab">Balance sheet (today)</p>`+rTable(['','Gold'],[
+    {c:['Cash in the till',fmtG(Math.max(0,till))]},{c:['Food in the kitchen',fmtG(stock)]},{c:['Lease and upgrades',fmtG(inv)]},{cls:'tot',c:['Total assets',fmtG(Math.max(0,till)+stock+inv)]},
+    {c:['Wages owed',fmtG(Math.max(0,-till))]},{cls:'sub',c:['Your stake (gold, food and lease put in, minus gold taken out)',sg(inv+C.foodIn+C.paidIn-C.collected)]},
+    {cls:'sub',c:['Profit kept in the business',sg(aL.np)]},{cls:'tot',c:['Total liabilities and stake',sg(Math.max(0,-till)+inv+C.foodIn+C.paidIn-C.collected+aL.np)]}]);
+  const ds=Object.entries(D.dishes).filter(([,x])=>x.sold||x.miss).sort((a,b)=>b[1].rev-a[1].rev);
+  if(ds.length){const best=ds[0],topR=ds.filter(([,x])=>x.sold).sort((a,b)=>b[1].rate/b[1].sold-a[1].rate/a[1].sold)[0],miss=ds.slice().sort((a,b)=>b[1].miss-a[1].miss)[0];
+    h+=`<p class="lab">Dishes (all time)</p>`+rTable(['Dish','Sold','Rating','Sales','Per plate','Missed'],ds.map(([id,x])=>({c:[esc(RECIPES[id].n),x.sold,x.sold?sr(x.rate/x.sold):'–',fmtG(x.rev),x.sold?sg((x.rev-x.cogs)/x.sold):'–',x.miss]})))+
+      `<p class="tip">Best seller: <b>${esc(RECIPES[best[0]].n)}</b>.${topR?` Customers’ favorite: <b>${esc(RECIPES[topR[0]].n)}</b> (${stars(topR[1].rate/topR[1].sold)}).`:''}${miss&&miss[1].miss?` Most often sold out: <b>${esc(RECIPES[miss[0]].n)}</b> (${miss[1].miss} customers turned away). Stock more of it.`:''}</p>`;}
+  if(D.reviews.length)h+=`<p class="lab">What customers say</p><div class="slist">`+D.reviews.map(r=>dRow(`${'★'.repeat(r.n)}${'☆'.repeat(5-r.n)} ${esc(r.d)}`,`${esc(r.who)}, day ${r.day}: “${esc(r.txt)}”`,'')).join('')+'</div>';
+  const all=Object.entries(dinersAll());if(all.length>1)h+=`<p class="lab">All your diners (last 7 days)</p>`+rTable(['Town','Stars','Rating','Profit','Till'],all.map(([tt,d])=>{dinerStats(d);const W2=d.log.slice(0,7),sv=sum(W2,'served'),rr=W2.reduce((x,e)=>x+(e.rate||0)*(e.served||0),0);
+    return{cls:tt===t?'sub':'',c:[esc(MAPS[tt].name),'★'.repeat(dStars(d)),sv?sr(rr/sv):'–',sg(sum(W2,'earned')-sum(W2,'cogs')-sum(W2,'wages')),sg(d.till)]};}));
+  if(!L.days)h+='<p class="tip">No days of business yet. Reports fill in each morning once the diner has a cook, a menu and food in stock.</p>';
+  return h;}
+function dishStat(D,rid){return D.dishes[rid]||(D.dishes[rid]={sold:0,rev:0,cogs:0,rate:0,miss:0});}
+const REVIEW_TXT={5:['Best {d} in {t}. I’d walk here through a blizzard.','The {d} is perfect. Tell the cook!','I dream about this {d}.'],4:['Really good {d}. I’ll be back.','The {d} hit the spot.','Lovely {d}, friendly service.'],
+  3:['The {d} was fine. Nothing special.','Decent {d}. A bit pricey.','{d} was okay. The bread was better.'],2:['The {d} was a little bland.','Waited ages for my {d}.','{d} could use more seasoning.'],1:['Cold {d}. Not coming back.','Is that {d} meant to taste like that?','I found a scale in my {d}.']};
+const WHO=['A farmer','A traveller','A miner','A fisherman','A guard','A merchant','An old woman','A young knight','A bard','A shepherd'];
+function addReview(D,t,R,rt){const n=Math.round(rt);D.reviews.unshift({who:pick(WHO),n,d:R.n,txt:pick(REVIEW_TXT[n]).replace(/\{d\}/g,R.n).replace(/\{t\}/g,MAPS[t].name),day:S.flags.day||1});D.reviews=D.reviews.slice(0,8);}
+const invValue=st=>Object.entries(st).reduce((a,[k,v])=>a+v*foodValue(k),0);
+function priceGuess(D,R,t){const tmp={...D.stock};let cost;if(canCook(tmp,R))cost=cookFrom(tmp,R);else cost=R.ing.reduce((a,[s,q])=>a+q*(s.startsWith('any:')?60:foodValue(s)),0);
+  const pm=D.cook?(1+.12*D.cook.skill)*(D.cook.trait==='Gourmet'?1.15:1)*(D.server&&D.server.trait==='Showman'?1.12:1):1,like=R.tags.some(x=>DINER_TOWNS[t].taste.includes(x));return Math.round((cost*1.4+R.price*.5)*pm*(like?1.2:1));}
 function canCook(st,R){const tmp={...st};for(const[spec,q]of R.ing){let need=q;for(const k of Object.keys(tmp).filter(k=>fits(spec,k)&&tmp[k]>0).sort((a,b)=>tmp[b]-tmp[a])){const u=Math.min(need,tmp[k]);tmp[k]-=u;need-=u;if(!need)break;}if(need)return false;}return true;}
-function cookFrom(st,R){for(const[spec,q]of R.ing){let need=q;for(const k of Object.keys(st).filter(k=>fits(spec,k)&&st[k]>0).sort((a,b)=>st[b]-st[a])){const u=Math.min(need,st[k]);st[k]-=u;need-=u;if(!st[k])delete st[k];if(!need)break;}}}
+function cookFrom(st,R){let cost=0;for(const[spec,q]of R.ing){let need=q;for(const k of Object.keys(st).filter(k=>fits(spec,k)&&st[k]>0).sort((a,b)=>st[b]-st[a])){const u=Math.min(need,st[k]);st[k]-=u;need-=u;cost+=u*foodValue(k);if(!st[k])delete st[k];if(!need)break;}}return cost;}
 const servings=(st,R)=>{let n=0;const tmp={...st};while(n<99&&canCook(tmp,R)){cookFrom(tmp,R);n++;}return n;};
 function dinerTick(){const day=S.flags.day||1,A=dinersAll();let sum=0,raids=[];for(const[t,D]of Object.entries(A)){if(D.lastDay>=day)continue;const from=Math.max(D.lastDay+1,day-14);
     for(let d=from;d<=day;d++){const wasRaided=D.raided;dinerDay(t,D,d);sum+=D.log[0].earned-D.log[0].wages;if(D.raided&&!wasRaided)raids.push(MAPS[t].name);}D.lastDay=day;}
@@ -6499,7 +6551,7 @@ function dinerNpcs(t){const D=dinerOf(t),st=D?dStars(D):0,key=JSON.stringify([t,
     for(let i=0;i<Math.min(seats.length,st+1);i++){const[x,y]=seats[i],dish=RECIPES[pick(D.menu)];out.push({x,y,spr:sp[i%sp.length],talk:()=>[pick([`Customer: The ${dish.n} here is the best in ${MAPS[t].name}!`,`Customer: I’d come every day if you put more ${TAG_NAME[pick(DINER_TOWNS[t].taste)]} on the menu.`,`Customer: ${'★'.repeat(st)} if you ask me. Service is ${D.server?'quick':'slow, nobody’s waiting tables'}.`])]});}}
   return dnpcCache=out;}
 async function openDinerOffer(t){const c=await askChoice(`Landlord: This place used to be a fine eatery. Lease it, fix it up, and it’s a Hero’s Diner. Stock it with food you bring in, hire a cook, and it earns gold every day while you adventure.\n\nOpen a Hero’s Diner in ${MAPS[t].name} for ${fmtG(DINER_OPEN)}?`,[`Open it (${fmtG(DINER_OPEN)})`,'Not now']);
-  if(c!==0)return;if(S.gil<DINER_OPEN){say(`You need ${fmtG(DINER_OPEN)}. You have ${fmtG(S.gil)}.`);return;}S.gil-=DINER_OPEN;dinersAll()[t]=newDiner(t);dnpcKey='';NPCS=IM.npcs;say(`The ${MAPS[t].name} Hero’s Diner is open! Hire a cook and stock the kitchen to start earning.`);saveGame();renderMenu();openDiner(t,'staff');}
+  if(c!==0)return;if(S.gil<DINER_OPEN){say(`You need ${fmtG(DINER_OPEN)}. You have ${fmtG(S.gil)}.`);return;}S.gil-=DINER_OPEN;dinersAll()[t]=dinerStats(newDiner(t));dnpcKey='';NPCS=IM.npcs;say(`The ${MAPS[t].name} Hero’s Diner is open! Hire a cook and stock the kitchen to start earning.`);saveGame();renderMenu();openDiner(t,'staff');}
 /* road fight: clear the way for runners */
 function roadFight(t){const D=dinerOf(t);if(!D||!D.raided)return showDialog(['Runner: The road’s clear. We’ll keep the deliveries coming.']);
   askChoice(`Runner: Monsters jumped us on the road from the homestead and took everything. We won’t go back out until someone clears them off.\n\nFight them now?`,['Clear the road','Later']).then(c=>{if(c!==0)return;S.dinerFight=t;S.battleReturn='castle';S.transIn=true;flash('#ffffff',160);startBattle(DINER_TOWNS[t].road.slice());flash('#000000',450);});}
@@ -6520,17 +6572,18 @@ function drawDiner(){$('dGil').textContent=fmtG(S.gil);const msg=$('dMsg');let h
     h=ids.length?ids.map(id=>dRow(esc(foodName(id)),`Pack ×${C[id]||0} · Larder ×${L[id]||0}`,dBtn('Store','lst:'+id,!C[id],'Store one '+foodName(id))+dBtn('Pack','lpk:'+id,!L[id],'Pack one '+foodName(id)))).join(''):'<p class="tip">No food yet. Monster cuts drop in battle, fish go in the basket, and the farm fills the crates.</p>';
     $('dTabs').innerHTML='';$('dList').innerHTML=h;$('dBtns').innerHTML=dBtn('Store everything','lstall',!Object.keys(C).length)+'<button class="btn" type="button" id="dClose">Close</button>';$('dClose').onclick=closeDiner;return;}
   const t=DUI.t,D=dinerOf(t),T=DINER_TOWNS[t],st=dStars(D);$('dTitle').textContent=`${MAPS[t].name} Diner ${'★'.repeat(st)}${'☆'.repeat(5-st)}`;
-  $('dTabs').innerHTML=[['over','Overview'],['menu','Menu'],['stock','Stock'],['staff','Staff'],['up','Upgrades']].map(([k,n])=>`<button type="button" class="btn sm" data-dtab="${k}" aria-pressed="${DUI.tab===k}"${DUI.tab===k?' style="outline:2px solid var(--gold)"':''}>${n}</button>`).join('');
+  $('dTabs').innerHTML=[['over','Overview'],['report','Reports'],['menu','Menu'],['stock','Stock'],['staff','Staff'],['up','Upgrades']].map(([k,n])=>`<button type="button" class="btn sm" data-dtab="${k}" aria-pressed="${DUI.tab===k}"${DUI.tab===k?' style="outline:2px solid var(--gold)"':''}>${n}</button>`).join('');
   const tasteTxt=`${MAPS[t].name} loves ${T.taste.map(x=>TAG_NAME[x]).join(' and ')}.`;
   if(DUI.tab==='over'){const L=D.log[0];msg.textContent=DUI.note||`${tasteTxt} Reputation ${Math.round(D.rep)}/100.`;
     h=dRow('Till',`${fmtG(D.till)} waiting${D.till<0?' (wages owed)':''}`,dBtn(D.till<0?'Pay':'Collect','collect',!D.till))+
       dRow('Staff',`Cook: ${D.cook?esc(D.cook.name)+' (skill '+D.cook.skill+')':'none'} · Server: ${D.server?esc(D.server.name)+' (skill '+D.server.skill+')':'none'}`,'')+
       dRow('Runners',D.up.skiff?'Sky skiff: 20 a day, safe from raids':D.up.runner1?`${D.up.runner2?12:6} ingredients a day${D.up.sentry?' · sentry post on the road':''}${D.raided?' · <b>ROAD BLOCKED</b>':D.safeUntil>(S.flags.day||1)?' · road cleared':''}`:'None yet. See Upgrades.',D.raided?dBtn('Clear the road','road'):'')+
       (D.log.length?D.log.map(e=>dRow(`Day ${e.day}`,`${e.served} served${e.missed?`, ${e.missed} turned away`:''} · ${fmtG(e.earned)} sales − ${fmtG(e.wages)} wages${e.top?' · top: '+esc(e.top):''}${e.news.length?'<br>'+e.news.map(esc).join(' '):''}`,'')).join(''):'<p class="tip">No days of business yet. Each new morning the diner serves customers from its stock.</p>');}
+  else if(DUI.tab==='report'){msg.textContent=DUI.note||'How this diner is doing. Ratings are what customers gave each plate (1–5 stars).';h=dinerReport(t,D);}
   else if(DUI.tab==='menu'){const K=known();msg.textContent=DUI.note||`${D.menu.length}/${dSlots(D)} dishes on the menu. ${tasteTxt}`;
     h=Object.entries(RECIPES).map(([id,R])=>{const kn=K.includes(id),on=D.menu.includes(id),like=R.tags.some(x=>T.taste.includes(x));const ing=R.ing.map(([s,q])=>`${ingName(s)}${q>1?' ×'+q:''}`).join(', ');
-      if(!kn)return dRow(`${esc(R.n)}${R.sig?' ✦':''}`,`${esc(ing)} · ${fmtG(R.price)}${like?' · local favorite':''} · needs ${'★'.repeat(R.star)}`,dBtn(`Learn ${fmtG(R.learn)}`,'learn:'+id,S.gil<R.learn||st<R.star));
-      return dRow(`${esc(R.n)}${R.sig?' ✦':''}${on?' · ON MENU':''}`,`${esc(ing)} · ${fmtG(R.price)}${like?' · local favorite':''} · ${servings(D.stock,R)} servings in stock`,dBtn(on?'Remove':'Add','menu:'+id,!on&&D.menu.length>=dSlots(D)));}).join('');}
+      if(!kn)return dRow(`${esc(R.n)}${R.sig?' ✦':''}`,`${esc(ing)} · sells ≈${fmtG(priceGuess(D,R,t))}${like?' · local favorite':''} · needs ${'★'.repeat(R.star)}`,dBtn(`Learn ${fmtG(R.learn)}`,'learn:'+id,S.gil<R.learn||st<R.star));
+      const ds=D.dishes&&D.dishes[id];return dRow(`${esc(R.n)}${R.sig?' ✦':''}${on?' · ON MENU':''}`,`${esc(ing)} · sells ≈${fmtG(priceGuess(D,R,t))}${like?' · local favorite':''} · ${servings(D.stock,R)} in stock${ds&&ds.sold?` · ${stars(ds.rate/ds.sold)} (${ds.sold} sold)`:''}`,dBtn(on?'Remove':'Add','menu:'+id,!on&&D.menu.length>=dSlots(D)));}).join('');}
   else if(DUI.tab==='stock'){const C=carried(),need=id=>D.menu.some(r=>RECIPES[r].ing.some(([s])=>fits(s,id)));msg.textContent=DUI.note||'Carry food in from your pack. Highlighted items are used by this menu.';
     const ids=[...new Set([...Object.keys(D.stock),...Object.keys(C)])].sort((a,b)=>(need(b)-need(a))||foodName(a).localeCompare(foodName(b)));
     h=ids.length?ids.map(id=>dRow(`${esc(foodName(id))}${need(id)?' ✓':''}`,`Kitchen ×${D.stock[id]||0} · Your pack ×${C[id]||0}`,dBtn('+1','put:'+id,!C[id],'Stock one '+foodName(id))+dBtn('All','putall:'+id,!C[id],'Stock all '+foodName(id))+dBtn('Take','take:'+id,!D.stock[id],'Take one '+foodName(id)+' back'))).join(''):'<p class="tip">Nothing to stock. Monster cuts drop in battle, fish go in the basket, and you can pack farm goods at the homestead larder.</p>';
@@ -6547,17 +6600,17 @@ dOv.addEventListener('click',e=>{const tb=e.target.closest('[data-dtab]');if(tb)
   if(a==='lst'){if(takeCarried(arg,1))larder()[arg]=(larder()[arg]||0)+1;}
   else if(a==='lpk'){if(takeHome(arg,1)){const B=foodBag();B[arg]=(B[arg]||0)+1;}}
   else if(a==='lstall'){let n=0;for(const[k,q]of Object.entries(carried())){const g=takeCarried(k,q);larder()[k]=(larder()[k]||0)+g;n+=g;}DUI.note=`Stored ${n} item${n!==1?'s':''} in the larder.`;}
-  else if(a==='collect'){if(D.till>=0){S.gil+=D.till;DUI.note=`Collected ${fmtG(D.till)}.`;D.till=0;}else{const p=Math.min(S.gil,-D.till);S.gil-=p;D.till+=p;DUI.note=`Paid ${fmtG(p)} in wages.`;}}
+  else if(a==='collect'){dinerStats(D);if(D.till>=0){S.gil+=D.till;D.cash.collected+=D.till;DUI.note=`Collected ${fmtG(D.till)}.`;D.till=0;}else{const p=Math.min(S.gil,-D.till);S.gil-=p;D.till+=p;D.cash.paidIn+=p;DUI.note=`Paid ${fmtG(p)} in wages.`;}}
   else if(a==='road'){closeDiner();return roadFight(t);}
   else if(a==='learn'){const R=RECIPES[arg];if(S.gil>=R.learn){S.gil-=R.learn;known().push(arg);DUI.note=`Learned ${R.n}! Every one of your diners can cook it now.`;}}
   else if(a==='menu'){const i=D.menu.indexOf(arg);if(i>=0)D.menu.splice(i,1);else if(D.menu.length<dSlots(D))D.menu.push(arg);}
-  else if(a==='put'){if(takeCarried(arg,1))D.stock[arg]=(D.stock[arg]||0)+1;}
-  else if(a==='putall'){const n=carried()[arg]||0,g=takeCarried(arg,n);D.stock[arg]=(D.stock[arg]||0)+g;}
-  else if(a==='take'){if(D.stock[arg]>0){D.stock[arg]--;if(!D.stock[arg])delete D.stock[arg];const B=foodBag();B[arg]=(B[arg]||0)+1;}}
-  else if(a==='putmenu'){let n=0;for(const[k,q]of Object.entries(carried()))if(D.menu.some(r=>RECIPES[r].ing.some(([s])=>fits(s,k)))){const g=takeCarried(k,q);D.stock[k]=(D.stock[k]||0)+g;n+=g;}DUI.note=`Stocked ${n} ingredient${n!==1?'s':''} for the menu.`;}
+  else if(a==='put'){if(takeCarried(arg,1)){D.stock[arg]=(D.stock[arg]||0)+1;foodIn(D,arg,1);}}
+  else if(a==='putall'){const n=carried()[arg]||0,g=takeCarried(arg,n);D.stock[arg]=(D.stock[arg]||0)+g;foodIn(D,arg,g);}
+  else if(a==='take'){if(D.stock[arg]>0){D.stock[arg]--;foodIn(D,arg,-1);if(!D.stock[arg])delete D.stock[arg];const B=foodBag();B[arg]=(B[arg]||0)+1;}}
+  else if(a==='putmenu'){let n=0;for(const[k,q]of Object.entries(carried()))if(D.menu.some(r=>RECIPES[r].ing.some(([s])=>fits(s,k)))){const g=takeCarried(k,q);D.stock[k]=(D.stock[k]||0)+g;foodIn(D,k,g);n+=g;}DUI.note=`Stocked ${n} ingredient${n!==1?'s':''} for the menu.`;}
   else if(a==='hire'){const c=D.cands[+arg];if(c){D[c.role]={...c};D.cands.splice(+arg,1);DUI.note=`${c.name} is your new ${c.role}.`;}}
   else if(a==='fire'){const p=D[arg];if(p){DUI.note=`${p.name} hangs up the apron.`;D[arg]=null;}}
-  else if(a==='up'){const U=DINER_UPS[arg];if(S.gil>=U.cost){S.gil-=U.cost;D.up[arg]=true;DUI.note=`${U.n}: done!`;if(arg==='skiff')D.raided=false;}}
+  else if(a==='up'){const U=DINER_UPS[arg];if(S.gil>=U.cost){S.gil-=U.cost;dinerStats(D).inv.up+=U.cost;D.up[arg]=true;DUI.note=`${U.n}: done!`;if(arg==='skiff')D.raided=false;}}
   saveGame();drawDiner();});
 /* tiles: chalkboard menu and the till */
 {const de4=drawExtraTile;drawExtraTile=function(t,tx,ty,f,ch){if(!(IM&&IM.dinerTown)||!'χψ'.includes(t))return de4(t,tx,ty,f,ch);de4('u',tx,ty,f,ch);

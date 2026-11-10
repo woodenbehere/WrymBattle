@@ -299,3 +299,16 @@ Phone browsers can quietly discard large off-screen canvases while the app is in
 
 ## Fishing buttons under the boat (v3.78.0)
 **✕ Stop fishing** now sits just under the boat, with a new **⤒ Reel in** button below it (`#fishBtns`, positioned against the canvas every 150 ms and on resize). Reel in (`fishReelIn()`) pulls the line straight back to the rod tip so you can cast again. Any fish nibbling swim off. It's greyed out while the line is already in, or while a fish or treasure is hooked.
+
+## Diner reports (v3.79.0)
+Each diner has a **Reports** tab:
+- **Last 7 days**: customers served, turned away, average rating and profit.
+- **Daily profit**: a bar for each of the last 14 days, green for profit and red for loss.
+- **Income statement**, last 7 days and all time: sales, food cost, gross profit, wages, net profit and margin.
+- **Cash flow**, all time: sales into the till, wages paid, gold you collected or paid in, the till balance, lease and upgrade spending, and net cash to you.
+- **Balance sheet**, today: till cash, food in the kitchen at ingredient value, lease and upgrades at cost, wages owed, your stake (gold, food and lease put in, minus gold taken out) and retained profit. The two sides always balance.
+- **Dishes**: sold, average rating, sales, profit per plate and customers turned away for each dish, plus the best seller, the customers' favorite and the dish that sells out most.
+- **What customers say**: the last 8 reviews, 1–5 stars.
+- **All your diners**: stars, rating, 7-day profit and till for each location.
+
+Pricing changed with this: each plate now sells for 1.4× the value of the ingredients actually used, plus half the recipe's base price, then the cook, server and local-taste bonuses. Before, rare fish or milk could sell for less than they cost. Each served plate gets a 1–5 rating (local taste, cook skill, whether there's a server, signature dish, plus some luck), and reputation now grows from those ratings. Data: `D.life`, `D.dishes`, `D.cash`, `D.inv`, `D.reviews`, and 14 days of `D.log`.

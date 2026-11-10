@@ -211,3 +211,8 @@ On the world map, a **Quests** panel sits under the sun/moon icon. Tap the **−
 
 ## Spell groups (v3.56, touch view)
 In battle, Ilse's and Morrow's magic opens in two steps. Tapping White Magic shows a ring of **Healing** (Mend, Mend All, Revive, Renew, Rebirth…), **Attack** (Radiance, Mana Siphon) and **Status** (Bulwark, Spellguard, Heal, Wall); Morrow's Black Magic shows **Fire**, **Ice**, **Lightning** and **Arcane** (Blight, Sunburst, Skyfall, Oblivion, Mana Siphon, Wall). Each group shows how many spells it holds; tap one for its spells, or ‹ Back to return to the groups. Groups with no spells yet don't appear, and if a hero knows spells from only one group the step is skipped.
+
+## Throw a stone (v3.57)
+On Vesh's solo nights, **Throw stone** (in the night menu and the touch action ring) tosses a stone a few tiles the way he last moved. Every guard within about nine tiles of where it lands walks over to check the sound (a yellow **?** floats over their heads), looks around for a few seconds, then walks back to their beat. Use it to pull guards away from a door before slipping in. A stone that lands near a house can stir light sleepers, and Vesh needs a couple of seconds to find another.
+
+The Equip screen's hero card no longer overlaps the gear names: when long names or large menu text leave no room beside the list, the card moves below it.

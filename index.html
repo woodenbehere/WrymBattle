@@ -86,6 +86,10 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(13px,2.6cqh,24px
 .rtab{width:100%;border-collapse:collapse;font-size:.82em;margin:2px 0 8px}.rtab th{font-weight:normal;opacity:.7;text-align:right;padding:2px 4px;border-bottom:1px solid rgba(232,220,192,.3)}
 .rtab td{white-space:nowrap;text-align:right;padding:3px 4px;border-bottom:1px solid rgba(232,220,192,.1)}.rtab td:first-child{white-space:normal}.rtab tr.sub td{opacity:.85;font-style:italic}.rtab tr.tot td{border-top:1px solid rgba(232,220,192,.5);color:var(--gold,#ffd34a)}
 .rbars{display:flex;flex-direction:column;gap:3px;margin:2px 0 8px;font-size:.8em}.rbar{display:grid;grid-template-columns:4.5em 1fr 5.5em;align-items:center;gap:6px}.rbar i{display:block;height:8px;border-radius:2px}.rbar b{text-align:right;font-weight:normal}.rbars.ring .rbar{grid-template-columns:minmax(6em,9em) 1fr auto}.rbars.ring .rbar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheet>.hasX{position:relative}
+.sheetX{position:absolute;top:2px;right:2px;z-index:5;width:22px;height:22px;padding:0;display:flex;align-items:center;justify-content:center;font:inherit;font-size:12px;line-height:1;color:var(--text,#f4ecd8);background:rgba(14,11,16,.9);border:2px solid var(--line-hi,#c8a060);border-radius:6px;cursor:pointer}
+.sheetX:hover,.sheetX:focus-visible{color:var(--gold,#ffd34a);border-color:var(--gold,#ffd34a)}
+.hasX .shop-h{padding-right:34px}
 .stage.cutfx .note{top:auto!important;bottom:10px!important}
 .stage.cutfx #mini,.stage.cutfx .minix,.stage.cutfx #qTrk{visibility:hidden}
 /* info text sits on the side of the screen away from the hero */
@@ -466,7 +470,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.86.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.87.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -6704,6 +6708,20 @@ function repaintLost(){try{let fixed=false;
   if(fixed&&typeof renderMenu==='function')renderMenu();}catch(e){}}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){repaintLost();setTimeout(repaintLost,400);}});
 addEventListener('pageshow',()=>setTimeout(repaintLost,100));addEventListener('focus',()=>setTimeout(repaintLost,100));
+/* v3.87: every menu sheet gets a small ✕ in its top-right corner that closes everything and returns to the hero (town, dungeon or world map) */
+const SHEET_SKIP=new Set(['titleOv','introOv','choiceOv','nameOv']);
+function closeAllSheets(again){if(typeof DUI!=='undefined')DUI.remote=false;try{ffmBack=false;}catch(e){}
+  for(let pass=0;pass<8;pass++){const open=[...document.querySelectorAll('.sheet')].filter(x=>!x.hidden&&!SHEET_SKIP.has(x.id));if(!open.length)break;const sh=open[open.length-1];
+    const btn=sh.querySelector('#'+sh.id.replace(/Ov$/,'')+'Close')||sh.querySelector('#autoCancel')||[...sh.querySelectorAll('button')].find(b=>!b.classList.contains('sheetX')&&/^(close|leave shop|back to th)/i.test(b.textContent.trim()));
+    if(btn&&pass<4){btn.click();}else{closeSheet(sh);}}
+  if(!again)setTimeout(()=>closeAllSheets(true),30);
+  if(S.scene!=='battle'&&typeof renderMenu==='function')renderMenu();}
+function ensureX(sh){if(SHEET_SKIP.has(sh.id))return;const host=sh.firstElementChild;if(!host||host.classList.contains('sheetX'))return;if(host.querySelector(':scope>.sheetX'))return;
+  const b=document.createElement('button');b.type='button';b.className='sheetX';b.setAttribute('aria-label','Close and return to the game');b.textContent='✕';
+  b.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();closeAllSheets();});host.classList.add('hasX');host.appendChild(b);}
+function watchSheet(sh){if(sh.__xw)return;sh.__xw=1;ensureX(sh);new MutationObserver(()=>ensureX(sh)).observe(sh,{childList:true});}
+setTimeout(()=>{for(const sh of document.querySelectorAll('.sheet'))watchSheet(sh);},0);
+{const os2=openSheet;openSheet=function(el,f){watchSheet(el);ensureX(el);return os2(el,f);};}
 /* v3.68: an on-screen way out of fishing (touch view hides the command list) */
 /* v3.78: Stop and Reel in sit right under the boat */
 function fishReelIn(){const F=S.fishing;if(!F||['aim','fight','treasure','land'].includes(F.state))return;

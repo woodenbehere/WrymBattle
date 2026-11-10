@@ -333,3 +333,6 @@ The main battle command ring (Fight, Arts/Magic/Summon, Item, Defend, Row, Run) 
 
 ## Battle commands on the right (v3.86.0)
 All battle command columns (main commands, spells, summons, skills and items) now sit to the **right** of the active hero. Each button is pulled in so it never runs off the screen. Buttons draw on top again: the v3.84 hero overlay is switched off, and the HP bars go back under the ring.
+
+## ✕ on every menu (v3.87.0)
+Every menu sheet (Journal, diner screens, Larder, main menu and its Status/Equip/Item screens, Options, Party, shops, the guild, Help, fishing book, saves and so on) has a small **✕** in its top-right corner. It closes every open menu, including ones that would normally reopen the main menu or the Journal, and drops you straight back to the hero in town, dungeon or on the world map. `closeAllSheets()` presses each sheet's own Close button so its usual cleanup still runs, and falls back to `closeSheet`. The title screen, intro, choice prompts and the naming screen don't get the ✕.

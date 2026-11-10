@@ -327,3 +327,6 @@ In battle, every touch ring holds at most **six** choices. If there are more, th
 
 ## Command ring behind the heroes (v3.84.0)
 While a touch command ring is open in battle, the heroes are drawn a second time onto a see-through canvas (`#actorCv`, which ignores taps) placed exactly over the game canvas and above the ring. The hero HP/MP bars move above the ring too. The ring now sits behind the party, and buttons still respond everywhere, even under a sprite.
+
+## Battle commands beside the hero (v3.85.0)
+The main battle command ring (Fight, Arts/Magic/Summon, Item, Defend, Row, Run) now uses the same curved column as the spell and item lists, on the enemy side of the active hero. Nothing sits over the party anymore, and it follows the same six-spot / More rule.

@@ -293,3 +293,6 @@ While a summon plays, the enemy name tags, HP bars and boss bar fade out (`.stag
 
 ## Standing behind counters (v3.76.0)
 In the diners and the farmhouse, furniture just below the hero (counters, stoves, sink, icebox, kitchen island, tables, couches, the bed) is redrawn over the hero's sprite after the frame is drawn. Standing behind the counter now shows the hero half-hidden behind it instead of on top of it.
+
+## Repaint after returning to the app (v3.77.0)
+Phone browsers can quietly discard large off-screen canvases while the app is in the background, so the pre-drawn world map (`tex`, `tex2`), the minimap (`worldMini`) and the room texture (`ctex`) can come back blank. Then the island, or all the land, disappears until a reload. On `visibilitychange`, `pageshow` and `focus`, `repaintLost()` checks one pixel of each cached canvas and rebuilds any that came back empty.

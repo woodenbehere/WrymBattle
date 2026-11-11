@@ -470,7 +470,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.89.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.90.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -6134,7 +6134,7 @@ function warpWhy(){const f=S.flags;if(f.solo)return'Not tonight';
 async function castWarp(h,dest){const why=warpWhy();if(why){say(why);return;}if(h.ko||h.stone){say(`${h.name} can’t cast right now.`);return;}if(h.mp<mpCost(h,SK.warp)){say('Not enough MP.');return;}
   const L=warpDest(),i=dest?L.findIndex(x=>x.id===dest):await askChoice(`${h.name} draws a circle of light. Warp where?`,L.map(d=>d.name).concat(['Cancel']));if(i<0)return;if(i==null||i>=L.length)return;
   const d=L[i];h.mp-=mpCost(h,SK.warp);S.cut=true;for(const k in keys)keys[k]=false;steer=null;say(`${h.name} casts Warp!`);
-  await addFx(1000,(c,p)=>{const x=S.pScreen?S.pScreen.x:W/2,y=S.pScreen?S.pScreen.y:H/2;c.fillStyle=`rgba(134,200,255,${p*.85})`;c.fillRect(0,0,W,H);
+  await addFx(1000,(c,p)=>{const Z=S.zoom||1,onMap=S.scene==='map',x=onMap?W/2:S.pScreen?S.pScreen.x:W/2,y=onMap?(Z>1?(PY-8+(Z-1)*H/2)/Z:PY-8):S.pScreen?S.pScreen.y:H/2;/* v3.90: on the world map the circle centers on the hero */c.fillStyle=`rgba(134,200,255,${p*.85})`;c.fillRect(0,0,W,H);
     for(let k=0;k<14;k++){const a=k/14*6.283-p*10,r=36*(1-p)+4;c.fillStyle=k%2?'#86e0ff':'#ffffff';c.fillRect(Math.round(x+Math.cos(a)*r)-1,Math.round(y+Math.sin(a)*r*.6)-1,2,2);}});
   S.cut=false;S.world.x=Math.floor(d.land.x/TS)*TS+TS/2;S.world.y=Math.floor(d.land.y/TS)*TS+TS/2;S.world.moving=false;
   enterInterior(d.id);flash('#bfe8ff',500);say(`The light fades. The party stands in ${d.name}.`);saveGame();}

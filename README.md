@@ -376,3 +376,20 @@ Defeating Zephyrion now plays the last chapter of Orren Vael's chronicle, using 
 - An epilogue for each hero (Morrow's line changes if he's an Archmage), then a yearly supper at Old Hob's farm that mentions how many Hero's Diners you opened.
 - Orren closes the book, and a final "The End" card shows days on the road, party level, gold, diners and monsters defeated.
 Afterwards you return to the world to keep exploring (`S.flags.ending`). Once Zephyrion is beaten, Options › About gets "The ending · Watch" to replay it. The old "Thank you for playing Ember Dragon!" line is gone.
+
+## Game controller support (v3.98.0)
+A PS5 DualSense, or any standard Bluetooth or USB gamepad, now controls the whole game through the Gamepad API (`gpTick` polls it every frame).
+- **Walking:** left stick (analog direction) or D-pad.
+- **Menus:** D-pad or stick moves a gold focus ring between controls on whatever is on top: menu sheets, battle commands, the touch ring, the title screen, the battle result card. It uses spatial navigation (`gpMove`), wraps at edges and repeats when held. Sliders and dropdowns change with left/right.
+- **Buttons:**
+  - **✕** confirms and advances dialogs and cutscenes.
+  - **○** goes back. It uses the screen's own Back, Escape handling or corner ✕.
+  - **△** or **Options** opens the command menu: the ring beside the hero in touch view, or the command panel in classic view.
+  - **Create** opens Options. During a cutscene, **Options** skips it.
+  - **L1/R1** switch tabs in a sheet, or switch between ready heroes in battle.
+  - **□** toggles Auto battle, or reels in when fishing.
+  - **R3** toggles the big map.
+  - **L2/R2** or the right stick scroll long lists.
+  - Fishing: hold ✕ to reel; ○ stops fishing.
+- **Rumble:** on hits (wraps `shake`), menu moves and fish bites, where the browser supports it (Chrome and Edge).
+- **Options › Gameplay:** shows the connected controller and the button layout, with Rumble on/off and a choice of ✕ or ○ as the confirm button.

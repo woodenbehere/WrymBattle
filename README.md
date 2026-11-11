@@ -393,3 +393,14 @@ A PS5 DualSense, or any standard Bluetooth or USB gamepad, now controls the whol
   - Fishing: hold ✕ to reel; ○ stops fishing.
 - **Rumble:** on hits (wraps `shake`), menu moves and fish bites, where the browser supports it (Chrome and Edge).
 - **Options › Gameplay:** shows the connected controller and the button layout, with Rumble on/off and a choice of ✕ or ○ as the confirm button.
+
+## Controller button mapping; Warp to the Tower of Aether (v3.99.0)
+- **Options › Controller** is a new tab. It shows the connected controller and the Rumble switch, and lets you remap every controller action.
+  - **Remapping:** select an action's button chip; it shows "Press a button…" until you press the new button, or for 6 seconds.
+  - **Swaps:** a button taken from another action trades places with it (`gpAssign`), so Select, Back and Command menu are never left unbound.
+  - **Clear and Reset:** optional actions can be cleared, and "Reset to default" restores the original layout.
+  - **D-pad and left stick** always walk and navigate menus, so they can't be reassigned.
+- **Shortcuts:** new actions that are unbound by default (Party, Journal, Warp, Camp, Wait/Active, Encounters on/off, Full screen) can each be put on any button (`GP_ACTS`, `gpQuick`).
+- **Button labels** match the controller: PlayStation symbols, Xbox A/B/X/Y or Nintendo letters.
+- **Saving:** bindings are saved per device in `localStorage` (`ew-gp-map`). The old "Confirm button ✕/○" setting is replaced by mapping; an earlier swap is carried over.
+- **Warp:** the Tower of Aether becomes a destination once the party has entered it (`S.flags.towerMax`). It is hidden while the tower is sealed and when you're already inside. Warping there puts the party on floor 1.

@@ -342,3 +342,6 @@ When dusk falls (7 pm) while you're in Valemont, Thornwick, Highmere or Ironhold
 
 ## Coralhaven moved up a tile (v3.89.0)
 On the world map, Coralhaven now stands one tile north of where it was, so the town no longer overlaps the boardwalk to its pier. The tile it left is grass, so you can walk from the boardwalk straight up into town.
+
+## Inkwell strolls and walks home (v3.91.0)
+Inkwell now wanders a small area around his spot in each town, like the villagers. At dusk he walks off the screen instead of vanishing, and he's back at dawn. The dusk walk also got smarter for everyone: routes step around guards, other townsfolk and the hero. In small towns where nowhere is off-screen, people head for the town gate or a house door and go inside.

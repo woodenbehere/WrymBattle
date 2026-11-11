@@ -471,7 +471,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.93.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.94.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -3815,7 +3815,9 @@ Object.assign(SPR,{
  fighterP:{pal:{h:'#dfe4ec',H:'#8a94a0',g:'#e8c048',s:'#e8b48a',e:'#1b1012',a:'#c8d0da',A:'#8a94a0',b:'#3d6fb3',w:'#f4f6fa',c:'#b8323a',k:'#5a5e6a'},map:["....gHHg....","...hhhhhhH..","..ghhhhhhhH.","...seshhhH..","...ssssH....","....sss.....","w.aaaaaaaAc.","wsabbgbbacc.","w.abgggbacc.","g..bbgbbacc.","...aAAAAa.c.","...aa..aa...","...aA..Aa...","..kkk.kkk..."]},
  thiefP:{pal:{h:'#2a2e4a',m:'#1a1c2e',s:'#e2a77c',e:'#1b1012',c:'#d83a3a',b:'#30344e',d:'#1e2034',w:'#c8ccd8',k:'#141420'},map:["............","...hhhhhh...","..hhhhhhhh..","..hssessh...","..hmmmmmhh..","...mmmmm.cc.","..dccccbd.cc",".sbbbbbbbs..","w.bbddbbb...","...bbbbbb...","...dd..dd...","...dd..dd...","..kkk.kkk..."]},
  whiteP:{pal:{h:'#ffffff',g:'#e8c048',r:'#3a6ac8',s:'#eabf98',e:'#1b1012',b:'#f4f0e8',o:'#86e0ff',w:'#c9a24a',k:'#7a5434'},map:["o...hhhh....","w..hhghhh...","w.hhgrghhh..","w.hsesshhh..","w.hssssshh..","w.hhsssshh..","w.gbbbbbbg..","wsbbbbbbbb..","w.bbgbbgbbs.","w.bbbbbbbb..","w.bgbbbbgb..","..gbbbbbbg..","..gggggggg..","..kk...kk..."]},
- blackP:{pal:{h:'#5a5a6a',H:'#3a3a48',d:'#16161c',y:'#ff5a3a',f:'#e8c49a',e:'#1b1012',g:'#f0f0f8',b:'#4a4a5a',B:'#30303e',w:'#3a2a4a',s:'#e8c49a',k:'#2a2a34'},sparkle:true,map:["............","....hhhH....","...hhhhhH...","..hhhhhhhH..","..hdddddhH..","..hfefffhH..","..hhgggghH..","...hhgghH...","w.bbbbbbbb..","w.bbbbbbbB..","wsbbbbbbbbs.","w.bbbbbbbB..","..bbbbbbbB..","..BBBBBBBB..","..kk...kk..."]},
+ blackP:{pal:{t:'#121216',T:'#2c2c38',n:'#2f7a46',d:'#16161c',f:'#e8c49a',e:'#1b1012',g:'#f0f0f8',b:'#4a4a5a',B:'#30303e',w:'#3a2a4a',s:'#e8c49a',k:'#2a2a34'},sparkle:true,hatSpark:true,
+   /* v3.94: the Archmage wears a tall black pointed hat that glitters with green sparks */
+   map:["......t.....",".....tT.....",".....ttT....","....tttT....","....ttttT...","...nnnnnT...","...tttttT...",".tttttttttT.","..gfefffg...","..gggggggg..","...gggggg...","w.bbbbbbbb..","w.bbbbbbbB..","wsbbbbbbbbs.","w.bbbbbbbB..","..bbbbbbbB..","..BBBBBBBB..","..kk...kk..."]},
  summonerP:{pal:{o:'#f0e0b0',g:'#e8c048',h:'#3fae6b',s:'#eabf98',e:'#1b1012',b:'#1e6a6a',c:'#6a3a9a',k:'#4a3020'},map:["..o......o..","..oo....oo..","..ogggggo...","..hhhhhhhh..","..hseshhhhc.","..hsssshhhcc","...ssshhhhcc","..gbbbbbbbcc",".sbbbbbbbbsc","..bgbbbbgb.c","..bbggbbbb.c","..bgbbbbgb..","..bbbbbbbbb.","..bbbbbbbbbb","..kk...kk..."]}});
 for(const k of['fighterP','thiefP','whiteP','blackP','summonerP']){SPR[k].grey={};for(const c in SPR[k].pal)SPR[k].grey[c]=greyOf(SPR[k].pal[c]);}
 function heroSpr(h){return promoted(h.key)&&SPR[h.key+'P']?SPR[h.key+'P']:SPR[h.key];}
@@ -5982,7 +5984,10 @@ async function foeCast(d,choice){const sp=FSPELL[choice.k],m=MON[d.kind];d.mp=Ma
   const w=12,ox=Math.round(x-w/2),oy=Math.round(y-spr.map.length),now=performance.now()/1000;
   for(let k=0;k<3;k++){const slot=Math.floor(now*2.2+k*.37),h=Math.sin((slot*7.13+k*31.7+(ox*.01))*12.9898)*43758.5453,r=h-Math.floor(h);
    const ph=(now*2.2+k*.37)%1,a=Math.sin(ph*Math.PI);if(a<.15)continue;const[i,j]=pts[Math.floor(r*pts.length)];
-   c.globalAlpha=a;c.fillStyle=a>.7?'#e8faff':'#8ad8ff';c.fillRect(o.flip?ox+w-1-i:ox+i,oy+j,1,1);c.globalAlpha=1;}};}
+   c.globalAlpha=a;c.fillStyle=a>.7?'#e8faff':'#8ad8ff';c.fillRect(o.flip?ox+w-1-i:ox+i,oy+j,1,1);c.globalAlpha=1;}
+  if(spr.hatSpark){let hp=SPK[key+'#hat'];if(!hp){hp=[];spr.map.forEach((r,j)=>{for(let i=0;i<r.length;i++)if('tT'.includes(r[i]))hp.push([i,j]);});SPK[key+'#hat']=hp;}
+   for(let k=0;k<3;k++){const sp=1.7+k*.45,slot=Math.floor(now*sp+k*.61),h=Math.sin((slot*3.71+k*17.3+(ox*.013))*78.233)*43758.5453,r=h-Math.floor(h),ph=(now*sp+k*.61)%1,a=Math.sin(ph*Math.PI);if(a<.2)continue;
+    const[i,j]=hp[Math.floor(r*hp.length)];c.globalAlpha=a;c.fillStyle=a>.75?'#d8ffd0':'#4ae86a';c.fillRect(o.flip?ox+w-1-i:ox+i,oy+j,1,1);c.globalAlpha=1;}}};}
 /* ---------- v3.55: quest tracker under the sky icon on the world map ---------- */
 function trackBtn(id){const on=!(S.flags.trk&&S.flags.trk[id]===false);return`<button type="button" class="btn sm trk${on?' on':''}" data-q="track:${id}" aria-pressed="${on}" title="Show on the map tracker">${on?'&#10003; Tracked':'Track'}</button>`;}
 function storyGoal(){const f=S.flags||{};

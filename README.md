@@ -356,3 +356,6 @@ Journal › Diners has an **All diners combined → Company reports** row. It op
 - A **By location** table with 7-day and all-time profit, amount invested and return on investment for each diner, plus a total.
 - The top 10 dishes across all diners.
 - The most used ingredients across all diners.
+
+## Archmage hat (v3.94.0)
+Once Morrow becomes an Archmage, his sprite (`SPR.blackP`) swaps the hood for a tall black pointed hat with a green band, worn over his white hair and beard. Green sparks wink on and off at random spots on the hat (`hatSpark`), while the light-blue sparks keep twinkling on his robe.

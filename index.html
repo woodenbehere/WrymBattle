@@ -471,7 +471,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.92.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.93.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -6639,12 +6639,42 @@ function dinerJournal(){const A=dinersAll(),ks=Object.keys(DINER_TOWNS);const su
     const issues=[!D.cook&&'no cook',!D.menu.length&&'empty menu',D.raided&&'road blocked',D.till<0&&'wages owed'].filter(Boolean);
     return`<div class="srow"><div class="sinfo"><b>${nm} ${'★'.repeat(dStars(D))}</b><span>7 days: ${sv} served${sv?' · ★'+(rr/sv).toFixed(1):''} · profit ${sg(pr)} · till ${sg(D.till)}${issues.length?' · <b>'+issues.join(', ')+'</b>':''}</span></div><div class="sbuy"><button type="button" class="btn sm" data-jdiner="${t}">Reports</button></div></div>`;});
   const n=Object.keys(A).length;
-  return(n?`<p class="tip">${n} diner${n>1?'s':''} open · last 7 days: ${tot.sv} customers served, ${sg(tot.p)} profit · ${sg(tot.till)} waiting in the tills. Visit a diner to collect, stock it or change the menu. Towns without one have an empty eatery to lease for ${fmtG(DINER_OPEN)}.</p>`:'<p class="tip">No diners yet. Each town has an empty eatery you can lease and turn into a Hero’s Diner.</p>')+`<div class="slist">${rows.join('')}</div>`;}
-jOv.addEventListener('click',e=>{const b=e.target.closest('[data-jdiner]');if(!b)return;e.stopPropagation();closeSheet(jOv);openDiner(b.dataset.jdiner,'report',true);},true);
+  return(n?`<div class="srow"><div class="sinfo"><b>All diners combined</b><span>Income statement, cash flow and balance sheet for the whole business</span></div><div class="sbuy"><button type="button" class="btn sm" data-jdiner="__all">Company reports</button></div></div>`:'')+(n?`<p class="tip">${n} diner${n>1?'s':''} open · last 7 days: ${tot.sv} customers served, ${sg(tot.p)} profit · ${sg(tot.till)} waiting in the tills. Visit a diner to collect, stock it or change the menu. Towns without one have an empty eatery to lease for ${fmtG(DINER_OPEN)}.</p>`:'<p class="tip">No diners yet. Each town has an empty eatery you can lease and turn into a Hero’s Diner.</p>')+`<div class="slist">${rows.join('')}</div>`;}
+jOv.addEventListener('click',e=>{const b=e.target.closest('[data-jdiner]');if(!b)return;e.stopPropagation();closeSheet(jOv);if(b.dataset.jdiner==='__all'){DUI={all:true,remote:true,tab:'report',note:''};drawDiner();openSheet(dOv,$('dClose'));return;}openDiner(b.dataset.jdiner,'report',true);},true);
+/* v3.93: consolidated statements for the whole Hero's Diner business */
+function dinerAllReport(){const A=Object.entries(dinersAll());if(!A.length)return'<p class="tip">No diners open yet.</p>';for(const[,D]of A)dinerStats(D);
+  const sum=(a,k)=>a.reduce((x,e)=>x+(e[k]||0),0),day=S.flags.day||1,W=D=>D.log.filter(e=>e.day>day-7);
+  const T={sales7:0,cogs7:0,wages7:0,served7:0,missed7:0,rate7:0,sales:0,cogs:0,wages:0,served:0,rate:0,collected:0,paidIn:0,foodIn:0,inv:0,till:0,stock:0};
+  for(const[,D]of A){const w=W(D);T.sales7+=sum(w,'earned');T.cogs7+=sum(w,'cogs');T.wages7+=sum(w,'wages');T.served7+=sum(w,'served');T.missed7+=sum(w,'missed');T.rate7+=w.reduce((x,e)=>x+(e.rate||0)*(e.served||0),0);
+    const L=D.life;T.sales+=L.sales;T.cogs+=L.cogs;T.wages+=L.wages;T.served+=L.served;T.rate+=L.rate;T.collected+=D.cash.collected;T.paidIn+=D.cash.paidIn;T.foodIn+=D.cash.foodIn;T.inv+=D.inv.lease+D.inv.up;T.till+=D.till;T.stock+=invValue(D.stock);}
+  const np7=T.sales7-T.cogs7-T.wages7,np=T.sales-T.cogs-T.wages,m=(n,s)=>s?Math.round(n/s*100)+'%':'–';
+  let h=`<p class="lab">Last 7 days, all diners</p>`+rTable(['','Served','Turned away','Rating','Profit'],[{c:[`${A.length} diner${A.length>1?'s':''}`,T.served7,T.missed7,T.served7?sr(T.rate7/T.served7):'–',sg(np7)]}]);
+  /* combined daily profit */
+  const days={};for(const[,D]of A)for(const e of D.log){const k=e.day;days[k]=(days[k]||0)+(e.earned||0)-(e.cogs||0)-(e.wages||0);}
+  const dk=Object.keys(days).map(Number).sort((a,b)=>a-b).slice(-14),mx=Math.max(1,...dk.map(k=>Math.abs(days[k])));
+  if(dk.length)h+=`<p class="lab">Daily profit, all diners</p><div class="rbars">`+dk.map(k=>`<div class="rbar"><span>Day ${k}</span><i style="width:${Math.max(2,Math.round(Math.abs(days[k])/mx*100))}%;background:${days[k]>=0?'#5ab04a':'#c8402a'}"></i><b>${sg(days[k])}</b></div>`).join('')+'</div>';
+  h+=`<p class="lab">Consolidated income statement</p>`+rTable(['','Last 7 days','All time'],[{c:['Sales',fmtG(T.sales7),fmtG(T.sales)]},{c:['Food cost',sg(-T.cogs7),sg(-T.cogs)]},
+    {cls:'sub',c:['Gross profit',sg(T.sales7-T.cogs7),sg(T.sales-T.cogs)]},{c:['Wages',sg(-T.wages7),sg(-T.wages)]},{cls:'tot',c:['Net profit',sg(np7),sg(np)]},{c:['Profit margin',m(np7,T.sales7),m(np,T.sales)]}]);
+  h+=`<p class="lab">Consolidated cash flow (all time)</p>`+rTable(['','Gold'],[{c:['Sales into the tills',fmtG(T.sales)]},{c:['Wages paid from the tills',sg(-T.wages)]},{c:['You collected',sg(-T.collected)]},{c:['You paid in (wages owed)',fmtG(T.paidIn)]},
+    {cls:'tot',c:['Cash in all tills now',sg(T.till)]},{c:['&nbsp;','']},{c:['Leases and upgrades you paid',sg(-T.inv)]},{cls:'tot',c:['Net cash to you so far',sg(T.collected-T.paidIn-T.inv)]}]);
+  const pos=A.reduce((x,[,D])=>x+Math.max(0,D.till),0),owed=A.reduce((x,[,D])=>x+Math.max(0,-D.till),0),stake=T.inv+T.foodIn+T.paidIn-T.collected;
+  h+=`<p class="lab">Consolidated balance sheet (today)</p>`+rTable(['','Gold'],[{c:['Cash in the tills',fmtG(pos)]},{c:['Food in the kitchens',fmtG(T.stock)]},{c:['Leases and upgrades',fmtG(T.inv)]},{cls:'tot',c:['Total assets',fmtG(pos+T.stock+T.inv)]},
+    {c:['Wages owed',fmtG(owed)]},{cls:'sub',c:['Your stake (gold, food and leases put in, minus gold taken out)',sg(stake)]},{cls:'sub',c:['Profit kept in the business',sg(np)]},{cls:'tot',c:['Total liabilities and stake',sg(owed+stake+np)]}]);
+  h+=`<p class="lab">By location</p>`+rTable(['Town','Stars','7-day profit','All-time profit','Invested','Return'],A.map(([t,D])=>{const w=W(D),L=D.life,inv=D.inv.lease+D.inv.up,p=L.sales-L.cogs-L.wages;
+    return{c:[esc(MAPS[t].name),'★'.repeat(dStars(D)),sg(sum(w,'earned')-sum(w,'cogs')-sum(w,'wages')),sg(p),fmtG(inv),inv?Math.round(p/inv*100)+'%':'–']};}).concat([{cls:'tot',c:['Total','',sg(np7),sg(np),fmtG(T.inv),T.inv?Math.round(np/T.inv*100)+'%':'–']}]));
+  const dish={};for(const[,D]of A)for(const[id,x]of Object.entries(D.dishes)){const o=dish[id]||(dish[id]={sold:0,rev:0,cogs:0,rate:0,miss:0});for(const k in o)o[k]+=x[k]||0;}
+  const ds=Object.entries(dish).filter(([,x])=>x.sold||x.miss).sort((a,b)=>b[1].rev-a[1].rev).slice(0,10);
+  if(ds.length)h+=`<p class="lab">Top dishes, all diners</p>`+rTable(['Dish','Sold','Rating','Sales','Per plate','Missed'],ds.map(([id,x])=>({c:[esc(RECIPES[id].n),x.sold,x.sold?sr(x.rate/x.sold):'–',fmtG(x.rev),x.sold?sg((x.rev-x.cogs)/x.sold):'–',x.miss]})));
+  const U={};for(const[,D]of A)for(const e of W(D))for(const[k,n]of Object.entries(e.used||{}))U[k]=(U[k]||0)+n;const top=Object.entries(U).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  if(top.length){const mx2=top[0][1],CC={meat:'#c8503a',fish:'#3a8ad8',veg:'#5ab04a',dairy:'#e8e0c0',grain:'#d8a050',spice:'#e8402a',sweet:'#d070c0'};
+    h+=`<p class="lab">Most used ingredients, all diners (last 7 days)</p><div class="rbars ring">`+top.map(([k,n])=>`<div class="rbar"><span>${esc(foodName(k))}</span><i style="width:${Math.max(3,Math.round(n/mx2*100))}%;background:${CC[foodCat(k)]||'#a8a8b8'}"></i><b>×${n} · ${fmtG(n*foodValue(k))}</b></div>`).join('')+'</div>';}
+  return h;}
 function openLarder(){DUI={t:null,tab:'larder',note:'',larder:true};drawDiner();openSheet(dOv,$('dClose'));}
 const dRow=(title,sub,right)=>`<div class="srow"><div class="sinfo"><b>${title}</b><span>${sub}</span></div><div class="sbuy" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">${right||''}</div></div>`;
 const dBtn=(lbl,act,dis,aria)=>`<button type="button" class="btn sm" data-dact="${act}"${dis?' disabled':''}${aria?` aria-label="${esc(aria)}"`:''}>${lbl}</button>`;
 function drawDiner(){$('dGil').textContent=fmtG(S.gil);const msg=$('dMsg');let h='',tabs='';
+  if(DUI.all){$('dTitle').textContent='Hero’s Diners · All locations';$('dTabs').innerHTML='';msg.textContent='Every diner added together: one income statement, cash flow and balance sheet for the whole business.';
+    $('dList').innerHTML=dinerAllReport();$('dBtns').innerHTML='<button class="btn" type="button" id="dClose">Close</button>';$('dClose').onclick=closeDiner;return;}
   if(DUI.larder){$('dTitle').textContent='Homestead Larder';tabs='';const C=carried(),L=homeStock(),ids=[...new Set([...Object.keys(C),...Object.keys(L)])].sort((a,b)=>foodCat(a).localeCompare(foodCat(b))||foodName(a).localeCompare(foodName(b)));
     msg.textContent=DUI.note||'Store food here so runners can carry it to your diners, or pack it to carry yourself. Farm crops, eggs and milk in the crates count as larder stock.';
     h=ids.length?ids.map(id=>dRow(esc(foodName(id)),`Pack ×${C[id]||0} · Larder ×${L[id]||0}`,dBtn('Store','lst:'+id,!C[id],'Store one '+foodName(id))+dBtn('Pack','lpk:'+id,!L[id],'Pack one '+foodName(id)))).join(''):'<p class="tip">No food yet. Monster cuts drop in battle, fish go in the basket, and the farm fills the crates.</p>';

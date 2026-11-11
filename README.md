@@ -345,3 +345,14 @@ On the world map, Coralhaven now stands one tile north of where it was, so the t
 
 ## Inkwell strolls and walks home (v3.91.0)
 Inkwell now wanders a small area around his spot in each town, like the villagers. At dusk he walks off the screen instead of vanishing, and he's back at dawn. The dusk walk also got smarter for everyone: routes step around guards, other townsfolk and the hero. In small towns where nowhere is off-screen, people head for the town gate or a house door and go inside.
+
+## Company reports for all diners (v3.93.0)
+Journal › Diners has an **All diners combined → Company reports** row. It opens `dinerAllReport()`, which adds up every location:
+- Last-7-days totals: served, turned away, rating and profit.
+- Combined daily profit for each of the last 14 days.
+- Consolidated income statement (last 7 days and all time).
+- Consolidated cash flow.
+- Consolidated balance sheet: assets equal wages owed plus your stake plus retained profit.
+- A **By location** table with 7-day and all-time profit, amount invested and return on investment for each diner, plus a total.
+- The top 10 dishes across all diners.
+- The most used ingredients across all diners.

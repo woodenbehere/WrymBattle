@@ -363,3 +363,16 @@ Once Morrow becomes an Archmage, his sprite (`SPR.blackP`) swaps the hood for a 
 ## Two accessory slots; fishing rod above the weather (v3.95.0)
 - Every hero now has **Accessory** and **Accessory 2** slots (`SLOTS` gains `acc2`, and `baseSlot()` maps it to accessory gear). Both count toward stats, status immunity, elemental resistance and the 1-MP effect. Equip, Optimum, Remove, Empty, the Party screen and Status all handle the second slot.
 - Fishing: the rod and the part of the line above the water are drawn again after the clouds and rain, so storms no longer hide them.
+
+## Exit stays on the touch ring (v3.96.0)
+The first tap on Exit in a dungeon keeps the touch ring open and relabels the button "Tap again to cast Exit"; the second tap casts it.
+
+## The ending: Sir Kael gets his comeuppance (v3.97.0)
+Defeating Zephyrion now plays the last chapter of Orren Vael's chronicle, using the same cutscene player as the opening (`playEnding`, script built by `endingScript()`, scenes in `ESCN` merged into `ISCN`). The sixteen scenes:
+- The storm breaks over the Isle of Aether, the wall of water sinks, and a ship sails in.
+- Sir Kael and the Knights of the Dawn parade into Valemont and claim they slew the last dragon.
+- Garrick drops Zephyrion's still-crackling horn at Kael's feet. King Aldous asks how many eyes the dragon had; Kael says two (it had three).
+- Kael flees the square under a hail of tomatoes, leaving his banner in the mud. The king strikes the Dawn Ballad from the songbook and the real five kneel.
+- An epilogue for each hero (Morrow's line changes if he's an Archmage), then a yearly supper at Old Hob's farm that mentions how many Hero's Diners you opened.
+- Orren closes the book, and a final "The End" card shows days on the road, party level, gold, diners and monsters defeated.
+Afterwards you return to the world to keep exploring (`S.flags.ending`). Once Zephyrion is beaten, Options › About gets "The ending · Watch" to replay it. The old "Thank you for playing Ember Dragon!" line is gone.

@@ -471,7 +471,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.93.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.93.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -6614,7 +6614,7 @@ function dinerNpcs(t){const D=dinerOf(t),st=D?dStars(D):0,key=JSON.stringify([t,
   const out=[];if(!D){out.push({x:7,y:4,spr:'man',talk:()=>{openDinerOffer(t);return null;}});return dnpcCache=out;}
   if(D.cook)out.push({x:4,y:1,spr:D.cook.spr,talk:()=>{showDialog([`${D.cook.name} (cook): ${pick(['Order up!','The stove’s hot. Bring me good meat and I’ll make it sing.','Folks here love '+DINER_TOWNS[t].taste.map(x=>TAG_NAME[x]).join(' and ')+'.'])}`],()=>openDiner(t));return null;}});
   else out.push({x:7,y:4,spr:'man',talk:()=>{showDialog(['Landlord: No cook, no customers. Hire one at the counter.'],()=>openDiner(t,'staff'));return null;}});
-  if(D.server)out.push({x:6,y:7,spr:D.server.spr,wander:[1,3,12,7],talk:()=>[`${D.server.name} (server): ${pick(['Table two wants seconds!','Tips are good today.','Someone asked if the Drake Tail Feast is real. Is it?'])}`]});
+  if(D.server)out.push({x:6,y:7,spr:D.server.spr,wander:[1,3,12,7],talk:()=>{showDialog([`${D.server.name} (server): ${pick(['Table two wants seconds!','Tips are good today.','Someone asked if the Drake Tail Feast is real. Is it?','Need anything, boss? I’ll grab the ledger.'])}`],()=>openDiner(t));return null;}});
   if(D.raided)out.push({x:11,y:7,spr:'ranger',talk:()=>{roadFight(t);return null;}});
   if(D.cook&&D.menu.length){const seats=[[3,4],[10,4],[4,6],[9,6],[4,4],[3,6],[9,4],[10,6]],sp=t==='ironhold'?['dwarf','dwarf2','dwarfgirl','miner','dwarfsmith']:t==='highmere'?['magus','magus2','sorceress','mage','kid']:['man','woman','woman2','farmer','kid','adventurer','ranger','maid'];
     for(let i=0;i<Math.min(seats.length,st+1);i++){const[x,y]=seats[i],dish=RECIPES[pick(D.menu)];out.push({x,y,spr:sp[i%sp.length],talk:()=>[pick([`Customer: The ${dish.n} here is the best in ${MAPS[t].name}!`,`Customer: I’d come every day if you put more ${TAG_NAME[pick(DINER_TOWNS[t].taste)]} on the menu.`,`Customer: ${'★'.repeat(st)} if you ask me. Service is ${D.server?'quick':'slow, nobody’s waiting tables'}.`])]});}}

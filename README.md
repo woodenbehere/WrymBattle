@@ -359,3 +359,7 @@ Journal › Diners has an **All diners combined → Company reports** row. It op
 
 ## Archmage hat (v3.94.0)
 Once Morrow becomes an Archmage, his sprite (`SPR.blackP`) swaps the hood for a tall black pointed hat with a green band, worn over his white hair and beard. Green sparks wink on and off at random spots on the hat (`hatSpark`), while the light-blue sparks keep twinkling on his robe.
+
+## Two accessory slots; fishing rod above the weather (v3.95.0)
+- Every hero now has **Accessory** and **Accessory 2** slots (`SLOTS` gains `acc2`, and `baseSlot()` maps it to accessory gear). Both count toward stats, status immunity, elemental resistance and the 1-MP effect. Equip, Optimum, Remove, Empty, the Party screen and Status all handle the second slot.
+- Fishing: the rod and the part of the line above the water are drawn again after the clouds and rain, so storms no longer hide them.

@@ -471,7 +471,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.91.1</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.92.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -4715,8 +4715,11 @@ const onChasm=(px,py)=>!!(WORLD&&WORLD.chasm&&Math.floor(px/TS)===WORLD.chasm.x&
 {const bs7=bloodShut;bloodShut=function(px,py){if(onChasm(px,py)){if(performance.now()-(S.chasmSayT||0)>3000){S.chasmSayT=performance.now();say('A chasm drops away into darkness. Violet lights flicker far below. Only something that flies could go down there.');}return true;}return bs7(px,py);};}
 {const cl7=canLand;canLand=function(){return !onChasm(S.world.x,S.world.y)&&cl7();};}
 {const rm7=renderMapMenu;renderMapMenu=function(){rm7();const sh=S.flags.ship;if(sh&&sh.boarded&&S.scene==='map'){const near=WORLD.chasm&&Math.hypot(S.world.x/TS-(WORLD.chasm.x+.5),S.world.y/TS-(WORLD.chasm.y+.5))<3;
-   if(near){const hd=cmdEl.querySelector('.cmd-h');if(hd)hd.insertAdjacentHTML('afterend',opt('descend','Descend','',onChasm(S.world.x,S.world.y)?'Fly the Aurora down into the chasm':'Fly directly over the chasm first',!onChasm(S.world.x,S.world.y)));}}};}
-{const mc7=mapCmd;mapCmd=function(a){if(a==='descend')return umbraDown();return mc7(a);};}
+   if(near){const hd=cmdEl.querySelector('.cmd-h');if(hd)hd.insertAdjacentHTML('afterend',opt('descend','Descend','','Fly the Aurora down into the chasm'));}}};}
+{const mc7=mapCmd;mapCmd=function(a){if(a==='descend')return chasmGlide().then(umbraDown);return mc7(a);};}
+/* v3.92: Descend works from anywhere near the chasm: the Aurora glides over the hole first */
+async function chasmGlide(){if(!WORLD.chasm||onChasm(S.world.x,S.world.y))return;const x0=S.world.x,y0=S.world.y,x1=(WORLD.chasm.x+.5)*TS,y1=(WORLD.chasm.y+.5)*TS;S.cut=true;for(const k in keys)keys[k]=false;
+  await addFx(650,(c,p)=>{const e=p<.5?2*p*p:1-2*(1-p)*(1-p);S.world.x=x0+(x1-x0)*e;S.world.y=y0+(y1-y0)*e;});S.world.x=x1;S.world.y=y1;S.cut=false;}
 {let lastIn=false;const tc8=tickClock;tickClock=function(dt){tc8(dt);if(S.scene!=='map'||!WORLD.chasm)return;const sh=S.flags.ship,on=!!(sh&&sh.boarded&&onChasm(S.world.x,S.world.y));if(on!==lastIn){lastIn=on;renderMenu();}};}
 async function umbraDown(){const sh=S.flags.ship;if(!sh||!sh.boarded||!onChasm(S.world.x,S.world.y))return;S.cut=true;for(const k in keys)keys[k]=false;steer=null;
   say('The Aurora tilts her nose down and sinks into the chasm…');await addFx(1100,(c,p)=>{c.fillStyle=`rgba(6,4,10,${p})`;c.fillRect(0,0,W,H);});S.cut=false;

@@ -470,7 +470,7 @@ body>#over .card{max-height:calc(100dvh - 24px);overflow:auto;width:min(92vw,560
     <div class="panel cmd" id="cmd" aria-live="polite"></div>
     <div class="panel party" id="party"></div>
   </section>
-  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.88.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
+  <footer class="credits"><span>Drakes of Dusk and Dawn <button class="ver" id="verBtn" type="button" title="Tap twice to update to the latest version">v3.89.0</button></span><span class="sep" aria-hidden="true">&ndash;</span><span>Parden Web Apps 2026</span>
     <a href="mailto:jdparden@gmail.com?subject=Drakes%20of%20Dusk%20and%20Dawn" title="Email jdparden@gmail.com" aria-label="Email jdparden@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" fill="none" stroke="currentColor"/><path d="M1.5 3.5 8 9l6.5-5.5" fill="none" stroke="currentColor"/></svg></a>
     <a class="donate" href="https://venmo.com/u/James-Parden" target="_blank" rel="noopener" title="Donate with Venmo (@James-Parden)"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 3h3v1h1v1h2V4h1V3h3v1h1v4h-1v1h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4V9H3V8H2V4h1z"/></svg>Donate</a></footer>
 </main>
@@ -4966,7 +4966,7 @@ function dockAt(tx,ty){for(const D of[WORLD&&WORLD.port,WORLD&&WORLD.swDock])if(
       for(const[dx,dy,pen]of[[1,0,0],[0,-1,3],[0,1,5],[-1,0,8]]){const c=[1,2,3].map(i=>[x+dx*i,y+dy*i]);if(!c.every(([X,Y])=>X>0&&Y>0&&X<WT-1&&Y<HT-1&&wet(T[Y*WT+X])&&!I.set.has(Y*WT+X)))continue;
         const b=[x-dx,y-dy],b2=[x-2*dx,y-2*dy];if(!I.set.has(b[1]*WT+b[0])||!I.set.has(b2[1]*WT+b2[0]))continue;
         const sc=pen+(dx?Math.abs(y-cy):Math.abs(x-cx))*1.2;if(!best||sc<best.sc)best={sc,x,y,dx,dy,c,b};}}
-    if(best){const old=I.cy*WT+I.cx,[tx,ty]=best.b;T[old]=T_GRASS;T[ty*WT+tx]=T_TOWN;
+    if(best){const old=I.cy*WT+I.cx;let[tx,ty]=best.b;if(best.dy===0&&I.set.has((ty-1)*WT+tx)&&!wet(T[(ty-1)*WT+tx])){T[ty*WT+tx]=T[ty*WT+tx]===T_FOREST?T_GRASS:T[ty*WT+tx];ty--;}/* v3.89: the town sits one tile up, off the boardwalk */T[old]=T_GRASS;T[ty*WT+tx]=T_TOWN;
       for(const[X,Y]of[[tx-best.dy,ty-best.dx],[tx+best.dy,ty+best.dx]])if(I.set.has(Y*WT+X)&&T[Y*WT+X]===T_FOREST)T[Y*WT+X]=T_GRASS;
       I.cx=tx;I.cy=ty;const L=Wd.lands.find(l=>l.id==='coralhaven');if(L){L.x=(tx+.5)*TS;L.y=(ty+.7)*TS;L.msg='Coralhaven, on the Coral Reach. Its pier reaches out into the eastern sea.';}
       const pier=[best.c[0],best.c[1]];for(const[X,Y]of pier)T[Y*WT+X]=T_PORT;

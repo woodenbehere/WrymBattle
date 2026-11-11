@@ -339,3 +339,6 @@ Every menu sheet (Journal, diner screens, Larder, main menu and its Status/Equip
 
 ## Villagers walk home at dusk (v3.88.0)
 When dusk falls (7 pm) while you're in Valemont, Thornwick, Highmere or Ironhold, villagers in view no longer blink out. Each one stops wandering and walks the shortest route (`exitPath`, a breadth-first search over walkable tiles) to the nearest spot outside the screen, stepping around buildings and each other, and disappears once out of sight. Villagers already off-screen simply go home. At dawn everyone is back at their usual spot. Entering a town at night still shows it empty.
+
+## Coralhaven moved up a tile (v3.89.0)
+On the world map, Coralhaven now stands one tile north of where it was, so the town no longer overlaps the boardwalk to its pier. The tile it left is grass, so you can walk from the boardwalk straight up into town.

@@ -413,3 +413,10 @@ In battle, choosing Fight, a single-target spell or an item with a controller sw
 - **Spreadable spells:** single-target attack spells that can be spread get an extra "All enemies" stop after the last enemy. It puts pointers on every enemy and casts across all of them, with the damage split; it's the controller version of the triple-tap.
 - **Heal and item targets** start on the most injured valid hero.
 - **Code:** `gpAimList`, `gpAim`, `gpAimOk`, `gpAimSync`; the hero pointer is drawn by a `battleRender` wrapper.
+
+## Lockpicking with the controller (v3.101.0)
+While Vesh is picking a lock at night, the controller gets its own lock mode (`gpLayer` → `lock`), which comes before the touch ring, the command panel and the battle card.
+- **Buttons:** the confirm button (✕ by default) always sets the pin through `gpPick`, and ○ stops picking. Any open command ring or panel closes when picking starts.
+- **Lag allowance:** a press counts if the pick was inside the gold zone at any point in the last ~70 ms (`gpLockTick` keeps the recent positions). This covers Bluetooth input lag without making the zone bigger.
+- **Rumble:** a click for each pin, a long buzz when the lock opens, and a hard thud on a miss.
+- **Hint:** the lock box reads "press ✕ in the gold" (or your mapped button) when a controller is in use.

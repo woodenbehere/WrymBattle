@@ -451,3 +451,11 @@ Each icon sits where that vessel is parked. While you're aboard, it travels with
 ## Warp to Ironhold (v3.106.0)
 - **Warp destination:** Ironhold is in the list once the party has been there (`S.flags.ironhold`). It's underground, so the Deepdelve Mine entrance serves as its world-map spot. The party arrives at Ironhold's normal entrance by the lift tunnel, and the walk back up through the mine still works as before.
 - **Casting from Ironhold:** Morrow can now cast Warp from inside Ironhold, as in the surface towns.
+
+## Diner Inventory tab (v3.107.0)
+Each diner has a new **Inventory** tab next to Reports (`dinerInv`). It's also available when the diner is opened read-only from Journal › Diners.
+- **Dishes on the menu:** for each dish, how many servings the kitchen can make now, and how many it could make counting the homestead larder and your pack. Each dish is marked OK, LOW (under 5) or OUT.
+- **Ingredients:** for every ingredient the current menu uses, the counts in the kitchen, at the homestead (larder plus farm crates) and in your pack, and which dishes use it and how many per plate.
+  - Using the last 7 days of diner logs, it shows how much was used and roughly how many days the kitchen's supply will last.
+  - "Any meat / any vegetable" style ingredients break down into each matching food.
+  - Each ingredient is marked OK, LOW (under 2 days or 3 plates), OUT here (but available at home or in your pack) or NONE.

@@ -472,3 +472,10 @@ Each diner has a new **Inventory** tab next to Reports (`dinerInv`). It's also a
 
 ## Chickens lay three eggs a day (v3.109.0)
 Each chicken in the coop now lays 3 eggs a day instead of 1 (`farmDay`). A full coop of 6 fills the crates with 18 eggs a day. The Homestead journal's egg count and daily value, and the coop's description, match.
+
+## Stacked daily charts for all diners (v3.110.0)
+Journal › Diners › All locations now has a **Last 7 days by location** section (`dinerStackCharts`), replacing the single-color daily profit bars.
+- **Charts:** a color legend for each town, then two stacked horizontal charts: **Daily sales** and **Daily profit**. Each day's bar is split into one colored piece per diner, sized by its share.
+- **Losses:** a diner that lost money that day shows as a striped piece to the left of a zero line.
+- **Totals:** the day's total is shown at the right.
+- **Tapping a piece:** highlights it and shows the town, day and amount in the message line.

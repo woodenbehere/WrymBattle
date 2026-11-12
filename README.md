@@ -459,3 +459,13 @@ Each diner has a new **Inventory** tab next to Reports (`dinerInv`). It's also a
   - Using the last 7 days of diner logs, it shows how much was used and roughly how many days the kitchen's supply will last.
   - "Any meat / any vegetable" style ingredients break down into each matching food.
   - Each ingredient is marked OK, LOW (under 2 days or 3 plates), OUT here (but available at home or in your pack) or NONE.
+
+## Diner layout, battle text, camp weather, castle wall depth (v3.108.0)
+- **Diner screens** use the Journal's layout. The title, message and content are on the left; the tabs (Overview, Reports, Inventory, Menu, Stock, Staff, Upgrades) are a menu column on the right, with the action buttons and Close under them. On narrow phones it stacks like the Journal.
+- **Battle text** at the bottom of the screen (`.note`) now draws in front of the enemy name and health bars (`#fbars`), with a slightly more solid background.
+- **Camping matches the weather** on the world map (`campSky`, `campWeather`):
+  - **Cloudy:** clouds drift over the stars and moon.
+  - **Rain:** an overcast sky, slanted rain over the whole scene and splashes on the ground.
+  - **Storm:** heavier wind-driven rain with lightning bolts that flash the camp.
+  - **Caption:** the camp caption adds a line about the weather.
+- **Castle walls have depth** on the world map. Wall and house tiles in the row in front of the hero are drawn over him (a `drawWalker` wrapper). Walking along the outside of the north wall now shows him behind it instead of standing on the battlements, and the same goes for the inside of the south wall.

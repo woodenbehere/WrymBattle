@@ -440,3 +440,10 @@ In battle, a poisoned hero is drawn with `drawSprite`'s new `poison` option:
 - **Green tint:** every color is shifted toward a sickly green (`sickCol`, cached) while the features stay readable.
 - **Bubbles:** five green bubbles swirl around and rise above the hero's head, popping at the top (`drawPoisonBubbles`). These replace the old random green specks.
 - **Cure:** it all clears the moment the poison is cured. KO and stone take priority.
+
+## Airship and sailboat on the expanded mini map (v3.105.0)
+When the world mini map is expanded (tap it), a sharper overlay canvas (`#miniIco`, 6× the mini map's resolution) draws the vessels as small pixel-art icons with a drop shadow:
+- **Airship (Aurora):** a striped blue balloon, a wooden gondola and a spinning propeller, floating just above its spot.
+- **Sailboat:** a red hull and a white sail, bobbing on the water.
+
+Each icon sits where that vessel is parked. While you're aboard, it travels with you and your blinking marker is drawn on top. The small mini map keeps its simple dots, and dungeon and town maps are unchanged.

@@ -447,3 +447,7 @@ When the world mini map is expanded (tap it), a sharper overlay canvas (`#miniIc
 - **Sailboat:** a red hull and a white sail, bobbing on the water.
 
 Each icon sits where that vessel is parked. While you're aboard, it travels with you and your blinking marker is drawn on top. The small mini map keeps its simple dots, and dungeon and town maps are unchanged.
+
+## Warp to Ironhold (v3.106.0)
+- **Warp destination:** Ironhold is in the list once the party has been there (`S.flags.ironhold`). It's underground, so the Deepdelve Mine entrance serves as its world-map spot. The party arrives at Ironhold's normal entrance by the lift tunnel, and the walk back up through the mine still works as before.
+- **Casting from Ironhold:** Morrow can now cast Warp from inside Ironhold, as in the surface towns.

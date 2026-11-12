@@ -404,3 +404,12 @@ A PS5 DualSense, or any standard Bluetooth or USB gamepad, now controls the whol
 - **Button labels** match the controller: PlayStation symbols, Xbox A/B/X/Y or Nintendo letters.
 - **Saving:** bindings are saved per device in `localStorage` (`ew-gp-map`). The old "Confirm button ✕/○" setting is replaced by mapping; an earlier swap is carried over.
 - **Warp:** the Tower of Aether becomes a destination once the party has entered it (`S.flags.towerMax`). It is hidden while the tower is sealed and when you're already inside. Warping there puts the party on floor 1.
+
+## Aiming at enemies with the controller (v3.100.0)
+In battle, choosing Fight, a single-target spell or an item with a controller switches it into aiming mode, in both classic and touch view.
+- **D-pad / left stick:** move the white pointer between enemies (top to bottom). For heals and items it moves between heroes.
+- **✕:** confirms the target. **○:** goes back.
+- **Hint line:** shows who is targeted and which buttons do what.
+- **Spreadable spells:** single-target attack spells that can be spread get an extra "All enemies" stop after the last enemy. It puts pointers on every enemy and casts across all of them, with the damage split; it's the controller version of the triple-tap.
+- **Heal and item targets** start on the most injured valid hero.
+- **Code:** `gpAimList`, `gpAim`, `gpAimOk`, `gpAimSync`; the hero pointer is drawn by a `battleRender` wrapper.

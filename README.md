@@ -427,3 +427,9 @@ In battle, holding the confirm button (✕ by default) makes every hero choose *
 - **Skipped turns:** a hero whose Fight command is unavailable is skipped, and the hold never picks skills or items.
 - **Feedback:** a light rumble for each queued attack, and a one-time "Holding ✕: everyone fights." message.
 - **Releasing** the button brings back the normal command menu on the next turn.
+
+## New quest cottages in Thornwick and Highmere (v3.103.0)
+The Hero's Diners took over the houses that held two of the thieves' guild quest items, which made those quests impossible.
+- **Thornwick:** a new farmer's cottage at the end of the east fields, south of the road (door 19,15), now holds the **Mayor's Ledger** (`h_town_19_15`). Old Mags' directions now point there.
+- **Highmere:** a new magus's cottage just west of the square (door 9,15), between the diner and the main road, now holds the **Moonlit Scroll** (`h_highmere_9_15`). Whisper's directions already fit.
+- **How it works:** `addCottage` wraps each town's `build` and adds the house and its door. Any villager standing on the new spot is moved out of the way. The cottages lock at night and are picked like any other house.

@@ -433,3 +433,10 @@ The Hero's Diners took over the houses that held two of the thieves' guild quest
 - **Thornwick:** a new farmer's cottage at the end of the east fields, south of the road (door 19,15), now holds the **Mayor's Ledger** (`h_town_19_15`). Old Mags' directions now point there.
 - **Highmere:** a new magus's cottage just west of the square (door 9,15), between the diner and the main road, now holds the **Moonlit Scroll** (`h_highmere_9_15`). Whisper's directions already fit.
 - **How it works:** `addCottage` wraps each town's `build` and adds the house and its door. Any villager standing on the new spot is moved out of the way. The cottages lock at night and are picked like any other house.
+
+## Poisoned heroes look sick (v3.104.0)
+In battle, a poisoned hero is drawn with `drawSprite`'s new `poison` option:
+- **Crouch:** two leg rows are folded out, the feet splay, and the body wobbles slightly.
+- **Green tint:** every color is shifted toward a sickly green (`sickCol`, cached) while the features stay readable.
+- **Bubbles:** five green bubbles swirl around and rise above the hero's head, popping at the top (`drawPoisonBubbles`). These replace the old random green specks.
+- **Cure:** it all clears the moment the poison is cured. KO and stone take priority.

@@ -420,3 +420,10 @@ While Vesh is picking a lock at night, the controller gets its own lock mode (`g
 - **Lag allowance:** a press counts if the pick was inside the gold zone at any point in the last ~70 ms (`gpLockTick` keeps the recent positions). This covers Bluetooth input lag without making the zone bigger.
 - **Rumble:** a click for each pin, a long buzz when the lock opens, and a hard thud on a miss.
 - **Hint:** the lock box reads "press ✕ in the gold" (or your mapped button) when a controller is in use.
+
+## Hold ✕ to fight (v3.102.0)
+In battle, holding the confirm button (✕ by default) makes every hero choose **Fight** as soon as their turn comes (`gpAutoFight`). It kicks in after about a third of a second, so normal taps still work.
+- **Target:** the enemy you last picked with the pointer, or the top enemy if that one has fallen.
+- **Skipped turns:** a hero whose Fight command is unavailable is skipped, and the hold never picks skills or items.
+- **Feedback:** a light rumble for each queued attack, and a one-time "Holding ✕: everyone fights." message.
+- **Releasing** the button brings back the normal command menu on the next turn.

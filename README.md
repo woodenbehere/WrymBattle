@@ -469,3 +469,6 @@ Each diner has a new **Inventory** tab next to Reports (`dinerInv`). It's also a
   - **Storm:** heavier wind-driven rain with lightning bolts that flash the camp.
   - **Caption:** the camp caption adds a line about the weather.
 - **Castle walls have depth** on the world map. Wall and house tiles in the row in front of the hero are drawn over him (a `drawWalker` wrapper). Walking along the outside of the north wall now shows him behind it instead of standing on the battlements, and the same goes for the inside of the south wall.
+
+## Chickens lay three eggs a day (v3.109.0)
+Each chicken in the coop now lays 3 eggs a day instead of 1 (`farmDay`). A full coop of 6 fills the crates with 18 eggs a day. The Homestead journal's egg count and daily value, and the coop's description, match.

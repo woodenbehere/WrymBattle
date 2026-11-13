@@ -553,3 +553,8 @@ Booking the inn at night used to charge right away with no way out. In Vesh's to
 - **Vesh's question** now has **Not now**.
 - **Other towns at night:** the inn asks "Sleep until morning for 80 G?" with **Not now**.
 - **Charging:** gold is only taken after you confirm (`innRest`).
+
+## Sky Tree stays drawn after the app is backgrounded (v3.115.2)
+On Android, a canvas can come back blank after the app has been in the background. The world map picture was already repainted (v3.77), but the Sky Tree's sprite was cached separately. When it was wiped, the tree vanished and only the dark ground under the trunk stayed.
+- **Every map rebuild** now redraws the tree sprite.
+- **`repaintLost`** checks a trunk pixel of the sprite and rebuilds the map if it came back blank.

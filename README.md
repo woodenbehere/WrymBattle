@@ -558,3 +558,23 @@ Booking the inn at night used to charge right away with no way out. In Vesh's to
 On Android, a canvas can come back blank after the app has been in the background. The world map picture was already repainted (v3.77), but the Sky Tree's sprite was cached separately. When it was wiped, the tree vanished and only the dark ground under the trunk stayed.
 - **Every map rebuild** now redraws the tree sprite.
 - **`repaintLost`** checks a trunk pixel of the sprite and rebuilds the map if it came back blank.
+
+## The Rabbit Hole (v3.116.0)
+A rabbit hole now sits in the northern grassland north-east of Ember Peak (tile 40,20): a burrow in a dirt mound with a little sign. It's a new entrance tile, `T_HOLE=24`, and stepping in leads down (`mapUpdate` wrapper with its own lock).
+- **Twenty levels down** (`rh1`–`rh20`, `makeWarrenFloor`, made on demand by `ensureMap`), in four tiers:
+  - **Shallow Burrows (1–5)**
+  - **Root Tunnels (6–10):** roots hang from the walls.
+  - **Deep Warren (11–15)**
+  - **Moonlit Hollow (16–20):** dark blue, lit by glowing mushrooms.
+  - **Moving between levels:** each level's way down is a burrow hole, and the way back up is a sunlit tunnel.
+  - **Saves and travel:** there are save points on levels 5, 10, 15 and 19. A Burrow Warden on level 1 can slide you back down to the deepest fifth level you've reached (`S.flags.warrenMax`).
+- **Hares only:**
+  - **Species:** the Thornhare plus four new hares built on its sprite:
+    - **Burrow Hare:** fast, with an ambush.
+    - **Jackalope:** antlers, and a charge.
+    - **Fang Bunny:** white with red eyes, and a vicious Vorpal Bite.
+    - **Moon Rabbit:** silver, with a crescent mark, moonbeam magic and a confusing Mochi Pound.
+  - **Tiers:** each tier has its own tinted, tougher version.
+  - **Drops:** **every hare drops a Hare Haunch**. The diner Inventory map lists the Rabbit Hole as a source.
+- **Level 20:** the **Hare King** (24,000 HP, with a crown and red cape, Royal Kick, Thump of the Warren, Carrot Cudgel and a confusing Warren Rally) holds court with two Fang Bunny guards. Beating him sets `S.flags.hareKing` and reveals a Megalixir behind his throne.
+- **Wipes:** a party wipe inside with no save restarts on level 1.

@@ -479,3 +479,18 @@ Journal › Diners › All locations now has a **Last 7 days by location** secti
 - **Losses:** a diner that lost money that day shows as a striped piece to the left of a zero line.
 - **Totals:** the day's total is shown at the right.
 - **Tapping a piece:** highlights it and shows the town, day and amount in the message line.
+
+## All-diners Inventory with a where-to-find map (v3.111.0)
+Journal › Diners › All locations now has two tabs: **Report** (the consolidated statements) and **Inventory** (`dinerAllInv`).
+- **Needs table** (`allNeeds`): one row per ingredient per diner, built from each menu, showing:
+  - **Kitchen:** the stock that diner has.
+  - **Use/day:** from the last 7 days of logs, or estimated (*) for a diner with no sales yet.
+  - **Need:** enough for 3 or 7 days (a toggle), minus kitchen stock. It's gold if the homestead and your pack can cover it, red if not.
+  - **Home / Pack:** what's at the homestead and in your pack.
+- **Sorting:** **By item** (each ingredient with every diner that needs it, most-needed first) or **By diner** (each diner's shopping list). There's a summary line on top.
+- **Where to find map** (`drawInvMap`, `foodSources`): tap any row to map that ingredient on the world mini map.
+  - **Dot patterns** mark the terrain where its monsters roam, colored by when: any time, night, rain/storm/clouds, Blood Moon, the far isles, or fishing and sailing waters.
+  - **Gold diamonds** mark dungeons and places (Frostfang Peak, Deepdelve Mine, Tower of Aether, the Gloamhollow chasm, the Homestead).
+  - **Red pins** label the diners that need it.
+  - **Source list:** under the map, each monster that drops it and where (terrain and time, isles, open sea, dungeon floors, bosses), plus fishing, farm fields and season, or coop and barn. "Any meat/vegetable/fish" ingredients list every matching food.
+- **Data scanned:** the world, night, weather, Blood Moon, isle and sea encounter tables, every dungeon's encounter list, and the tower and Gloamhollow monster sets.

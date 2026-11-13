@@ -527,3 +527,23 @@ The bay on the south coast, between the two forests, is now **Croakmire Fen**, a
   More frogs turn up at night and in the rain. Battles here use a new murky swamp backdrop.
 - **Food:** Bog Frogs, Bullfrogs and the Frog King drop **Toad Legs**, and the diner Inventory map shows the fen as where to find them.
 - **The boat:** if it was parked in that bay, it's moved out to the nearest open water.
+
+## The Sky Tree (v3.115.0)
+A giant tree now stands in the forest north-east of Thornwick (tile 22,35), with its crown climbing into a cloud bank.
+- **On the world map:**
+  - **The tree:** a 10×16-tile sprite (`makeSkyTreeSprite`) drawn onto the map. It has flared roots, a lantern-lit doorway, a vine-wrapped trunk, branches with leaf clusters, and a leafy crown with the trunk rising on into the clouds.
+  - **New tiles:** `T_TREE=22` is the walkable doorway and `T_TREEB=23` the blocked trunk.
+  - **Depth:** walking behind the tree hides the hero behind it.
+  - **Entering:** stepping into the doorway leads inside (`mapUpdate` wrapper, with its own lock so leaving doesn't re-enter).
+  - **Mini map:** shows it too.
+- **Inside: 20 boughs** (`sk1`–`sk20`, `makeSkyFloor`, made on demand by `ensureMap`), in four tiers:
+  - **Lower Boughs (1–5)**, **Middle Boughs (6–10)** and **High Canopy (11–15)**: leafy walls over wooden floors that get greener and lighter as you climb.
+  - **Cloud Crown (16–20):** cloud walls.
+  - **Moving between boughs:** each bough's way up is drawn as a vine ladder, and the way down as a vine-ringed hole.
+  - **Saves and travel:** there are save points on boughs 5, 10, 15 and 19. An Old Druid on bough 1 sends you back up to the highest fifth bough you've reached (`S.flags.skyMax`).
+- **Birds only:**
+  - **Species:** Frost Harpy and Thunderbird, plus three new birds: the Bough Hawk (fast), the Hollow Owl (can confuse) and the Sky Roc (big).
+  - **Tiers:** each tier has its own tinted, tougher version (Bough / Leafy / Canopy / Cloud).
+  - **Drops:** **every bird drops Harpy Wings**. The diner Inventory map lists the Sky Tree as a source.
+- **Bough 20:** the **Harpy Queen** (26,000 HP, with confusing shrieks, gales and a Skyfall Dive) waits in her nest with two Cloud Harpies. Beating her sets `S.flags.harpyQueen` and leaves a Megalixir in the nest.
+- **Wipes:** a party wipe inside the tree with no save restarts on bough 1.

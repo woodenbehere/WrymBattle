@@ -547,3 +547,9 @@ A giant tree now stands in the forest north-east of Thornwick (tile 22,35), with
   - **Drops:** **every bird drops Harpy Wings**. The diner Inventory map lists the Sky Tree as a source.
 - **Bough 20:** the **Harpy Queen** (26,000 HP, with confusing shrieks, gales and a Skyfall Dive) waits in her nest with two Cloud Harpies. Beating her sets `S.flags.harpyQueen` and leaves a Megalixir in the nest.
 - **Wipes:** a party wipe inside the tree with no save restarts on bough 1.
+
+## Cancel an inn stay (v3.115.1)
+Booking the inn at night used to charge right away with no way out. In Vesh's towns, the "Vesh lies awake" question had only two answers.
+- **Vesh's question** now has **Not now**.
+- **Other towns at night:** the inn asks "Sleep until morning for 80 G?" with **Not now**.
+- **Charging:** gold is only taken after you confirm (`innRest`).

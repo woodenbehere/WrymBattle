@@ -510,3 +510,20 @@ Coralhaven's church now has a white lily garden left of the door, mirroring the 
 - **The statue:** in the middle stands a white statue of St. Joseph with a gold halo, brown beard and brown mantle. The Christ Child, with his own small halo, sits in the crook of his arm, and he holds a staff that has blossomed into a white lily.
 - **The beds:** strap-leaved white trumpet lilies with yellow centers.
 - **Talking to the statue** gives a short description.
+
+## Croakmire Fen, the frog swamp (v3.114.0)
+The bay on the south coast, between the two forests, is now **Croakmire Fen**, a walkable swamp.
+- **Terrain:** a new tile type, `T_SWAMP=21`. When the world is generated, `genWorld` flood-fills the bay's water within x 44–62, y 48–56 and turns it into marsh.
+  - **Look:** murky pools that bubble, reeds and cattails, and lily pads with the odd pink flower.
+  - **Map and name:** the mini map shows it as swamp green, and the location name reads "Croakmire Fen".
+  - **Encounter rate:** slightly higher than grassland.
+- **Nothing but frogs** (`encPool` returns its own pool for swamp tiles, so night, weather and Blood Moons can't add anything else):
+  - **Bog Frog:** common.
+  - **Poison Dart Frog:** fast, and poisons.
+  - **Giant Bullfrog:** big and tough.
+  - **Rain Toad:** the existing one.
+  - **Frog King:** rare, wears a crown, and brings two Bog Frogs.
+
+  More frogs turn up at night and in the rain. Battles here use a new murky swamp backdrop.
+- **Food:** Bog Frogs, Bullfrogs and the Frog King drop **Toad Legs**, and the diner Inventory map shows the fen as where to find them.
+- **The boat:** if it was parked in that bay, it's moved out to the nearest open water.

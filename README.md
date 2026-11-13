@@ -504,3 +504,9 @@ Pressing and holding **Exit** for about half a second, on the touch ring or in t
 
 ## Captions no longer cover dialog (v3.112.1)
 The notice box (`.note`) was raised in v3.108 so battle text sits in front of the enemy health bars. That made town arrival captions land on top of NPC dialog. Now, while a dialog box is open, the notice moves to the opposite edge of the screen (bottom when the dialog is at the top, top when it's at the bottom) and drops behind the dialog. Battle text is unchanged.
+
+## St. Joseph and the lily garden (v3.113.0)
+Coralhaven's church now has a white lily garden left of the door, mirroring the rose garden and Mary's statue on the right (`lilyGardenArt`, `LILY_BEDS`, `JOSEPH_AT`).
+- **The statue:** in the middle stands a white statue of St. Joseph with a gold halo, brown beard and brown mantle. The Christ Child, with his own small halo, sits in the crook of his arm, and he holds a staff that has blossomed into a white lily.
+- **The beds:** strap-leaved white trumpet lilies with yellow centers.
+- **Talking to the statue** gives a short description.

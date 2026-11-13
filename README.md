@@ -501,3 +501,6 @@ Pressing and holding **Exit** for about half a second, on the touch ring or in t
 - **Cancelling:** sliding your finger off or letting go early cancels the hold.
 - **Quick tap:** still works as before ("Tap again to cast Exit").
 - **Code:** ring buttons now carry their command in `data-a`, and the hold is handled by capture-phase pointer listeners.
+
+## Captions no longer cover dialog (v3.112.1)
+The notice box (`.note`) was raised in v3.108 so battle text sits in front of the enemy health bars. That made town arrival captions land on top of NPC dialog. Now, while a dialog box is open, the notice moves to the opposite edge of the screen (bottom when the dialog is at the top, top when it's at the bottom) and drops behind the dialog. Battle text is unchanged.

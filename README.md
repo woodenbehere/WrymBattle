@@ -578,3 +578,9 @@ A rabbit hole now sits in the northern grassland north-east of Ember Peak (tile 
   - **Drops:** **every hare drops a Hare Haunch**. The diner Inventory map lists the Rabbit Hole as a source.
 - **Level 20:** the **Hare King** (24,000 HP, with a crown and red cape, Royal Kick, Thump of the Warren, Carrot Cudgel and a confusing Warren Rally) holds court with two Fang Bunny guards. Beating him sets `S.flags.hareKing` and reveals a Megalixir behind his throne.
 - **Wipes:** a party wipe inside with no save restarts on level 1.
+
+## Hares come in sixes (v3.116.1)
+Every random encounter in the Rabbit Hole is now a pack of six hares in a mix of that level's kinds.
+- **Battle layout:** battles support 5 and 6 enemies (`layoutFoes`): two staggered columns of three, drawn at scale 2.
+- **Labels:** duplicate-name labels run A–H.
+- **The Hare King fight** is unchanged (the King and two guards).

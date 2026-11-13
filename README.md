@@ -494,3 +494,10 @@ Journal › Diners › All locations now has two tabs: **Report** (the consolida
   - **Red pins** label the diners that need it.
   - **Source list:** under the map, each monster that drops it and where (terrain and time, isles, open sea, dungeon floors, bosses), plus fishing, farm fields and season, or coop and barn. "Any meat/vegetable/fish" ingredients list every matching food.
 - **Data scanned:** the world, night, weather, Blood Moon, isle and sea encounter tables, every dungeon's encounter list, and the tower and Gloamhollow monster sets.
+
+## Long-press Exit (v3.112.0)
+Pressing and holding **Exit** for about half a second, on the touch ring or in the classic command panel, casts it at once, with no second tap.
+- **While holding:** the button fills with gold, and the phone gives a short buzz when it casts.
+- **Cancelling:** sliding your finger off or letting go early cancels the hold.
+- **Quick tap:** still works as before ("Tap again to cast Exit").
+- **Code:** ring buttons now carry their command in `data-a`, and the hold is handled by capture-phase pointer listeners.

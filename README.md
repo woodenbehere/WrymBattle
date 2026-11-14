@@ -584,3 +584,6 @@ Every random encounter in the Rabbit Hole is now a pack of six hares in a mix of
 - **Battle layout:** battles support 5 and 6 enemies (`layoutFoes`): two staggered columns of three, drawn at scale 2.
 - **Labels:** duplicate-name labels run A–H.
 - **The Hare King fight** is unchanged (the King and two guards).
+
+## A path to Coralhaven's church (v3.116.2)
+A cobblestone path now runs from Coralhaven's main walkway east along the front of the church gardens (row 16) and turns up between the lily and rose beds to the church door. It uses the road tile `s` and is added by a wrapper on `MAPS.coralhaven.build`.

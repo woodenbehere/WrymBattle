@@ -598,3 +598,9 @@ Every random encounter in the Sky Tree is now a flock of six birds in a mix of t
 Besides their usual drop (Harpy Wings for most), every bird now also drops an **Egg** at the end of battle (a `rollDrops` wrapper, `BIRDS`). These are the same eggs the coop lays, so they count toward the diners' egg recipes. The **Harpy Queen** leaves a clutch of 6.
 - **Which birds:** all the Sky Tree birds, Frost Harpy, Storm Harpy, Thunderbird, Emberwing, Bough Hawk, Hollow Owl and Sky Roc.
 - **Diner Inventory map:** for eggs, it now lists the birds and marks the Sky Tree.
+
+## Add money back to a diner's till (v3.118.0)
+Each diner's Overview has an **Add to till** button next to Collect/Pay.
+- **Amounts:** 100, 500, 1,000, 5,000 or 10,000 G (whichever you can afford), "All of it", or **Just the wages owed** when the till is negative. There's also Cancel.
+- **Bookkeeping:** gold put in is recorded as `D.cash.paidIn`, so the cash statement and balance sheet ("You paid in", "Your stake") account for it.
+- **Uses:** cover wages before they come due, or keep a float in the till.

@@ -593,3 +593,8 @@ Sister Marisol in the Chapel of the Tide now uses her own sprite (`NPCSPR.nun`) 
 
 ## Sky Tree birds come in sixes (v3.116.4)
 Every random encounter in the Sky Tree is now a flock of six birds in a mix of that bough's kinds, using the six-enemy battle layout from v3.116.1. The Harpy Queen fight is unchanged.
+
+## Birds drop eggs (v3.117.0)
+Besides their usual drop (Harpy Wings for most), every bird now also drops an **Egg** at the end of battle (a `rollDrops` wrapper, `BIRDS`). These are the same eggs the coop lays, so they count toward the diners' egg recipes. The **Harpy Queen** leaves a clutch of 6.
+- **Which birds:** all the Sky Tree birds, Frost Harpy, Storm Harpy, Thunderbird, Emberwing, Bough Hawk, Hollow Owl and Sky Roc.
+- **Diner Inventory map:** for eggs, it now lists the birds and marks the Sky Tree.

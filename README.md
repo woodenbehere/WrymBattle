@@ -587,3 +587,6 @@ Every random encounter in the Rabbit Hole is now a pack of six hares in a mix of
 
 ## A path to Coralhaven's church (v3.116.2)
 A cobblestone path now runs from Coralhaven's main walkway east along the front of the church gardens (row 16) and turns up between the lily and rose beds to the church door. It uses the road tile `s` and is added by a wrapper on `MAPS.coralhaven.build`.
+
+## Sister Marisol's habit (v3.116.3)
+Sister Marisol in the Chapel of the Tide now uses her own sprite (`NPCSPR.nun`) instead of the pink villager dress: a black veil and habit, a white wimple framing her face, a white collar, and a small gold cross.

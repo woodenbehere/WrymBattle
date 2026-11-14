@@ -604,3 +604,6 @@ Each diner's Overview has an **Add to till** button next to Collect/Pay.
 - **Amounts:** 100, 500, 1,000, 5,000 or 10,000 G (whichever you can afford), "All of it", or **Just the wages owed** when the till is negative. There's also Cancel.
 - **Bookkeeping:** gold put in is recorded as `D.cash.paidIn`, so the cash statement and balance sheet ("You paid in", "Your stake") account for it.
 - **Uses:** cover wages before they come due, or keep a float in the till.
+
+## Fix: Add to till opens its menu on top (v3.118.1)
+The amount menu opened behind the diner screen, since both sheets sat at z-index 20 and the diner screen comes later in the page. Tapping **Add to till** looked like it did nothing. Choice menus (`#choiceOv`) now sit above every other sheet, so any question asked from inside a menu shows on top.

@@ -590,3 +590,6 @@ A cobblestone path now runs from Coralhaven's main walkway east along the front 
 
 ## Sister Marisol's habit (v3.116.3)
 Sister Marisol in the Chapel of the Tide now uses her own sprite (`NPCSPR.nun`) instead of the pink villager dress: a black veil and habit, a white wimple framing her face, a white collar, and a small gold cross.
+
+## Sky Tree birds come in sixes (v3.116.4)
+Every random encounter in the Sky Tree is now a flock of six birds in a mix of that bough's kinds, using the six-enemy battle layout from v3.116.1. The Harpy Queen fight is unchanged.

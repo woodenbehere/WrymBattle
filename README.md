@@ -696,3 +696,6 @@ A freshwater pond now sits just east of the homestead.
   - **Bowl (food stock):** green when stocked, yellow when the kitchen holds less than about a day of plates, red when nothing on the menu can be cooked. Tap it to open that diner's Inventory.
   - **G (till):** green normally, red when the till is negative (wages owed). Tap it to open that diner's Overview.
 - Red icons pulse gently so problems stand out (no motion if the device asks for reduced motion).
+
+## v3.129.1 — Bowl icon follows the Inventory badges
+- The Journal's food-stock bowl now uses exactly the OK / LOW / OUT badges shown on that diner's Inventory tab, for every dish and every ingredient: red if anything is OUT (or NONE), otherwise yellow if anything is LOW, and green only when everything is OK.

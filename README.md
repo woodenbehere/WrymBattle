@@ -615,3 +615,23 @@ The amount menu opened behind the diner screen, since both sheets sat at z-index
   - **Stopping:** it stops when you let go or run out.
   - **Scrolling:** moving your finger more than a few pixels cancels the hold, so scrolling the list doesn't store or pack anything by accident.
   - **Code:** handled by capture-phase pointer listeners on the diner/larder sheet.
+
+## The Wolf Den (v3.120.0)
+A cave mouth in the south face of the central mountains (tile 40,32), reached from the hills below, leads into the **Wolf Den**. It's a new entrance tile, `T_DEN=25`, drawn as the mountain with a dark mouth, rocks and bones.
+- **Twenty levels** (`wd1`–`wd20`, `makeDenFloor`), in four sections:
+  - **Den Mouth (1–5):** grey rock.
+  - **Bone Caverns (6–10):** bones on the floor.
+  - **Howling Depths (11–15):** dark blue stone with icicles.
+  - **Alpha's Lair (16–20):** deep red rock with patches of moonlight.
+  - **Moving between levels:** the way down is a dark tunnel, and the way up a lit passage.
+  - **Saves and travel:** there are save points on levels 5, 10, 15 and 19. Hunter Brannoc on level 1 can lead you back down to the deepest fifth level you've reached (`S.flags.denMax`).
+- **Six wolves to every fight,** and **every level is tougher than the one above.** Each level has its own copy of each wolf (`wd{n}_{wolf}`), scaled by `wdMult(n)`: from 75% stats on level 1 up to about 218% on level 20, with EXP and gold scaling too.
+  - **The wolves:** the Grave Wolf plus four new ones:
+    - **Grey Wolf:** fast.
+    - **Frost Wolf:** Icy Breath; absorbs ice.
+    - **Shadow Wolf:** black, with a confusing Night Veil; weak to holy.
+    - **Dire Wolf:** big.
+  - **Names:** they carry a tier prefix (Young, Wild, Savage, Elder).
+  - **Drops:** every wolf drops **Wolf Flank**, and the diner Inventory map lists the Wolf Den.
+- **Level 20:** **Moonfang, the Pack Alpha**, a huge silver wolf (30,000 HP), with Alpha Bite, a confusing Howl of the Pack, Moon Rend and a Savage Lunge. Two Elder Dire Wolves stand with her. Beating her sets `S.flags.wolfAlpha` and leaves a Megalixir among the bones.
+- **Wipes:** a party wipe inside with no save restarts on level 1.

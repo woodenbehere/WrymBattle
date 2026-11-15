@@ -635,3 +635,14 @@ A cave mouth in the south face of the central mountains (tile 40,32), reached fr
   - **Drops:** every wolf drops **Wolf Flank**, and the diner Inventory map lists the Wolf Den.
 - **Level 20:** **Moonfang, the Pack Alpha**, a huge silver wolf (30,000 HP), with Alpha Bite, a confusing Howl of the Pack, Moon Rend and a Savage Lunge. Two Elder Dire Wolves stand with her. Beating her sets `S.flags.wolfAlpha` and leaves a Megalixir among the bones.
 - **Wipes:** a party wipe inside with no save restarts on level 1.
+
+## Willow Pond (v3.121.0)
+A freshwater pond now sits just east of the homestead.
+- **On the map:** pond tiles (`T_POND=26`, blocked, not sailable) with lily pads, and a wooden **dock** on its north shore (`T_PDOCK=27`, tile 79,29).
+- **Fishing from the dock:** standing on the dock shows how many fish are rising and enables **Fish** in the command menu (`onPondDock`, `nearSchool` wrapper).
+  - **The school:** the pond's school (`pondSchool`, stored in `S.flags.pond`) restocks each new day with 4–7 freshwater fish. Once you've caught them all, it says it's fished out until tomorrow.
+- **Nine freshwater fish** (`fresh:true`), found only in the pond and never in sea schools:
+  - Bluegill, Yellow Perch, Crappie, Rainbow Trout, Largemouth Bass, Common Carp, Channel Catfish and Northern Pike.
+  - A rare **Golden Koi** (worth 900 G).
+- **The fishing scene's pond mode** (`fishRender`): green pond water, a muddy bottom, lily pads, reeds and cattails, and Vesh fishing from a wooden dock instead of the boat.
+- **Diner Inventory map:** the freshwater fish point to Willow Pond.

@@ -646,3 +646,7 @@ A freshwater pond now sits just east of the homestead.
   - A rare **Golden Koi** (worth 900 G).
 - **The fishing scene's pond mode** (`fishRender`): green pond water, a muddy bottom, lily pads, reeds and cattails, and Vesh fishing from a wooden dock instead of the boat.
 - **Diner Inventory map:** the freshwater fish point to Willow Pond.
+
+## v3.121.1 — Wolf Den: wolves only, six per fight
+- Every Wolf Den battle on all 20 levels is six wolves (Grey, Grave, Frost, Shadow and Dire Wolves of that level's tier). Verified over 200 test encounters: no other monsters, always six.
+- The Moonfang boss fight now brings the full pack: Moonfang plus five Elder wolves (two Dire, Shadow, Frost and Grey), with Moonfang drawn large on the left.

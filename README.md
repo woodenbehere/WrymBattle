@@ -685,3 +685,8 @@ A freshwater pond now sits just east of the homestead.
 - Every battle in the swamp is now six frogs: Bog Frogs, Poison Dart Frogs and Giant Bullfrogs in mixed packs (more Dart Frogs in the rain, more Bullfrogs at night). No toads or other monsters.
 - About 1 fight in 12, the Frog King turns up with five of his court; he stands large on the left.
 - Verified over 40 test encounters, day and night: always six, always frogs.
+
+## v3.128.0 — Frog Legs
+- New food: **Frog Legs** (meat). Every frog in Croakmire Fen drops them after battle: Bog Frog, Poison Dart Frog, Giant Bullfrog and the Frog King. Night frogs can drop two.
+- Frogs used to drop Toad Legs (and the Poison Dart Frog dropped jerky). Toad Legs now come only from Rain Toads.
+- Toad Leg Fritters can be cooked with Frog Legs or Toad Legs.

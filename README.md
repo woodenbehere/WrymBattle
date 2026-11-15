@@ -667,3 +667,11 @@ A freshwater pond now sits just east of the homestead.
 - Hay bales, milk cans and water troughs line the back wall (the cans and troughs tell you your daily milk and wool), and a sign shows the head count.
 - The barn now holds up to 100 cows and 100 sheep (was 4 animals in total). Old Hob's Animals tab has a **+10** button for cows and sheep too.
 - Cows and sheep no longer stand in the outdoor pen; they all live in the barn.
+
+## v3.125.0 — Homestead buildings you can tell apart
+- The Chicken Coop, Barn and Greenhouse are spaced apart on the homestead (a strip of grass between each) instead of sitting wall to wall.
+- Each has its own look:
+  - **Coop:** a small plank shed with an orange shingle roof, a chicken-and-egg sign over the door, a little window, a hen peeking from the pop-hole and a slatted ramp.
+  - **Barn:** a classic red barn with a grey gambrel roof, white trim, a hayloft door full of hay and big double doors with white X braces.
+  - **Greenhouse:** a glass house with white frames on a stone footing, with flowering plants showing through the panes and a glass door.
+- Doors moved with the buildings; entering and leaving each one works as before.

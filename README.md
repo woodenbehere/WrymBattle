@@ -690,3 +690,9 @@ A freshwater pond now sits just east of the homestead.
 - New food: **Frog Legs** (meat). Every frog in Croakmire Fen drops them after battle: Bog Frog, Poison Dart Frog, Giant Bullfrog and the Frog King. Night frogs can drop two.
 - Frogs used to drop Toad Legs (and the Poison Dart Frog dropped jerky). Toad Legs now come only from Rain Toads.
 - Toad Leg Fritters can be cooked with Frog Legs or Toad Legs.
+
+## v3.129.0 — Diner status icons in the Journal
+- Each diner line in Journal → Diners has two right-aligned icons before the Reports button:
+  - **Bowl (food stock):** green when stocked, yellow when the kitchen holds less than about a day of plates, red when nothing on the menu can be cooked. Tap it to open that diner's Inventory.
+  - **G (till):** green normally, red when the till is negative (wages owed). Tap it to open that diner's Overview.
+- Red icons pulse gently so problems stand out (no motion if the device asks for reduced motion).

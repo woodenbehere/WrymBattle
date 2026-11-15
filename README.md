@@ -699,3 +699,6 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.129.1 — Bowl icon follows the Inventory badges
 - The Journal's food-stock bowl now uses exactly the OK / LOW / OUT badges shown on that diner's Inventory tab, for every dish and every ingredient: red if anything is OUT (or NONE), otherwise yellow if anything is LOW, and green only when everything is OK.
+
+## v3.129.2 — Zoomed-out map no longer clips the airship
+- In the zoomed-out full map view, things drawn on top of the map were hidden as soon as they left the normal (1×) view area. The parked airship, the boat, fish schools, the whirlpool and the town-wall effects now stay visible across the whole zoomed-out view.

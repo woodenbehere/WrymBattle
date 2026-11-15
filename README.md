@@ -680,3 +680,8 @@ A freshwater pond now sits just east of the homestead.
 - The Homestead Larder lists everything in alphabetical order, with type buttons down the right side: All, Meat, Fish, Produce, Eggs & Dairy (and Grain, Spice or Sweets when you have them), each showing how many you hold. Tap one to see only that type.
 - Why eggs went missing: eggs, milk and crops sit in the farm crates, which the larder draws from, and the shipping bin sells everything in those crates. The bin now offers **Ship only non-food** (wool and other goods) so your eggs, milk and crops stay in the larder. Runners also take eggs to your diners each morning.
 - When you have hens but no eggs in the larder, the larder says how many they lay each morning and where the eggs went.
+
+## v3.127.0 — Croakmire Fen: six frogs every fight
+- Every battle in the swamp is now six frogs: Bog Frogs, Poison Dart Frogs and Giant Bullfrogs in mixed packs (more Dart Frogs in the rain, more Bullfrogs at night). No toads or other monsters.
+- About 1 fight in 12, the Frog King turns up with five of his court; he stands large on the left.
+- Verified over 40 test encounters, day and night: always six, always frogs.

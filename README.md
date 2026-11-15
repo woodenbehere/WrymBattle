@@ -655,3 +655,9 @@ A freshwater pond now sits just east of the homestead.
 - Hero's Diners → All locations now has a **Reputation, last 30 days** line chart, with one colored line per diner on the same chart (0–100, with ★ marks where each new star is earned). The legend shows each diner's current reputation, and tapping the chart reads out every diner's reputation for that day.
 - Each diner now saves its closing reputation every day (the last 30 days are kept). Days before this update are worked out backwards from the daily logs, so you get up to 14 days of history straight away, and the chart fills to 30 days as you play.
 - Wide report tables (By location, Top dishes) now scroll sideways within the sheet instead of pushing every chart off the right edge of a phone screen.
+
+## v3.123.0 — Walk-in Chicken Coop, up to 100 hens
+- The Chicken Coop door on the homestead now opens into a coop you can walk around in. Every chicken you own lives inside (white, brown and black hens, each with a name), wandering two straw pens on either side of a plank aisle, so the flock never boxes you in.
+- Nest boxes line the back wall (they show how many eggs a day your hens lay), plus roosting perches, a feed trough and a sign with the hen count.
+- The coop now holds up to 100 chickens (was 6). Old Hob's Animals tab has a **+10** button for chickens, which buys as many as still fit, up to ten.
+- Chickens no longer wander the outdoor pen; cows and sheep still do.

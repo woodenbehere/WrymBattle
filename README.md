@@ -661,3 +661,9 @@ A freshwater pond now sits just east of the homestead.
 - Nest boxes line the back wall (they show how many eggs a day your hens lay), plus roosting perches, a feed trough and a sign with the hen count.
 - The coop now holds up to 100 chickens (was 6). Old Hob's Animals tab has a **+10** button for chickens, which buys as many as still fit, up to ten.
 - Chickens no longer wander the outdoor pen; cows and sheep still do.
+
+## v3.124.0 — Walk-in Barn, up to 100 cows and 100 sheep
+- The Barn door on the homestead now opens into a barn you can walk around in. Every cow (black-and-white or brown) grazes the left stalls and every sheep (white or black) the right, each with a name, with a plank aisle and stall rails down the middle.
+- Hay bales, milk cans and water troughs line the back wall (the cans and troughs tell you your daily milk and wool), and a sign shows the head count.
+- The barn now holds up to 100 cows and 100 sheep (was 4 animals in total). Old Hob's Animals tab has a **+10** button for cows and sheep too.
+- Cows and sheep no longer stand in the outdoor pen; they all live in the barn.

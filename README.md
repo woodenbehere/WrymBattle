@@ -675,3 +675,8 @@ A freshwater pond now sits just east of the homestead.
   - **Barn:** a classic red barn with a grey gambrel roof, white trim, a hayloft door full of hay and big double doors with white X braces.
   - **Greenhouse:** a glass house with white frames on a stone footing, with flowering plants showing through the panes and a glass door.
 - Doors moved with the buildings; entering and leaving each one works as before.
+
+## v3.126.0 — Larder sorting, and keeping eggs out of the shipping bin
+- The Homestead Larder lists everything in alphabetical order, with type buttons down the right side: All, Meat, Fish, Produce, Eggs & Dairy (and Grain, Spice or Sweets when you have them), each showing how many you hold. Tap one to see only that type.
+- Why eggs went missing: eggs, milk and crops sit in the farm crates, which the larder draws from, and the shipping bin sells everything in those crates. The bin now offers **Ship only non-food** (wool and other goods) so your eggs, milk and crops stay in the larder. Runners also take eggs to your diners each morning.
+- When you have hens but no eggs in the larder, the larder says how many they lay each morning and where the eggs went.

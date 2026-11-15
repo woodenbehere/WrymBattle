@@ -650,3 +650,8 @@ A freshwater pond now sits just east of the homestead.
 ## v3.121.1 — Wolf Den: wolves only, six per fight
 - Every Wolf Den battle on all 20 levels is six wolves (Grey, Grave, Frost, Shadow and Dire Wolves of that level's tier). Verified over 200 test encounters: no other monsters, always six.
 - The Moonfang boss fight now brings the full pack: Moonfang plus five Elder wolves (two Dire, Shadow, Frost and Grey), with Moonfang drawn large on the left.
+
+## v3.122.0 — Diner reputation chart (30 days)
+- Hero's Diners → All locations now has a **Reputation, last 30 days** line chart, with one colored line per diner on the same chart (0–100, with ★ marks where each new star is earned). The legend shows each diner's current reputation, and tapping the chart reads out every diner's reputation for that day.
+- Each diner now saves its closing reputation every day (the last 30 days are kept). Days before this update are worked out backwards from the daily logs, so you get up to 14 days of history straight away, and the chart fills to 30 days as you play.
+- Wide report tables (By location, Top dishes) now scroll sideways within the sheet instead of pushing every chart off the right edge of a phone screen.

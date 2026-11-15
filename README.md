@@ -607,3 +607,11 @@ Each diner's Overview has an **Add to till** button next to Collect/Pay.
 
 ## Fix: Add to till opens its menu on top (v3.118.1)
 The amount menu opened behind the diner screen, since both sheets sat at z-index 20 and the diner screen comes later in the page. Tapping **Add to till** looked like it did nothing. Choice menus (`#choiceOv`) now sit above every other sheet, so any question asked from inside a menu shows on top.
+
+## Larder +10 and press-and-hold (v3.119.0)
+- **+10:** the Homestead Larder has a **+10** button after Pack on each row (`lpk10`). It packs up to ten at once, taking from the larder first and then the farm crates.
+- **Press and hold:** holding **Store**, **Pack** or **+10** in the larder, or **+1** / **Take** on a diner's Stock tab, repeats the action.
+  - **Speed:** it starts after about 0.4 s and speeds up the longer you hold.
+  - **Stopping:** it stops when you let go or run out.
+  - **Scrolling:** moving your finger more than a few pixels cancels the hold, so scrolling the list doesn't store or pack anything by accident.
+  - **Code:** handled by capture-phase pointer listeners on the diner/larder sheet.

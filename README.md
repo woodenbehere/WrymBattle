@@ -702,3 +702,7 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.129.2 — Zoomed-out map no longer clips the airship
 - In the zoomed-out full map view, things drawn on top of the map were hidden as soon as they left the normal (1×) view area. The parked airship, the boat, fish schools, the whirlpool and the town-wall effects now stay visible across the whole zoomed-out view.
+
+## v3.129.3 — The hero no longer stands on top of walls
+- In towns and other indoor maps, walking down toward a wall now stops with the hero's feet at the base of the wall instead of their body overlapping the stones. Exits, stairs and doors along that wall still work as before.
+- If the hero ever does overlap something solid below them, that wall is drawn in front of their feet.

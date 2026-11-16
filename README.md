@@ -706,3 +706,9 @@ A freshwater pond now sits just east of the homestead.
 ## v3.129.3 — The hero no longer stands on top of walls
 - In towns and other indoor maps, walking down toward a wall now stops with the hero's feet at the base of the wall instead of their body overlapping the stones. Exits, stairs and doors along that wall still work as before.
 - If the hero ever does overlap something solid below them, that wall is drawn in front of their feet.
+
+## v3.130.0 — Fish breeding ponds at the homestead
+- The empty animal pen is gone; in its place are four stone-rimmed fish ponds.
+- Face a pond and press the action button to stock it with a pair of any fish you've caught (taken from your pack first, then the larder). Each pond holds one kind of fish.
+- Fish breed every morning (the pond grows by half again, up to 30). By default Old Hob nets everything over 8 breeders into the larder each morning, where diner runners can collect it. From the pond menu you can net the extras yourself (a pair stays behind), switch the morning netting off, or release the fish to restock with something else.
+- Fish swim visibly in stocked ponds, and the ponds show on the mini-map.

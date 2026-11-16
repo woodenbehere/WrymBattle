@@ -712,3 +712,7 @@ A freshwater pond now sits just east of the homestead.
 - Face a pond and press the action button to stock it with a pair of any fish you've caught (taken from your pack first, then the larder). Each pond holds one kind of fish.
 - Fish breed every morning (the pond grows by half again, up to 30). By default Old Hob nets everything over 8 breeders into the larder each morning, where diner runners can collect it. From the pond menu you can net the extras yourself (a pair stays behind), switch the morning netting off, or release the fish to restock with something else.
 - Fish swim visibly in stocked ponds, and the ponds show on the mini-map.
+
+## v3.130.1 — Fish ponds: basket fish and a menu button
+- Stocking a pond now counts the fish in your fishing basket (where caught fish go), as well as your pack and the larder. Before, basket fish were missed, so the list could come up empty.
+- Standing beside a pond adds a **Fish pond…** button to the action menu, showing what's in it (or that it's empty). Tap it to stock, net or release.

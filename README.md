@@ -744,3 +744,7 @@ A freshwater pond now sits just east of the homestead.
 - New buildings in the Build tab: Brewery (8,000 G: Ale from barley and hops, Mead from honey) and Winery (9,000 G: Wine from grapes, Cider from apples). Tap the door to start batches in four vats; finished drinks go to the crates.
 - New diner dishes: Mug of Homestead Ale, Glass of Homestead Wine, Horn of Honey Mead, Hard Apple Cider, Honey Cake and Orchard Fruit Tart. The larder gains Fruit and Drinks buttons.
 - Warping to the Homestead now lands you inside the farmhouse.
+
+## v3.134.1 — Fish ponds grow like a real population
+- Pond fish now follow logistic growth: each morning the population grows by r·n·(1 − n/K), with r = 0.6 and capacity K = 30. Growth is fast while the pond is sparse and slows as it fills, so a pair reaches the full 30 in about 11 days (2 → 3 → 5 → 7 → 11 → 15 → 19 → 23 → 26 → 28 → 29 → 30).
+- Old Hob no longer nets the pond down every morning. When netting is on, he waits until the pond is full, then nets half (15 fish) into the larder and lets the rest breed back up, about 15 fish every 6 days per pond.

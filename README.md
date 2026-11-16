@@ -796,3 +796,7 @@ A freshwater pond now sits just east of the homestead.
 ## v3.136.1 — Sleep at the farmhouse whenever you like
 - Inside the farmhouse the action menu has a **Sleep** option (the big bed in the bedroom does the same). It always asks: sleep until morning, sleep until nightfall, or cancel, at any time of day or night. Before, at night it went straight to morning.
 - Sleeping fully restores HP and MP and cures status effects. Nobody can sleep under a Blood Moon.
+
+## v3.136.2 — Daily profit as a line chart
+- Each diner's Reports page shows daily profit for the last 14 days as a line chart instead of bars: a zero line, a dashed gold average line, red dots on losing days, and the average, best and worst day underneath.
+- Tap the chart to read any day's profit, plus how many were served and turned away.

@@ -753,3 +753,7 @@ A freshwater pond now sits just east of the homestead.
 - Growth rate raised to r = 2/3 (capacity still 30), so each pond still fills along the S-curve: 2 → 3 → 5 → 8 → 12 → 16.
 - Once a pond reaches half capacity (15), where the S-curve grows fastest, Old Hob nets each day's new fish into the larder and keeps it at half: r·K/4 = 5 fish a day per pond, 20 a day with all four ponds stocked (from about day 6 after stocking).
 - Turn daily netting off in the pond menu to let a pond fill all the way to 30; you can still net it yourself any time.
+
+## v3.134.3 — Frogs in the fish ponds
+- Every stocked fish pond now also has frogs. They arrive as a pair, follow the same S-curve as the fish (r = 2/3, capacity 30), and from half full Old Hob catches each day's new frogs as Frog Legs: 5 a day per pond, 20 a day across all four, on top of the 20 fish.
+- Frogs sit on the lily pads, and the pond menu shows the frog count and how many Frog Legs have gone to the larder. Netting by hand takes both fish and frogs down to a breeding pair of each.

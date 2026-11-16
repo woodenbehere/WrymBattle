@@ -800,3 +800,6 @@ A freshwater pond now sits just east of the homestead.
 ## v3.136.2 — Daily profit as a line chart
 - Each diner's Reports page shows daily profit for the last 14 days as a line chart instead of bars: a zero line, a dashed gold average line, red dots on losing days, and the average, best and worst day underneath.
 - Tap the chart to read any day's profit, plus how many were served and turned away.
+
+## v3.136.3 — Winter weather messages say snow
+- When the weather changes in Winter, the world map now says "It starts to snow." instead of rain, "The wind howls. A blizzard is blowing in!" instead of a thunderstorm, and talks about snow clouds and clear, cold skies.

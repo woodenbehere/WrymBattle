@@ -810,3 +810,7 @@ A freshwater pond now sits just east of the homestead.
   - what the runners brought over the last 7 days, by ingredient with value;
   - each morning's delivery item by item, or when it was lost to an ambush or the road was unsafe.
 - Deliveries are recorded from this update on, so the section fills in starting tomorrow morning.
+
+## v3.136.5 — Swipe between restaurants
+- In a diner's sheet, swipe left or right to flip to the next or previous restaurant, staying on the same page (Overview, Reports or Inventory). A bar at the top also has ◀ / ▶ buttons with the neighbouring restaurants' names and shows "2 of 6". On a keyboard, Shift + ← / → does the same.
+- Swiping over a wide table or a chart still scrolls or reads the chart instead.

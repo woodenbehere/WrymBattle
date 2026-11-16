@@ -765,3 +765,16 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.134.5 — Sell homestead goods one item at a time
 - The homestead Sell tab lists goods alphabetically, each with **Sell 1**, **Sell 10** and **All** (showing what the whole stack is worth). Ship everything is still at the bottom.
+
+## v3.135.0 — The Homestead ledger
+- New **Homestead** menu, right after Party in every menu (once you've found the homestead). It works like the Journal: pick an area on the right, see its details on the left. The Homestead page moved out of the Journal into it.
+- Areas: Overview, Fields, Greenhouse, Coop, Barn, Rabbitry, Aviary, Fish ponds, Orchard, Vineyard, Bees, Brewing and Earnings.
+- Each shows current numbers (counts, capacity, daily output, what's been sent to the larder) with charts:
+  - **Rabbitry and Aviary:** growth rule, how many are born tomorrow, a 30-day population chart against capacity, a 14-day projection, and daily larder deliveries.
+  - **Fish ponds:** the logistic formula, each pond's fish, frogs and tomorrow's growth, a 30-day chart per pond, the S-curve for a new pond with and without netting, and fish and Frog Legs netted each morning.
+  - **Coop and Barn:** flock and herd size over time and daily eggs, milk and wool.
+  - **Fields and Greenhouse:** plots by state, crops in the ground with harvest timing, and harvests per morning.
+  - **Orchard, Vineyard and Bees:** trees by kind, what's fruiting, and daily fruit, grapes and honey.
+  - **Brewing:** each vat with a progress bar, and how many batches your ingredients could make.
+  - **Earnings:** total earned, what's waiting in the crates, sales per day, and the most valuable goods.
+- The homestead now keeps a daily record (last 45 days) for these charts, starting from this update.

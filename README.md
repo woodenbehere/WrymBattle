@@ -778,3 +778,9 @@ A freshwater pond now sits just east of the homestead.
   - **Brewing:** each vat with a progress bar, and how many batches your ingredients could make.
   - **Earnings:** total earned, what's waiting in the crates, sales per day, and the most valuable goods.
 - The homestead now keeps a daily record (last 45 days) for these charts, starting from this update.
+
+## v3.135.1 — Winter snow everywhere
+- In Winter, rain is Snow and storms are Blizzards in the clock and weather readouts, and the sky icon shows falling flakes instead of raindrops.
+- Fishing in Winter: snow drifts down over the water and melts into small rings on the surface (a heavier, wind-driven fall in a blizzard).
+- Camping in Winter: snow falls on the camp with a snowy ground strip, and the caption says snow is settling on the tent (or a blizzard is howling) instead of rain.
+- Battles on the world map in Winter weather show snow instead of rain.

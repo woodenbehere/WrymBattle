@@ -757,3 +757,8 @@ A freshwater pond now sits just east of the homestead.
 ## v3.134.3 — Frogs in the fish ponds
 - Every stocked fish pond now also has frogs. They arrive as a pair, follow the same S-curve as the fish (r = 2/3, capacity 30), and from half full Old Hob catches each day's new frogs as Frog Legs: 5 a day per pond, 20 a day across all four, on top of the 20 fish.
 - Frogs sit on the lily pads, and the pond menu shows the frog count and how many Frog Legs have gone to the larder. Netting by hand takes both fish and frogs down to a breeding pair of each.
+
+## v3.134.4 — Runners restock what the kitchen used
+- Each morning, runners first bring back exactly what the diner used the day before (same ingredients, as far as the homestead has them), then top up the shortest ingredients with their usual extra (6 / 12 / 20), plus 2 more for every customer turned away the day before.
+- Daily limits: Hire runners up to 60, More runners up to 120, Sky skiff up to 200.
+- A diner that starts empty now catches up within 2–3 days instead of never.

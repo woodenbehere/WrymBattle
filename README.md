@@ -762,3 +762,6 @@ A freshwater pond now sits just east of the homestead.
 - Each morning, runners first bring back exactly what the diner used the day before (same ingredients, as far as the homestead has them), then top up the shortest ingredients with their usual extra (6 / 12 / 20), plus 2 more for every customer turned away the day before.
 - Daily limits: Hire runners up to 60, More runners up to 120, Sky skiff up to 200.
 - A diner that starts empty now catches up within 2–3 days instead of never.
+
+## v3.134.5 — Sell homestead goods one item at a time
+- The homestead Sell tab lists goods alphabetically, each with **Sell 1**, **Sell 10** and **All** (showing what the whole stack is worth). Ship everything is still at the bottom.

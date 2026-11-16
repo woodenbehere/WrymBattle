@@ -734,3 +734,13 @@ A freshwater pond now sits just east of the homestead.
 - The magnifier under the mini-map (touch view) now also works at the homestead and in every town and village (Valemont, Thornwick, Highmere, Ironhold, Coralhaven, Stormhaven). Tap it to zoom out and see much more of the place at once.
 - Each place zooms out as far as its size allows (about 2× for the homestead and towns); the magnifier shows the actual zoom. Indoors (houses, shops, the coop, barn and so on) stays at normal view.
 - Your zoom choice is shared with the world map, which still goes out to 3×.
+
+## v3.134.0 — The Horseshoe Homestead: orchard, vineyard, bees, brewery and winery
+- The homestead is rebuilt on a 40 × 30 map in the horseshoe layout: a U-shaped cobbled lane starts at the gate, every building sits on it (barn, coop and rabbitry on the left; brewery, winery and aviary on the right; greenhouse and the four fish ponds inside the U), and the farmhouse faces the gate at the top of the U.
+- The land wraps around the outside: seasonal fields across the top left (76 plots, plus a row each for Clear more land and Clear the far field), the orchard top right, the vineyard down the west side, a wildflower bee meadow on the east and open pasture for later.
+- Existing crops, plots, animals, ponds and buildings all carry over; field plots are moved onto the new field in order.
+- New Orchard tab in the homestead menu: plant Apple, Cherry, Peach and Orange trees (1,500 G, 24 spots; each fruits in its own season after 7 days), Grape vines (800 G, 24 spots; grapes in Summer and Fall) and Beehives (1,200 G, 6 hives; honey every day except Winter). Produce goes into the crates each morning for the larder, diner runners or shipping.
+- New field crops: Barley (Spring) and Hops (Summer) in the Seeds tab.
+- New buildings in the Build tab: Brewery (8,000 G: Ale from barley and hops, Mead from honey) and Winery (9,000 G: Wine from grapes, Cider from apples). Tap the door to start batches in four vats; finished drinks go to the crates.
+- New diner dishes: Mug of Homestead Ale, Glass of Homestead Wine, Horn of Honey Mead, Hard Apple Cider, Honey Cake and Orchard Fruit Tart. The larder gains Fruit and Drinks buttons.
+- Warping to the Homestead now lands you inside the farmhouse.

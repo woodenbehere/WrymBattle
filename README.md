@@ -784,3 +784,11 @@ A freshwater pond now sits just east of the homestead.
 - Fishing in Winter: snow drifts down over the water and melts into small rings on the surface (a heavier, wind-driven fall in a blizzard).
 - Camping in Winter: snow falls on the camp with a snowy ground strip, and the caption says snow is settling on the tent (or a blizzard is howling) instead of rain.
 - Battles on the world map in Winter weather show snow instead of rain.
+
+## v3.136.0 — Homestead financial reports
+- New **Financial reports** page in the Homestead menu, laid out like the diners' reports:
+  - **Daily income** bars for the last 14 days.
+  - **Income statement** (last 7 days and all time): sales by kind (crops; eggs, milk and wool; fruit, grapes and honey; drinks; meat and fish; animals sold back), food supplied to your diners at market value, total revenue, seeds, net income and margin.
+  - **Cash flow**: cash from farming (sales minus seeds) and cash invested (animals, buildings and land, trees, vines and hives), net cash to you, and food sent to the diners.
+  - **Balance sheet**: goods in the crates, food in the larder, livestock, pond fish and frogs, buildings and land, and trees, vines and hives, against what you've put in, taken out and sent to the diners.
+- The homestead's books start from this update. Everything bought before then still shows on the balance sheet at cost.

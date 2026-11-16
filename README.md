@@ -803,3 +803,10 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.136.3 — Winter weather messages say snow
 - When the weather changes in Winter, the world map now says "It starts to snow." instead of rain, "The wind howls. A blizzard is blowing in!" instead of a thunderstorm, and talks about snow clouds and clear, cold skies.
+
+## v3.136.4 — Runner deliveries on each diner's Reports page
+- New **Runner deliveries** section on each diner's Reports page:
+  - a line chart of ingredients delivered vs. ingredients used each day;
+  - what the runners brought over the last 7 days, by ingredient with value;
+  - each morning's delivery item by item, or when it was lost to an ambush or the road was unsafe.
+- Deliveries are recorded from this update on, so the section fills in starting tomorrow morning.

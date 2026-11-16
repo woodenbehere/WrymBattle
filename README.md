@@ -729,3 +729,8 @@ A freshwater pond now sits just east of the homestead.
 - The old farmhouse yard is now 36 more seasonal field plots, ready to till straight away (Till all, Plant all and the rest include them).
 - The four fish ponds moved to the new east side; their fish and settings carry over.
 - New building: **Harpy Aviary** (Build tab, 12,000 G), an iron-barred aviary with harpies at the windows. Buy a breeding pair for 3,000 G (Animals tab or the sign inside). They hatch more each morning (up to 40), and everything over 8 breeders goes to the larder as **Harpy Wing** for the diners. Inside, every harpy is kept in its own cage.
+
+## v3.133.0 — Zoom out at the homestead and in towns
+- The magnifier under the mini-map (touch view) now also works at the homestead and in every town and village (Valemont, Thornwick, Highmere, Ironhold, Coralhaven, Stormhaven). Tap it to zoom out and see much more of the place at once.
+- Each place zooms out as far as its size allows (about 2× for the homestead and towns); the magnifier shows the actual zoom. Indoors (houses, shops, the coop, barn and so on) stays at normal view.
+- Your zoom choice is shared with the world map, which still goes out to 3×.

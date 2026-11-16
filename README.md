@@ -722,3 +722,10 @@ A freshwater pond now sits just east of the homestead.
 - Buy a breeding pair of rabbits for 600 G (Animals tab, or the sign inside the rabbitry). From two rabbits on, they multiply every morning (by half again, up to 100).
 - Each morning everything over 12 breeders goes to the larder as **Hare Haunch**, ready for your diner runners. You can switch that off to let the hutches fill.
 - Step inside to see the bunnies (brown, white, grey and black) hopping around two straw pens, with hutches and carrot troughs along the back.
+
+## v3.132.0 — A bigger homestead, a moved farmhouse and the Harpy Aviary
+- The homestead is larger (34 × 24 tiles, up from 26 × 18), with room to the east and south.
+- The farmhouse now stands where the fish ponds were, with the mailbox, delivery boxes, shipping bin and Old Hob beside it and a cobbled lane from the main path.
+- The old farmhouse yard is now 36 more seasonal field plots, ready to till straight away (Till all, Plant all and the rest include them).
+- The four fish ponds moved to the new east side; their fish and settings carry over.
+- New building: **Harpy Aviary** (Build tab, 12,000 G), an iron-barred aviary with harpies at the windows. Buy a breeding pair for 3,000 G (Animals tab or the sign inside). They hatch more each morning (up to 40), and everything over 8 breeders goes to the larder as **Harpy Wing** for the diners. Inside, every harpy is kept in its own cage.

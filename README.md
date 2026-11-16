@@ -814,3 +814,8 @@ A freshwater pond now sits just east of the homestead.
 ## v3.136.5 — Swipe between restaurants
 - In a diner's sheet, swipe left or right to flip to the next or previous restaurant, staying on the same page (Overview, Reports or Inventory). A bar at the top also has ◀ / ▶ buttons with the neighbouring restaurants' names and shows "2 of 6". On a keyboard, Shift + ← / → does the same.
 - Swiping over a wide table or a chart still scrolls or reads the chart instead.
+
+## v3.136.6 — Foldable report sections, daily profit first
+- Every section of a diner's Reports page (and the All locations company report) has a ▾ heading: tap it to fold the section away or open it again. Folded sections stay folded as you swipe between restaurants and the next time you open the reports.
+- Daily profit is now the first section on each restaurant's report.
+- Runners stop topping up an ingredient once the kitchen already has 30 of it, so a diner that can't cook (for example, eggs but no vegetables) no longer fills up with 50 eggs a day. They still bring back what was used the day before.

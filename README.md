@@ -748,3 +748,8 @@ A freshwater pond now sits just east of the homestead.
 ## v3.134.1 — Fish ponds grow like a real population
 - Pond fish now follow logistic growth: each morning the population grows by r·n·(1 − n/K), with r = 0.6 and capacity K = 30. Growth is fast while the pond is sparse and slows as it fills, so a pair reaches the full 30 in about 11 days (2 → 3 → 5 → 7 → 11 → 15 → 19 → 23 → 26 → 28 → 29 → 30).
 - Old Hob no longer nets the pond down every morning. When netting is on, he waits until the pond is full, then nets half (15 fish) into the larder and lets the rest breed back up, about 15 fish every 6 days per pond.
+
+## v3.134.2 — Fish ponds: 20 fish a day across four ponds
+- Growth rate raised to r = 2/3 (capacity still 30), so each pond still fills along the S-curve: 2 → 3 → 5 → 8 → 12 → 16.
+- Once a pond reaches half capacity (15), where the S-curve grows fastest, Old Hob nets each day's new fish into the larder and keeps it at half: r·K/4 = 5 fish a day per pond, 20 a day with all four ponds stocked (from about day 6 after stocking).
+- Turn daily netting off in the pond menu to let a pond fill all the way to 30; you can still net it yourself any time.

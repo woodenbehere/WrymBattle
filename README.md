@@ -792,3 +792,7 @@ A freshwater pond now sits just east of the homestead.
   - **Cash flow**: cash from farming (sales minus seeds) and cash invested (animals, buildings and land, trees, vines and hives), net cash to you, and food sent to the diners.
   - **Balance sheet**: goods in the crates, food in the larder, livestock, pond fish and frogs, buildings and land, and trees, vines and hives, against what you've put in, taken out and sent to the diners.
 - The homestead's books start from this update. Everything bought before then still shows on the balance sheet at cost.
+
+## v3.136.1 — Sleep at the farmhouse whenever you like
+- Inside the farmhouse the action menu has a **Sleep** option (the big bed in the bedroom does the same). It always asks: sleep until morning, sleep until nightfall, or cancel, at any time of day or night. Before, at night it went straight to morning.
+- Sleeping fully restores HP and MP and cures status effects. Nobody can sleep under a Blood Moon.

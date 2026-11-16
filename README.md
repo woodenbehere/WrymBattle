@@ -716,3 +716,9 @@ A freshwater pond now sits just east of the homestead.
 ## v3.130.1 — Fish ponds: basket fish and a menu button
 - Stocking a pond now counts the fish in your fishing basket (where caught fish go), as well as your pack and the larder. Before, basket fish were missed, so the list could come up empty.
 - Standing beside a pond adds a **Fish pond…** button to the action menu, showing what's in it (or that it's empty). Tap it to stock, net or release.
+
+## v3.131.0 — The Rabbitry
+- New homestead building: **Rabbitry** (Build tab, 4,000 G), a wooden hutch house with a carrot sign, below the barn.
+- Buy a breeding pair of rabbits for 600 G (Animals tab, or the sign inside the rabbitry). From two rabbits on, they multiply every morning (by half again, up to 100).
+- Each morning everything over 12 breeders goes to the larder as **Hare Haunch**, ready for your diner runners. You can switch that off to let the hutches fill.
+- Step inside to see the bunnies (brown, white, grey and black) hopping around two straw pens, with hutches and carrot troughs along the back.

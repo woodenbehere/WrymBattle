@@ -819,3 +819,7 @@ A freshwater pond now sits just east of the homestead.
 - Every section of a diner's Reports page (and the All locations company report) has a ▾ heading: tap it to fold the section away or open it again. Folded sections stay folded as you swipe between restaurants and the next time you open the reports.
 - Daily profit is now the first section on each restaurant's report.
 - Runners stop topping up an ingredient once the kitchen already has 30 of it, so a diner that can't cook (for example, eggs but no vegetables) no longer fills up with 50 eggs a day. They still bring back what was used the day before.
+
+## v3.137.0 — The Cloudspire
+- The Sky Tree on the world map is redrawn as the Cloudspire: a slender, vine-wrapped trunk that climbs straight up into a bank of clouds, with a few small leafy ledges, flared roots and a lantern-lit doorway at the base. It replaces the huge round-crowned tree, so it sits much better beside the mountains and the volcano.
+- The ground around its base is plain grass instead of a dark square. The entrance and the 20 levels inside are unchanged.

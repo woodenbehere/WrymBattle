@@ -839,3 +839,7 @@ A freshwater pond now sits just east of the homestead.
 - Charts: in vs. out vs. demand for the last 21 days, and stock on hand with a 14-day projection at the current pace.
 - Contents grouped by type (Meat, Fish, Produce, Fruit, Eggs & Dairy, …), alphabetical within each group, foldable; tap an item for its own figures and charts.
 - Chart axes now use round tick values.
+
+## v3.138.1 — Wading the fen; the Valemont diner moves
+- Walking through Croakmire Fen now shows the hero wading: shins in murky water, reeds swaying around the knees. It covers less of the hero than the forest canopy does.
+- The Valemont Village Hero's Diner moves to the red-roof house on the bottom row. The old diner (top-right) is a regular house again.

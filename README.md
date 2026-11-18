@@ -827,3 +827,7 @@ A freshwater pond now sits just east of the homestead.
 ## v3.137.1 — Foldable Inventory sections
 - On a diner's Inventory tab, "Dishes on the menu" and "Ingredients" fold up like the report sections: tap the ▾ heading. Each heading shows a colour-coded count (for example "2 low · 2 OK" or "1 out · 3 OK"), so you can see what needs attention even when folded.
 - Folded sections stay folded as you swipe between restaurants and the next time you open the sheet.
+
+## v3.137.2 — Day & season above the sky window
+- A single line — **Day N · Season D/45 · Year Y** — now sits just above the sun/moon window on the world map and in towns.
+- The sky window and the Quests panel shift down slightly to make room; the label hides when a menu is open.

@@ -823,3 +823,7 @@ A freshwater pond now sits just east of the homestead.
 ## v3.137.0 — The Cloudspire
 - The Sky Tree on the world map is redrawn as the Cloudspire: a slender, vine-wrapped trunk that climbs straight up into a bank of clouds, with a few small leafy ledges, flared roots and a lantern-lit doorway at the base. It replaces the huge round-crowned tree, so it sits much better beside the mountains and the volcano.
 - The ground around its base is plain grass instead of a dark square. The entrance and the 20 levels inside are unchanged.
+
+## v3.137.1 — Foldable Inventory sections
+- On a diner's Inventory tab, "Dishes on the menu" and "Ingredients" fold up like the report sections: tap the ▾ heading. Each heading shows a colour-coded count (for example "2 low · 2 OK" or "1 out · 3 OK"), so you can see what needs attention even when folded.
+- Folded sections stay folded as you swipe between restaurants and the next time you open the sheet.

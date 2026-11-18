@@ -843,3 +843,9 @@ A freshwater pond now sits just east of the homestead.
 ## v3.138.1 — Wading the fen; the Valemont diner moves
 - Walking through Croakmire Fen now shows the hero wading: shins in murky water, reeds swaying around the knees. It covers less of the hero than the forest canopy does.
 - The Valemont Village Hero's Diner moves to the red-roof house on the bottom row. The old diner (top-right) is a regular house again.
+
+## v3.138.2 — Larder: diner demand breakdown
+- New **Diner demand breakdown** in the Larder tab: a line chart of ingredients needed per diner over the last 14 days.
+- **What each diner needs**: per diner, a split bar and a list of items (7-day average per day), with the diner's kitchen stock and the homestead stock (green / yellow / red). Tap an item to open its own charts.
+- "Needed" = what the kitchen cooked with plus what it lacked for meals it turned away (diners now log the ingredients behind missed meals), so a shortage still shows as demand.
+- An item's page shows which diners need it and how much.

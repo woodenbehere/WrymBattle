@@ -831,3 +831,11 @@ A freshwater pond now sits just east of the homestead.
 ## v3.137.2 — Day & season above the sky window
 - A single line — **Day N · Season D/45 · Year Y** — now sits just above the sun/moon window on the world map and in towns.
 - The sky window and the Quests panel shift down slightly to make room; the label hides when a menu is open.
+
+## v3.138 — Homestead ledger: Larder
+- New **Larder** tab (second in the Homestead menu) tracking supply and demand for every food item.
+- Daily flows are recorded: **coming in** (harvests, eggs, milk, ponds, anything you store), **going out** (runners to the diners, sales, other use), and the diners' **kitchen demand**.
+- 7-day averages for in / out / demand / net, plus a "Running short" list with days of stock left.
+- Charts: in vs. out vs. demand for the last 21 days, and stock on hand with a 14-day projection at the current pace.
+- Contents grouped by type (Meat, Fish, Produce, Fruit, Eggs & Dairy, …), alphabetical within each group, foldable; tap an item for its own figures and charts.
+- Chart axes now use round tick values.

@@ -864,3 +864,8 @@ A freshwater pond now sits just east of the homestead.
 ## v3.140 — Bees at the homestead hives
 - Every hive you've set up has five honeybees looping out over the wildflowers and back, with flapping wings.
 - They're out in Spring, Summer and Fall during the day. In Winter, at night and in the rain they stay in the hive.
+
+## v3.141 — Choose how many rabbit breeders to keep
+- Homestead → Animals has a new **Breeders kept** row with −10 / −2 / +2 / +10 buttons (2 to 66, default 12).
+- Each morning the rabbits grow ~50% and everything over the breeder count goes to the larder as Hare Haunch, so the daily yield is about half the breeders (12 → 6 a day, 34 → 17, 66 → 33).
+- Buying pairs now gets you to a bigger breeder count faster. The ledger and the rabbitry sign use the new setting.

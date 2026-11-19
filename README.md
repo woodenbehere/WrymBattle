@@ -849,3 +849,8 @@ A freshwater pond now sits just east of the homestead.
 - **What each diner needs**: per diner, a split bar and a list of items (7-day average per day), with the diner's kitchen stock and the homestead stock (green / yellow / red). Tap an item to open its own charts.
 - "Needed" = what the kitchen cooked with plus what it lacked for meals it turned away (diners now log the ingredients behind missed meals), so a shortage still shows as demand.
 - An item's page shows which diners need it and how much.
+
+## v3.138.3 — Status shows buffs on top of base stats
+- On the Status screen, each stat shows its **base value** with the change from conditions beside it: green **+N** for buffs, red **−N** for debuffs (e.g. Well Fed: Attack 268 +27).
+- Max HP and Max MP rows added so the Well Fed HP bonus is visible.
+- A short note lists what the active condition changes.

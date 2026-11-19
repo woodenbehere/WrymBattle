@@ -1,5 +1,5 @@
 // Drakes of Dusk and Dawn service worker: precaches the game shell, caches Google Fonts on first use.
-const VERSION = 'ember-wyrm-v3.138.2';
+const VERSION = 'ember-wyrm-v3.138.3';
 const SHELL = [
   './',
   './index.html',

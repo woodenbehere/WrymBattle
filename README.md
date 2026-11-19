@@ -857,3 +857,6 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.138.4 — Cloudspire crown fixed
 - The Cloudspire's cloud bank was sliced off at the left, right and top edges of its picture. It's now a whole, rounded cloud crown that sits fully inside, and the trunk ends inside the clouds instead of poking out the top.
+
+## v3.139 — "Yesterday" column on income statements
+- Each diner's income statement, the consolidated (all diners) statement, and the Homestead income statement now have a **Yesterday** column before Last 7 days and All time.

@@ -860,3 +860,7 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.139 — "Yesterday" column on income statements
 - Each diner's income statement, the consolidated (all diners) statement, and the Homestead income statement now have a **Yesterday** column before Last 7 days and All time.
+
+## v3.140 — Bees at the homestead hives
+- Every hive you've set up has five honeybees looping out over the wildflowers and back, with flapping wings.
+- They're out in Spring, Summer and Fall during the day. In Winter, at night and in the rain they stay in the hive.

@@ -874,3 +874,8 @@ A freshwater pond now sits just east of the homestead.
 - The party menu now has **Homestead** and **Diners** under Journal. Homestead appears once you've met Old Hob, and Diners once you own a diner.
 - Homestead opens the ledger, and Diners opens the journal on the Diners tab. Closing either one brings you back to the party menu.
 - Homestead was removed from the other menus.
+
+## v3.143 — Tidier menus
+- The touch action ring no longer has **Journal** or **Classic view**. Journal is in the party menu, and Classic is in Options.
+- The Journal no longer has a Diners tab. **Diners** in the party menu opens its own Diners screen, and leaving a diner you opened remotely brings you back to it.
+- Every menu's **Close** button now reads **Back ↩**.

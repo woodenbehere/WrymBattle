@@ -869,3 +869,8 @@ A freshwater pond now sits just east of the homestead.
 - Homestead → Animals has a new **Breeders kept** row with −10 / −2 / +2 / +10 buttons (2 to 66, default 12).
 - Each morning the rabbits grow ~50% and everything over the breeder count goes to the larder as Hare Haunch, so the daily yield is about half the breeders (12 → 6 a day, 34 → 17, 66 → 33).
 - Buying pairs now gets you to a bigger breeder count faster. The ledger and the rabbitry sign use the new setting.
+
+## v3.142 — Homestead and Diners in the party menu
+- The party menu now has **Homestead** and **Diners** under Journal. Homestead appears once you've met Old Hob, and Diners once you own a diner.
+- Homestead opens the ledger, and Diners opens the journal on the Diners tab. Closing either one brings you back to the party menu.
+- Homestead was removed from the other menus.

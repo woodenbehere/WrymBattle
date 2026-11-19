@@ -854,3 +854,6 @@ A freshwater pond now sits just east of the homestead.
 - On the Status screen, each stat shows its **base value** with the change from conditions beside it: green **+N** for buffs, red **−N** for debuffs (e.g. Well Fed: Attack 268 +27).
 - Max HP and Max MP rows added so the Well Fed HP bonus is visible.
 - A short note lists what the active condition changes.
+
+## v3.138.4 — Cloudspire crown fixed
+- The Cloudspire's cloud bank was sliced off at the left, right and top edges of its picture. It's now a whole, rounded cloud crown that sits fully inside, and the trunk ends inside the clouds instead of poking out the top.

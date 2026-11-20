@@ -887,3 +887,7 @@ A freshwater pond now sits just east of the homestead.
 ## v3.144.1 — Bees go home at dusk
 - Through dusk the bees' loops shrink toward their hive, they gather at the hive door, and they slip inside one by one. The last one is in at about 7:30 PM.
 - At dawn it runs in reverse: they come out one at a time and spread back over the flowers.
+
+## v3.144.2 — Homestead buttons stacked
+- In the Homestead menu (Seeds, Animals, Orchard, Build, Sell), each row's buttons (Buy, +10, Sell…) now stack in a neat column instead of squeezing side by side.
+- On narrow phone screens the description sits on top with the buttons full width beneath it.

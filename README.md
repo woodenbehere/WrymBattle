@@ -879,3 +879,7 @@ A freshwater pond now sits just east of the homestead.
 - The touch action ring no longer has **Journal** or **Classic view**. Journal is in the party menu, and Classic is in Options.
 - The Journal no longer has a Diners tab. **Diners** in the party menu opens its own Diners screen, and leaving a diner you opened remotely brings you back to it.
 - Every menu's **Close** button now reads **Back ↩**.
+
+## v3.144 — Run the rabbitry from the rabbitry
+- Homestead → Animals now only buys and sells. The Rabbits row just has **Buy a pair**.
+- The sign inside the Rabbitry is where you manage it: keep more or fewer breeders (+2/+10/−2/−10), start or stop sending extras to the larder, and buy a pair. The menu stays open after each change so you can adjust in one visit.

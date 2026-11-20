@@ -898,3 +898,7 @@ A freshwater pond now sits just east of the homestead.
 ## v3.145.1 — Hero arrows removed
 - The ◀ ▶ arrows are gone from all the character screens (Skills/magic, Equip, Status and the rest).
 - Switch characters by swiping left or right, or on a computer by dragging left or right with the mouse.
+
+## v3.146 — Swipe between tabs
+- Swipe left or right (or drag with the mouse) to move to the next or previous section on: **Journal** (Stats, Bestiary, Items, Fish Book, Food, Notes), **Homestead ledger**, the **Homestead** menu (Seeds, Animals, Orchard, Build, Sell), **Quests** (Active, Available, Completed), **Options** and shops (Buy/Sell).
+- It wraps around from the last section to the first. Swiping on a chart or a wide table doesn't change sections.

@@ -894,3 +894,7 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.145 — Swipe between characters
 - On any screen with the ◀ ▶ character arrows (Equip, Status, Skills and the rest), swipe left for the next character and right for the previous one.
+
+## v3.145.1 — Hero arrows removed
+- The ◀ ▶ arrows are gone from all the character screens (Skills/magic, Equip, Status and the rest).
+- Switch characters by swiping left or right, or on a computer by dragging left or right with the mouse.

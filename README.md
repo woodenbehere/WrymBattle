@@ -891,3 +891,6 @@ A freshwater pond now sits just east of the homestead.
 ## v3.144.2 — Homestead buttons stacked
 - In the Homestead menu (Seeds, Animals, Orchard, Build, Sell), each row's buttons (Buy, +10, Sell…) now stack in a neat column instead of squeezing side by side.
 - On narrow phone screens the description sits on top with the buttons full width beneath it.
+
+## v3.145 — Swipe between characters
+- On any screen with the ◀ ▶ character arrows (Equip, Status, Skills and the rest), swipe left for the next character and right for the previous one.

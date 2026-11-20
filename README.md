@@ -883,3 +883,7 @@ A freshwater pond now sits just east of the homestead.
 ## v3.144 — Run the rabbitry from the rabbitry
 - Homestead → Animals now only buys and sells. The Rabbits row just has **Buy a pair**.
 - The sign inside the Rabbitry is where you manage it: keep more or fewer breeders (+2/+10/−2/−10), start or stop sending extras to the larder, and buy a pair. The menu stays open after each change so you can adjust in one visit.
+
+## v3.144.1 — Bees go home at dusk
+- Through dusk the bees' loops shrink toward their hive, they gather at the hive door, and they slip inside one by one. The last one is in at about 7:30 PM.
+- At dawn it runs in reverse: they come out one at a time and spread back over the flowers.

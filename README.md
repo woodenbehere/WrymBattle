@@ -902,3 +902,7 @@ A freshwater pond now sits just east of the homestead.
 ## v3.146 — Swipe between tabs
 - Swipe left or right (or drag with the mouse) to move to the next or previous section on: **Journal** (Stats, Bestiary, Items, Fish Book, Food, Notes), **Homestead ledger**, the **Homestead** menu (Seeds, Animals, Orchard, Build, Sell), **Quests** (Active, Available, Completed), **Options** and shops (Buy/Sell).
 - It wraps around from the last section to the first. Swiping on a chart or a wide table doesn't change sections.
+
+## v3.147 — Fold away the section list
+- The big two-column menus (Journal, Homestead ledger, Diners, Options, Quests) have a **Hide ›** button above the section list on the right. Tap it to fold the list away so the page uses the full width, and tap **☰** to bring it back.
+- Each menu remembers whether it's folded. While it's folded, swipe left or right to switch sections.

@@ -906,3 +906,6 @@ A freshwater pond now sits just east of the homestead.
 ## v3.147 — Fold away the section list
 - The big two-column menus (Journal, Homestead ledger, Diners, Options, Quests) have a **Hide ›** button above the section list on the right. Tap it to fold the list away so the page uses the full width, and tap **☰** to bring it back.
 - Each menu remembers whether it's folded. While it's folded, swipe left or right to switch sections.
+
+## v3.147.1 — Swipe works with the list folded
+- Swiping left or right switches sections even when the section list is hidden.

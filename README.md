@@ -918,3 +918,7 @@ A freshwater pond now sits just east of the homestead.
 - Camping in rain or a storm with Senna in the party plays a new scene. Senna stands in the rain and calls her Golem, which rises out of the ground, raises two earthen pillars and pushes a stone slab roof over the sleeping party.
 - Under the roof it's dry. The rain bursts on the roof and drips off the edges, then Senna lies down with the others while the Golem stands guard.
 - In Winter the same happens with snow, and the ground under the shelter stays clear.
+
+## v3.149.1 — Senna walks in and Morrow tucks her in
+- After the shelter is built, Senna walks in out of the rain instead of popping inside. She lies down next to Morrow, who sits up, pulls a purple blanket over her and lies back down.
+- The scene runs a little longer (about 7 seconds) to fit this in.

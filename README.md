@@ -913,3 +913,8 @@ A freshwater pond now sits just east of the homestead.
 ## v3.148 — Swipe through the diner pages
 - In any diner, swipe left or right (or drag with the mouse) to turn its pages: Overview → Reports → Inventory → Menu → Stock → Staff → Upgrades.
 - Past the last page a swipe rolls on to the next diner's first page, and back past the first page goes to the previous diner's last page. The ◀ ▶ bar and Shift+arrow keys still jump straight between diners.
+
+## v3.149 — Senna's Golem keeps the rain off
+- Camping in rain or a storm with Senna in the party plays a new scene. Senna stands in the rain and calls her Golem, which rises out of the ground, raises two earthen pillars and pushes a stone slab roof over the sleeping party.
+- Under the roof it's dry. The rain bursts on the roof and drips off the edges, then Senna lies down with the others while the Golem stands guard.
+- In Winter the same happens with snow, and the ground under the shelter stays clear.

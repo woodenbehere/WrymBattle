@@ -909,3 +909,7 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.147.1 — Swipe works with the list folded
 - Swiping left or right switches sections even when the section list is hidden.
+
+## v3.148 — Swipe through the diner pages
+- In any diner, swipe left or right (or drag with the mouse) to turn its pages: Overview → Reports → Inventory → Menu → Stock → Staff → Upgrades.
+- Past the last page a swipe rolls on to the next diner's first page, and back past the first page goes to the previous diner's last page. The ◀ ▶ bar and Shift+arrow keys still jump straight between diners.

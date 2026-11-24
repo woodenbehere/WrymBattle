@@ -972,3 +972,7 @@ A freshwater pond now sits just east of the homestead.
 - Each Hero's Diner has a new **Customize** tab (it also works from the Diners screen when you're away).
 - Pick a floor for each location with a pixel preview: Original oak boards (free), Classic checker (800 G), Cherry checker (800 G), Terracotta (900 G), Herringbone oak (1,200 G), Harlequin (1,000 G) and Flagstone (1,000 G).
 - Each floor is bought once per diner, after which you can switch freely. The new floor shows right away, under the tables and chairs too.
+
+## v3.155 — A banjo tune for the homestead
+- *Hob's Acres* is now a laid-back, swung banjo tune in G (92 bpm). A five-string banjo plays the melody over forward rolls with the high G drone string, with an upright-style bass and soft brushes.
+- New banjo instrument: a bright, short twang with a drum-head resonance.

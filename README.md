@@ -1012,3 +1012,6 @@ A freshwater pond now sits just east of the homestead.
 
 ### v3.159.1
 - Walking into the volleyball net now offers a game, and walking into the things in Bobby's room shows their stories.
+
+### v3.159.2
+- The volleyball court is about half the size (7×3 tiles, net in the middle).

@@ -1003,3 +1003,9 @@ A freshwater pond now sits just east of the homestead.
   - **Coop / Barn**: buy 1 or 10 (or up to the room left) and sell 1 or 10 chickens, cows and sheep.
   - **Rabbitry / Aviary**: set breeders kept (−10/−2/+2/+10), turn sending extras on or off, and buy a breeding pair.
 - Each change shows a short note and your gold on hand, and the stats and projections below update straight away.
+
+## v3.159 — Bobby, his room, and volleyball
+- Old Hob is now **Bobby**.
+- Bobby keeps hours: he works the homestead from 6 AM, heads inside at dusk (6:30 PM), sits by his rocking chair in the evening, and sleeps from 10 PM.
+- The farmhouse has a new east wing, **Bobby's Room**: straw hat and coat pegs, his almanacs, the Harvest Fair volleyball runner-up cup, a patchwork quilt bed, a photo of his prize pumpkin, a rocking chair, his banjo, a fishing rod, his old dog Biscuit's bed, and jars of saved seed. Each one has a story if you inspect it.
+- A sand **volleyball court** east of the house. Inspect the net during the day to play Bobby to 7 points; the rest of the party cheers from the sideline. Drag to move and tap to jump (← → and Space on a keyboard). Your wins and losses are kept.

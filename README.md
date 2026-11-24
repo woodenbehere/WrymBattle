@@ -980,3 +980,7 @@ A freshwater pond now sits just east of the homestead.
 ## v3.156 — Sneaking music for Vesh's night jobs
 - When Vesh slips out alone at night, a new song plays: *Night Job*, a swung, suspenseful D-minor creep. A tiptoeing staccato bass walks under a plucked pizzicato melody full of chromatic slips, with low eerie strings and soft ticking hi-hats.
 - It switches back to the town music when he returns to the party.
+
+## v3.156.1 — Vesh's lantern when zoomed out; pan-flute homestead
+- Fixed: when sneaking at night with the view zoomed out, the soft glow around Vesh sat off to one side. It now stays centered on him at every zoom.
+- *Hob's Acres* (homestead) is now slower (70 bpm, unswung) and led by a new **pan flute**: an airy tone with a breathy chiff at the start of each note, a small scoop up into pitch and a slow vibrato, over gentle harp arpeggios, soft strings and bass. No drums.

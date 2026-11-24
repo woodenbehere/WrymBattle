@@ -932,3 +932,6 @@ A freshwater pond now sits just east of the homestead.
 ## v3.150.1 — Battle transition sound
 - Walking into a fight (world map or dungeon) now has its own sound, timed to the screen effect: two bright rising stings with the white flashes, a glassy shatter as the screen breaks up, a swirling dive while it pixelates to black, and a deep hit as the battle opens.
 - The world or dungeon music fades out during the swirl so the battle theme comes in clean.
+
+## v3.150.2 — Battle entry is a whoosh
+- The battle transition sound is now made entirely of air: a quick whoosh sweeping left to right with each white flash, then one big rush that swirls between the speakers as the screen pixelates to black, ending on a soft low thump. The tonal stings and shatter are gone.

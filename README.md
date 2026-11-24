@@ -952,3 +952,7 @@ A freshwater pond now sits just east of the homestead.
 - The battle and boss themes get a new drum part, about a third louder: a driving kick pattern, a harder snare backbeat, and sixteenth-note hi-hats with accents on the beat.
 - A crash cymbal opens every four bars, and every fourth bar ends in a tom fill rolling down four toms.
 - The kick drum has a sharper click so it cuts through the guitar.
+
+## v3.151.3 — Short, punchy victory fanfare
+- The victory music is now a quick, roughly five-second fanfare: three fast bars on guitar with chord stabs, a snare roll building into a final crash and timpani hit.
+- It now plays all the way through instead of getting cut off partway.

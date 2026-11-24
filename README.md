@@ -928,3 +928,7 @@ A freshwater pond now sits just east of the homestead.
 - Original songs: **Title**, **Overworld** (day) and **Moonlit Fields** (night), **Market Square** (towns), **Hob's Acres** (homestead), **Under the Stone** (dungeons), **Steel and Scale** (battle), **The Drake Awakens** (bosses), **Embers** (camp lullaby), plus a **Victory** fanfare and a **Defeat** theme. Songs cross-fade as you move between places.
 - Sound effects: menu ticks and back blips, coins when buying or selling, battle start, hits, criticals, misses, spells (fire, ice, holy and the rest), heals, summons, impacts, level up, chests, doors, and the fishing splash, bite and catch.
 - **Options › Sound**: mute, a Music volume (Off–100%) and a Sound effects volume (Off–100%), saved on this device. Phones keep audio silent until your first tap.
+
+## v3.150.1 — Battle transition sound
+- Walking into a fight (world map or dungeon) now has its own sound, timed to the screen effect: two bright rising stings with the white flashes, a glassy shatter as the screen breaks up, a swirling dive while it pixelates to black, and a deep hit as the battle opens.
+- The world or dungeon music fades out during the swirl so the battle theme comes in clean.

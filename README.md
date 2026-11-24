@@ -956,3 +956,7 @@ A freshwater pond now sits just east of the homestead.
 ## v3.151.3 — Short, punchy victory fanfare
 - The victory music is now a quick, roughly five-second fanfare: three fast bars on guitar with chord stabs, a snare roll building into a final crash and timpani hit.
 - It now plays all the way through instead of getting cut off partway.
+
+## v3.152 — Action ring fans out like the battle menu
+- In the touch view, the action ring on the world map, in towns and in dungeons now fans out in an arc on one side of where you tap, like the battle commands, instead of a full circle around it.
+- It opens to the right, or to the left when you tap near the right edge, and the arc sizes itself to stay inside the game screen.

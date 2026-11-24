@@ -997,3 +997,9 @@ A freshwater pond now sits just east of the homestead.
 - The sign inside the Harpy Aviary now runs it, like the rabbitry: keep more or fewer breeders (+2/+10/−2/−10, from 2 to 32, default 8), start or stop sending extras to the larder, and buy pairs. The menu stays open so you can adjust in one visit.
 - Harpies grow about 25% a morning, so the daily Harpy Wing is about a quarter of your breeders (8 breeders: 2 a day, 32 breeders: 8 a day).
 - Homestead → Animals only buys harpy pairs now.
+
+## v3.158 — Manage animals from the Homestead ledger
+- The Coop, Barn, Rabbitry and Aviary pages of the Homestead ledger now open with a foldable **Manage** panel, so you can act on what the charts show without leaving:
+  - **Coop / Barn**: buy 1 or 10 (or up to the room left) and sell 1 or 10 chickens, cows and sheep.
+  - **Rabbitry / Aviary**: set breeders kept (−10/−2/+2/+10), turn sending extras on or off, and buy a breeding pair.
+- Each change shows a short note and your gold on hand, and the stats and projections below update straight away.

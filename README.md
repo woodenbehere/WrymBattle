@@ -976,3 +976,7 @@ A freshwater pond now sits just east of the homestead.
 ## v3.155 — A banjo tune for the homestead
 - *Hob's Acres* is now a laid-back, swung banjo tune in G (92 bpm). A five-string banjo plays the melody over forward rolls with the high G drone string, with an upright-style bass and soft brushes.
 - New banjo instrument: a bright, short twang with a drum-head resonance.
+
+## v3.156 — Sneaking music for Vesh's night jobs
+- When Vesh slips out alone at night, a new song plays: *Night Job*, a swung, suspenseful D-minor creep. A tiptoeing staccato bass walks under a plucked pizzicato melody full of chromatic slips, with low eerie strings and soft ticking hi-hats.
+- It switches back to the town music when he returns to the party.

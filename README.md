@@ -989,3 +989,6 @@ A freshwater pond now sits just east of the homestead.
 - Every lightning strike (Thunder, Thundara, Thundaga, Raiton, Raijin's storm and the rest) now plays a real thunderclap: a sharp crack, a deep bass boom that drops in pitch, a rolling low rumble, and a crash cymbal ringing out.
 - When bolts strike in quick succession (Raijin, Thundaga across a group), the later ones play a lighter crack and cymbal so the sound doesn't turn to mud.
 - Lightning spells wind up with their own electric buzz and crackle instead of the fire whoosh.
+
+## v3.156.3 — Swipe on the All-locations diner screen
+- On *Hero's Diners · All locations*, swipe left or right (or drag with the mouse) to switch between **Report** and **Inventory**. It wraps around, and works with the section list hidden.

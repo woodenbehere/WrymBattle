@@ -922,3 +922,9 @@ A freshwater pond now sits just east of the homestead.
 ## v3.149.1 — Senna walks in and Morrow tucks her in
 - After the shelter is built, Senna walks in out of the rain instead of popping inside. She lies down next to Morrow, who sits up, pulls a purple blanket over her and lies back down.
 - The scene runs a little longer (about 7 seconds) to fit this in.
+
+## v3.150 — 16-bit music and sound effects
+- An all-new soundtrack, synthesized live with Web Audio in a Super Nintendo style: flute, brass, harp, pulse, accordion, strings, music-box, bass and drums, run through an SNES-like echo. No audio files to download, and it works offline.
+- Original songs: **Title**, **Overworld** (day) and **Moonlit Fields** (night), **Market Square** (towns), **Hob's Acres** (homestead), **Under the Stone** (dungeons), **Steel and Scale** (battle), **The Drake Awakens** (bosses), **Embers** (camp lullaby), plus a **Victory** fanfare and a **Defeat** theme. Songs cross-fade as you move between places.
+- Sound effects: menu ticks and back blips, coins when buying or selling, battle start, hits, criticals, misses, spells (fire, ice, holy and the rest), heals, summons, impacts, level up, chests, doors, and the fishing splash, bite and catch.
+- **Options › Sound**: mute, a Music volume (Off–100%) and a Sound effects volume (Off–100%), saved on this device. Phones keep audio silent until your first tap.

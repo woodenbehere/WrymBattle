@@ -938,3 +938,8 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.150.3 — Guitar leads the battle music
 - *Steel and Scale* (battle) and *The Drake Awakens* (bosses) now carry the melody on an overdriven electric guitar instead of brass: two detuned saws through a soft-clip drive and a cabinet-style filter, with a small bend into each note and vibrato on held notes.
+
+## v3.151 — "Sky Road Shuffle" for the airship
+- Boarding the Aurora now plays its own song: a fast Texas-blues shuffle in E (132 bpm, swung), inspired by Stevie Ray Vaughan.
+- Overdriven lead guitar plays two 12-bar choruses of blues licks with whole-step string bends. A second guitar chops the chords on the off-beats over a boogie bass line and shuffle drums.
+- Landing switches back to the world-map theme.

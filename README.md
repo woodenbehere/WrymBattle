@@ -992,3 +992,8 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.156.3 — Swipe on the All-locations diner screen
 - On *Hero's Diners · All locations*, swipe left or right (or drag with the mouse) to switch between **Report** and **Inventory**. It wraps around, and works with the section list hidden.
+
+## v3.157 — Harpies work like the rabbits
+- The sign inside the Harpy Aviary now runs it, like the rabbitry: keep more or fewer breeders (+2/+10/−2/−10, from 2 to 32, default 8), start or stop sending extras to the larder, and buy pairs. The menu stays open so you can adjust in one visit.
+- Harpies grow about 25% a morning, so the daily Harpy Wing is about a quarter of your breeders (8 breeders: 2 a day, 32 breeders: 8 a day).
+- Homestead → Animals only buys harpy pairs now.

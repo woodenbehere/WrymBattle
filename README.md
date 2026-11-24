@@ -947,3 +947,8 @@ A freshwater pond now sits just east of the homestead.
 ## v3.151.1 — More bends in Sky Road Shuffle
 - The airship theme's lead guitar now bends most of its notes: 70 whole-step bends plus 16 half-step "blue" bends (the minor third up to the major third, and the flat fifth up to the fifth).
 - Held notes bend more slowly and vocally than quick ones.
+
+## v3.151.2 — Bigger drums in battle
+- The battle and boss themes get a new drum part, about a third louder: a driving kick pattern, a harder snare backbeat, and sixteenth-note hi-hats with accents on the beat.
+- A crash cymbal opens every four bars, and every fourth bar ends in a tom fill rolling down four toms.
+- The kick drum has a sharper click so it cuts through the guitar.

@@ -960,3 +960,7 @@ A freshwater pond now sits just east of the homestead.
 ## v3.152 — Action ring fans out like the battle menu
 - In the touch view, the action ring on the world map, in towns and in dungeons now fans out in an arc on one side of where you tap, like the battle commands, instead of a full circle around it.
 - It opens to the right, or to the left when you tap near the right edge, and the arc sizes itself to stay inside the game screen.
+
+## v3.153 — Hold on an enemy to keep fighting it
+- In battle (manual control), press and hold your thumb or mouse on an enemy. As long as you hold, every hero you control uses **Fight** on that enemy the moment their turn comes, with a light buzz on phones.
+- Slide your thumb to another enemy to switch targets. Let go to choose commands yourself again. A quick tap still works as before.

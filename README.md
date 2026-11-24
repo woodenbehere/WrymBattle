@@ -935,3 +935,6 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.150.2 — Battle entry is a whoosh
 - The battle transition sound is now made entirely of air: a quick whoosh sweeping left to right with each white flash, then one big rush that swirls between the speakers as the screen pixelates to black, ending on a soft low thump. The tonal stings and shatter are gone.
+
+## v3.150.3 — Guitar leads the battle music
+- *Steel and Scale* (battle) and *The Drake Awakens* (bosses) now carry the melody on an overdriven electric guitar instead of brass: two detuned saws through a soft-clip drive and a cabinet-style filter, with a small bend into each note and vibrato on held notes.

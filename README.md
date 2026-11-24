@@ -964,3 +964,6 @@ A freshwater pond now sits just east of the homestead.
 ## v3.153 — Hold on an enemy to keep fighting it
 - In battle (manual control), press and hold your thumb or mouse on an enemy. As long as you hold, every hero you control uses **Fight** on that enemy the moment their turn comes, with a light buzz on phones.
 - Slide your thumb to another enemy to switch targets. Let go to choose commands yourself again. A quick tap still works as before.
+
+## v3.153.1 — Zoom out inside homestead buildings
+- The magnifier now zooms out inside the Greenhouse, Barn, Coop, Rabbitry and Aviary, as it already does on the homestead grounds and in towns. Each building zooms out as far as its size allows (Greenhouse up to 1.8×, Barn up to 2.4×).

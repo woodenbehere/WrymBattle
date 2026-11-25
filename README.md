@@ -1049,3 +1049,6 @@ A freshwater pond now sits just east of the homestead.
 
 ### v3.164.1
 - At dusk Bobby walks up to the path, along it to the farmhouse door, and goes in (instead of vanishing). At 6 AM he comes out the door and walks back to his spot. He waits if you are standing in his way.
+
+### v3.164.2
+- Bobby has black hair (his own sprite now, separate from the other farmers).

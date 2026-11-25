@@ -1041,3 +1041,8 @@ A freshwater pond now sits just east of the homestead.
 - Every level needs twice the EXP of v3.162 (four times v3.161): 1,600 for Lv 11, about 49,500 total for Lv 20, 243,000 for Lv 30, 851,000 for Lv 40 and about 6.1 million for Lv 60.
 - The opening Ember Dragon gives 1,600 EXP, so a new party finishes it at Lv 11.
 - Saves are re-leveled once from their total EXP (EXP itself isn't changed).
+
+## v3.164 — Party portraits
+- The party menu shows a head-and-shoulders portrait for each hero (32×32 pixel art in a framed tile) in place of the small walking sprite.
+- Garrick's swept silver hair and pauldrons, Vesh's bandana and red scarf, Ilse's white hood with its blue mark, Morrow's shadowed hood, glowing eyes and long beard, Senna's green hair, horns and circlet.
+- Promotions change the portrait (the Paladin's circlet, cape and cross, the Ninja's mask, and so on). A knocked-out hero's portrait goes grey with closed eyes; a petrified one turns to stone.

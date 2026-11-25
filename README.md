@@ -1036,3 +1036,8 @@ A freshwater pond now sits just east of the homestead.
 - Every level now needs twice the EXP of v3.161: about 800 to reach Lv 11, 24,800 total for Lv 20, 121,000 for Lv 30, 425,000 for Lv 40 and about 3 million for Lv 60.
 - The opening Ember Dragon is back to 800 EXP, so a new party still finishes it at Lv 11.
 - Saves are re-leveled once more from their total EXP (EXP itself isn't changed).
+
+## v3.163 — EXP curve doubled again
+- Every level needs twice the EXP of v3.162 (four times v3.161): 1,600 for Lv 11, about 49,500 total for Lv 20, 243,000 for Lv 30, 851,000 for Lv 40 and about 6.1 million for Lv 60.
+- The opening Ember Dragon gives 1,600 EXP, so a new party finishes it at Lv 11.
+- Saves are re-leveled once from their total EXP (EXP itself isn't changed).

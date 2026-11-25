@@ -1056,3 +1056,8 @@ A freshwater pond now sits just east of the homestead.
 ## v3.165 — Bobby's portrait
 - Bobby has a hand-drawn head-and-shoulders portrait: black hair going grey at the temples, a bushy mustache and stubble, crinkled smiling eyes, a red flannel shirt and denim overalls, on a warm lamplit backdrop.
 - The chess board shows Bobby's portrait on the left and your lead hero's portrait on the right, with crisp name labels.
+
+## v3.166 — Party order
+- New **Order** command in the main menu. Tap Order, tap a hero, then tap another hero: the two swap places. Keep swapping, then tap Order again to finish.
+- The battle line-up follows the party order (top to bottom), and the first hero in the list leads the party on the map.
+- Double-tapping a hero to change their front/back row still works when you are not in Order mode.

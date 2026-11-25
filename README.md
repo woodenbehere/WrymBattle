@@ -1015,3 +1015,9 @@ A freshwater pond now sits just east of the homestead.
 
 ### v3.159.2
 - The volleyball court is about half the size (7×3 tiles, net in the middle).
+
+## v3.160 — Evening chess with Bobby
+- A chess table in Bobby's room. From dusk until he turns in (6:30–10 PM), walk into it to play him. You take White.
+- **Friendly game** (Bobby looks two moves ahead and makes the odd loose move) or **Play to win** (three moves ahead plus capture sequences).
+- Full rules: castling, en passant, promotion (to a queen), check, checkmate, stalemate, and a draw when only kings and minor pieces are left. Tap a piece to see its moves, then tap where it goes. Tap Resign twice to resign.
+- During the day the board waits; after 10 PM Bobby's asleep. Your wins, losses and draws are kept.

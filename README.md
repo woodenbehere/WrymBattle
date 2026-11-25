@@ -1046,3 +1046,6 @@ A freshwater pond now sits just east of the homestead.
 - The party menu shows a head-and-shoulders portrait for each hero (32×32 pixel art in a framed tile) in place of the small walking sprite.
 - Garrick's swept silver hair and pauldrons, Vesh's bandana and red scarf, Ilse's white hood with its blue mark, Morrow's shadowed hood, glowing eyes and long beard, Senna's green hair, horns and circlet.
 - Promotions change the portrait (the Paladin's circlet, cape and cross, the Ninja's mask, and so on). A knocked-out hero's portrait goes grey with closed eyes; a petrified one turns to stone.
+
+### v3.164.1
+- At dusk Bobby walks up to the path, along it to the farmhouse door, and goes in (instead of vanishing). At 6 AM he comes out the door and walks back to his spot. He waits if you are standing in his way.

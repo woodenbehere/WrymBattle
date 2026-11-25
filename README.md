@@ -1052,3 +1052,7 @@ A freshwater pond now sits just east of the homestead.
 
 ### v3.164.2
 - Bobby has black hair (his own sprite now, separate from the other farmers).
+
+## v3.165 — Bobby's portrait
+- Bobby has a hand-drawn head-and-shoulders portrait: black hair going grey at the temples, a bushy mustache and stubble, crinkled smiling eyes, a red flannel shirt and denim overalls, on a warm lamplit backdrop.
+- The chess board shows Bobby's portrait on the left and your lead hero's portrait on the right, with crisp name labels.

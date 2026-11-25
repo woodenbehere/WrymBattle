@@ -1027,3 +1027,7 @@ A freshwater pond now sits just east of the homestead.
 - Roughly 3–7 battles per level early on, 5–12 through the middle of the game, and 15–25 near the cap.
 - Existing saves keep their levels. Each hero's EXP is moved up to the start of their current level, so they only need that level's new amount to reach the next one.
 - Monster EXP, quest rewards and dragon payouts are unchanged.
+
+### v3.161.1
+- The opening Ember Dragon gives 500 EXP (was 800), so a new party finishes it at Lv 11.
+- Saves are re-leveled once from their total EXP on the new curve (a short note shows the change on load). Heroes whose EXP was lifted in v3.161 are treated as having been at the start of that level on the old curve.

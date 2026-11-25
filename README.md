@@ -1021,3 +1021,9 @@ A freshwater pond now sits just east of the homestead.
 - **Friendly game** (Bobby looks two moves ahead and makes the odd loose move) or **Play to win** (three moves ahead plus capture sequences).
 - Full rules: castling, en passant, promotion (to a queen), check, checkmate, stalemate, and a draw when only kings and minor pieces are left. Tap a piece to see its moves, then tap where it goes. Tap Resign twice to resign.
 - During the day the board waits; after 10 PM Bobby's asleep. Your wins, losses and draws are kept.
+
+## v3.161 — Slower leveling
+- New EXP curve. EXP to the next level now grows with the game's battle rewards: about 400 at Lv 11, 3,000 at Lv 20, 22,000 at Lv 38, 60,000 at Lv 48 and 110,000 at Lv 59. Reaching Lv 60 takes about 1.5 million EXP (was 113,000).
+- Roughly 3–7 battles per level early on, 5–12 through the middle of the game, and 15–25 near the cap.
+- Existing saves keep their levels. Each hero's EXP is moved up to the start of their current level, so they only need that level's new amount to reach the next one.
+- Monster EXP, quest rewards and dragon payouts are unchanged.

@@ -1079,3 +1079,10 @@ A freshwater pond now sits just east of the homestead.
 - Friendly: he checks your best reply, but about one move in six he overlooks it, and now and then plays a looser move.
 - Play to win is unchanged. Bobby never misses a mate in one at any level.
 - In engine-vs-engine tests, Friendly beat Easy 9–1 and Play to win beat Friendly 6–0.
+
+## v3.169 — Poker night
+- Every tenth day (day 10, 20, 30…), from 6:30 PM, Bobby's friends Josh, Billy, Darin and Jason come over and gather with Bobby around the farmhouse table. Bobby reminds you during the day, and you'll hear the wagons arrive if you're at the homestead.
+- Talk to any of them, or walk into the table, to buy in for 1,000 gold (1,000 chips). No-limit Texas hold 'em, six-handed: blinds 10/20, rising every 10 hands; a rotating dealer button; side pots for all-ins.
+- Each player has a style. Josh is aggressive, Billy calls everything, Darin only plays strong hands, Jason bluffs, and Bobby plays solid poker. They judge their hands by simulating how often they'd win.
+- Controls: Fold, Check/Call, a raise slider with ½-pot and pot buttons, and All-in. Cash out between hands for your chips in gold (leaving mid-hand folds you first). The game clock stops while you play.
+- Clean out the whole table and Bobby will never live it down. Your nights, net winnings and biggest stack are recorded.

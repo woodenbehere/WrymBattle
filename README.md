@@ -1072,3 +1072,10 @@ A freshwater pond now sits just east of the homestead.
   - **Clockwork Clash**: fast chiptune square-wave arpeggios in A minor at 172 bpm.
   - **Thunderstep**: a heavy, half-time guitar stomp in F♯ minor with bends.
 - Four new victory fanfares join the original, picked at random after each win (about 5 seconds each): Brass Hurrah (F), Guitar Rip (A), Chip Jingle (G) and Flute Triumph (D).
+
+## v3.168 — Chess levels
+- Three levels at Bobby's board: **Easy game**, **Friendly game** and **Play to win**.
+- Easy: Bobby looks one move ahead, grabs pieces without checking whether you can take back, sometimes doesn't notice a capture at all, and often settles for a decent move instead of the best one.
+- Friendly: he checks your best reply, but about one move in six he overlooks it, and now and then plays a looser move.
+- Play to win is unchanged. Bobby never misses a mate in one at any level.
+- In engine-vs-engine tests, Friendly beat Easy 9–1 and Play to win beat Friendly 6–0.

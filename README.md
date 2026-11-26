@@ -1061,3 +1061,6 @@ A freshwater pond now sits just east of the homestead.
 - New **Order** command in the main menu. Tap Order, tap a hero, then tap another hero: the two swap places. Keep swapping, then tap Order again to finish.
 - The battle line-up follows the party order (top to bottom), and the first hero in the list leads the party on the map.
 - Double-tapping a hero to change their front/back row still works when you are not in Order mode.
+
+### v3.166.1
+- Fix: after a long chess game (or volleyball) on a phone, the room could go blank with only the characters showing. Mobile browsers can silently wipe the big cached map images when memory runs low; the game now repaints them after each minigame and checks for a wiped image every few seconds.

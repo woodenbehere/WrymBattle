@@ -1064,3 +1064,11 @@ A freshwater pond now sits just east of the homestead.
 
 ### v3.166.1
 - Fix: after a long chess game (or volleyball) on a phone, the room could go blank with only the characters showing. Mobile browsers can silently wipe the big cached map images when memory runs low; the game now repaints them after each minigame and checks for a wiped image every few seconds.
+
+## v3.167 — More battle and victory music
+- Four new battle themes join the original, and each regular battle picks one at random (never the same one twice in a row). Bosses keep their own theme.
+  - **Steel Gale**: D minor guitar riffing at 160 bpm.
+  - **Brass Charge**: heroic brass in G minor at 152 bpm.
+  - **Clockwork Clash**: fast chiptune square-wave arpeggios in A minor at 172 bpm.
+  - **Thunderstep**: a heavy, half-time guitar stomp in F♯ minor with bends.
+- Four new victory fanfares join the original, picked at random after each win (about 5 seconds each): Brass Hurrah (F), Guitar Rip (A), Chip Jingle (G) and Flute Triumph (D).

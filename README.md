@@ -1086,3 +1086,6 @@ A freshwater pond now sits just east of the homestead.
 - Each player has a style. Josh is aggressive, Billy calls everything, Darin only plays strong hands, Jason bluffs, and Bobby plays solid poker. They judge their hands by simulating how often they'd win.
 - Controls: Fold, Check/Call, a raise slider with ½-pot and pot buttons, and All-in. Cash out between hands for your chips in gold (leaving mid-hand folds you first). The game clock stops while you play.
 - Clean out the whole table and Bobby will never live it down. Your nights, net winnings and biggest stack are recorded.
+
+### v3.169.1
+- The diner Stock tab is grouped by item type (Meat, Fish, Produce, Fruit, Eggs & Dairy, Grain, Spice, Sweets, Drinks), alphabetical within each group, with a count on each heading. The ✓ still marks items the menu uses.

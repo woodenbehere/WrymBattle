@@ -1146,3 +1146,6 @@ A freshwater pond now sits just east of the homestead.
 
 ### v3.175.1
 - Senna wears purple: lavender hair, violet eyes and a deep plum robe with gold trim (her promoted look adds a rose-pink sash), in her portrait, walking sprite and battle sprite.
+
+### v3.175.2
+- New looks for three of the party, in their portraits and in every sprite (map, battle, camp, promoted forms): Garrick is Latino, with warm tan skin and brown eyes; Ilse is Black, with deep brown skin, dark brown eyes and dark curls under her hood; Senna is East Asian, with light golden skin and dark brown eyes (keeping her purple hair).

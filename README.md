@@ -1130,3 +1130,6 @@ A freshwater pond now sits just east of the homestead.
 - The bow ram is sized to the bow tip and mounted flush on a riveted collar.
 - The balloon sits centred over the hull, and every rigging rope now ties off on the railing below it, including the stepped rails toward the bow.
 - The two keel propellers both hang under the keel on struts and spin properly: three blades turning in perspective with a motion blur.
+
+### v3.173.4
+- The keel sits flush under the hull (same width, square ends), with the two propellers spaced evenly beneath it.

@@ -1108,3 +1108,6 @@ A freshwater pond now sits just east of the homestead.
 
 ## v3.172 — Sorting the Bestiary
 - The Bestiary has sort buttons: Most slain, Name (A–Z), HP, EXP, Gold, Region and Weakness. Region and Weakness group enemies under headings with a count. The detail line changes to match (EXP or gold first when sorting by them). Your choice is remembered.
+
+### v3.172.1
+- The Battle Simulator list on the Aurora sorts too: Weakest, Toughest, Name, Most defeated, EXP, Gold, Region and Weakness (the last two grouped under headings). Your choice is remembered.

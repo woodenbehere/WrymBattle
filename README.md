@@ -1143,3 +1143,6 @@ A freshwater pond now sits just east of the homestead.
 - The engine house no longer has a funnel on its roof. Instead, two iron exhaust pipes with brass bands run straight back from its stern wall across the deck and over the stern rail, ending in flared mouths above and below the propeller shaft.
 - Smoke puffs from the two pipes in turn, streams aft, and corkscrews as it passes through the propeller wash. At night the pipe mouths glow orange.
 - The pipes are solid, so you walk around them at the stern.
+
+### v3.175.1
+- Senna wears purple: lavender hair, violet eyes and a deep plum robe with gold trim (her promoted look adds a rose-pink sash), in her portrait, walking sprite and battle sprite.

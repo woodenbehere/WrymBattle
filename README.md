@@ -1125,3 +1125,8 @@ A freshwater pond now sits just east of the homestead.
 ### v3.173.2
 - The Aurora reads front-to-back now: the stern is broad and square (engine house and propeller), and the hull steps in toward the bow from about two-thirds of the way along, narrowing to the helm.
 - The bow ram is much bigger (about five tiles long): gold with a sunlit upper face, shaded underside, ribs, a glint at the tip, and a riveted mounting collar on the bow.
+
+### v3.173.3
+- The bow ram is sized to the bow tip and mounted flush on a riveted collar.
+- The balloon sits centred over the hull, and every rigging rope now ties off on the railing below it, including the stepped rails toward the bow.
+- The two keel propellers both hang under the keel on struts and spin properly: three blades turning in perspective with a motion blur.

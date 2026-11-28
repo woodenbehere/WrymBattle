@@ -1114,3 +1114,7 @@ A freshwater pond now sits just east of the homestead.
 
 ### v3.172.2
 - The magnifier works on the Aurora's top deck: zoom out to 1.5× or 2× to see the whole ship, propellers and all.
+
+## v3.173 — The Aurora's balloon
+- The airship's gas balloon now hangs over the top deck: a long canvas envelope with seams and brass bands, an iron girder with cross-bracing slung underneath, and rigging ropes fanning down to the top rail. It sways gently as you fly.
+- The deck moved down four rows to make room overhead, so the balloon shows best zoomed out.

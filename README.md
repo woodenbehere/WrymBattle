@@ -1089,3 +1089,14 @@ A freshwater pond now sits just east of the homestead.
 
 ### v3.169.1
 - The diner Stock tab is grouped by item type (Meat, Fish, Produce, Fruit, Eggs & Dairy, Grain, Spice, Sweets, Drinks), alphabetical within each group, with a count on each heading. The ✓ still marks items the menu uses.
+
+## v3.170 — The front porch, and talking with Bobby
+- The farmhouse has a front porch with a railing and two rocking chairs. Bobby rocks in one through the day (and walks in at dusk, out at dawn).
+- Sit in the other chair, or talk to Bobby, and a chat screen opens over the bottom of the screen: Bobby's portrait, what he's saying (tap for more), and questions grouped into four topics. Time stands still while you chat.
+  - **Catch up:** how the farm is doing (live counts), your last chess game, his poker buddies, how you've done at poker, and his own story.
+  - **Homestead:** what to plant now (with gold-per-day figures for the season and what will finish before it turns), keeping crops alive, which animals pay, rabbits and harpies, brewing and wine, and how to make the most gold.
+  - **Hold 'em:** how a hand works, what beats what, which hands to play, pot odds, and how to beat each of his friends.
+  - **Chess:** how the pieces move, opening advice, not losing pieces, checkmating, special moves, and how hard each of his levels is.
+- Bobby remembers your chess games (your opening, your best capture, whether you castled, if he took your queen) and your poker nights (biggest pot, who you busted), and brings them up.
+- Talking to Bobby no longer opens the homestead menu; that's in the main menu under Homestead.
+- After dark, sitting on the porch is just a quiet rock under the stars.

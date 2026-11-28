@@ -1100,3 +1100,8 @@ A freshwater pond now sits just east of the homestead.
 - Bobby remembers your chess games (your opening, your best capture, whether you castled, if he took your queen) and your poker nights (biggest pot, who you busted), and brings them up.
 - Talking to Bobby no longer opens the homestead menu; that's in the main menu under Homestead.
 - After dark, sitting on the porch is just a quiet rock under the stars.
+
+## v3.171 — The Aurora's deck, SNES airship style
+- The top deck is redrawn as a long, stepped hull in the style of the SNES-era Final Fantasy airships: slate-blue deck planks, a brass balustrade all the way round, and the wooden hull side with portholes and a keel showing below the deck.
+- An engine house with a smoking funnel at the stern (and Engineer Tollen tending it), four deck vents, the hatch below amidships, crates and barrels, and the helm at the bow with Helmsman Borin and Lookout Pell.
+- Two propellers turn under the keel, and the camera sits a little low on deck so you can see the hull beneath the rail.

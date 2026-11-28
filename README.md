@@ -1133,3 +1133,8 @@ A freshwater pond now sits just east of the homestead.
 
 ### v3.173.4
 - The keel sits flush under the hull (same width, square ends), with the two propellers spaced evenly beneath it.
+
+## v3.174 — The view from the deck
+- From the Aurora's top deck you now see the actual ground below the ship (grassland, forest, desert, mountains, coast or open sea), taken from the world map at her position, small with altitude and softened by a haze, with clouds drifting past. Wherever you land or take off from, the view below matches.
+- The ground shifts a little slower than the deck as you walk around, for a sense of height.
+- The stern propeller is bigger: a longer banded shaft, a heavier mount, longer blades and a larger brass hub.

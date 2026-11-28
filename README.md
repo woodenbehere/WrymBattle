@@ -1121,3 +1121,7 @@ A freshwater pond now sits just east of the homestead.
 
 ### v3.173.1
 - The Aurora's deck matches her world-map sprite: a gold ram juts off the bow past the helm, and a big propeller spins on a shaft off the stern behind the engine house.
+
+### v3.173.2
+- The Aurora reads front-to-back now: the stern is broad and square (engine house and propeller), and the hull steps in toward the bow from about two-thirds of the way along, narrowing to the helm.
+- The bow ram is much bigger (about five tiles long): gold with a sunlit upper face, shaded underside, ribs, a glint at the tip, and a riveted mounting collar on the bow.

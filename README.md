@@ -1138,3 +1138,8 @@ A freshwater pond now sits just east of the homestead.
 - From the Aurora's top deck you now see the actual ground below the ship (grassland, forest, desert, mountains, coast or open sea), taken from the world map at her position, small with altitude and softened by a haze, with clouds drifting past. Wherever you land or take off from, the view below matches.
 - The ground shifts a little slower than the deck as you walk around, for a sense of height.
 - The stern propeller is bigger: a longer banded shaft, a heavier mount, longer blades and a larger brass hub.
+
+## v3.175 — Exhaust pipes
+- The engine house no longer has a funnel on its roof. Instead, two iron exhaust pipes with brass bands run straight back from its stern wall across the deck and over the stern rail, ending in flared mouths above and below the propeller shaft.
+- Smoke puffs from the two pipes in turn, streams aft, and corkscrews as it passes through the propeller wash. At night the pipe mouths glow orange.
+- The pipes are solid, so you walk around them at the stern.

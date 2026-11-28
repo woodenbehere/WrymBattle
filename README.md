@@ -1111,3 +1111,6 @@ A freshwater pond now sits just east of the homestead.
 
 ### v3.172.1
 - The Battle Simulator list on the Aurora sorts too: Weakest, Toughest, Name, Most defeated, EXP, Gold, Region and Weakness (the last two grouped under headings). Your choice is remembered.
+
+### v3.172.2
+- The magnifier works on the Aurora's top deck: zoom out to 1.5× or 2× to see the whole ship, propellers and all.

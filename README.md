@@ -1118,3 +1118,6 @@ A freshwater pond now sits just east of the homestead.
 ## v3.173 — The Aurora's balloon
 - The airship's gas balloon now hangs over the top deck: a long canvas envelope with seams and brass bands, an iron girder with cross-bracing slung underneath, and rigging ropes fanning down to the top rail. It sways gently as you fly.
 - The deck moved down four rows to make room overhead, so the balloon shows best zoomed out.
+
+### v3.173.1
+- The Aurora's deck matches her world-map sprite: a gold ram juts off the bow past the helm, and a big propeller spins on a shaft off the stern behind the engine house.
